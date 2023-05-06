@@ -1,5 +1,5 @@
 import {ClusterClient, getInfo} from 'discord-hybrid-sharding';
-import {Client} from 'discord.js';
+import {Client, IntentsBitField} from 'discord.js';
 
 import * as dotenv from 'dotenv';
 
@@ -11,7 +11,7 @@ const shards = environment === 'development' ? 'auto' : getInfo().SHARD_LIST;
 const shardCount = environment === 'development' ? 1 : getInfo().TOTAL_SHARDS;
 
 const client: BotClient = new Client({
-  intents: [],
+  intents: new IntentsBitField().add(['Guilds', 'GuildMessages']),
   shardCount,
   shards,
 });
