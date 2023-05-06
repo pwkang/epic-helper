@@ -3,6 +3,7 @@
     "module": "NodeNext",
     "target": "ES2020",
     "moduleResolution": "NodeNext",
+    "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -14,6 +15,10 @@
       "./node_modules/@types",
       "./src/types"
     ]
+  },
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
   },
   "include": [
     "src"

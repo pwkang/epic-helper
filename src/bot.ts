@@ -1,24 +1,29 @@
 import {ClusterClient, getInfo} from 'discord-hybrid-sharding';
-import {Client} from 'discord.js';
+import {Client, Collection, IntentsBitField} from 'discord.js';
 
 import * as dotenv from 'dotenv';
+import loadCommands from './handler/commands.handler';
+import loadBotEvents from './handler/bot-events.handler';
 
 dotenv.config();
 const environment = process.env.NODE_ENV || 'development';
 
 const shards = environment === 'development' ? 'auto' : getInfo().SHARD_LIST;
-
 const shardCount = environment === 'development' ? 1 : getInfo().TOTAL_SHARDS;
 
-const client: BotClient = new Client({
-  intents: [],
+const client: BotClient = <BotClient>new Client({
+  intents: new IntentsBitField().add(['Guilds', 'GuildMessages', 'MessageContent']),
   shardCount,
   shards,
 });
 
+client.commands = new Collection();
+client.slashCommands = new Collection();
+
 if (environment === 'production') {
   client.cluster = new ClusterClient(client); // initialize the Client, so we access the .broadcastEval()
 }
-client.login(process.env.BOT_TOKEN).then(() => {
-  console.log('Logged in!');
+
+Promise.all([loadCommands(client), loadBotEvents(client)]).then(() => {
+  client.login(process.env.BOT_TOKEN).catch(console.error);
 });
