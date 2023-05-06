@@ -1,4 +1,10 @@
+import {COMMAND_TYPE} from '../../constants/commands';
+
 export default <PrefixCommand>{
   name: 'test',
-  execute: async (client: BotClient) => {},
+  commands: ['test'],
+  type: COMMAND_TYPE.dev,
+  execute: async (client, message) => {
+    console.log('test');
+  },
 };

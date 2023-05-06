@@ -1,30 +1,26 @@
-import type {ClusterClient} from 'discord-hybrid-sharding';
-import type {Client, Collection, Interaction, Message, SlashCommandBuilder} from 'discord.js';
+import type {Client, Interaction, Message, SlashCommandBuilder} from 'discord.js';
+import {COMMAND_TYPE} from '../constants/commands';
 
 declare global {
-  interface BotClient extends Client {
-    cluster?: ClusterClient<unknown>;
-    commands: Collection<string, object>;
-    slashCommands: Collection<string, object>;
-  }
-
   type ValuesOf<T extends Record<string, unknown>> = T[keyof T];
 
   interface PrefixCommand {
     name: string;
-    execute: (client: BotClient, message: Message) => Promise<void>;
+    commands: string[];
+    execute: (client: Client, message: Message) => Promise<void>;
+    type: ValuesOf<typeof COMMAND_TYPE>;
   }
 
   interface SlashCommand {
     name: string;
-    execute: (client: BotClient, interaction: Interaction) => Promise<void>;
+    execute: (client: Client, interaction: Interaction) => Promise<void>;
     builder: SlashCommandBuilder;
   }
 
   interface BotEvent {
     once: boolean;
     eventName: unknown;
-    execute: (client: BotClient, ...args: any[]) => Promise<void>;
+    execute: (client: Client, ...args: any[]) => Promise<void>;
   }
 }
 
