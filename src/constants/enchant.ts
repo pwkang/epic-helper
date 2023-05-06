@@ -1,0 +1,16 @@
+export const ENCHANT_LEVEL = {
+  normie: 'normie',
+  good: 'good',
+  great: 'great',
+  mega: 'mega',
+  epic: 'epic',
+  hyper: 'hyper',
+  ultimate: 'ultimate',
+  perfect: 'perfect',
+  edgy: 'edgy',
+  'ultra-edgy': 'ultra-edgy',
+  omega: 'omega',
+  'ultra-omega': 'ultra-omega',
+  godly: 'godly',
+  void: 'void',
+} as const;
