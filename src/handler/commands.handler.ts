@@ -3,7 +3,7 @@ import readdirp from 'readdirp';
 import {Client} from 'discord.js';
 
 function loadPrefixCommands(client: Client) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     readdirp('./src/commands/prefix', {fileFilter: '*.ts'})
       .on('data', async (entry: EntryInfo) => {
         const {fullPath} = entry;
@@ -19,7 +19,7 @@ function loadPrefixCommands(client: Client) {
 }
 
 function loadSlashCommands(client: Client) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     readdirp('./src/commands/slash', {fileFilter: '*.ts'})
       .on('data', async (entry: EntryInfo) => {
         const {fullPath} = entry;

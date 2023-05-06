@@ -11,13 +11,13 @@ const environment = process.env.NODE_ENV || 'development';
 const shards = environment === 'development' ? 'auto' : getInfo().SHARD_LIST;
 const shardCount = environment === 'development' ? 1 : getInfo().TOTAL_SHARDS;
 
-const client: BotClient = <BotClient>new Client({
+const client = new Client({
   intents: new IntentsBitField().add(['Guilds', 'GuildMessages', 'MessageContent']),
   shardCount,
   shards,
 });
 
-client.commands = new Collection();
+client.prefixCommands = new Collection();
 client.slashCommands = new Collection();
 
 if (environment === 'production') {
