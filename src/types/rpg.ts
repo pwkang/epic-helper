@@ -1,0 +1,17 @@
+export const RPG_COMMAND_TYPE = {
+  daily: 'daily',
+  weekly: 'weekly',
+  lootbox: 'lootbox',
+  vote: 'vote',
+  hunt: 'hunt',
+  adventure: 'adventure',
+  training: 'training',
+  duel: 'duel',
+  quest: 'quest',
+  working: 'working',
+  farm: 'farm',
+  horse: 'horse',
+  arena: 'arena',
+  dungeon: 'dungeon',
+  use: 'use',
+} as const;
