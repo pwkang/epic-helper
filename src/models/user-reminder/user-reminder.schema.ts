@@ -1,6 +1,6 @@
 import {Schema} from 'mongoose';
 import {IUserReminder} from './user-reminder.type';
-import {RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../types/rpg';
+import {RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../constants/rpg';
 
 const userReminderSchema = new Schema<IUserReminder>({
   userId: {

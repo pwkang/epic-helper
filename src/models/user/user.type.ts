@@ -1,4 +1,4 @@
-import {RPG_COMMAND_TYPE} from '../../types/rpg';
+import {RPG_COMMAND_TYPE} from '../../constants/rpg';
 import {TIMEZONE_LIST} from '../../constants/timezone';
 import {ENCHANT_LEVEL} from '../../constants/enchant';
 

@@ -1,4 +1,4 @@
-import {RPG_COMMAND_TYPE, RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../types/rpg';
+import {RPG_COMMAND_TYPE, RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../constants/rpg';
 
 export type ReminderType = keyof typeof RPG_COMMAND_TYPE | 'pet';
 

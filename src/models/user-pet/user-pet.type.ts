@@ -1,5 +1,4 @@
-import {RPG_PET_SKILL, RPG_PET_TYPE} from '../../types/rpg';
-import {type} from 'os';
+import {RPG_PET_SKILL, RPG_PET_TYPE} from '../../constants/pet';
 
 export interface IUserPet {
   userId: string;
