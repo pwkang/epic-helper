@@ -15,3 +15,24 @@ export const RPG_COMMAND_TYPE = {
   dungeon: 'dungeon',
   use: 'use',
 } as const;
+
+export const RPG_WORKING_TYPE = {
+  fish: 'fish',
+  net: 'net',
+  boat: 'boat',
+  bigboat: 'bigboat',
+  chop: 'chop',
+  axe: 'axe',
+  bowsaw: 'bowsaw',
+  chainsaw: 'chainsaw',
+  mine: 'mine',
+  pickaxe: 'pickaxe',
+  drill: 'drill',
+  dynamite: 'dynamite',
+} as const;
+
+export const RPG_FARM_SEED = {
+  seed: null,
+  carrot: 'carrot',
+  potato: 'potato',
+} as const;
