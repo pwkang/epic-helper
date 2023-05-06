@@ -128,3 +128,11 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# idea files
+.idea/
+
+# mac files
+.DS_Store
+
+.dist/
