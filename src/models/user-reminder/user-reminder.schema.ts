@@ -3,7 +3,7 @@ import {IUserReminder} from './user-reminder.type';
 import {RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../types/rpg';
 
 const userReminderSchema = new Schema<IUserReminder>({
-  uId: {
+  userId: {
     type: String,
     required: true,
     index: true,

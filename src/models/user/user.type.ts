@@ -13,7 +13,7 @@ type ToggleMentionsOptions =
 type CustomMessageOptions = keyof typeof RPG_COMMAND_TYPE | 'pet';
 
 export interface IUser {
-  uId: string;
+  userId: string;
   username: string;
   toggle: {
     dm: {

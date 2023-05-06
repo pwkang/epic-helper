@@ -3,7 +3,7 @@ import {RPG_COMMAND_TYPE, RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../types/rpg
 export type ReminderType = keyof typeof RPG_COMMAND_TYPE | 'pet';
 
 type BaseUserReminder = {
-  uId: string;
+  userId: string;
   type: ReminderType;
   readyAt: Date;
   props?: {

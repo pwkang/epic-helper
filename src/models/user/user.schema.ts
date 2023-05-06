@@ -3,7 +3,7 @@ import {IUser} from './user.type';
 import {TIMEZONE_LIST} from '../../constants/timezone';
 
 const userSchema = new Schema<IUser>({
-  uId: {
+  userId: {
     type: String,
     required: true,
     unique: true,
