@@ -1,4 +1,4 @@
-import {COMMAND_TYPE} from '../../constants/commands';
+import {COMMAND_TYPE} from '../../constants/bot';
 
 export default <PrefixCommand>{
   name: 'test',

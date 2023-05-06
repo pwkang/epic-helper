@@ -1,5 +1,5 @@
 import {Client, Events, Message} from 'discord.js';
-import {COMMAND_TYPE, DEVS_ID, EPIC_RPG_ID, PREFIX} from '../../constants/commands';
+import {COMMAND_TYPE, DEVS_ID, EPIC_RPG_ID, PREFIX} from '../../constants/bot';
 
 export default <BotEvent>{
   eventName: Events.MessageCreate,
@@ -60,7 +60,7 @@ function searchCommand(client: Client, message: Message): PrefixCommand | null {
     const command = client.prefixCommands.find(
       (cmd) => cmd.type === COMMAND_TYPE.dev && validateCommand(cmd.commands, args)
     );
-    
+
     if (!command) return null;
     return command;
   }

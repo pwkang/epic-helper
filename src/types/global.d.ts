@@ -1,6 +1,6 @@
 import type {Client, Interaction, Message, SlashCommandBuilder} from 'discord.js';
-import type {COMMAND_TYPE} from '../constants/commands';
-import type {RPG_COMMAND_TYPE} from './rpg';
+import type {COMMAND_TYPE} from '../constants/bot';
+import type {RPG_COMMAND_TYPE} from '../constants/rpg';
 
 declare global {
   type ValuesOf<T extends Record<string, unknown>> = T[keyof T];

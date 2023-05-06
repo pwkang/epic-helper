@@ -1,6 +1,6 @@
 import {Schema} from 'mongoose';
 import {IUserPet} from './user-pet.type';
-import {RPG_PET_TYPE} from '../../types/rpg';
+import {RPG_PET_TYPE} from '../../constants/pet';
 
 const userPetSchema = new Schema<IUserPet>({
   userId: {
