@@ -36,3 +36,16 @@ export const accountOn = async (userId: string): Promise<void> => {
     }
   );
 };
+
+export const accountOff = async (userId: string): Promise<void> => {
+  await dbUser.findOneAndUpdate(
+    {
+      userId,
+    },
+    {
+      $set: {
+        'config.onOff': false,
+      },
+    }
+  );
+};
