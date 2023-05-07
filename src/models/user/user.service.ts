@@ -9,7 +9,10 @@ interface RegisterUserProps {
   username: string;
 }
 
-export const registerUser = async ({userId, username}: RegisterUserProps): Promise<boolean> => {
+export const registerUserAccount = async ({
+  userId,
+  username,
+}: RegisterUserProps): Promise<boolean> => {
   const user = await dbUser.findOne({userId});
 
   if (!user) {
@@ -24,7 +27,7 @@ export const registerUser = async ({userId, username}: RegisterUserProps): Promi
   return false;
 };
 
-export const accountOn = async (userId: string): Promise<void> => {
+export const userAccountOn = async (userId: string): Promise<void> => {
   await dbUser.findOneAndUpdate(
     {
       userId,
@@ -37,7 +40,7 @@ export const accountOn = async (userId: string): Promise<void> => {
   );
 };
 
-export const accountOff = async (userId: string): Promise<void> => {
+export const userAccountOff = async (userId: string): Promise<void> => {
   await dbUser.findOneAndUpdate(
     {
       userId,
@@ -50,8 +53,14 @@ export const accountOff = async (userId: string): Promise<void> => {
   );
 };
 
-export const accountDelete = async (userId: string): Promise<void> => {
+export const userAccountDelete = async (userId: string): Promise<void> => {
   await dbUser.findOneAndDelete({
     userId,
   });
+};
+export const isUserAccountExist = async (userId: string): Promise<boolean> => {
+  const user = await dbUser.count({
+    userId,
+  });
+  return user > 0;
 };

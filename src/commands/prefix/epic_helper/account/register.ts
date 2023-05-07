@@ -1,14 +1,14 @@
 import {COMMAND_TYPE} from '../../../../constants/bot';
-import {registerUser} from '../../../../models/user/user.service';
+import {registerUserAccount} from '../../../../models/user/user.service';
 import {CLICKABLE_SLASH_RPG} from '../../../../constants/clickable_slash';
-import replyMessage from '../../../../lib/discord.js/replyMessage';
+import replyMessage from '../../../../lib/discord.js/message/replyMessage';
 
 export default <PrefixCommand>{
   name: 'register',
   commands: ['register'],
   type: COMMAND_TYPE.bot,
   execute: async (client, message) => {
-    const created = await registerUser({
+    const created = await registerUserAccount({
       userId: message.author.id,
       username: message.author.username,
     });

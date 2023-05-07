@@ -9,7 +9,7 @@ function loadPrefixCommands(client: Client) {
         const {fullPath} = entry;
         const file = await import(fullPath);
         const command = file.default.default as PrefixCommand;
-        if (!command.name) return;
+        if (!command?.name) return;
         client.prefixCommands.set(`${command.type}:${command.name}`, command);
       })
       .on('end', () => {
@@ -25,7 +25,7 @@ function loadSlashCommands(client: Client) {
         const {fullPath} = entry;
         const file = await import(fullPath);
         const command = file.default.default as SlashCommand;
-        if (!command.name) return;
+        if (!command?.name) return;
         client.slashCommands.set(command.name, command);
       })
       .on('end', () => {
