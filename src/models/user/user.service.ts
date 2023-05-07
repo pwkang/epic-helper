@@ -49,3 +49,9 @@ export const accountOff = async (userId: string): Promise<void> => {
     }
   );
 };
+
+export const accountDelete = async (userId: string): Promise<void> => {
+  await dbUser.findOneAndDelete({
+    userId,
+  });
+};
