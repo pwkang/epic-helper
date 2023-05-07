@@ -4,7 +4,7 @@ dotenv.config();
 export const PREFIX = {
   bot: process.env.BOT_PREFIX,
   dev: process.env.DEV_PREFIX,
-  rpg: 'rpg ',
+  rpg: 'rpg',
 } as const;
 
 export const COMMAND_TYPE = {
