@@ -1,7 +1,8 @@
 import {mongoClient} from '../../services/mongoose/mongoose.service';
 import userSchema from './user.schema';
+import {IUser} from './user.type';
 
-const dbUser = mongoClient.model('user', userSchema);
+const dbUser = mongoClient.model<IUser>('user', userSchema);
 
 interface RegisterUserProps {
   userId: string;
@@ -21,4 +22,17 @@ export const registerUser = async ({userId, username}: RegisterUserProps): Promi
     return true;
   }
   return false;
+};
+
+export const accountOn = async (userId: string): Promise<void> => {
+  await dbUser.findOneAndUpdate(
+    {
+      userId,
+    },
+    {
+      $set: {
+        'config.onOff': true,
+      },
+    }
+  );
 };
