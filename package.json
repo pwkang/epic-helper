@@ -20,7 +20,7 @@
   "homepage": "https://github.com/pwkang/epic-helper#readme",
   "dependencies": {
     "discord-hybrid-sharding": "^2.1.2",
-    "discord.js": "^14.10.2",
+    "discord.js": "^14.11.0",
     "dotenv": "^16.0.3",
     "mongoose": "^7.1.0",
     "ms": "^2.1.3",
