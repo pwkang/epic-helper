@@ -38,6 +38,7 @@ async function checkTypeAndSend({
     try {
       sentMessage = await textChannel.send(options);
     } catch (error) {
+      console.log(error);
       return;
     }
   }
