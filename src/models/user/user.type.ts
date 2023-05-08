@@ -11,6 +11,13 @@ type ToggleMentionsOptions =
   | 'trainingAnswer'
   | 'petCatch';
 type CustomMessageOptions = keyof typeof RPG_COMMAND_TYPE | 'pet';
+export const RPG_DONOR_TIER = {
+  nonDonor: 1,
+  donor10: 0.9,
+  donor20: 0.8,
+  donor35: 0.65,
+} as const;
+export type RpgDonorTier = ValuesOf<typeof RPG_DONOR_TIER>;
 
 export interface IUser {
   userId: string;
@@ -52,8 +59,8 @@ export interface IUser {
     timezone: keyof typeof TIMEZONE_LIST;
     heal: number;
     enchant: keyof typeof ENCHANT_LEVEL;
-    donor: 1 | 0.9 | 0.8 | 0.65;
-    donorP: 1 | 0.9 | 0.8 | 0.65 | null;
+    donor: RpgDonorTier;
+    donorP: RpgDonorTier | null;
     channel: string;
     huntSwitch: boolean;
     onOff: boolean;

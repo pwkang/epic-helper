@@ -14,7 +14,7 @@ export default <BotEvent>{
 };
 
 const isRpgCommand = (message: Message) =>
-  message.content.startsWith(PREFIX.rpg) || message.mentions.has(EPIC_RPG_ID);
+  message.content.startsWith(`${PREFIX.rpg} `) || message.mentions.has(EPIC_RPG_ID);
 
 const isBotCommand = (message: Message) => PREFIX.bot && message.content.startsWith(PREFIX.bot);
 
@@ -28,7 +28,7 @@ function searchCommand(client: Client, message: Message): PrefixCommand | null {
 
   if (isRpgCommand(message)) {
     let args: string[] = [];
-    if (message.content.startsWith(PREFIX.rpg)) {
+    if (message.content.startsWith(`${PREFIX.rpg} `)) {
       args = messageContent.split(' ').slice(1);
     } else if (message.mentions.has(EPIC_RPG_ID)) {
       args = messageContent
@@ -45,7 +45,7 @@ function searchCommand(client: Client, message: Message): PrefixCommand | null {
   }
 
   if (PREFIX.bot && isBotCommand(message)) {
-    const args = messageContent.split(' ').slice(1);
+    const args = messageContent.slice(PREFIX.bot.length).trim().split(' ');
 
     const command = client.prefixCommands.find(
       (cmd) => cmd.type === COMMAND_TYPE.bot && validateCommand(cmd.commands, args)
@@ -55,7 +55,7 @@ function searchCommand(client: Client, message: Message): PrefixCommand | null {
     return command;
   }
   if (DEVS_ID.includes(message.author.id) && PREFIX.dev && messageContent.startsWith(PREFIX.dev)) {
-    const args = messageContent.split(' ').slice(1);
+    const args = messageContent.slice(PREFIX.dev.length).trim().split(' ');
 
     const command = client.prefixCommands.find(
       (cmd) => cmd.type === COMMAND_TYPE.dev && validateCommand(cmd.commands, args)

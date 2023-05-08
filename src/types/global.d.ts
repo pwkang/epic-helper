@@ -1,4 +1,11 @@
-import type {Client, Interaction, Message, SlashCommandBuilder} from 'discord.js';
+import type {
+  Client,
+  Interaction,
+  Message,
+  MessageCreateOptions,
+  MessagePayload,
+  SlashCommandBuilder,
+} from 'discord.js';
 import type {COMMAND_TYPE} from '../constants/bot';
 import type {RPG_COMMAND_TYPE} from '../constants/rpg';
 

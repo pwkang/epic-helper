@@ -114,7 +114,7 @@ const userSchema = new Schema<IUser>({
     heal: {type: Number, default: 0},
     enchant: {type: String},
     donor: {type: Number, default: 1},
-    donorP: {type: Number, default: 1},
+    donorP: {type: Number},
     channel: {type: String},
     huntSwitch: {type: Boolean, default: false},
     onOff: {type: Boolean, default: true},
