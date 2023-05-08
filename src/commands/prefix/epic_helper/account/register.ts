@@ -11,6 +11,7 @@ export default <PrefixCommand>{
     const created = await registerUserAccount({
       userId: message.author.id,
       username: message.author.username,
+      channelId: message.channel.id,
     });
     if (created) {
       replyMessage({
