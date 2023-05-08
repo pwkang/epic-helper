@@ -113,3 +113,13 @@ export const removeRpgDonorPTier = async (userId: string): Promise<void> => {
     }
   );
 };
+
+export const toggleHuntSwitch = async (userId: string): Promise<boolean> => {
+  let user = await dbUser.findOne({
+    userId,
+  });
+  if (!user) return false;
+  user.config.huntSwitch = !user.config.huntSwitch;
+  await user.save();
+  return user.config.huntSwitch;
+};
