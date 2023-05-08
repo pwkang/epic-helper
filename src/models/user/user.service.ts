@@ -7,11 +7,13 @@ const dbUser = mongoClient.model<IUser>('user', userSchema);
 interface RegisterUserProps {
   userId: string;
   username: string;
+  channelId: string;
 }
 
 export const registerUserAccount = async ({
   userId,
   username,
+  channelId,
 }: RegisterUserProps): Promise<boolean> => {
   const user = await dbUser.findOne({userId});
 
@@ -19,6 +21,9 @@ export const registerUserAccount = async ({
     const newUser = new dbUser({
       userId,
       username,
+      config: {
+        channel: channelId,
+      },
     });
 
     await newUser.save();
@@ -122,4 +127,10 @@ export const toggleHuntSwitch = async (userId: string): Promise<boolean> => {
   user.config.huntSwitch = !user.config.huntSwitch;
   await user.save();
   return user.config.huntSwitch;
+};
+
+export const getUserAccount = async (userId: string): Promise<IUser | null> => {
+  return dbUser.findOne({
+    userId,
+  });
 };

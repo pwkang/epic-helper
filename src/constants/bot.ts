@@ -16,3 +16,7 @@ export const COMMAND_TYPE = {
 export const EPIC_RPG_ID = '555955826880413696';
 
 export const DEVS_ID = process.env.DEVS_ID?.split(',') ?? [];
+
+export const BOT_COLOR = {
+  embed: '#2BFF00',
+} as const;
