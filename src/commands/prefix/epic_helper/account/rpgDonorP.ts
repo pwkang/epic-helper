@@ -13,9 +13,6 @@ export default <PrefixCommand>{
   commands: ['donorp'],
   type: COMMAND_TYPE.bot,
   execute: async (client, message) => {
-    console.log('rpg donor');
-    let count = 0;
-
     const nonDonor = new ButtonBuilder()
       .setCustomId('non-donor')
       .setLabel('Non-donor')
