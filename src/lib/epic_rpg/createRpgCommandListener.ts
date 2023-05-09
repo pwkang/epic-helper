@@ -32,11 +32,28 @@ export const createRpgCommandListener = ({channelId, client, author}: RpgCommand
   if (!collector) return;
   const event = new TypedEventEmitter<EventTypes>() as TypedEventEmitter<EventTypes> & ExtraProps;
 
+  event.stop = () => {
+    collector?.stop();
+    collector?.removeAllListeners();
+    event.removeAllListeners();
+  };
+
   collector.on('collect', (collected) => {
     if (collected.embeds.length) {
       const embed = collected.embeds[0];
+
+      // the command is on cooldown
       if (embed.author?.name === `${author.username} — cooldown`) {
         event.emit('cooldown', extractCooldown(embed));
+        event.stop();
+        return;
+      }
+
+      if (
+        embed.author?.name === author.username &&
+        embed.fields[0]?.name.includes("please don't spam")
+      ) {
+        event.stop();
         return;
       }
 
@@ -45,12 +62,6 @@ export const createRpgCommandListener = ({channelId, client, author}: RpgCommand
       event.emit('content', collected.content);
     }
   });
-
-  event.stop = () => {
-    collector?.stop();
-    collector?.removeAllListeners();
-    event.removeAllListeners();
-  };
 
   return event;
 };
