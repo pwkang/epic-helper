@@ -49,6 +49,7 @@ export default async function sendInteractiveMessage({
 
   function stop() {
     collector?.stop();
+    collector?.removeAllListeners();
   }
 
   collector?.on('end', (collected, reason) => {
