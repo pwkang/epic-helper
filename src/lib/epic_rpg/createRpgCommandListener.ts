@@ -17,7 +17,7 @@ type TEventTypes = {
 
 type TExtraProps = {
   stop: () => void;
-  answering: () => void;
+  pendingAnswer: () => void;
   answered: () => void;
 };
 
@@ -43,7 +43,7 @@ export const createRpgCommandListener = ({channelId, client, author}: IRpgComman
     event.removeAllListeners();
   };
 
-  event.answering = () => {
+  event.pendingAnswer = () => {
     waitingAnswer = true;
   };
   event.answered = () => {
@@ -66,6 +66,7 @@ export const createRpgCommandListener = ({channelId, client, author}: IRpgComman
         return;
       }
 
+      if (police) return;
       event.emit('embed', collected.embeds[0]);
     } else if (!collected.embeds.length) {
       // Message Content
@@ -103,6 +104,7 @@ export const createRpgCommandListener = ({channelId, client, author}: IRpgComman
         }
       }
 
+      if (police) return;
       event.emit('content', collected.content);
     }
   });
@@ -125,7 +127,9 @@ interface IChecker {
 }
 
 function isBotMaintenance({author, collected}: IChecker) {
-  return collected.content.includes('The bot is under maintenance!');
+  return (
+    collected.content.includes('The bot is under maintenance!') && collected.mentions.has(author.id)
+  );
 }
 
 function isStoppedByPolice({author, collected}: IChecker) {
@@ -141,7 +145,7 @@ function isArrested({author, collected}: IChecker) {
 }
 
 function isInJail({author, collected}: IChecker) {
-  return collected.mentions.has(author.id) && collected.content.includes('rpg jail');
+  return collected.mentions.has(author.id) && collected.content.includes('you are in the **jail**');
 }
 
 function isUserInCommand({author, collected}: IChecker) {
@@ -152,6 +156,7 @@ function isUserInCommand({author, collected}: IChecker) {
 
 function isUserSpamming({author, collected}: IChecker) {
   const embed = collected.embeds[0];
+  if (!embed) return false;
   return (
     embed.author?.name === author.username && embed.fields[0]?.name.includes("please don't spam")
   );
