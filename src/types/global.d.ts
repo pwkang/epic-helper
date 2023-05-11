@@ -1,5 +1,6 @@
 import type {Client, Interaction, Message, SlashCommandBuilder} from 'discord.js';
 import type {COMMAND_TYPE} from '../constants/bot';
+import type {ScheduleOptions} from 'node-cron';
 
 declare global {
   type ValuesOf<T extends Record<string, unknown>> = T[keyof T];
@@ -21,6 +22,14 @@ declare global {
     once: boolean;
     eventName: unknown;
     execute: (client: Client, ...args: any[]) => Promise<void>;
+  }
+
+  interface CronJob {
+    name: string;
+    expression: string;
+    disabled?: boolean;
+    cronOptions: ScheduleOptions;
+    execute: (client: Client) => Promise<void>;
   }
 }
 

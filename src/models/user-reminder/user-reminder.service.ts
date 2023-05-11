@@ -37,3 +37,26 @@ export const saveUserHuntCooldown = async ({
     }
   );
 };
+
+interface IUpdateUserCooldown {
+  userId: string;
+  type: ValuesOf<typeof RPG_COMMAND_TYPE>;
+  readyAt?: Date;
+}
+
+export const updateUserCooldown = async ({userId, readyAt, type}: IUpdateUserCooldown) => {
+  await dbUserReminder.findOneAndUpdate(
+    {
+      userId,
+      type,
+    },
+    {
+      $set: {
+        readyAt,
+      },
+    },
+    {
+      upsert: true,
+    }
+  );
+};
