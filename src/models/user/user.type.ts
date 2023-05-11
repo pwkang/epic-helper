@@ -2,15 +2,10 @@ import {RPG_COMMAND_TYPE} from '../../constants/rpg';
 import {TIMEZONE_LIST} from '../../constants/timezone';
 import {ENCHANT_LEVEL} from '../../constants/enchant';
 
-type ToggleDmOptions = keyof typeof RPG_COMMAND_TYPE | 'all' | 'pet';
-type ToggleReminderOptions = keyof typeof RPG_COMMAND_TYPE | 'all' | 'pet';
-type ToggleMentionsOptions =
-  | keyof typeof RPG_COMMAND_TYPE
-  | 'all'
-  | 'pet'
-  | 'trainingAnswer'
-  | 'petCatch';
-type CustomMessageOptions = keyof typeof RPG_COMMAND_TYPE | 'pet';
+type ToggleDmOptions = keyof typeof RPG_COMMAND_TYPE | 'all';
+type ToggleReminderOptions = keyof typeof RPG_COMMAND_TYPE | 'all';
+type ToggleMentionsOptions = keyof typeof RPG_COMMAND_TYPE | 'all' | 'trainingAnswer' | 'petCatch';
+type CustomMessageOptions = keyof typeof RPG_COMMAND_TYPE;
 export const RPG_DONOR_TIER = {
   nonDonor: 1,
   donor10: 0.9,

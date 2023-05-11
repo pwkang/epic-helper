@@ -1,13 +1,5 @@
-import type {
-  Client,
-  Interaction,
-  Message,
-  MessageCreateOptions,
-  MessagePayload,
-  SlashCommandBuilder,
-} from 'discord.js';
+import type {Client, Interaction, Message, SlashCommandBuilder} from 'discord.js';
 import type {COMMAND_TYPE} from '../constants/bot';
-import type {RPG_COMMAND_TYPE} from '../constants/rpg';
 
 declare global {
   type ValuesOf<T extends Record<string, unknown>> = T[keyof T];
@@ -30,8 +22,6 @@ declare global {
     eventName: unknown;
     execute: (client: Client, ...args: any[]) => Promise<void>;
   }
-
-  type RpgCommandsType = ValuesOf<typeof RPG_COMMAND_TYPE>;
 }
 
 export {};
