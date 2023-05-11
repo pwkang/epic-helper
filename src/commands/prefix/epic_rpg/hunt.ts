@@ -9,7 +9,6 @@ export default <PrefixCommand>{
   commands: ['hunt'],
   type: COMMAND_TYPE.rpg,
   execute: async (client, message) => {
-    console.log(message.content);
     const event = createRpgCommandListener({
       client,
       channelId: message.channel.id,
@@ -27,7 +26,6 @@ export default <PrefixCommand>{
       event.stop();
     });
     event.on('embed', (embed) => {
-      console.log(embed);
       event.stop();
     });
     event.on('cooldown', (cooldown) => {
