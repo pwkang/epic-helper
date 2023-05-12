@@ -60,3 +60,24 @@ export const updateUserCooldown = async ({userId, readyAt, type}: IUpdateUserCoo
     }
   );
 };
+
+interface IDeleteUserCooldown {
+  userId: string;
+  types: ValuesOf<typeof RPG_COMMAND_TYPE>[];
+}
+
+export const deleteUserCooldowns = async ({userId, types}: IDeleteUserCooldown) => {
+  await dbUserReminder.deleteMany({
+    userId,
+    type: {$in: types},
+  });
+};
+
+export const findUserReadyCommands = async (userId: string): Promise<IUserReminder[]> => {
+  const reminderList = await dbUserReminder.find({
+    userId,
+    readyAt: {$lte: new Date()},
+  });
+
+  return reminderList ? reminderList.map((reminder) => reminder.toObject()) : [];
+};

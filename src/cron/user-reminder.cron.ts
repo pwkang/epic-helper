@@ -1,5 +1,6 @@
 import {redisClient} from '../services/redis/redis.service';
 import {redisGetReadyUserReminder} from '../services/redis/user-reminder.redis';
+import {userReminderTimesUp} from '../lib/epic_helper/reminder/user.reminder';
 
 export default <CronJob>{
   name: 'user-reminder',
@@ -8,5 +9,10 @@ export default <CronJob>{
     if (!redisClient?.isReady) return;
 
     const usersId = await redisGetReadyUserReminder();
+    if (!usersId.length) return;
+
+    usersId.forEach((userId) => {
+      userReminderTimesUp(client, userId);
+    });
   },
 };

@@ -38,9 +38,6 @@ const userReminderSchema = new Schema<IUserReminder>(
           .sort({readyAt: 1})
           .limit(1);
       },
-      findReady(userId: string) {
-        return this.find({userId, readyAt: {$lte: new Date()}});
-      },
     },
   }
 );

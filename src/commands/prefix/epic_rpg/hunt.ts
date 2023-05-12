@@ -29,11 +29,10 @@ export default <PrefixCommand>{
       event.stop();
     });
     event.on('cooldown', (cooldown) => {
-      console.log(cooldown);
       updateUserCooldown({
         userId: message.author.id,
         type: RPG_COMMAND_TYPE.hunt,
-        readyAt: new Date(Date.now() + cooldown),
+        readyAt: new Date(Date.now() + 5000),
       });
       event.stop();
     });
