@@ -1,7 +1,7 @@
 import {mongoClient} from '../../services/mongoose/mongoose.service';
 import {IUserReminder} from './user-reminder.type';
 import userReminderSchema from './user-reminder.schema';
-import {RPG_COMMAND_TYPE, RPG_WORKING_TYPE} from '../../constants/rpg';
+import {RPG_COMMAND_TYPE, RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../constants/rpg';
 
 const dbUserReminder = mongoClient.model<IUserReminder>('user-reminder', userReminderSchema);
 
@@ -134,6 +134,35 @@ interface ISaveUserWorkingCooldown {
   workingType?: ValuesOf<typeof RPG_WORKING_TYPE>;
 }
 
+interface ISaveUserFarmCooldown {
+  userId: string;
+  readyAt?: Date;
+  seedType?: ValuesOf<typeof RPG_FARM_SEED>;
+}
+
+export const saveUserFarmCooldown = async ({
+  userId,
+  readyAt,
+  seedType,
+}: ISaveUserFarmCooldown): Promise<void> => {
+  await dbUserReminder.findOneAndUpdate(
+    {
+      userId,
+      type: RPG_COMMAND_TYPE.farm,
+    },
+    {
+      $set: {
+        readyAt,
+        props: {
+          seedType,
+        },
+      },
+    },
+    {
+      upsert: true,
+    }
+  );
+};
 export const saveUserWorkingCooldown = async ({
   userId,
   readyAt,
