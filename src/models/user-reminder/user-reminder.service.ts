@@ -2,6 +2,8 @@ import {mongoClient} from '../../services/mongoose/mongoose.service';
 import {IUserReminder} from './user-reminder.type';
 import userReminderSchema from './user-reminder.schema';
 import {RPG_COMMAND_TYPE, RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../constants/rpg';
+import interactionCreate from '../../events/guild/interactionCreate';
+import {LOOTBOX_TYPE} from '../../constants/lootbox';
 
 const dbUserReminder = mongoClient.model<IUserReminder>('user-reminder', userReminderSchema);
 
@@ -229,6 +231,36 @@ export const saveUserWorkingCooldown = async ({
         readyAt,
         props: {
           workingType,
+        },
+      },
+    },
+    {
+      upsert: true,
+    }
+  );
+};
+
+interface ISaveUserLootboxCooldown {
+  userId: string;
+  readyAt?: Date;
+  lootboxType?: ValuesOf<typeof LOOTBOX_TYPE>;
+}
+
+export const saveUserLootboxCooldown = async ({
+  userId,
+  readyAt,
+  lootboxType,
+}: ISaveUserLootboxCooldown): Promise<void> => {
+  await dbUserReminder.findOneAndUpdate(
+    {
+      userId,
+      type: RPG_COMMAND_TYPE.lootbox,
+    },
+    {
+      $set: {
+        readyAt,
+        props: {
+          lootboxType,
         },
       },
     },

@@ -1,4 +1,5 @@
 import {RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../constants/rpg';
+import {LOOTBOX_TYPE} from '../../constants/lootbox';
 
 type BaseUserReminder = {
   userId: string;
@@ -50,7 +51,14 @@ type Conditional =
       };
     }
   | {
-      type: 'daily' | 'weekly' | 'lootbox' | 'vote' | 'duel' | 'horse' | 'arena' | 'dungeon';
+      type: 'lootbox';
+      props: {
+        RPG_LOOTBOX_TYPE: any;
+        lootboxType: ValuesOf<typeof LOOTBOX_TYPE>;
+      };
+    }
+  | {
+      type: 'daily' | 'weekly' | 'vote' | 'duel' | 'horse' | 'arena' | 'dungeon';
       props?: never;
     };
 
