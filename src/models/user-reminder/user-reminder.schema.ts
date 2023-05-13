@@ -43,12 +43,12 @@ const userReminderSchema = new Schema<IUserReminder>(
   }
 );
 
-userReminderSchema.post('findOneAndUpdate', async function (doc) {
+userReminderSchema.post('findOneAndUpdate', async function () {
   const updatedUserId = this.getQuery().userId;
   await updateNextReminderTime(updatedUserId, this.model);
 });
 
-userReminderSchema.post('deleteMany', async function (doc) {
+userReminderSchema.post('deleteMany', async function () {
   const deletedUserId = this.getQuery().userId;
   await updateNextReminderTime(deletedUserId, this.model);
 });

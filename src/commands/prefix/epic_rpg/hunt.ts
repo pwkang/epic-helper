@@ -25,7 +25,7 @@ export default <PrefixCommand>{
         });
       event.stop();
     });
-    event.on('embed', (embed) => {
+    event.on('embed', () => {
       event.stop();
     });
     event.on('cooldown', (cooldown) => {

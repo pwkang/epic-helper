@@ -11,7 +11,7 @@ interface IRpgTraining {
 
 const TRAINING_COOLDOWN = ms('15m');
 
-export default async function rpgTraining({author, client, channelId, ultraining}: IRpgTraining) {
+export default async function rpgTraining({author, ultraining}: IRpgTraining) {
   await saveUserTrainingCooldown({
     userId: author.id,
     ultraining,

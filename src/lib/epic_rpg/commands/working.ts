@@ -30,7 +30,7 @@ interface IRpgWorking {
   workingType?: ValuesOf<typeof RPG_WORKING_TYPE>;
 }
 
-export default async function rpgWorking({author, channelId, client, workingType}: IRpgWorking) {
+export default async function rpgWorking({author, workingType}: IRpgWorking) {
   await saveUserWorkingCooldown({
     userId: author.id,
     workingType,

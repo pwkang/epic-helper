@@ -11,7 +11,7 @@ interface IRpgDaily {
   embed: Embed;
 }
 
-export default async function rpgDaily({user, client, channelId, embed}: IRpgDaily) {
+export default async function rpgDaily({user}: IRpgDaily) {
   await saveUserDailyCooldown({
     userId: user.id,
     readyAt: new Date(Date.now() + DAILY_COOLDOWN),

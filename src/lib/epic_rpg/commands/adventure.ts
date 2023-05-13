@@ -12,7 +12,7 @@ interface IRpgAdventure {
 
 const ADVENTURE_COOLDOWN = ms('1h');
 
-export default async function rpgAdventure({author, content, client, channelId}: IRpgAdventure) {
+export default async function rpgAdventure({author, content}: IRpgAdventure) {
   const hardMode = content.includes('(but stronger)');
 
   await saveUserAdventureCooldown({

@@ -12,7 +12,7 @@ interface IRpgFarm {
   content: Message['content'];
 }
 
-export default async function rpgFarm({content, client, channelId, author}: IRpgFarm) {
+export default async function rpgFarm({content, author}: IRpgFarm) {
   const seedType = whatIsTheSeed(content);
   await saveUserFarmCooldown({
     userId: author.id,

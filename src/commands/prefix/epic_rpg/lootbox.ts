@@ -13,9 +13,6 @@ export default <PrefixCommand>{
     .map((type) => ['lootbox', 'lb'].map((lb) => `buy ${type} ${lb}`))
     .flatMap((x) => x),
   execute: async (client, message) => {
-    const lootboxType = Object.entries(LOOTBOX_ABBREVIATION).find(([_, abbreviations]) =>
-      abbreviations.some((abbr) => message.content.split(' ').includes(abbr))
-    )?.[0];
     const event = createRpgCommandListener({
       author: message.author,
       channelId: message.channel.id,

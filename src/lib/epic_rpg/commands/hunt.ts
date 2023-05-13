@@ -12,7 +12,7 @@ interface IRpgHunt {
 
 const HUNT_COOLDOWN = ms('1m');
 
-export default async function rpgHunt({author, content, client, channelId}: IRpgHunt) {
+export default async function rpgHunt({author, content}: IRpgHunt) {
   const hardMode = content.includes('(but stronger)');
   const together = content.includes('hunting together');
 

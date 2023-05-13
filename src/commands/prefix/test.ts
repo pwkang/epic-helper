@@ -7,6 +7,6 @@ export default <PrefixCommand>{
   execute: async (client, message) => {
     const args = message.content.split(' ');
     if (!args[2]) return;
-    const msg = await message.channel.messages.fetch(args[2]);
+    // const msg = await message.channel.messages.fetch(args[2]);
   },
 };
