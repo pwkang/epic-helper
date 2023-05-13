@@ -98,6 +98,36 @@ export const saveUserTrainingCooldown = async ({
   );
 };
 
+interface ISaveUserQuestCooldown {
+  userId: string;
+  readyAt?: Date;
+  epicQuest?: boolean;
+}
+
+export const saveUserQuestCooldown = async ({
+  userId,
+  readyAt,
+  epicQuest,
+}: ISaveUserQuestCooldown): Promise<void> => {
+  await dbUserReminder.findOneAndUpdate(
+    {
+      userId,
+      type: RPG_COMMAND_TYPE.quest,
+    },
+    {
+      $set: {
+        readyAt,
+        props: {
+          epicQuest,
+        },
+      },
+    },
+    {
+      upsert: true,
+    }
+  );
+};
+
 interface IUpdateUserCooldown {
   userId: string;
   type: ValuesOf<typeof RPG_COMMAND_TYPE>;
