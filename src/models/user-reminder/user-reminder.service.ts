@@ -38,6 +38,36 @@ export const saveUserHuntCooldown = async ({
   );
 };
 
+interface ISaveUserAdventureCooldown {
+  userId: string;
+  readyAt?: Date;
+  hardMode?: boolean;
+}
+
+export const saveUserAdventureCooldown = async ({
+  userId,
+  hardMode,
+  readyAt,
+}: ISaveUserAdventureCooldown): Promise<void> => {
+  await dbUserReminder.findOneAndUpdate(
+    {
+      userId,
+      type: RPG_COMMAND_TYPE.adventure,
+    },
+    {
+      $set: {
+        readyAt,
+        props: {
+          hardMode,
+        },
+      },
+    },
+    {
+      upsert: true,
+    }
+  );
+};
+
 interface IUpdateUserCooldown {
   userId: string;
   type: ValuesOf<typeof RPG_COMMAND_TYPE>;
