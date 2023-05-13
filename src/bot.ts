@@ -4,6 +4,8 @@ import {Client, Collection, IntentsBitField} from 'discord.js';
 import * as dotenv from 'dotenv';
 import loadCommands from './handler/commands.handler';
 import loadBotEvents from './handler/bot-events.handler';
+import loadCronJob from './handler/cron.handler';
+import {redisClient} from './services/redis/redis.service';
 
 dotenv.config();
 const environment = process.env.NODE_ENV || 'development';
@@ -24,6 +26,11 @@ if (environment === 'production') {
   client.cluster = new ClusterClient(client); // initialize the Client, so we access the .broadcastEval()
 }
 
-Promise.all([loadCommands(client), loadBotEvents(client)]).then(() => {
+Promise.all([
+  loadCommands(client),
+  loadBotEvents(client),
+  redisClient.connect(),
+  loadCronJob(client),
+]).then(() => {
   client.login(process.env.BOT_TOKEN).catch(console.error);
 });

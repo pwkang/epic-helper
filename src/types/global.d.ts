@@ -1,13 +1,6 @@
-import type {
-  Client,
-  Interaction,
-  Message,
-  MessageCreateOptions,
-  MessagePayload,
-  SlashCommandBuilder,
-} from 'discord.js';
+import type {Client, Interaction, Message, SlashCommandBuilder} from 'discord.js';
 import type {COMMAND_TYPE} from '../constants/bot';
-import type {RPG_COMMAND_TYPE} from '../constants/rpg';
+import type {ScheduleOptions} from 'node-cron';
 
 declare global {
   type ValuesOf<T extends Record<string, unknown>> = T[keyof T];
@@ -31,7 +24,13 @@ declare global {
     execute: (client: Client, ...args: any[]) => Promise<void>;
   }
 
-  type RpgCommandsType = ValuesOf<typeof RPG_COMMAND_TYPE>;
+  interface CronJob {
+    name: string;
+    expression: string;
+    disabled?: boolean;
+    cronOptions: ScheduleOptions;
+    execute: (client: Client) => Promise<void>;
+  }
 }
 
 export {};

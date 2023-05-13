@@ -1,7 +1,6 @@
-import {Client, Embed, EmbedBuilder, User} from 'discord.js';
+import {Client, EmbedBuilder, User} from 'discord.js';
 import {IUser} from '../../models/user/user.type';
 import {BOT_COLOR} from '../../constants/bot';
-import {ENCHANT_LEVEL} from '../../constants/enchant';
 
 interface IGetUserSettingsEmbed {
   client: Client;
@@ -21,7 +20,7 @@ const DONOR_DISPLAY = {
   0.65: '35%',
 } as const;
 
-export const getUserSettingsEmbed = ({client, userProfile, author}: IGetUserSettingsEmbed) => {
+export const getUserSettingsEmbed = ({userProfile, author}: IGetUserSettingsEmbed) => {
   const embed = new EmbedBuilder()
     .setAuthor({
       name: `${author.username}'s settings`,

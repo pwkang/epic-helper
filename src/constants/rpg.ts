@@ -14,6 +14,7 @@ export const RPG_COMMAND_TYPE = {
   arena: 'arena',
   dungeon: 'dungeon',
   use: 'use',
+  pet: 'pet',
 } as const;
 
 export const RPG_WORKING_TYPE = {
