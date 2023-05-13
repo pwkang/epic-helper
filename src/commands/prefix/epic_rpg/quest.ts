@@ -21,7 +21,6 @@ export default <PrefixCommand>{
           author: message.author,
           channelId: message.channel.id,
           client,
-          epicQuest: false,
         });
         event.stop();
       }
@@ -30,7 +29,6 @@ export default <PrefixCommand>{
           author: message.author,
           channelId: message.channel.id,
           client,
-          epicQuest: false,
         });
       }
     });

@@ -1,4 +1,4 @@
-import {Client, Message, User} from 'discord.js';
+import {Client, Embed, Message, User} from 'discord.js';
 import {saveUserQuestCooldown} from '../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
 
@@ -6,20 +6,13 @@ interface IRpgQuest {
   client: Client;
   channelId: string;
   author: User;
-  epicQuest: boolean;
   questAccepted?: boolean;
 }
 
 const QUEST_COOLDOWN = ms('6h');
 const DECLINED_QUEST_COOLDOWN = ms('1h');
 
-export default async function rpgQuest({
-  epicQuest,
-  client,
-  author,
-  channelId,
-  questAccepted,
-}: IRpgQuest) {
+export default async function rpgQuest({client, author, channelId, questAccepted}: IRpgQuest) {
   await saveUserQuestCooldown({
     epicQuest: false,
     userId: author.id,
