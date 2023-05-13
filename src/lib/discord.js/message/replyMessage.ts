@@ -1,11 +1,5 @@
-import type {
-  Client,
-  Message,
-  MessageCreateOptions,
-  MessagePayload,
-  TextBasedChannel,
-} from 'discord.js';
-import {DMChannel, PermissionsBitField, TextChannel} from 'discord.js';
+import type {Client, Message, MessageCreateOptions, MessagePayload} from 'discord.js';
+import {PermissionsBitField, TextChannel} from 'discord.js';
 
 const requiredPermissions = [PermissionsBitField.Flags.SendMessages];
 

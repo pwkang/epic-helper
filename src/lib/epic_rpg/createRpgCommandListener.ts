@@ -10,8 +10,8 @@ interface IRpgCommandListener {
 }
 
 type TEventTypes = {
-  embed: [Embed];
-  content: [Message['content']];
+  embed: [Embed, Message];
+  content: [Message['content'], Message];
   cooldown: [number];
 };
 
@@ -67,7 +67,7 @@ export const createRpgCommandListener = ({channelId, client, author}: IRpgComman
       }
 
       if (police) return;
-      event.emit('embed', collected.embeds[0]);
+      event.emit('embed', collected.embeds[0], collected);
     } else if (!collected.embeds.length) {
       // Message Content
       if (isBotMaintenance({collected, author})) {
@@ -105,7 +105,7 @@ export const createRpgCommandListener = ({channelId, client, author}: IRpgComman
       }
 
       if (police) return;
-      event.emit('content', collected.content);
+      event.emit('content', collected.content, collected);
     }
   });
 

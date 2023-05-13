@@ -1,7 +1,7 @@
-import {Events, Interaction} from 'discord.js';
+import {Events} from 'discord.js';
 
 export default <BotEvent>{
   eventName: Events.InteractionCreate,
   once: false,
-  execute: async (client, interaction) => {},
+  execute: async () => {},
 };
