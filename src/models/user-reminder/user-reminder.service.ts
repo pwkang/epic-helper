@@ -189,6 +189,31 @@ export const saveUserDailyCooldown = async ({
   );
 };
 
+interface ISaveUserWeeklyCooldown {
+  userId: string;
+  readyAt?: Date;
+}
+
+export const saveUserWeeklyCooldown = async ({
+  userId,
+  readyAt,
+}: ISaveUserWeeklyCooldown): Promise<void> => {
+  await dbUserReminder.findOneAndUpdate(
+    {
+      userId,
+      type: RPG_COMMAND_TYPE.weekly,
+    },
+    {
+      $set: {
+        readyAt,
+      },
+    },
+    {
+      upsert: true,
+    }
+  );
+};
+
 export const saveUserWorkingCooldown = async ({
   userId,
   readyAt,
