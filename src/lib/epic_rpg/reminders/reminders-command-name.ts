@@ -1,6 +1,7 @@
 import {CLICKABLE_SLASH_RPG} from '../../../constants/clickable_slash';
 import {RPG_COMMAND_TYPE, RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../../constants/rpg';
 import {IUserReminder} from '../../../models/user-reminder/user-reminder.type';
+import {LOOTBOX_TYPE} from '../../../constants/lootbox';
 
 interface IGetHuntCommandStr {
   hardMode?: boolean;
@@ -113,6 +114,17 @@ const GetDungeonCommandStr = ({slash}: IGetDungeonCommandStr) => {
   return slash ? CLICKABLE_SLASH_RPG.dungeon : `RPG DUNGEON`;
 };
 
+interface IGetLootboxCommandStr {
+  slash?: boolean;
+  lootboxType?: ValuesOf<typeof LOOTBOX_TYPE>;
+}
+
+const GetLootboxCommandStr = ({slash, lootboxType}: IGetLootboxCommandStr) => {
+  return slash
+    ? CLICKABLE_SLASH_RPG.lootbox
+    : `RPG BUY ${lootboxType?.toUpperCase() || ''} LOOTBOX`;
+};
+
 interface IGetCommandStr {
   type: ValuesOf<typeof RPG_COMMAND_TYPE>;
   props?: IUserReminder['props'];
@@ -141,6 +153,8 @@ export const getCommandStr = ({slash, type, props}: IGetCommandStr) => {
       return GetArenaCommandStr({slash});
     case RPG_COMMAND_TYPE.dungeon:
       return GetDungeonCommandStr({slash});
+    case RPG_COMMAND_TYPE.lootbox:
+      return GetLootboxCommandStr({...props, slash});
     default:
       return '';
   }

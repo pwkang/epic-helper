@@ -29,6 +29,7 @@ const userReminderSchema = new Schema<IUserReminder>(
         enum: Object.values(RPG_FARM_SEED),
       },
       petId: Number,
+      lootboxType: String,
     },
   },
   {

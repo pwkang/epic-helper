@@ -53,7 +53,6 @@ type Conditional =
   | {
       type: 'lootbox';
       props: {
-        RPG_LOOTBOX_TYPE: any;
         lootboxType: ValuesOf<typeof LOOTBOX_TYPE>;
       };
     }
