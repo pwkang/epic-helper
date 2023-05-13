@@ -1,6 +1,6 @@
-import {RPG_WORKING_TYPE} from '../../../constants/rpg';
+import {RPG_WORKING_TYPE} from '../../../../constants/rpg';
 import {Client, User} from 'discord.js';
-import {saveUserWorkingCooldown} from '../../../models/user-reminder/user-reminder.service';
+import {saveUserWorkingCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
 
 const WORKING_ITEMS = [

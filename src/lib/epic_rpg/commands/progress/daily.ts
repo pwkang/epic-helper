@@ -1,5 +1,5 @@
 import {Client, Embed, User} from 'discord.js';
-import {saveUserDailyCooldown} from '../../../models/user-reminder/user-reminder.service';
+import {saveUserDailyCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
 
 const DAILY_COOLDOWN = ms('1d') - ms('10m');

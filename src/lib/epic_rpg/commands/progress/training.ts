@@ -1,5 +1,5 @@
 import type {Client, Embed, Message, User} from 'discord.js';
-import {saveUserTrainingCooldown} from '../../../models/user-reminder/user-reminder.service';
+import {saveUserTrainingCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
 
 interface IRpgTraining {

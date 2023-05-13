@@ -1,6 +1,6 @@
 import {Client, Message, User} from 'discord.js';
-import {HUNT_MONSTER_LIST} from '../../../constants/monster';
-import {saveUserHuntCooldown} from '../../../models/user-reminder/user-reminder.service';
+import {HUNT_MONSTER_LIST} from '../../../../constants/monster';
+import {saveUserHuntCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
 
 interface IRpgHunt {
