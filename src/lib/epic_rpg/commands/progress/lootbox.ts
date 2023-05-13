@@ -3,7 +3,7 @@ import {saveUserLootboxCooldown} from '../../../../models/user-reminder/user-rem
 import ms from 'ms';
 import {LOOTBOX_TYPE} from '../../../../constants/lootbox';
 
-const LOOTBOX_COOLDOWN = ms('1s');
+const LOOTBOX_COOLDOWN = ms('3h');
 
 interface IRpgBuyLootbox {
   client: Client;
