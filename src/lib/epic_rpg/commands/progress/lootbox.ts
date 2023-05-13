@@ -1,7 +1,7 @@
 import {Client, Message, User} from 'discord.js';
-import {saveUserLootboxCooldown} from '../../../models/user-reminder/user-reminder.service';
+import {saveUserLootboxCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
-import {LOOTBOX_TYPE} from '../../../constants/lootbox';
+import {LOOTBOX_TYPE} from '../../../../constants/lootbox';
 
 const LOOTBOX_COOLDOWN = ms('1s');
 

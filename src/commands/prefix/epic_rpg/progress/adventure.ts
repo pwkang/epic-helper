@@ -1,6 +1,8 @@
 import {COMMAND_TYPE} from '../../../../constants/bot';
 import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
-import rpgAdventure, {isRpgAdventureSuccess} from '../../../../lib/epic_rpg/commands/adventure';
+import rpgAdventure, {
+  isRpgAdventureSuccess,
+} from '../../../../lib/epic_rpg/commands/progress/adventure';
 import {updateUserCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
 

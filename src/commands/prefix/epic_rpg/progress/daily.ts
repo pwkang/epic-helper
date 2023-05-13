@@ -1,6 +1,6 @@
 import {COMMAND_TYPE} from '../../../../constants/bot';
 import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
-import rpgDaily, {isRpgDailySuccess} from '../../../../lib/epic_rpg/commands/daily';
+import rpgDaily, {isRpgDailySuccess} from '../../../../lib/epic_rpg/commands/progress/daily';
 import {updateUserCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
 

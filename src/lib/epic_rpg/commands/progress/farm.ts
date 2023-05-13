@@ -1,7 +1,7 @@
 import {Client, Message, User} from 'discord.js';
-import {saveUserFarmCooldown} from '../../../models/user-reminder/user-reminder.service';
+import {saveUserFarmCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
-import {RPG_FARM_SEED} from '../../../constants/rpg';
+import {RPG_FARM_SEED} from '../../../../constants/rpg';
 
 const FARM_COOLDOWN = ms('10m');
 

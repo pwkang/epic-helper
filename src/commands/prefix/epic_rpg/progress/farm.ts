@@ -1,7 +1,7 @@
 import {COMMAND_TYPE} from '../../../../constants/bot';
 import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
 import {updateUserCooldown} from '../../../../models/user-reminder/user-reminder.service';
-import rpgFarm, {isRpgFarmSuccess} from '../../../../lib/epic_rpg/commands/farm';
+import rpgFarm, {isRpgFarmSuccess} from '../../../../lib/epic_rpg/commands/progress/farm';
 import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
 
 export default <PrefixCommand>{
