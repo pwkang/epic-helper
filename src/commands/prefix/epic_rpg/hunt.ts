@@ -32,7 +32,7 @@ export default <PrefixCommand>{
       updateUserCooldown({
         userId: message.author.id,
         type: RPG_COMMAND_TYPE.hunt,
-        readyAt: new Date(Date.now() + 5000),
+        readyAt: new Date(Date.now() + cooldown),
       });
       event.stop();
     });

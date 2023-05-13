@@ -1,5 +1,5 @@
 import {Client, Message, User} from 'discord.js';
-import {MONSTER_LIST} from '../../../constants/monster';
+import {HUNT_MONSTER_LIST} from '../../../constants/monster';
 import {saveUserHuntCooldown} from '../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
 
@@ -31,6 +31,7 @@ interface ISuccessChecker {
 
 export function isRpgHuntSuccess({author, content}: ISuccessChecker) {
   return (
-    content.includes(author.username) && MONSTER_LIST.some((monster) => content.includes(monster))
+    content.includes(author.username) &&
+    HUNT_MONSTER_LIST.some((monster) => content.includes(monster))
   );
 }
