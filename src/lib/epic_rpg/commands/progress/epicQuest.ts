@@ -1,5 +1,5 @@
 import {Client, Embed, User} from 'discord.js';
-import {saveUserQuestCooldown} from '../../../models/user-reminder/user-reminder.service';
+import {saveUserQuestCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
 
 interface IRpgEpicQuest {

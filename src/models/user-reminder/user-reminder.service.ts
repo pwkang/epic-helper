@@ -312,3 +312,11 @@ export const findUserReadyCommands = async (userId: string): Promise<IUserRemind
 
   return reminderList ? reminderList.map((reminder) => reminder.toObject()) : [];
 };
+
+export const getUserAllCooldowns = async (userId: string): Promise<IUserReminder[]> => {
+  const reminderList = await dbUserReminder.find({
+    userId,
+  });
+
+  return reminderList ? reminderList.map((reminder) => reminder.toObject()) : [];
+};

@@ -1,9 +1,11 @@
-import {COMMAND_TYPE} from '../../../constants/bot';
-import {LOOTBOX_ABBREVIATION} from '../../../constants/lootbox';
-import {createRpgCommandListener} from '../../../lib/epic_rpg/createRpgCommandListener';
-import rpgBuyLootbox, {isLootboxSuccessfullyBought} from '../../../lib/epic_rpg/commands/lootbox';
-import {updateUserCooldown} from '../../../models/user-reminder/user-reminder.service';
-import {RPG_COMMAND_TYPE} from '../../../constants/rpg';
+import {COMMAND_TYPE} from '../../../../constants/bot';
+import {LOOTBOX_ABBREVIATION} from '../../../../constants/lootbox';
+import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
+import rpgBuyLootbox, {
+  isLootboxSuccessfullyBought,
+} from '../../../../lib/epic_rpg/commands/progress/lootbox';
+import {updateUserCooldown} from '../../../../models/user-reminder/user-reminder.service';
+import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
 
 export default <PrefixCommand>{
   name: 'rpgBuyLootbox',

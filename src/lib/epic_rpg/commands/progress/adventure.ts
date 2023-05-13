@@ -1,6 +1,6 @@
 import {Client, Message, User} from 'discord.js';
-import {ADVENTURE_MONSTER_LIST} from '../../../constants/monster';
-import {saveUserAdventureCooldown} from '../../../models/user-reminder/user-reminder.service';
+import {ADVENTURE_MONSTER_LIST} from '../../../../constants/monster';
+import {saveUserAdventureCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
 
 interface IRpgAdventure {
