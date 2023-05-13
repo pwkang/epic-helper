@@ -15,9 +15,9 @@ export default <PrefixCommand>{
       author: message.author,
     });
     if (!event) return;
-    event.on('embed', (embed) => {
+    event.on('embed', async (embed) => {
       if (isRpgCooldownResponse({embed, author: message.author})) {
-        rpgCooldown({
+        await rpgCooldown({
           author: message.author,
           embed,
         });
