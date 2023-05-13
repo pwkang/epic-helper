@@ -1,7 +1,7 @@
 import {mongoClient} from '../../services/mongoose/mongoose.service';
 import {IUserReminder} from './user-reminder.type';
 import userReminderSchema from './user-reminder.schema';
-import {RPG_COMMAND_TYPE} from '../../constants/rpg';
+import {RPG_COMMAND_TYPE, RPG_WORKING_TYPE} from '../../constants/rpg';
 
 const dbUserReminder = mongoClient.model<IUserReminder>('user-reminder', userReminderSchema);
 
@@ -119,6 +119,36 @@ export const saveUserQuestCooldown = async ({
         readyAt,
         props: {
           epicQuest,
+        },
+      },
+    },
+    {
+      upsert: true,
+    }
+  );
+};
+
+interface ISaveUserWorkingCooldown {
+  userId: string;
+  readyAt?: Date;
+  workingType?: ValuesOf<typeof RPG_WORKING_TYPE>;
+}
+
+export const saveUserWorkingCooldown = async ({
+  userId,
+  readyAt,
+  workingType,
+}: ISaveUserWorkingCooldown): Promise<void> => {
+  await dbUserReminder.findOneAndUpdate(
+    {
+      userId,
+      type: RPG_COMMAND_TYPE.working,
+    },
+    {
+      $set: {
+        readyAt,
+        props: {
+          workingType,
         },
       },
     },
