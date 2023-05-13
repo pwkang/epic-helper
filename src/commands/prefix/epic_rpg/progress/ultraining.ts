@@ -1,12 +1,12 @@
-import {COMMAND_TYPE} from '../../../constants/bot';
-import {createRpgCommandListener} from '../../../lib/epic_rpg/createRpgCommandListener';
-import rpgTraining, {isRpgTrainingSuccess} from '../../../lib/epic_rpg/commands/training';
-import {updateUserCooldown} from '../../../models/user-reminder/user-reminder.service';
-import {RPG_COMMAND_TYPE} from '../../../constants/rpg';
+import {COMMAND_TYPE} from '../../../../constants/bot';
+import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
+import rpgTraining, {isRpgUltrainingSuccess} from '../../../../lib/epic_rpg/commands/training';
+import {updateUserCooldown} from '../../../../models/user-reminder/user-reminder.service';
+import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
 
 export default <PrefixCommand>{
-  name: 'rpgTraining',
-  commands: ['training', 'tr'],
+  name: 'rpgUltraining',
+  commands: ['ultr', 'ultraining'],
   type: COMMAND_TYPE.rpg,
   execute: async (client, message) => {
     const event = createRpgCommandListener({
@@ -15,14 +15,15 @@ export default <PrefixCommand>{
       author: message.author,
     });
     if (!event) return;
-    event.on('content', (content) => {
-      if (isRpgTrainingSuccess({author: message.author, content})) {
+    event.on('embed', (embed) => {
+      if (isRpgUltrainingSuccess({embed, author: message.author})) {
         rpgTraining({
           author: message.author,
           channelId: message.channel.id,
           client,
-          ultraining: false,
+          ultraining: true,
         });
+        event.stop();
       }
     });
     event.on('cooldown', (cooldown) => {
