@@ -1,5 +1,5 @@
 import {COMMAND_TYPE} from '../../../../constants/bot';
-import {userAccountDelete, isUserAccountExist} from '../../../../models/user/user.service';
+import {isUserAccountExist, userAccountDelete} from '../../../../models/user/user.service';
 import sendInteractiveMessage from '../../../../lib/discord.js/message/sendInteractiveMessage';
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle} from 'discord.js';
 import replyMessage from '../../../../lib/discord.js/message/replyMessage';

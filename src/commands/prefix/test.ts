@@ -5,6 +5,8 @@ export default <PrefixCommand>{
   commands: ['test'],
   type: COMMAND_TYPE.dev,
   execute: async (client, message) => {
-    console.log('test');
+    const args = message.content.split(' ');
+    if (!args[2]) return;
+    // const msg = await message.channel.messages.fetch(args[2]);
   },
 };

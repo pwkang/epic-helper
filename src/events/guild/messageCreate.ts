@@ -14,12 +14,16 @@ export default <BotEvent>{
 };
 
 const isRpgCommand = (message: Message) =>
-  message.content.startsWith(`${PREFIX.rpg} `) || message.mentions.has(EPIC_RPG_ID);
+  message.content.toLowerCase().startsWith(`${PREFIX.rpg.toLowerCase()} `) ||
+  message.mentions.has(EPIC_RPG_ID);
 
-const isBotCommand = (message: Message) => PREFIX.bot && message.content.startsWith(PREFIX.bot);
+const isBotCommand = (message: Message) =>
+  PREFIX.bot && message.content.toLowerCase().startsWith(PREFIX.bot.toLowerCase());
 
 const validateCommand = (commands: string[], args: string[]) => {
-  return commands.some((cmd) => cmd.split(' ').every((name, i) => name === args[i]));
+  return commands.some((cmd) =>
+    cmd.split(' ').every((name, i) => name.toLowerCase() === args[i].toLowerCase())
+  );
 };
 
 function searchCommand(client: Client, message: Message): PrefixCommand | null {
@@ -28,7 +32,7 @@ function searchCommand(client: Client, message: Message): PrefixCommand | null {
 
   if (isRpgCommand(message)) {
     let args: string[] = [];
-    if (message.content.startsWith(`${PREFIX.rpg} `)) {
+    if (messageContent.startsWith(`${PREFIX.rpg} `)) {
       args = messageContent.split(' ').slice(1);
     } else if (message.mentions.has(EPIC_RPG_ID)) {
       args = messageContent
