@@ -7,12 +7,11 @@ type ToggleReminderOptions = keyof typeof RPG_COMMAND_TYPE | 'all';
 type ToggleMentionsOptions = keyof typeof RPG_COMMAND_TYPE | 'all' | 'trainingAnswer' | 'petCatch';
 type CustomMessageOptions = keyof typeof RPG_COMMAND_TYPE;
 export const RPG_DONOR_TIER = {
-  nonDonor: 1,
-  donor10: 0.9,
-  donor20: 0.8,
-  donor35: 0.65,
+  nonDonor: 'nonDonor',
+  donor10: 'donor10',
+  donor20: 'donor20',
+  donor35: 'donor35',
 } as const;
-export type RpgDonorTier = ValuesOf<typeof RPG_DONOR_TIER>;
 
 export interface IUser {
   userId: string;
@@ -54,8 +53,8 @@ export interface IUser {
     timezone: keyof typeof TIMEZONE_LIST;
     heal: number;
     enchant: keyof typeof ENCHANT_LEVEL;
-    donor: RpgDonorTier;
-    donorP: RpgDonorTier | null;
+    donor: ValuesOf<typeof RPG_DONOR_TIER>;
+    donorP: ValuesOf<typeof RPG_DONOR_TIER> | null;
     channel: string;
     huntSwitch: boolean;
     onOff: boolean;

@@ -19,7 +19,7 @@ export default <PrefixCommand>{
       if (isRpgDailySuccess({embed, user: message.author})) {
         rpgDaily({
           embed,
-          user: message.author,
+          author: message.author,
           channelId: message.channel.id,
           client,
         });
