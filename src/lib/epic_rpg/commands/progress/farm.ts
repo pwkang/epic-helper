@@ -1,6 +1,5 @@
 import {Client, Message, User} from 'discord.js';
 import {saveUserFarmCooldown} from '../../../../models/user-reminder/user-reminder.service';
-import ms from 'ms';
 import {RPG_COMMAND_TYPE, RPG_FARM_SEED} from '../../../../constants/rpg';
 import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';

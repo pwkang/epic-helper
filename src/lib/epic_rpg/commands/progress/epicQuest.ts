@@ -1,6 +1,5 @@
 import {Client, Embed, User} from 'discord.js';
 import {saveUserQuestCooldown} from '../../../../models/user-reminder/user-reminder.service';
-import ms from 'ms';
 import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
 import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';

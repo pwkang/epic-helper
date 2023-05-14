@@ -1,7 +1,6 @@
 import {RPG_COMMAND_TYPE, RPG_WORKING_TYPE} from '../../../../constants/rpg';
 import {Client, User} from 'discord.js';
 import {saveUserWorkingCooldown} from '../../../../models/user-reminder/user-reminder.service';
-import ms from 'ms';
 import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
 

@@ -1,4 +1,4 @@
-import {model, Schema} from 'mongoose';
+import {Schema} from 'mongoose';
 import {IEventCdReduction} from './cd-reduction.type';
 import {RPG_COMMAND_TYPE} from '../../constants/rpg';
 
