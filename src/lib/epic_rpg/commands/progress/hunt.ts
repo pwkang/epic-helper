@@ -42,3 +42,12 @@ export function isRpgHuntSuccess({author, content}: ISuccessChecker) {
     HUNT_MONSTER_LIST.some((monster) => content.includes(monster))
   );
 }
+
+interface IIsPartnerUnderCommand {
+  message: Message;
+  author: User;
+}
+
+export function isPartnerUnderCommand({author, message}: IIsPartnerUnderCommand) {
+  return message.mentions.has(author.id) && message.content.includes('in the middle');
+}
