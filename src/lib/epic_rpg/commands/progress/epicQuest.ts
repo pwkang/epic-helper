@@ -1,6 +1,7 @@
 import {Client, Embed, User} from 'discord.js';
 import {saveUserQuestCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
+import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
 
 interface IRpgEpicQuest {
   client: Client;
@@ -8,7 +9,7 @@ interface IRpgEpicQuest {
   author: User;
 }
 
-const QUEST_COOLDOWN = ms('6h');
+const QUEST_COOLDOWN = COMMAND_BASE_COOLDOWN.epicQuest;
 
 export default async function rpgEpicQuest({author}: IRpgEpicQuest) {
   await saveUserQuestCooldown({

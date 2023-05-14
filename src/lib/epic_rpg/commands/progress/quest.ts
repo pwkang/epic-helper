@@ -1,6 +1,7 @@
 import {Client, Message, User} from 'discord.js';
 import {saveUserQuestCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
+import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
 
 interface IRpgQuest {
   client: Client;
@@ -9,8 +10,8 @@ interface IRpgQuest {
   questAccepted?: boolean;
 }
 
-const QUEST_COOLDOWN = ms('6h');
-const DECLINED_QUEST_COOLDOWN = ms('1h');
+const QUEST_COOLDOWN = COMMAND_BASE_COOLDOWN.quest.accepted;
+const DECLINED_QUEST_COOLDOWN = COMMAND_BASE_COOLDOWN.quest.declined;
 
 export default async function rpgQuest({author, questAccepted}: IRpgQuest) {
   await saveUserQuestCooldown({

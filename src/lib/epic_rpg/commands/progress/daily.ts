@@ -1,8 +1,9 @@
 import {Client, Embed, User} from 'discord.js';
 import {saveUserDailyCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
+import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
 
-const DAILY_COOLDOWN = ms('1d') - ms('10m');
+const DAILY_COOLDOWN = COMMAND_BASE_COOLDOWN.daily;
 
 interface IRpgDaily {
   client: Client;

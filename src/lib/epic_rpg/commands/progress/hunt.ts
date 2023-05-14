@@ -2,6 +2,7 @@ import {Client, Message, User} from 'discord.js';
 import {HUNT_MONSTER_LIST} from '../../../../constants/monster';
 import {saveUserHuntCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
+import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
 
 interface IRpgHunt {
   client: Client;
@@ -10,7 +11,7 @@ interface IRpgHunt {
   content: Message['content'];
 }
 
-const HUNT_COOLDOWN = ms('1m');
+const HUNT_COOLDOWN = COMMAND_BASE_COOLDOWN.hunt;
 
 export default async function rpgHunt({author, content}: IRpgHunt) {
   const hardMode = content.includes('(but stronger)');

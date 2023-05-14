@@ -2,8 +2,9 @@ import {Client, Message, User} from 'discord.js';
 import {saveUserFarmCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
 import {RPG_FARM_SEED} from '../../../../constants/rpg';
+import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
 
-const FARM_COOLDOWN = ms('10m');
+const FARM_COOLDOWN = COMMAND_BASE_COOLDOWN.farm;
 
 interface IRpgFarm {
   client: Client;

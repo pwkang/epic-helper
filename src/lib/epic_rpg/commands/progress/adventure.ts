@@ -1,7 +1,7 @@
 import {Client, Message, User} from 'discord.js';
 import {ADVENTURE_MONSTER_LIST} from '../../../../constants/monster';
 import {saveUserAdventureCooldown} from '../../../../models/user-reminder/user-reminder.service';
-import ms from 'ms';
+import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
 
 interface IRpgAdventure {
   client: Client;
@@ -10,7 +10,7 @@ interface IRpgAdventure {
   content: Message['content'];
 }
 
-const ADVENTURE_COOLDOWN = ms('1h');
+const ADVENTURE_COOLDOWN = COMMAND_BASE_COOLDOWN.adventure;
 
 export default async function rpgAdventure({author, content}: IRpgAdventure) {
   const hardMode = content.includes('(but stronger)');

@@ -2,6 +2,7 @@ import {RPG_WORKING_TYPE} from '../../../../constants/rpg';
 import {Client, User} from 'discord.js';
 import {saveUserWorkingCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
+import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
 
 const WORKING_ITEMS = [
   'normie fish',
@@ -21,7 +22,7 @@ const WORKING_ITEMS = [
   'nothing',
 ];
 
-const WORKING_COOLDOWN = ms('5m');
+const WORKING_COOLDOWN = COMMAND_BASE_COOLDOWN.working;
 
 interface IRpgWorking {
   client: Client;

@@ -2,8 +2,9 @@ import {Client, Message, User} from 'discord.js';
 import {saveUserLootboxCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
 import {LOOTBOX_TYPE} from '../../../../constants/lootbox';
+import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
 
-const LOOTBOX_COOLDOWN = ms('3h');
+const LOOTBOX_COOLDOWN = COMMAND_BASE_COOLDOWN.lootbox;
 
 interface IRpgBuyLootbox {
   client: Client;

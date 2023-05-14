@@ -1,6 +1,7 @@
 import type {Client, Embed, Message, User} from 'discord.js';
 import {saveUserTrainingCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
+import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
 
 interface IRpgTraining {
   client: Client;
@@ -9,7 +10,7 @@ interface IRpgTraining {
   ultraining: boolean;
 }
 
-const TRAINING_COOLDOWN = ms('15m');
+const TRAINING_COOLDOWN = COMMAND_BASE_COOLDOWN.training;
 
 export default async function rpgTraining({author, ultraining}: IRpgTraining) {
   await saveUserTrainingCooldown({
