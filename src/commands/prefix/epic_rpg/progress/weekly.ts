@@ -19,7 +19,7 @@ export default <PrefixCommand>{
       if (isRpgWeeklySuccess({embed, user: message.author})) {
         rpgWeekly({
           embed,
-          user: message.author,
+          author: message.author,
           channelId: message.channel.id,
           client,
         });

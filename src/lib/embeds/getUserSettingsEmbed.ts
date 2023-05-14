@@ -14,10 +14,10 @@ interface IHelperSettings {
 }
 
 const DONOR_DISPLAY = {
-  1: '0%',
-  0.9: '10%',
-  0.8: '20%',
-  0.65: '35%',
+  nonDonor: '0%',
+  donor10: '10%',
+  donor20: '20%',
+  donor35: '35%',
 } as const;
 
 export const getUserSettingsEmbed = ({userProfile, author}: IGetUserSettingsEmbed) => {

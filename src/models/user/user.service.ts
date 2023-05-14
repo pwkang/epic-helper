@@ -1,6 +1,6 @@
 import {mongoClient} from '../../services/mongoose/mongoose.service';
 import userSchema from './user.schema';
-import {IUser, RpgDonorTier} from './user.type';
+import {IUser, RPG_DONOR_TIER} from './user.type';
 
 const dbUser = mongoClient.model<IUser>('user', userSchema);
 
@@ -72,7 +72,7 @@ export const isUserAccountExist = async (userId: string): Promise<boolean> => {
 
 interface IUpdateRpgDonorTier {
   userId: string;
-  tier: RpgDonorTier;
+  tier: ValuesOf<typeof RPG_DONOR_TIER>;
 }
 
 export const updateRpgDonorTier = async ({userId, tier}: IUpdateRpgDonorTier): Promise<void> => {
@@ -90,7 +90,7 @@ export const updateRpgDonorTier = async ({userId, tier}: IUpdateRpgDonorTier): P
 
 interface IUpdateRpgDonorPTier {
   userId: string;
-  tier: RpgDonorTier | null;
+  tier: ValuesOf<typeof RPG_DONOR_TIER> | null;
 }
 
 export const updateRpgDonorPTier = async ({userId, tier}: IUpdateRpgDonorPTier): Promise<void> => {
