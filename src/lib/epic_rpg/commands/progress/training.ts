@@ -1,6 +1,8 @@
 import type {Client, Embed, Message, User} from 'discord.js';
 import {saveUserTrainingCooldown} from '../../../../models/user-reminder/user-reminder.service';
-import ms from 'ms';
+import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
+import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
+import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
 
 interface IRpgTraining {
   client: Client;
@@ -9,13 +11,18 @@ interface IRpgTraining {
   ultraining: boolean;
 }
 
-const TRAINING_COOLDOWN = ms('15m');
+const TRAINING_COOLDOWN = COMMAND_BASE_COOLDOWN.training;
 
 export default async function rpgTraining({author, ultraining}: IRpgTraining) {
+  const cooldown = await calcReducedCd({
+    userId: author.id,
+    commandType: RPG_COMMAND_TYPE.training,
+    cooldown: TRAINING_COOLDOWN,
+  });
   await saveUserTrainingCooldown({
     userId: author.id,
     ultraining,
-    readyAt: new Date(Date.now() + TRAINING_COOLDOWN),
+    readyAt: new Date(Date.now() + cooldown),
   });
 }
 

@@ -24,7 +24,7 @@ export default <PrefixCommand>{
     event.on('content', (content) => {
       if (isLootboxSuccessfullyBought({content})) {
         rpgBuyLootbox({
-          user: message.author,
+          author: message.author,
           client,
           channelId: message.channel.id,
           content,
