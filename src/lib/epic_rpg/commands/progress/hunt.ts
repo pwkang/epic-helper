@@ -1,4 +1,4 @@
-import {Client, Message, User} from 'discord.js';
+import {Client, Embed, Message, User} from 'discord.js';
 import {HUNT_MONSTER_LIST} from '../../../../constants/monster';
 import {saveUserHuntCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
@@ -60,8 +60,30 @@ interface IIsZombieHordeEnded {
 export function isZombieHordeEnded({content, author}: IIsZombieHordeEnded) {
   return (
     content.includes(author.username) &&
-    ['pretends to be a zombie', 'fights the horde', 'the horde did not notice'].some((text) =>
-      content.includes(text)
-    )
+    ['cried', 'fights the horde', 'the horde did not notice'].some((text) => content.includes(text))
+  );
+}
+
+interface IIsUserEncounterZombieHorde {
+  embed: Embed;
+  author: User;
+}
+
+export function isUserEncounterZombieHorde({embed, author}: IIsUserEncounterZombieHorde) {
+  return (
+    embed.author?.name === `${author.username} — hunt` &&
+    embed.description?.includes('a zombie horde coming your way')
+  );
+}
+
+interface IIsUserJoinedTheHorde {
+  content: Message['content'];
+  author: User;
+}
+
+export function isUserJoinedTheHorde({content, author}: IIsUserJoinedTheHorde) {
+  return (
+    content.includes(author.username) &&
+    ['pretends to be a zombie', 'area #2'].some((text) => content.includes(text))
   );
 }
