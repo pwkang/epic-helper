@@ -2,20 +2,27 @@ import {Client, Embed, User} from 'discord.js';
 import {saveUserDailyCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
 import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
+import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
+import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
 
 const DAILY_COOLDOWN = COMMAND_BASE_COOLDOWN.daily;
 
 interface IRpgDaily {
   client: Client;
   channelId: string;
-  user: User;
+  author: User;
   embed: Embed;
 }
 
-export default async function rpgDaily({user}: IRpgDaily) {
+export default async function rpgDaily({author}: IRpgDaily) {
+  const cooldown = await calcReducedCd({
+    userId: author.id,
+    commandType: RPG_COMMAND_TYPE.daily,
+    cooldown: DAILY_COOLDOWN,
+  });
   await saveUserDailyCooldown({
-    userId: user.id,
-    readyAt: new Date(Date.now() + DAILY_COOLDOWN),
+    userId: author.id,
+    readyAt: new Date(Date.now() + cooldown),
   });
 }
 

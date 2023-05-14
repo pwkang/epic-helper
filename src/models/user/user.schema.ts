@@ -1,5 +1,5 @@
 import {Schema} from 'mongoose';
-import {IUser} from './user.type';
+import {IUser, RPG_DONOR_TIER} from './user.type';
 import {TIMEZONE_LIST} from '../../constants/timezone';
 
 const userSchema = new Schema<IUser>({
@@ -113,8 +113,8 @@ const userSchema = new Schema<IUser>({
     timezone: {type: String, default: TIMEZONE_LIST.UTC, enum: Object.values(TIMEZONE_LIST)},
     heal: {type: Number, default: 0},
     enchant: {type: String},
-    donor: {type: Number, default: 1},
-    donorP: {type: Number},
+    donor: {type: String, default: RPG_DONOR_TIER.nonDonor},
+    donorP: {type: String},
     channel: {type: String},
     huntSwitch: {type: Boolean, default: false},
     onOff: {type: Boolean, default: true},

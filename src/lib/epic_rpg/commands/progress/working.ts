@@ -1,8 +1,9 @@
-import {RPG_WORKING_TYPE} from '../../../../constants/rpg';
+import {RPG_COMMAND_TYPE, RPG_WORKING_TYPE} from '../../../../constants/rpg';
 import {Client, User} from 'discord.js';
 import {saveUserWorkingCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
 import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
+import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
 
 const WORKING_ITEMS = [
   'normie fish',
@@ -32,10 +33,15 @@ interface IRpgWorking {
 }
 
 export default async function rpgWorking({author, workingType}: IRpgWorking) {
+  const cooldown = await calcReducedCd({
+    userId: author.id,
+    commandType: RPG_COMMAND_TYPE.working,
+    cooldown: WORKING_COOLDOWN,
+  });
   await saveUserWorkingCooldown({
     userId: author.id,
     workingType,
-    readyAt: new Date(Date.now() + WORKING_COOLDOWN),
+    readyAt: new Date(Date.now() + cooldown),
   });
 }
 

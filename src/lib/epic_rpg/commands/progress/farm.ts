@@ -1,8 +1,9 @@
 import {Client, Message, User} from 'discord.js';
 import {saveUserFarmCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
-import {RPG_FARM_SEED} from '../../../../constants/rpg';
+import {RPG_COMMAND_TYPE, RPG_FARM_SEED} from '../../../../constants/rpg';
 import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
+import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
 
 const FARM_COOLDOWN = COMMAND_BASE_COOLDOWN.farm;
 
@@ -15,9 +16,14 @@ interface IRpgFarm {
 
 export default async function rpgFarm({content, author}: IRpgFarm) {
   const seedType = whatIsTheSeed(content);
+  const cooldown = await calcReducedCd({
+    userId: author.id,
+    commandType: RPG_COMMAND_TYPE.farm,
+    cooldown: FARM_COOLDOWN,
+  });
   await saveUserFarmCooldown({
     userId: author.id,
-    readyAt: new Date(Date.now() + FARM_COOLDOWN),
+    readyAt: new Date(Date.now() + cooldown),
     seedType,
   });
 }
