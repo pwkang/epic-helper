@@ -46,3 +46,12 @@ interface IIsRpgUltrainingSuccess {
 export function isRpgUltrainingSuccess({author, embed}: IIsRpgUltrainingSuccess) {
   return [author.username, 'Well done'].every((msg) => embed.description?.includes(msg));
 }
+
+interface IIsRpgTrainingQuestion {
+  content: Message['content'];
+  author: User;
+}
+
+export function isRpgTrainingQuestion({author, content}: IIsRpgTrainingQuestion) {
+  return content.includes(author.username) && content.includes('is training in');
+}

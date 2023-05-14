@@ -1,10 +1,13 @@
 import {COMMAND_TYPE} from '../../../../constants/bot';
 import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
 import rpgTraining, {
+  isRpgTrainingQuestion,
   isRpgTrainingSuccess,
 } from '../../../../lib/epic_rpg/commands/progress/training';
 import {updateUserCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
+import getTrainingAnswer from '../../../../utils/epic_rpg/trainingAnswer';
+import sendMessage from '../../../../lib/discord.js/message/sendMessage';
 
 export default <PrefixCommand>{
   name: 'rpgTraining',
@@ -18,6 +21,18 @@ export default <PrefixCommand>{
     });
     if (!event) return;
     event.on('content', (content) => {
+      if (isRpgTrainingQuestion({author: message.author, content})) {
+        event.pendingAnswer();
+        const answer = getTrainingAnswer({author: message.author, content});
+        sendMessage({
+          channelId: message.channel.id,
+          client,
+          options: {
+            components: answer,
+          },
+        });
+      }
+
       if (isRpgTrainingSuccess({author: message.author, content})) {
         rpgTraining({
           author: message.author,
