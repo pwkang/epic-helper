@@ -3,6 +3,7 @@ import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgComman
 import rpgHunt, {
   isPartnerUnderCommand,
   isRpgHuntSuccess,
+  isZombieHordeEnded,
 } from '../../../../lib/epic_rpg/commands/progress/hunt';
 import {updateUserCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
@@ -19,7 +20,10 @@ export default <PrefixCommand>{
     });
     if (!event) return;
     event.on('content', (content) => {
-      if (isRpgHuntSuccess({author: message.author, content})) {
+      if (
+        isRpgHuntSuccess({author: message.author, content}) ||
+        isZombieHordeEnded({author: message.author, content})
+      ) {
         rpgHunt({
           client,
           channelId: message.channel.id,

@@ -51,3 +51,17 @@ interface IIsPartnerUnderCommand {
 export function isPartnerUnderCommand({author, message}: IIsPartnerUnderCommand) {
   return message.mentions.has(author.id) && message.content.includes('in the middle');
 }
+
+interface IIsZombieHordeEnded {
+  content: Message['content'];
+  author: User;
+}
+
+export function isZombieHordeEnded({content, author}: IIsZombieHordeEnded) {
+  return (
+    content.includes(author.username) &&
+    ['pretends to be a zombie', 'fights the horde', 'the horde did not notice'].some((text) =>
+      content.includes(text)
+    )
+  );
+}
