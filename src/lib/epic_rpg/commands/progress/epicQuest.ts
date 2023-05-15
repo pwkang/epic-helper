@@ -31,4 +31,19 @@ interface IIsEpicQuestSuccess {
 }
 
 export const isEpicQuestSuccess = ({embed, author}: IIsEpicQuestSuccess) =>
-  embed.author?.name === `${author.username}— epic quest`;
+  embed.author?.name === `${author.username} — epic quest` &&
+  ['You failed the quest', 'Your profit was'].some((str) => embed.fields[0]?.value.includes(str));
+
+interface IIsEpicHorseMissing {
+  content: string;
+}
+
+export const isEpicHorseMissing = ({content}: IIsEpicHorseMissing) =>
+  content.includes('special horse');
+
+interface IIsHavingQuest {
+  content: string;
+}
+
+export const isHavingQuest = ({content}: IIsHavingQuest) =>
+  content.includes('You cannot do this if you have a pending quest!');
