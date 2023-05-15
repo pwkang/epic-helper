@@ -1,8 +1,17 @@
 import {COMMAND_TYPE} from '../../../../constants/bot';
 import {RPG_COMMAND_TYPE, RPG_WORKING_TYPE} from '../../../../constants/rpg';
 import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
-import rpgWorking, {isRpgWorkingSuccess} from '../../../../lib/epic_rpg/commands/progress/working';
+import rpgWorking, {
+  isEncounteringRubyDragon,
+  isFoughtRubyDragon,
+  isRpgWorkingSuccess,
+  isRubyMined,
+  isWorkingInSpace,
+  rubyAmountMined,
+} from '../../../../lib/epic_rpg/commands/progress/working';
 import {updateUserCooldown} from '../../../../models/user-reminder/user-reminder.service';
+import replyMessage from '../../../../lib/discord.js/message/replyMessage';
+import {hasNoSeedToPlant} from '../../../../lib/epic_rpg/commands/progress/farm';
 
 export default <PrefixCommand>{
   name: 'rpgWorking',
@@ -28,6 +37,25 @@ export default <PrefixCommand>{
         });
         event.stop();
       }
+      if (isWorkingInSpace({author: message.author, content})) {
+        event.stop();
+      }
+      if (isRubyMined({author: message.author, content})) {
+        const mined = rubyAmountMined({author: message.author, content});
+        console.log(mined);
+        event.stop();
+      }
+      if (isFoughtRubyDragon({author: message.author, content})) {
+        // TODO: add 10 ruby to user
+        event.stop();
+        replyMessage({
+          client,
+          message,
+          options: {
+            content: 'You were moved to another area, remember to go back your area!',
+          },
+        });
+      }
     });
     event.on('cooldown', (cooldown) => {
       updateUserCooldown({
@@ -35,6 +63,12 @@ export default <PrefixCommand>{
         type: RPG_COMMAND_TYPE.working,
         readyAt: new Date(Date.now() + cooldown),
       });
+    });
+    event.on('embed', (embed) => {
+      if (isEncounteringRubyDragon({embed, author: message.author})) {
+        event.pendingAnswer();
+        event.resetTimer(30000);
+      }
     });
   },
 };

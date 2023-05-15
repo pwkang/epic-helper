@@ -46,3 +46,20 @@ interface IIsRpgUltrainingSuccess {
 export function isRpgUltrainingSuccess({author, embed}: IIsRpgUltrainingSuccess) {
   return [author.username, 'Well done'].every((msg) => embed.description?.includes(msg));
 }
+
+interface IIsRpgTrainingQuestion {
+  content: Message['content'];
+  author: User;
+}
+
+export function isRpgTrainingQuestion({author, content}: IIsRpgTrainingQuestion) {
+  return content.includes(author.username) && content.includes('is training in');
+}
+
+interface IIsEncounteringPet {
+  embed: Embed;
+  author: User;
+}
+
+export const isEncounteringPet = ({embed, author}: IIsEncounteringPet) =>
+  [author.username, 'IS APPROACHING'].every((msg) => embed.fields[0]?.name?.includes(msg));

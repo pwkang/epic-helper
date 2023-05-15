@@ -3,6 +3,8 @@ import {LOOTBOX_ABBREVIATION} from '../../../../constants/lootbox';
 import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
 import rpgBuyLootbox, {
   isLootboxSuccessfullyBought,
+  isNotEligibleToBuyLootbox,
+  isNotEnoughMoneyToBuyLootbox,
 } from '../../../../lib/epic_rpg/commands/progress/lootbox';
 import {updateUserCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
@@ -21,7 +23,7 @@ export default <PrefixCommand>{
       client,
     });
     if (!event) return;
-    event.on('content', (content) => {
+    event.on('content', (content, collected) => {
       if (isLootboxSuccessfullyBought({content})) {
         rpgBuyLootbox({
           author: message.author,
@@ -29,6 +31,12 @@ export default <PrefixCommand>{
           channelId: message.channel.id,
           content,
         });
+        event.stop();
+      }
+      if (isNotEligibleToBuyLootbox({message: collected, author: message.author})) {
+        event.stop();
+      }
+      if (isNotEnoughMoneyToBuyLootbox({author: message.author, content})) {
         event.stop();
       }
     });
