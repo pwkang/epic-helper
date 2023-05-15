@@ -41,3 +41,21 @@ export const isRpgFarmSuccess = ({author, content}: IIsRpgFarmSuccess) =>
 function whatIsTheSeed(content: string) {
   return Object.values(RPG_FARM_SEED).find((seed) => seed && content.split('\n')[0].includes(seed));
 }
+
+interface IIsFarmingInSpace {
+  content: string;
+  author: User;
+}
+
+export const isFarmingInSpace = ({content}: IIsFarmingInSpace) =>
+  ['no land to plant'].some((msg) => content.includes(msg));
+
+interface IHasNoSeedToPlant {
+  message: Message;
+  author: User;
+}
+
+export const hasNoSeedToPlant = ({message, author}: IHasNoSeedToPlant) =>
+  message.mentions.has(author.id) &&
+  (['you need a', 'seed'].every((msg) => message.content.includes(msg)) ||
+    ['you do not have this type of seed'].some((msg) => message.content.includes(msg)));

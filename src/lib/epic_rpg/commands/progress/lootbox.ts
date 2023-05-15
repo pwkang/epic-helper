@@ -36,3 +36,19 @@ interface IIsLootboxSuccessfullyBought {
 
 export const isLootboxSuccessfullyBought = ({content}: IIsLootboxSuccessfullyBought) =>
   content.includes('successfully bought for');
+
+interface IIsNotEligibleToBuyLootbox {
+  message: Message;
+  author: User;
+}
+
+export const isNotEligibleToBuyLootbox = ({message, author}: IIsNotEligibleToBuyLootbox) =>
+  message.mentions.has(author.id) && message.content.includes('to buy this lootbox');
+
+interface IIsNotEnoughMoneyToBuyLootbox {
+  content: Message['content'];
+  author: User;
+}
+
+export const isNotEnoughMoneyToBuyLootbox = ({content}: IIsNotEnoughMoneyToBuyLootbox) =>
+  content.includes("You don't have enough money");

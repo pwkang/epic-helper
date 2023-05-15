@@ -19,6 +19,7 @@ type TExtraProps = {
   stop: () => void;
   pendingAnswer: () => void;
   answered: () => void;
+  resetTimer: (ms: number) => void;
 };
 
 const filter = (m: Message) => m.author.id === EPIC_RPG_ID;
@@ -48,6 +49,10 @@ export const createRpgCommandListener = ({channelId, client, author}: IRpgComman
   };
   event.answered = () => {
     waitingAnswer = false;
+  };
+
+  event.resetTimer = (ms: number) => {
+    collector?.resetTimer({time: ms});
   };
 
   collector.on('collect', (collected) => {
