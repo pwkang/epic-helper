@@ -1,6 +1,7 @@
 import {COMMAND_TYPE} from '../../../../constants/bot';
 import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
 import rpgTraining, {
+  isEncounteringPet,
   isRpgTrainingQuestion,
   isRpgTrainingSuccess,
 } from '../../../../lib/epic_rpg/commands/progress/training';
@@ -48,6 +49,11 @@ export default <PrefixCommand>{
         type: RPG_COMMAND_TYPE.training,
         readyAt: new Date(Date.now() + cooldown),
       });
+    });
+    event.on('embed', (embed) => {
+      if (isEncounteringPet({author: message.author, embed})) {
+        event.stop();
+      }
     });
   },
 };

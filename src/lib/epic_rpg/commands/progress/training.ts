@@ -55,3 +55,11 @@ interface IIsRpgTrainingQuestion {
 export function isRpgTrainingQuestion({author, content}: IIsRpgTrainingQuestion) {
   return content.includes(author.username) && content.includes('is training in');
 }
+
+interface IIsEncounteringPet {
+  embed: Embed;
+  author: User;
+}
+
+export const isEncounteringPet = ({embed, author}: IIsEncounteringPet) =>
+  [author.username, 'IS APPROACHING'].every((msg) => embed.fields[0]?.name?.includes(msg));
