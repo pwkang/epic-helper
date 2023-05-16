@@ -1,4 +1,5 @@
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle, User} from 'discord.js';
+import {getUserRubyAmount} from '../../models/user/user.service';
 
 type TAnswerType = string | number | boolean;
 
@@ -49,10 +50,10 @@ const CASINO_ANSWER_LIST = {
   COIN: ':coin:',
 };
 
-export default function getTrainingAnswer({
+export default async function getTrainingAnswer({
   content,
   author,
-}: IGetTrainingAnswer): ActionRowBuilder<ButtonBuilder>[] {
+}: IGetTrainingAnswer): Promise<ActionRowBuilder<ButtonBuilder>[]> {
   let components: ActionRowBuilder<ButtonBuilder>[] = [];
   if (content.includes('is training in the river')) {
     if (content.includes(':normiefish:')) components = generateRows(RIVER, 'normie');
@@ -85,8 +86,9 @@ export default function getTrainingAnswer({
     );
     components = generateRows(TRUE_FALSE, matched);
   } else if (content.includes('in the mine')) {
-    // TODO: calc user ruby amount
-    components = generateRows(TRUE_FALSE, true);
+    const questionRuby = Number(content.match(/more than (\d+) </)?.[1] ?? 0);
+    const userRuby = await getUserRubyAmount(author.id);
+    components = generateRows(TRUE_FALSE, userRuby > questionRuby);
   }
   return components;
 }

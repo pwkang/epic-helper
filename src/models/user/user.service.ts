@@ -1,7 +1,10 @@
 import {mongoClient} from '../../services/mongoose/mongoose.service';
 import userSchema from './user.schema';
 import {IUser, RPG_DONOR_TIER} from './user.type';
-import {redisSetUserRubyAmount} from '../../services/redis/user-account.redis';
+import {
+  redisGetUserRubyAmount,
+  redisSetUserRubyAmount,
+} from '../../services/redis/user-account.redis';
 import {UpdateQuery} from 'mongoose';
 
 const dbUser = mongoClient.model<IUser>('user', userSchema);
@@ -171,4 +174,22 @@ export const updateUserRubyAmount = async ({
     }
   );
   if (user) await redisSetUserRubyAmount(userId, user.items.ruby);
+};
+
+export const getUserRubyAmount = async (userId: string): Promise<number> => {
+  const cb = async () => {
+    const user = await dbUser.findOne(
+      {
+        userId,
+      },
+      {
+        projection: {
+          'items.ruby': 1,
+        },
+      }
+    );
+    return user?.toJSON() as IUser;
+  };
+
+  return await redisGetUserRubyAmount(userId, cb);
 };
