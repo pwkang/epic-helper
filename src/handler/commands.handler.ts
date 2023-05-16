@@ -1,10 +1,11 @@
 import type {EntryInfo} from 'readdirp';
 import readdirp from 'readdirp';
 import {Client} from 'discord.js';
+import {handlerFileFilter, handlerRoot} from './constant';
 
 function loadPrefixCommands(client: Client) {
   return new Promise((resolve) => {
-    readdirp('./src/commands/prefix', {fileFilter: '*.ts'})
+    readdirp(`./${handlerRoot}/commands/prefix`, {fileFilter: handlerFileFilter})
       .on('data', async (entry: EntryInfo) => {
         const {fullPath} = entry;
         const file = await import(fullPath);
@@ -20,7 +21,7 @@ function loadPrefixCommands(client: Client) {
 
 function loadSlashCommands(client: Client) {
   return new Promise((resolve) => {
-    readdirp('./src/commands/slash', {fileFilter: '*.ts'})
+    readdirp(`./${handlerRoot}/commands/slash`, {fileFilter: handlerFileFilter})
       .on('data', async (entry: EntryInfo) => {
         const {fullPath} = entry;
         const file = await import(fullPath);
