@@ -21,10 +21,10 @@ export default <PrefixCommand>{
       author: message.author,
     });
     if (!event) return;
-    event.on('content', (content) => {
+    event.on('content', async (content) => {
       if (isRpgTrainingQuestion({author: message.author, content})) {
         event.pendingAnswer();
-        const answer = getTrainingAnswer({author: message.author, content});
+        const answer = await getTrainingAnswer({author: message.author, content});
         sendMessage({
           channelId: message.channel.id,
           client,

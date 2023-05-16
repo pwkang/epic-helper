@@ -1,6 +1,11 @@
 import {mongoClient} from '../../services/mongoose/mongoose.service';
 import userSchema from './user.schema';
 import {IUser, RPG_DONOR_TIER} from './user.type';
+import {
+  redisGetUserRubyAmount,
+  redisSetUserRubyAmount,
+} from '../../services/redis/user-account.redis';
+import {UpdateQuery} from 'mongoose';
 
 const dbUser = mongoClient.model<IUser>('user', userSchema);
 
@@ -133,4 +138,58 @@ export const getUserAccount = async (userId: string): Promise<IUser | null> => {
   return dbUser.findOne({
     userId,
   });
+};
+
+interface IUpdateUserRubyAmount {
+  userId: string;
+  ruby: number;
+  type: 'set' | 'inc' | 'dec';
+}
+
+export const updateUserRubyAmount = async ({
+  ruby,
+  userId,
+  type,
+}: IUpdateUserRubyAmount): Promise<void> => {
+  let query: UpdateQuery<IUser> = {};
+  if (type === 'set') {
+    query.$set = {
+      'items.ruby': ruby,
+    };
+  } else {
+    query.$inc = {
+      'items.ruby': type === 'inc' ? ruby : -ruby,
+    };
+  }
+  const user = await dbUser.findOneAndUpdate(
+    {
+      userId,
+    },
+    query,
+    {
+      new: true,
+      projection: {
+        'items.ruby': 1,
+      },
+    }
+  );
+  if (user) await redisSetUserRubyAmount(userId, user.items.ruby);
+};
+
+export const getUserRubyAmount = async (userId: string): Promise<number> => {
+  const cb = async () => {
+    const user = await dbUser.findOne(
+      {
+        userId,
+      },
+      {
+        projection: {
+          'items.ruby': 1,
+        },
+      }
+    );
+    return user?.toJSON() as IUser;
+  };
+
+  return await redisGetUserRubyAmount(userId, cb);
 };
