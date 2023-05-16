@@ -1,5 +1,23 @@
 import {Embed, Message, User} from 'discord.js';
 import {RPG_ITEMS} from '../../../../constants/rpg_items';
+import {updateUserRubyAmount} from '../../../../models/user/user.service';
+
+interface IRpgTrade {
+  embed: Embed;
+  author: User;
+}
+
+const rpgTrade = async ({embed, author}: IRpgTrade) => {
+  const traded = extractTradedItems({embed, author});
+  if (!traded.ruby) return;
+  await updateUserRubyAmount({
+    userId: author.id,
+    ruby: Math.abs(traded.ruby),
+    type: traded.ruby > 0 ? 'inc' : 'dec',
+  });
+};
+
+export default rpgTrade;
 
 interface IExtractTradedItems {
   embed: Embed;
@@ -9,8 +27,7 @@ interface IExtractTradedItems {
 type ITradedItem = {
   [key in keyof typeof RPG_ITEMS]?: number;
 };
-
-export const extractTradedItems = ({embed, author}: IExtractTradedItems): ITradedItem => {
+const extractTradedItems = ({embed, author}: IExtractTradedItems): ITradedItem => {
   const items = embed.fields[0].value.split('\n');
 
   const tradedItemName = Object.entries(RPG_ITEMS).find(([_, item]) =>
