@@ -50,7 +50,8 @@ interface IIsRpgWorkingSuccess {
 }
 
 export const isRpgWorkingSuccess = ({author, content}: IIsRpgWorkingSuccess) =>
-  content.includes(author.username) && WORKING_ITEMS.some((item) => content.includes(item));
+  content.includes(author.username) &&
+  WORKING_ITEMS.some((item) => content.toLowerCase().includes(item));
 
 interface IIsWorkingInSpace {
   content: string;

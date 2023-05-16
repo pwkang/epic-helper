@@ -28,6 +28,7 @@ export default <PrefixCommand>{
           author: message.author,
           channelId: message.channel.id,
           client,
+          questAccepted: true,
         });
         event.stop();
       }
@@ -36,6 +37,7 @@ export default <PrefixCommand>{
           author: message.author,
           channelId: message.channel.id,
           client,
+          questAccepted: false,
         });
       }
     });

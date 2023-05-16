@@ -6,6 +6,7 @@ import {
 import {getUserAccount} from '../../../models/user/user.service';
 import sendMessage from '../../discord.js/message/sendMessage';
 import {getCommandStr} from '../../epic_rpg/reminders/reminders-command-name';
+import ms from 'ms';
 
 export const userReminderTimesUp = async (client: Client, userId: string) => {
   const user = await getUserAccount(userId);
@@ -15,6 +16,7 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
   const readyCommands = await findUserReadyCommands(userId);
 
   for (let command of readyCommands) {
+    if (Date.now() - command.readyAt.getTime() > ms('5s')) continue;
     const commandName = getCommandStr({
       props: command.props,
       slash: false,
