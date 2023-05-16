@@ -21,10 +21,17 @@ const rpgCraft = async ({content, author}: IRpgCraft) => {
 
   if (Object.keys(rubyConsumed).includes(item)) {
     const _item = item as keyof typeof rubyConsumed;
+    let ruby = rubyConsumed[_item];
+    if (isReturnPortionRecipes({content})) {
+      const rate = extractReturnPortionRecipes({content});
+      if (rate) {
+        ruby -= Math.ceil(ruby * (Number(rate) / 100));
+      }
+    }
     await updateUserRubyAmount({
       type: 'dec',
       userId: author.id,
-      ruby: rubyConsumed[_item],
+      ruby,
     });
   }
 };
@@ -37,3 +44,17 @@ interface IIsSuccessfullyCrafted {
 
 export const isSuccessfullyCrafted = ({content}: IIsSuccessfullyCrafted) =>
   content.includes('successfully crafted!');
+
+interface IIsReturnPortionRecipes {
+  content: Message['content'];
+}
+
+const isReturnPortionRecipes = ({content}: IIsReturnPortionRecipes) =>
+  content.includes('of the recipe back');
+
+interface IExtractReturnPortionRecipes {
+  content: Message['content'];
+}
+
+const extractReturnPortionRecipes = ({content}: IExtractReturnPortionRecipes) =>
+  content.match(/You got (\d+.\d+)% of the /)?.[1];
