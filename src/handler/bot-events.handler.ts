@@ -1,9 +1,10 @@
 import readdirp, {EntryInfo} from 'readdirp';
 import {Client} from 'discord.js';
+import {handlerFileFilter, handlerRoot} from './constant';
 
 export default function loadBotEvents(client: Client) {
   return new Promise((resolve) => {
-    readdirp('./src/events', {fileFilter: '*.ts'})
+    readdirp(`./${handlerRoot}/events`, {fileFilter: handlerFileFilter})
       .on('data', async (entry: EntryInfo) => {
         const {fullPath} = entry;
         const file = await import(fullPath);

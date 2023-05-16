@@ -3,9 +3,11 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 
+const totalShards = process.env.TOTAL_SHARDS ? Number(process.env.TOTAL_SHARDS) : 'auto';
+
 const manager = new ClusterManager(`${__dirname}/bot.js`, {
   token: process.env.BOT_TOKEN,
-  totalShards: 4,
+  totalShards,
 });
 
 manager.on('clusterCreate', (cluster) => console.log(`Launched Cluster ${cluster.id}`));
