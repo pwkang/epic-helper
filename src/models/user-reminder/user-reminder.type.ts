@@ -1,6 +1,39 @@
 import {RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../constants/rpg';
 import {LOOTBOX_TYPE} from '../../constants/lootbox';
 
+export interface IHuntReminderProps {
+  together: boolean;
+  hardMode: boolean;
+}
+
+export interface IAdventureReminderProps {
+  hardMode: boolean;
+}
+
+export interface ITrainingReminderProps {
+  ultraining: boolean;
+}
+
+export interface IQuestReminderProps {
+  epicQuest: boolean;
+}
+
+export interface IWorkingReminderProps {
+  workingType: ValuesOf<typeof RPG_WORKING_TYPE>;
+}
+
+export interface IFarmReminderProps {
+  seedType: ValuesOf<typeof RPG_FARM_SEED>;
+}
+
+export interface IPetReminderProps {
+  petId: number;
+}
+
+export interface ILootboxReminderProps {
+  lootboxType: ValuesOf<typeof LOOTBOX_TYPE>;
+}
+
 type BaseUserReminder = {
   userId: string;
   readyAt: Date;
@@ -9,52 +42,35 @@ type BaseUserReminder = {
 type Conditional =
   | {
       type: 'hunt';
-      props: {
-        together: boolean;
-        hardMode: boolean;
-      };
+      props: IHuntReminderProps;
     }
   | {
       type: 'adventure';
-      props: {
-        hardMode: boolean;
-      };
+      props: IAdventureReminderProps;
     }
   | {
       type: 'training';
-      props: {
-        ultraining: boolean;
-      };
+      props: ITrainingReminderProps;
     }
   | {
       type: 'quest';
-      props: {
-        epicQuest: boolean;
-      };
+      props: IQuestReminderProps;
     }
   | {
       type: 'working';
-      props: {
-        workingType: ValuesOf<typeof RPG_WORKING_TYPE>;
-      };
+      props: IWorkingReminderProps;
     }
   | {
       type: 'farm';
-      props: {
-        seedType: ValuesOf<typeof RPG_FARM_SEED>;
-      };
+      props: IFarmReminderProps;
     }
   | {
       type: 'pet';
-      props: {
-        petId: number;
-      };
+      props: IPetReminderProps;
     }
   | {
       type: 'lootbox';
-      props: {
-        lootboxType: ValuesOf<typeof LOOTBOX_TYPE>;
-      };
+      props: ILootboxReminderProps;
     }
   | {
       type: 'daily' | 'weekly' | 'vote' | 'duel' | 'horse' | 'arena' | 'dungeon';

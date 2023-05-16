@@ -54,37 +54,37 @@ export default function getTrainingAnswer({
   author,
 }: IGetTrainingAnswer): ActionRowBuilder<ButtonBuilder>[] {
   let components: ActionRowBuilder<ButtonBuilder>[] = [];
-  if (content.match('is training in the river')) {
-    if (content.match(':normiefish:')) components = generateRows(RIVER, 'normie');
-    if (content.match(':goldenfish:')) components = generateRows(RIVER, 'golden');
-    if (content.match(':EPICfish:')) components = generateRows(RIVER, 'epic');
-  } else if (content.match('is training in the field')) {
-    if (content.match(':Apple:')) {
-      if (content.match('**first**')) components = generateRows(FIELD, 'A');
-      if (content.match('**second**')) components = generateRows(FIELD, 'P');
-      if (content.match('**third**')) components = generateRows(FIELD, 'P');
-      if (content.match('**fourth**')) components = generateRows(FIELD, 'L');
-      if (content.match('**fifth**')) components = generateRows(FIELD, 'E');
-    } else if (content.match(':Banana:')) {
-      if (content.match('**first**')) components = generateRows(FIELD, 'B');
-      if (content.match('**second**')) components = generateRows(FIELD, 'A');
-      if (content.match('**third**')) components = generateRows(FIELD, 'N');
-      if (content.match('**fourth**')) components = generateRows(FIELD, 'A');
-      if (content.match('**fifth**')) components = generateRows(FIELD, 'N');
-      if (content.match('**sixth**')) components = generateRows(FIELD, 'A');
+  if (content.includes('is training in the river')) {
+    if (content.includes(':normiefish:')) components = generateRows(RIVER, 'normie');
+    if (content.includes(':goldenfish:')) components = generateRows(RIVER, 'golden');
+    if (content.includes(':EPICfish:')) components = generateRows(RIVER, 'epic');
+  } else if (content.includes('is training in the field')) {
+    if (content.includes(':Apple:')) {
+      if (content.includes('**first**')) components = generateRows(FIELD, 'A');
+      if (content.includes('**second**')) components = generateRows(FIELD, 'P');
+      if (content.includes('**third**')) components = generateRows(FIELD, 'P');
+      if (content.includes('**fourth**')) components = generateRows(FIELD, 'L');
+      if (content.includes('**fifth**')) components = generateRows(FIELD, 'E');
+    } else if (content.includes(':Banana:')) {
+      if (content.includes('**first**')) components = generateRows(FIELD, 'B');
+      if (content.includes('**second**')) components = generateRows(FIELD, 'A');
+      if (content.includes('**third**')) components = generateRows(FIELD, 'N');
+      if (content.includes('**fourth**')) components = generateRows(FIELD, 'A');
+      if (content.includes('**fifth**')) components = generateRows(FIELD, 'N');
+      if (content.includes('**sixth**')) components = generateRows(FIELD, 'A');
     }
-  } else if (content.match('is training in the forest')) {
+  } else if (content.includes('is training in the forest')) {
     const questionLogs = content.split('\n')[1].match(/<:[A-Za-z]+log:\d+>/g);
     const targetLog = content.split('\n')[2].match(/<:[A-Za-z]+log:\d+>/g);
     if (questionLogs && targetLog) {
       components = generateRows(FOREST, questionLogs.filter((log) => log === targetLog[0]).length);
     }
-  } else if (content.match('is training in the... casino?')) {
+  } else if (content.includes('is training in the... casino?')) {
     const matched = Object.entries(CASINO_ANSWER_LIST).some(
-      ([key, value]) => content.split('\n')[1].match(value) && content.match(key)
+      ([key, value]) => content.split('\n')[1].includes(value) && content.includes(key)
     );
     components = generateRows(TRUE_FALSE, matched);
-  } else if (content.match('in the mine')) {
+  } else if (content.includes('in the mine')) {
     // TODO: calc user ruby amount
     components = generateRows(TRUE_FALSE, true);
   }
