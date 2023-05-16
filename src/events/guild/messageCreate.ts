@@ -22,7 +22,7 @@ const isBotCommand = (message: Message) =>
 
 const validateCommand = (commands: string[], args: string[]) => {
   return commands.some((cmd) =>
-    cmd.split(' ').every((name, i) => name.toLowerCase() === args[i].toLowerCase())
+    cmd.split(' ').every((name, i) => name?.toLowerCase() === args[i]?.toLowerCase())
   );
 };
 

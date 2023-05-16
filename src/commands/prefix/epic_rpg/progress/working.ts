@@ -12,6 +12,7 @@ import rpgWorking, {
 import {updateUserCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import replyMessage from '../../../../lib/discord.js/message/replyMessage';
 import {hasNoSeedToPlant} from '../../../../lib/epic_rpg/commands/progress/farm';
+import {updateUserRubyAmount} from '../../../../models/user/user.service';
 
 export default <PrefixCommand>{
   name: 'rpgWorking',
@@ -42,11 +43,19 @@ export default <PrefixCommand>{
       }
       if (isRubyMined({author: message.author, content})) {
         const mined = rubyAmountMined({author: message.author, content});
-        console.log(mined);
+        await updateUserRubyAmount({
+          userId: message.author.id,
+          type: 'inc',
+          ruby: mined,
+        });
         event.stop();
       }
       if (isFoughtRubyDragon({author: message.author, content})) {
-        // TODO: add 10 ruby to user
+        await updateUserRubyAmount({
+          userId: message.author.id,
+          type: 'inc',
+          ruby: 10,
+        });
         event.stop();
         replyMessage({
           client,
