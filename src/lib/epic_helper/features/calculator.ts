@@ -16,55 +16,55 @@ type TCalcFunc = (options: ICalcOptions) => MessageCreateOptions;
 
 export const getCalcMaterialMessage: TCalcFunc = ({embed, area, author}) => {
   const inventory = scanInventory({embed});
-  const a3Fish = trade({
+  const a3Fish = startTrading({
     startArea: area,
     endArea: 3,
     inventory,
     tradeTo: 'normieFish',
   }).normieFish;
-  const a5Apple = trade({
+  const a5Apple = startTrading({
     startArea: area,
     endArea: 5,
     inventory,
     tradeTo: 'apple',
   }).apple;
-  const a10Log = trade({
+  const a10Log = startTrading({
     startArea: area,
     endArea: 10,
     inventory,
     tradeTo: 'woodenLog',
   }).woodenLog;
-  const a11Apple = trade({
+  const a11Apple = startTrading({
     startArea: area,
     endArea: 11,
     inventory,
     tradeTo: 'apple',
   }).apple;
-  const a12Ruby = trade({
+  const a12Ruby = startTrading({
     startArea: area,
     endArea: 12,
     inventory,
     tradeTo: 'ruby',
   }).ruby;
-  const topFish = trade({
+  const topFish = startTrading({
     startArea: area,
     endArea: 'top',
     inventory,
     tradeTo: 'normieFish',
   }).normieFish;
-  const topLog = trade({
+  const topLog = startTrading({
     startArea: area,
     endArea: 'top',
     inventory,
     tradeTo: 'woodenLog',
   }).woodenLog;
-  const topApple = trade({
+  const topApple = startTrading({
     startArea: area,
     endArea: 'top',
     inventory,
     tradeTo: 'apple',
   }).apple;
-  const topRuby = trade({
+  const topRuby = startTrading({
     startArea: area,
     endArea: 'top',
     inventory,
@@ -178,7 +178,7 @@ interface ITrade {
   tradeTo: 'normieFish' | 'woodenLog' | 'apple' | 'ruby';
 }
 
-const trade = ({startArea, endArea, inventory, tradeTo}: ITrade) => {
+const startTrading = ({startArea, endArea, inventory, tradeTo}: ITrade) => {
   const _tradeTo = endArea === 'top' ? 15 : endArea;
   let newInventory = initTrade(inventory);
   if (typeof startArea === 'number') {
@@ -305,7 +305,7 @@ function initTrade(inventory: IInventoryItem) {
     tradeA: function (area) {
       const tradeRate = TRADE_RATE[area]?.tradeA;
       if (!tradeRate) return this;
-      const {normieFish, woodenLog} = trade1(this, 'normieFish', 'woodenLog', tradeRate);
+      const {normieFish, woodenLog} = trade(this, 'normieFish', 'woodenLog', tradeRate);
       this.normieFish = normieFish;
       this.woodenLog = woodenLog;
       return this;
@@ -313,7 +313,7 @@ function initTrade(inventory: IInventoryItem) {
     tradeB: function (area) {
       const tradeRate = TRADE_RATE[area]?.tradeB;
       if (!tradeRate) return this;
-      const {woodenLog, normieFish} = trade2(this, 'woodenLog', 'normieFish', tradeRate);
+      const {woodenLog, normieFish} = trade(this, 'woodenLog', 'normieFish', tradeRate);
       this.woodenLog = woodenLog;
       this.normieFish = normieFish;
       return this;
@@ -321,7 +321,7 @@ function initTrade(inventory: IInventoryItem) {
     tradeC: function (area) {
       const tradeRate = TRADE_RATE[area]?.tradeC;
       if (!tradeRate) return this;
-      const {apple, woodenLog} = trade1(this, 'apple', 'woodenLog', tradeRate);
+      const {apple, woodenLog} = trade(this, 'apple', 'woodenLog', tradeRate);
       this.apple = apple;
       this.woodenLog = woodenLog;
       return this;
@@ -329,7 +329,7 @@ function initTrade(inventory: IInventoryItem) {
     tradeD: function (area) {
       const tradeRate = TRADE_RATE[area]?.tradeD;
       if (!tradeRate) return this;
-      const {woodenLog, apple} = trade2(this, 'woodenLog', 'apple', tradeRate);
+      const {woodenLog, apple} = trade(this, 'woodenLog', 'apple', tradeRate);
       this.woodenLog = woodenLog;
       this.apple = apple;
       return this;
@@ -337,7 +337,7 @@ function initTrade(inventory: IInventoryItem) {
     tradeE: function (area) {
       const tradeRate = TRADE_RATE[area]?.tradeE;
       if (!tradeRate) return this;
-      const {ruby, woodenLog} = trade1(this, 'ruby', 'woodenLog', tradeRate);
+      const {ruby, woodenLog} = trade(this, 'ruby', 'woodenLog', tradeRate);
       this.ruby = ruby;
       this.woodenLog = woodenLog;
       return this;
@@ -345,7 +345,7 @@ function initTrade(inventory: IInventoryItem) {
     tradeF: function (area) {
       const tradeRate = TRADE_RATE[area]?.tradeF;
       if (!tradeRate) return this;
-      const {woodenLog, ruby} = trade2(this, 'woodenLog', 'ruby', tradeRate);
+      const {woodenLog, ruby} = trade(this, 'woodenLog', 'ruby', tradeRate);
       this.woodenLog = woodenLog;
       this.ruby = ruby;
       return this;
@@ -359,29 +359,18 @@ function initTrade(inventory: IInventoryItem) {
   };
 }
 
-const trade1 = (
-  inventory: IInventoryItem,
-  fromItem: keyof IInventoryItem,
-  toItem: keyof IInventoryItem,
-  tradeRate: number
-): {[key in keyof IInventoryItem]: number | undefined} => {
-  const fromItemAmount = inventory[fromItem] ?? 0;
-  const toItemAmount = inventory[toItem] ?? 0;
-  const tradedAmount = fromItemAmount * tradeRate;
-  inventory[toItem] = toItemAmount + tradedAmount;
-  inventory[fromItem] = fromItemAmount - tradedAmount / tradeRate;
-  return {
-    [fromItem]: inventory[fromItem],
-    [toItem]: inventory[toItem],
-  };
-};
+/**
+ *  ==========================================
+ *         Trade Helper Function
+ *  ==========================================
+ */
 
-const trade2 = (
+const trade = <T, X extends keyof IInventoryItem, Y extends keyof IInventoryItem>(
   inventory: IInventoryItem,
-  fromItem: keyof IInventoryItem,
-  toItem: keyof IInventoryItem,
+  fromItem: X,
+  toItem: Y,
   tradeRate: number
-): {[key in keyof IInventoryItem]: number | undefined} => {
+): Record<X | Y, number> => {
   const fromItemAmount = inventory[fromItem] ?? 0;
   const toItemAmount = inventory[toItem] ?? 0;
   const tradedAmount = Math.floor(fromItemAmount * tradeRate);
@@ -390,7 +379,7 @@ const trade2 = (
   return {
     [fromItem]: inventory[fromItem],
     [toItem]: inventory[toItem],
-  };
+  } as Record<X | Y, number>;
 };
 
 /**
