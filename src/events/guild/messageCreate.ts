@@ -6,9 +6,9 @@ export default <BotEvent>{
   once: false,
   execute: async (client, message: Message) => {
     if (!message.author.bot) {
-      const command = searchCommand(client, message);
-      if (!command) return;
-      await command.execute(client, message);
+      const result = searchCommand(client, message);
+      if (!result) return;
+      await result.command.execute(client, message, result.args);
     }
   },
 };
@@ -26,12 +26,16 @@ const validateCommand = (commands: string[], args: string[]) => {
   );
 };
 
-function searchCommand(client: Client, message: Message): PrefixCommand | null {
+function searchCommand(
+  client: Client,
+  message: Message
+): {command: PrefixCommand; args: string[]} | null {
   const messageContent = message.content.toLowerCase();
   if (messageContent === '') return null;
+  let args: string[] = [];
+  let command;
 
   if (isRpgCommand(message)) {
-    let args: string[] = [];
     if (messageContent.startsWith(`${PREFIX.rpg} `)) {
       args = messageContent.split(' ').slice(1);
     } else if (message.mentions.has(EPIC_RPG_ID)) {
@@ -41,33 +45,25 @@ function searchCommand(client: Client, message: Message): PrefixCommand | null {
         .filter((arg) => arg !== '');
     }
 
-    const command = client.prefixCommands.find(
+    command = client.prefixCommands.find(
       (cmd) => cmd.type === COMMAND_TYPE.rpg && validateCommand(cmd.commands, args)
     );
-    if (!command) return null;
-    return command;
   }
 
   if (PREFIX.bot && isBotCommand(message)) {
-    const args = messageContent.slice(PREFIX.bot.length).trim().split(' ');
+    args = messageContent.slice(PREFIX.bot.length).trim().split(' ');
 
-    const command = client.prefixCommands.find(
+    command = client.prefixCommands.find(
       (cmd) => cmd.type === COMMAND_TYPE.bot && validateCommand(cmd.commands, args)
     );
-
-    if (!command) return null;
-    return command;
   }
   if (DEVS_ID.includes(message.author.id) && PREFIX.dev && messageContent.startsWith(PREFIX.dev)) {
-    const args = messageContent.slice(PREFIX.dev.length).trim().split(' ');
+    args = messageContent.slice(PREFIX.dev.length).trim().split(' ');
 
-    const command = client.prefixCommands.find(
+    command = client.prefixCommands.find(
       (cmd) => cmd.type === COMMAND_TYPE.dev && validateCommand(cmd.commands, args)
     );
-
-    if (!command) return null;
-    return command;
   }
 
-  return null;
+  return command ? {command, args} : null;
 }
