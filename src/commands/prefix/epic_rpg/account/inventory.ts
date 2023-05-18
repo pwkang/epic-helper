@@ -6,6 +6,7 @@ import {
   getCalcMaterialMessage,
   isCalcMaterial,
 } from '../../../../lib/epic_helper/features/calculator';
+import sendMessage from '../../../../lib/discord.js/message/sendMessage';
 
 export default <PrefixCommand>{
   name: 'rpgInventory',
@@ -28,9 +29,15 @@ export default <PrefixCommand>{
         if (isCalcMaterial(args)) {
           const calcInfo = getCalcInfo(args);
           if (!calcInfo.area) return;
-          getCalcMaterialMessage({
+          const options = getCalcMaterialMessage({
             area: calcInfo.area,
             embed,
+            author: message.author,
+          });
+          sendMessage({
+            client,
+            channelId: message.channel.id,
+            options,
           });
         }
       }

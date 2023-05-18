@@ -1,27 +1,107 @@
-import {Embed, MessageCreateOptions} from 'discord.js';
-import {PREFIX} from '../../../constants/bot';
+import {Embed, EmbedBuilder, MessageCreateOptions, User} from 'discord.js';
+import {BOT_COLOR, PREFIX} from '../../../constants/bot';
 import {CLICKABLE_SLASH_RPG} from '../../../constants/clickable_slash';
 import scanInventory, {IInventoryItem} from '../../../utils/epic_rpg/scanInventory';
 import {RpgArea} from '../../../types/rpg.types';
 import {TRADE_RATE} from '../../../constants/rpg';
+import {BOT_EMOJI} from '../../../constants/bot_emojis';
 
 interface ICalcOptions {
   embed: Embed;
   area: RpgArea;
+  author: User;
 }
 
 type TCalcFunc = (options: ICalcOptions) => MessageCreateOptions;
 
-export const getCalcMaterialMessage: TCalcFunc = ({embed, area}) => {
+export const getCalcMaterialMessage: TCalcFunc = ({embed, area, author}) => {
   const inventory = scanInventory({embed});
-  const traded = trade({
-    tradeFrom: area,
-    tradeTo: 10,
+  const a3Fish = trade({
+    startArea: area,
+    endArea: 3,
     inventory,
-  });
-  console.log(traded);
+    tradeTo: 'normieFish',
+  }).normieFish;
+  const a5Apple = trade({
+    startArea: area,
+    endArea: 5,
+    inventory,
+    tradeTo: 'apple',
+  }).apple;
+  const a10Log = trade({
+    startArea: area,
+    endArea: 10,
+    inventory,
+    tradeTo: 'woodenLog',
+  }).woodenLog;
+  const a11Apple = trade({
+    startArea: area,
+    endArea: 11,
+    inventory,
+    tradeTo: 'apple',
+  }).apple;
+  const a12Ruby = trade({
+    startArea: area,
+    endArea: 12,
+    inventory,
+    tradeTo: 'ruby',
+  }).ruby;
+  const topFish = trade({
+    startArea: area,
+    endArea: 'top',
+    inventory,
+    tradeTo: 'normieFish',
+  }).normieFish;
+  const topLog = trade({
+    startArea: area,
+    endArea: 'top',
+    inventory,
+    tradeTo: 'woodenLog',
+  }).woodenLog;
+  const topApple = trade({
+    startArea: area,
+    endArea: 'top',
+    inventory,
+    tradeTo: 'apple',
+  }).apple;
+  const topRuby = trade({
+    startArea: area,
+    endArea: 'top',
+    inventory,
+    tradeTo: 'ruby',
+  }).ruby;
+
+  const tradeEmbed = new EmbedBuilder()
+    .setAuthor({
+      name: `${author.username}'s Material Calculator (Current Area ${area})`,
+      iconURL: author.displayAvatarURL(),
+    })
+    .setDescription('Assuming you dismantle all the materials and follow the trade rate')
+    .addFields([
+      {
+        name: 'Materials',
+        value:
+          `${BOT_EMOJI.working.normieFish} \`[  A3  ]\`: ${a3Fish?.toLocaleString()}\n` +
+          `${BOT_EMOJI.working.apple} \`[  A5  ]\`: ${a5Apple?.toLocaleString()}\n` +
+          `${BOT_EMOJI.working.woodenLog} \`[ A10+ ]\`: ${a10Log?.toLocaleString()}\n` +
+          `${BOT_EMOJI.working.apple} \`[ A11+ ]\`: ${a11Apple?.toLocaleString()}\n` +
+          `${BOT_EMOJI.working.ruby} \`[ A12+ ]\`: ${a12Ruby?.toLocaleString()}`,
+        inline: true,
+      },
+      {
+        name: 'Materials (TOP)',
+        value:
+          `${BOT_EMOJI.working.normieFish}: ${topFish?.toLocaleString()}\n` +
+          `${BOT_EMOJI.working.woodenLog}: ${topLog?.toLocaleString()}\n` +
+          `${BOT_EMOJI.working.apple}: ${topApple?.toLocaleString()}\n` +
+          `${BOT_EMOJI.working.ruby}: ${topRuby?.toLocaleString()}`,
+        inline: true,
+      },
+    ])
+    .setColor(BOT_COLOR.embed);
+
   return {
-    content: 'material',
+    embeds: [tradeEmbed],
   };
 };
 
@@ -44,7 +124,9 @@ const dismantleRecommend: IDismantleEverything = (inventory, currentArea) => {
         .dismantleHyperLog()
         .dismantleMegaLog()
         .dismantleSuperLog()
-        .dismantleEpicLog();
+        .dismantleEpicLog()
+        .dismantleEpicFish()
+        .dismantleGoldenFish();
     } else if (currentArea <= 5) {
       newInventory
         .dismantleUltraLog()
@@ -91,51 +173,44 @@ const dismantleRecommend: IDismantleEverything = (inventory, currentArea) => {
 
 interface ITrade {
   inventory: IInventoryItem;
-  tradeFrom: RpgArea;
-  tradeTo: RpgArea;
+  startArea: RpgArea;
+  endArea: RpgArea;
+  tradeTo: 'normieFish' | 'woodenLog' | 'apple' | 'ruby';
 }
 
-const trade = ({tradeFrom, tradeTo, inventory}: ITrade) => {
-  const _tradeTo = tradeTo === 'top' ? 15 : tradeTo;
+const trade = ({startArea, endArea, inventory, tradeTo}: ITrade) => {
+  const _tradeTo = endArea === 'top' ? 15 : endArea;
   let newInventory = initTrade(inventory);
-  if (typeof tradeFrom === 'number') {
-    let area = tradeFrom;
-    while (area <= _tradeTo) {
-      // for (let area = tradeFrom; area <= _tradeTo; area++) {
-      console.log('area', area, {
-        normieFish: newInventory.normieFish,
-        woodenLog: newInventory.woodenLog,
-        apple: newInventory.apple,
-        ruby: newInventory.ruby,
-      });
+  if (typeof startArea === 'number') {
+    for (let area = startArea; area <= _tradeTo; area++) {
       if (area <= 3) {
         newInventory = newInventory.dismantleAll(area).tradeC(area).tradeB(area);
-        area = 5;
       } else if (area <= 5) {
         newInventory = newInventory.dismantleAll(area).tradeA(area).tradeE(area).tradeD(area);
-        area = 7;
       } else if (area <= 7) {
         newInventory = newInventory.dismantleAll(area).tradeC(area).tradeA(area).tradeE(area);
-        area++;
       } else if (area <= 8) {
         newInventory = newInventory.dismantleAll(area).tradeE(area).tradeA(area).tradeD(area);
-        area++;
       } else if (area <= 9) {
         newInventory = newInventory.dismantleAll(area).tradeE(area).tradeC(area).tradeB(area);
-        area++;
-      } else if (area <= 10) {
-        newInventory = newInventory.dismantleAll(area).tradeC(area).tradeA(area).tradeE(area);
-        area++;
-      } else if (area <= 11) {
-        newInventory = newInventory.dismantleAll(area).tradeA(area).tradeC(area).tradeE(area);
-        area++;
-      } else if (area <= 12) {
-        newInventory = newInventory.dismantleAll(area).tradeA(area).tradeC(area).tradeF(area);
-        area++;
-      } else {
-        area++;
+      } else if (area <= 15) {
+        newInventory = newInventory.dismantleAll(area).tradeA(area).tradeE(area).tradeC(area);
       }
     }
+  }
+  switch (tradeTo) {
+    case 'normieFish':
+      newInventory = newInventory.tradeE(endArea).tradeC(endArea).tradeB(endArea);
+      break;
+    case 'woodenLog':
+      newInventory = newInventory.tradeA(endArea).tradeC(endArea).tradeE(endArea);
+      break;
+    case 'apple':
+      newInventory = newInventory.tradeA(endArea).tradeE(endArea).tradeD(endArea);
+      break;
+    case 'ruby':
+      newInventory = newInventory.tradeA(endArea).tradeC(endArea).tradeF(endArea);
+      break;
   }
   return newInventory;
 };
@@ -199,7 +274,7 @@ function initDismantle(inventory: IInventoryItem) {
     dismantleEpicLog: function () {
       this.epicLog = this.epicLog ?? 0;
       this.woodenLog = this.woodenLog ?? 0;
-      this.woodenLog += this.epicLog * 8;
+      this.woodenLog += this.epicLog * 20;
       this.epicLog = 0;
       return this;
     },
@@ -300,8 +375,6 @@ const trade1 = (
     [toItem]: inventory[toItem],
   };
 };
-
-type ITrade2 = () => {};
 
 const trade2 = (
   inventory: IInventoryItem,

@@ -46,8 +46,8 @@ export default <PrefixCommand>{
           client,
           channelId: message.channel.id,
           options: isCalcMaterial(args)
-            ? getCalcMaterialMessage({embed, area: calcInfo.area ?? 0})
-            : getCalcSTTMessage({embed, area: calcInfo.area ?? 0}),
+            ? getCalcMaterialMessage({embed, area: calcInfo.area ?? 0, author: message.author})
+            : getCalcSTTMessage({embed, area: calcInfo.area ?? 0, author: message.author}),
         });
       }
     });
