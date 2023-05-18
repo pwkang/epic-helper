@@ -8,6 +8,7 @@ export const RPG_ITEMS = {
   megaLog: 'mega log',
   hyperLog: 'hyper log',
   ultraLog: 'ultra log',
+  apple: 'apple',
   banana: 'banana',
   ruby: 'ruby',
   potato: 'potato',

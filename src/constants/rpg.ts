@@ -1,3 +1,5 @@
+import {RpgArea} from '../types/rpg.types';
+
 export const RPG_COMMAND_TYPE = {
   daily: 'daily',
   weekly: 'weekly',
@@ -37,3 +39,199 @@ export const RPG_FARM_SEED = {
   carrot: 'carrot',
   potato: 'potato',
 } as const;
+
+export const RPG_AREA = {
+  a0: 0,
+  a1: 1,
+  a2: 2,
+  a3: 3,
+  a4: 4,
+  a5: 5,
+  a6: 6,
+  a7: 7,
+  a8: 8,
+  a9: 9,
+  a10: 10,
+  a11: 11,
+  a12: 12,
+  a13: 13,
+  a14: 14,
+  a15: 15,
+  top: 'top',
+  a16: 16,
+  a17: 17,
+  a18: 18,
+  a19: 19,
+  a20: 20,
+} as const;
+
+type ITradeRate = {
+  [key in RpgArea]: {
+    tradeA?: number;
+    tradeB?: number;
+    tradeC?: number;
+    tradeD?: number;
+    tradeE?: number;
+    tradeF?: number;
+  };
+};
+
+export const TRADE_RATE: ITradeRate = {
+  [RPG_AREA.a0]: {},
+  [RPG_AREA.a1]: {
+    tradeA: 1,
+    tradeB: 1,
+  },
+  [RPG_AREA.a2]: {
+    tradeA: 1,
+    tradeB: 1,
+  },
+  [RPG_AREA.a3]: {
+    tradeA: 1,
+    tradeB: 1,
+    tradeC: 3,
+    tradeD: 1 / 3,
+  },
+  [RPG_AREA.a4]: {
+    tradeA: 2,
+    tradeB: 1 / 2,
+    tradeC: 4,
+    tradeD: 1 / 4,
+  },
+  [RPG_AREA.a5]: {
+    tradeA: 2,
+    tradeB: 1 / 2,
+    tradeC: 4,
+    tradeD: 1 / 4,
+    tradeE: 450,
+    tradeF: 1 / 450,
+  },
+  [RPG_AREA.a6]: {
+    tradeA: 3,
+    tradeB: 1 / 3,
+    tradeC: 15,
+    tradeD: 1 / 15,
+    tradeE: 675,
+    tradeF: 1 / 675,
+  },
+  [RPG_AREA.a7]: {
+    tradeA: 3,
+    tradeB: 1 / 3,
+    tradeC: 15,
+    tradeD: 1 / 15,
+    tradeE: 675,
+    tradeF: 1 / 675,
+  },
+  [RPG_AREA.a8]: {
+    tradeA: 3,
+    tradeB: 1 / 3,
+    tradeC: 8,
+    tradeD: 1 / 8,
+    tradeE: 675,
+    tradeF: 1 / 675,
+  },
+  [RPG_AREA.a9]: {
+    tradeA: 2,
+    tradeB: 1 / 2,
+    tradeC: 12,
+    tradeD: 1 / 12,
+    tradeE: 850,
+    tradeF: 1 / 850,
+  },
+  [RPG_AREA.a10]: {
+    tradeA: 3,
+    tradeB: 1 / 3,
+    tradeC: 12,
+    tradeD: 1 / 12,
+    tradeE: 500,
+    tradeF: 1 / 500,
+  },
+  [RPG_AREA.a11]: {
+    tradeA: 3,
+    tradeB: 1 / 3,
+    tradeC: 8,
+    tradeD: 1 / 8,
+    tradeE: 500,
+    tradeF: 1 / 500,
+  },
+  [RPG_AREA.a12]: {
+    tradeA: 3,
+    tradeB: 1 / 3,
+    tradeC: 8,
+    tradeD: 1 / 8,
+    tradeE: 350,
+    tradeF: 1 / 350,
+  },
+  [RPG_AREA.a13]: {
+    tradeA: 3,
+    tradeB: 1 / 3,
+    tradeC: 8,
+    tradeD: 1 / 8,
+    tradeE: 350,
+    tradeF: 1 / 350,
+  },
+  [RPG_AREA.a14]: {
+    tradeA: 3,
+    tradeB: 1 / 3,
+    tradeC: 8,
+    tradeD: 1 / 8,
+    tradeE: 350,
+    tradeF: 1 / 350,
+  },
+  [RPG_AREA.a15]: {
+    tradeA: 3,
+    tradeB: 1 / 3,
+    tradeC: 8,
+    tradeD: 1 / 8,
+    tradeE: 350,
+    tradeF: 1 / 350,
+  },
+  [RPG_AREA.top]: {
+    tradeA: 2,
+    tradeB: 1 / 2,
+    tradeC: 4,
+    tradeD: 1 / 4,
+    tradeE: 250,
+    tradeF: 1 / 250,
+  },
+  [RPG_AREA.a16]: {
+    tradeA: 2,
+    tradeB: 1 / 2,
+    tradeC: 4,
+    tradeD: 1 / 4,
+    tradeE: 250,
+    tradeF: 1 / 250,
+  },
+  [RPG_AREA.a17]: {
+    tradeA: 2,
+    tradeB: 1 / 2,
+    tradeC: 4,
+    tradeD: 1 / 4,
+    tradeE: 250,
+    tradeF: 1 / 250,
+  },
+  [RPG_AREA.a18]: {
+    tradeA: 2,
+    tradeB: 1 / 2,
+    tradeC: 4,
+    tradeD: 1 / 4,
+    tradeE: 250,
+    tradeF: 1 / 250,
+  },
+  [RPG_AREA.a19]: {
+    tradeA: 2,
+    tradeB: 1 / 2,
+    tradeC: 4,
+    tradeD: 1 / 4,
+    tradeE: 250,
+    tradeF: 1 / 250,
+  },
+  [RPG_AREA.a20]: {
+    tradeA: 2,
+    tradeB: 1 / 2,
+    tradeC: 4,
+    tradeD: 1 / 4,
+    tradeE: 250,
+    tradeF: 1 / 250,
+  },
+};

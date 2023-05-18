@@ -1,4 +1,4 @@
-import {Embed, User} from 'discord.js';
+import {Embed, Message, User} from 'discord.js';
 import {
   deleteUserCooldowns,
   getUserAllCooldowns,

@@ -7,7 +7,7 @@ interface IScanInventory {
 
 type ItemName = keyof typeof RPG_ITEMS;
 
-type IInventoryItem = {
+export type IInventoryItem = {
   [key in ItemName]?: number;
 };
 

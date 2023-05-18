@@ -1,12 +1,17 @@
 import {COMMAND_TYPE} from '../../../../constants/bot';
 import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
 import rpgInventory, {isUserInventory} from '../../../../lib/epic_rpg/commands/account/inventory';
+import {
+  getCalcInfo,
+  getCalcMaterialMessage,
+  isCalcMaterial,
+} from '../../../../lib/epic_helper/features/calculator';
 
 export default <PrefixCommand>{
   name: 'rpgInventory',
   commands: ['inventory', 'inv', 'i'],
   type: COMMAND_TYPE.rpg,
-  execute: async (client, message) => {
+  execute: async (client, message, args) => {
     const event = await createRpgCommandListener({
       client,
       channelId: message.channel.id,
@@ -20,6 +25,14 @@ export default <PrefixCommand>{
           embed,
         });
         event.stop();
+        if (isCalcMaterial(args)) {
+          const calcInfo = getCalcInfo(args);
+          if (!calcInfo.area) return;
+          getCalcMaterialMessage({
+            area: calcInfo.area,
+            embed,
+          });
+        }
       }
     });
   },
