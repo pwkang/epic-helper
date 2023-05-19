@@ -5,7 +5,7 @@ import {
   getCalcInfo,
   getCalcMaterialMessage,
   isCalcMaterial,
-} from '../../../../lib/epic_helper/features/calculator/calculator';
+} from '../../../../lib/epic_helper/features/calculator/calcMats';
 import sendMessage from '../../../../lib/discord.js/message/sendMessage';
 
 export default <PrefixCommand>{

@@ -8,7 +8,7 @@ import {
   getInvalidCalcArgsMessage,
   isCalcMaterial,
   isCalcSTT,
-} from '../../../../lib/epic_helper/features/calculator/calculator';
+} from '../../../../lib/epic_helper/features/calculator/calcMats';
 import sendMessage from '../../../../lib/discord.js/message/sendMessage';
 import replyMessage from '../../../../lib/discord.js/message/replyMessage';
 import {isUserInventory} from '../../../../lib/epic_rpg/commands/account/inventory';
