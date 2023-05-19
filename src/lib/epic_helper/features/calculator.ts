@@ -412,7 +412,10 @@ export const getCalcInfo: IGetCalcInfo = (args) => ({
 
 export const getInvalidCalcArgsMessage = (): MessageCreateOptions => {
   return {
-    content: `Correct usage:\n**Material Calculator:** \`${PREFIX.bot}calc <area>\`\n**STT Calculator:** \`${PREFIX.bot}calc <area> <level>\``,
+    content:
+      'Correct usage:\n' +
+      `**Material Calculator:** \`${PREFIX.bot}calc [area]\`\n` +
+      `**STT Calculator:** \`${PREFIX.bot}calc [area] [level]\``,
   };
 };
 
