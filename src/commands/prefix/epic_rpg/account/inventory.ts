@@ -2,11 +2,15 @@ import {COMMAND_TYPE} from '../../../../constants/bot';
 import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
 import rpgInventory, {isUserInventory} from '../../../../lib/epic_rpg/commands/account/inventory';
 import {
-  getCalcInfo,
   getCalcMaterialMessage,
   isCalcMaterial,
 } from '../../../../lib/epic_helper/features/calculator/calcMats';
 import sendMessage from '../../../../lib/discord.js/message/sendMessage';
+import {
+  getCalcInfo,
+  getCalcSTTMessage,
+  isCalcSTT,
+} from '../../../../lib/epic_helper/features/calculator/calcSTT';
 
 export default <PrefixCommand>{
   name: 'rpgInventory',
@@ -26,14 +30,13 @@ export default <PrefixCommand>{
           embed,
         });
         event.stop();
-        if (isCalcMaterial(args)) {
+        if (isCalcMaterial(args) || isCalcSTT(args)) {
           const calcInfo = getCalcInfo(args);
           if (!calcInfo.area) return;
-          const options = getCalcMaterialMessage({
-            area: calcInfo.area,
-            embed,
-            author: message.author,
-          });
+          const options = isCalcMaterial(args)
+            ? getCalcMaterialMessage({embed, area: calcInfo.area ?? 0, author: message.author})
+            : getCalcSTTMessage({embed, area: calcInfo.area ?? 0, author: message.author});
+
           sendMessage({
             client,
             channelId: message.channel.id,

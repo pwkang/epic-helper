@@ -1,17 +1,19 @@
 import {COMMAND_TYPE} from '../../../../constants/bot';
 import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
 import {
-  getCalcInfo,
   getCalcInstructionMessage,
   getCalcMaterialMessage,
-  getCalcSTTMessage,
   getInvalidCalcArgsMessage,
   isCalcMaterial,
-  isCalcSTT,
 } from '../../../../lib/epic_helper/features/calculator/calcMats';
 import sendMessage from '../../../../lib/discord.js/message/sendMessage';
 import replyMessage from '../../../../lib/discord.js/message/replyMessage';
 import {isUserInventory} from '../../../../lib/epic_rpg/commands/account/inventory';
+import {
+  getCalcInfo,
+  getCalcSTTMessage,
+  isCalcSTT,
+} from '../../../../lib/epic_helper/features/calculator/calcSTT';
 
 export default <PrefixCommand>{
   name: 'matsCalc',
