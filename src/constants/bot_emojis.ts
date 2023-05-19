@@ -45,7 +45,7 @@ export const BOT_EMOJI = {
     potato: '<:potato:1108797650725253150>',
   },
   working: {
-    normieFish: '<:fish:1108807182906044476>',
+    normieFish: '<:fish:1108921018849964133>',
     ruby: '<:ruby:1108797653975834734>',
     apple: '<:apple:1108797660342796369>',
     superFish: '<:superfish:1108800477157675029>',
@@ -72,6 +72,11 @@ export const BOT_EMOJI = {
     snowball: '<:snowball:1108797687052111872>',
     dog: '<:dog:1108797690294317177>',
     cat: '<:cat:1108797692177559574>',
+    epicpanda: '<:epicpanda:1108920962646286386>',
+    penguin: '<:penguin:1108920965913661461>',
+    pony: '<:pony:1108920970967781446>',
+    snowman: '<:snowman:1108920973077524561>',
+    voidog: '<:voidog:1108920976625909850>',
   },
   petSkill: {
     timeTraveller: '<:timetraveller:1108797667737354393>',
