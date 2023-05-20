@@ -1,4 +1,5 @@
 import {RpgArea} from '../types/rpg.types';
+import {RPG_ITEMS} from './rpg_items';
 
 export const RPG_COMMAND_TYPE = {
   daily: 'daily',
@@ -235,3 +236,35 @@ export const TRADE_RATE: ITradeRate = {
     tradeF: 1 / 250,
   },
 };
+
+export const STT_SCORE = {
+  level: 0.5,
+  stats: 0.4,
+  commonLootbox: 0.05,
+  uncommonLootbox: 0.1,
+  rareLootbox: 0.133,
+  epicLootbox: 0.2,
+  edgyLootbox: 0.25,
+  omegaLootbox: 5,
+  godlyLootbox: 50,
+  lifePotion: 1 / 500000,
+  lotteryTicket: 0.5,
+  ruby: 1 / 25,
+  ultimateLog: 40,
+  watermelon: 1 / 12,
+  superFish: 1 / 8,
+  bread: 1 / 25,
+  carrot: 1 / 30,
+  potato: 1 / 35,
+  seed: 1 / 2500,
+  breadSeed: 1,
+  carrotSeed: 1,
+  potatoSeed: 1,
+  darkEnergy: 15 / 20,
+  dragonScale: 10 / 20,
+  chip: 5 / 20,
+  mermaidHair: 4 / 20,
+  unicornHorn: 3 / 20,
+  zombieEye: 2 / 20,
+  wolfSkin: 1 / 20,
+} as const;

@@ -42,7 +42,15 @@ export const dismantleRecommend: IDismantleEverything = (inventory, currentArea)
     } else if (currentArea <= 10) {
       newInventory.dismantleBanana();
     } else if (currentArea <= 15) {
-      newInventory.dismantleGoldenFish().dismantleBanana();
+      newInventory
+        .dismantleUltraLog()
+        .dismantleHyperLog()
+        .dismantleMegaLog()
+        .dismantleSuperLog()
+        .dismantleEpicLog()
+        .dismantleEpicFish()
+        .dismantleGoldenFish()
+        .dismantleBanana();
     }
   } else {
     newInventory

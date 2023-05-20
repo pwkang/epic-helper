@@ -49,7 +49,12 @@ export default <PrefixCommand>{
           channelId: message.channel.id,
           options: isCalcMaterial(args)
             ? getCalcMaterialMessage({embed, area: calcInfo.area ?? 0, author: message.author})
-            : getCalcSTTMessage({embed, area: calcInfo.area ?? 0, author: message.author}),
+            : getCalcSTTMessage({
+                embed,
+                area: calcInfo.area ?? 0,
+                author: message.author,
+                level: calcInfo.level ?? 0,
+              }),
         });
       }
     });

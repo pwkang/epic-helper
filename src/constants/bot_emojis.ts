@@ -25,6 +25,7 @@ export const BOT_EMOJI = {
     lifePotion: '<:lifepotion:1108797598527127683>',
     coins: '<:coins:1108797543795654696>',
     guildCoins: '<:guildCoins:1108800485080711280>',
+    lotteryTicket: '<:lotteryTicket:1109497383869480980>',
   },
   drops: {
     wolfSkin: '<:wolfskin:1108797631783776347>',
@@ -33,6 +34,8 @@ export const BOT_EMOJI = {
     mermaidHair: '<:mermaidhair:1108797629934092438>',
     chip: '<:chip:1108797626889015297>',
     hairn: '<:hairn:1108797579610832978>',
+    dragonScale: '<:dragonscale:1109495016251985992>',
+    darkEnergy: '<:darkEnergy:1109495461640941608>',
   },
   equipment: {
     uoArmor: '<:uoarmor:1108797600502648883>',
@@ -43,6 +46,10 @@ export const BOT_EMOJI = {
     bread: '<:bread:1108797644735787068>',
     carrot: '<:carrot:1108797648506462298>',
     potato: '<:potato:1108797650725253150>',
+    seed: '<:seed:1109496316305879061>',
+    breadSeed: '<:breadSeed:1109495860338888798>',
+    carrotSeed: '<:carrotSeed:1109495856949891262>',
+    potatoSeed: '<:potatoSeed:1109495852789137418>',
   },
   working: {
     normieFish: '<:fish:1108921018849964133>',
@@ -63,6 +70,8 @@ export const BOT_EMOJI = {
     rareLootbox: '<:rare:1108797609629466754>',
     epicLootbox: '<:epiclb:1108797612699693118>',
     edgyLootbox: '<:edgylootbox:1108797618051612772>',
+    omegaLootbox: '<:omegalootbox:1109496643956514916>',
+    godlyLootbox: '<:godlylootbox:1109496640567513108>',
   },
   pet: {
     fisherfish: '<:fisherfish:1108800497248374864>',

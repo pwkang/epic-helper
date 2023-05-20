@@ -35,7 +35,12 @@ export default <PrefixCommand>{
           if (!calcInfo.area) return;
           const options = isCalcMaterial(args)
             ? getCalcMaterialMessage({embed, area: calcInfo.area ?? 0, author: message.author})
-            : getCalcSTTMessage({embed, area: calcInfo.area ?? 0, author: message.author});
+            : getCalcSTTMessage({
+                embed,
+                area: calcInfo.area ?? 0,
+                author: message.author,
+                level: calcInfo?.level ?? 0,
+              });
 
           sendMessage({
             client,

@@ -30,6 +30,7 @@ export const startTrading = ({startArea, endArea, inventory, tradeTo}: IStartTra
       }
     }
   }
+  console.log('newInventory', newInventory);
   switch (tradeTo) {
     case 'normieFish':
       newInventory = newInventory.tradeE(endArea).tradeC(endArea).tradeB(endArea);
