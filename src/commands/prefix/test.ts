@@ -1,5 +1,4 @@
 import {COMMAND_TYPE} from '../../constants/bot';
-import rpgCraft, {isSuccessfullyCrafted} from '../../lib/epic_rpg/commands/other/craft';
 import {getCalcSTTMessage} from '../../lib/epic_helper/features/calculator/calcSTT';
 
 export default <PrefixCommand>{

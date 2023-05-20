@@ -6,6 +6,7 @@ import {
   redisSetUserRubyAmount,
 } from '../../services/redis/user-account.redis';
 import {UpdateQuery} from 'mongoose';
+import {ENCHANT_LEVEL} from '../../constants/enchant';
 
 const dbUser = mongoClient.model<IUser>('user', userSchema);
 
@@ -192,4 +193,57 @@ export const getUserRubyAmount = async (userId: string): Promise<number> => {
   };
 
   return await redisGetUserRubyAmount(userId, cb);
+};
+
+interface ISetUserEnchantTier {
+  userId: string;
+  tier: ValuesOf<typeof ENCHANT_LEVEL>;
+}
+
+export const setUserEnchantTier = async ({userId, tier}: ISetUserEnchantTier): Promise<void> => {
+  await dbUser.findOneAndUpdate(
+    {
+      userId,
+    },
+    {
+      $set: {
+        'config.enchant': tier,
+      },
+    }
+  );
+};
+
+interface IRemoveUserEnchantTier {
+  userId: string;
+}
+
+export const removeUserEnchantTier = async ({userId}: IRemoveUserEnchantTier): Promise<void> => {
+  await dbUser.findOneAndUpdate(
+    {
+      userId,
+    },
+    {
+      $unset: {
+        'config.enchant': '',
+      },
+    }
+  );
+};
+
+interface IGetUserEnchantTier {
+  userId: string;
+}
+
+export const getUserEnchantTier = async ({
+  userId,
+}: IGetUserEnchantTier): Promise<ValuesOf<typeof ENCHANT_LEVEL> | null> => {
+  const user = await dbUser.findOne(
+    {
+      userId,
+    },
+    {
+      'config.enchant': 1,
+    }
+  );
+  return user?.config.enchant ?? null;
 };
