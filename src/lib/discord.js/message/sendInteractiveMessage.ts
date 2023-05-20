@@ -42,7 +42,6 @@ export default async function sendInteractiveMessage({
   ) {
     collector?.on('collect', async (collected) => {
       if (collected.customId !== customId) return;
-      console.log('collected', collected);
       const replyMsg = await callback(collected);
       if (!replyMsg) return;
       await collected.update(replyMsg);

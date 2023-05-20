@@ -229,3 +229,21 @@ export const removeUserEnchantTier = async ({userId}: IRemoveUserEnchantTier): P
     }
   );
 };
+
+interface IGetUserEnchantTier {
+  userId: string;
+}
+
+export const getUserEnchantTier = async ({
+  userId,
+}: IGetUserEnchantTier): Promise<ValuesOf<typeof ENCHANT_LEVEL> | null> => {
+  const user = await dbUser.findOne(
+    {
+      userId,
+    },
+    {
+      'config.enchant': 1,
+    }
+  );
+  return user?.config.enchant ?? null;
+};
