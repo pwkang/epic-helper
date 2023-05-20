@@ -4,6 +4,7 @@ import {
   InteractionUpdateOptions,
   MessageCreateOptions,
   MessagePayload,
+  StringSelectMenuInteraction,
 } from 'discord.js';
 import sendMessage from './sendMessage';
 import ms from 'ms';
@@ -36,11 +37,12 @@ export default async function sendInteractiveMessage({
   function on(
     customId: string,
     callback: (
-      collected: BaseInteraction
+      collected: BaseInteraction | StringSelectMenuInteraction
     ) => Promise<InteractionUpdateOptions> | InteractionUpdateOptions
   ) {
     collector?.on('collect', async (collected) => {
       if (collected.customId !== customId) return;
+      console.log('collected', collected);
       const replyMsg = await callback(collected);
       if (!replyMsg) return;
       await collected.update(replyMsg);
