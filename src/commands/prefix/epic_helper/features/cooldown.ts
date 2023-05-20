@@ -128,7 +128,7 @@ export default <PrefixCommand>{
       const value = [];
       for (const item of field.value) {
         const cooldown = cooldowns.find((c) => c.type === item.type);
-        if (cooldown) {
+        if (cooldown && cooldown.readyAt.getTime() > Date.now()) {
           value.push(
             `${EMOJI.notReady} ~-~ \`${item.name(cooldown.props)}\` (${dynamicTimeStamp({
               time: cooldown.readyAt,

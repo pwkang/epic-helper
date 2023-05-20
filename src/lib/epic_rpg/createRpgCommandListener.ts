@@ -2,6 +2,7 @@ import {Client, Embed, Message, MessageCollector, TextChannel, User} from 'disco
 import {EPIC_RPG_ID} from '../../constants/bot';
 import {TypedEventEmitter} from '../../utils/TypedEventEmitter';
 import ms from 'ms';
+import {sleep} from '../../utils/sleep';
 
 interface IRpgCommandListener {
   client: Client;
@@ -55,7 +56,12 @@ export const createRpgCommandListener = ({channelId, client, author}: IRpgComman
     collector?.resetTimer({time: ms});
   };
 
-  collector.on('collect', (collected) => {
+  collector.on('collect', async (collected) => {
+    if (isSlashCommand({collected, author})) {
+      await sleep(1000);
+      collected = collector?.channel.messages.cache.get(collected.id) as Message;
+    }
+
     if (collected.embeds.length) {
       const embed = collected.embeds[0];
 
@@ -172,4 +178,8 @@ function isPolicePass({author, collected}: IChecker) {
     collected.content.includes('Everything seems fine') &&
     collected.content.includes(author.username)
   );
+}
+
+function isSlashCommand({author, collected}: IChecker) {
+  return collected.content === '' && collected.embeds.length === 0 && collected.interaction?.id;
 }

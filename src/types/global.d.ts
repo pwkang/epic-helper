@@ -8,7 +8,7 @@ declare global {
   interface PrefixCommand {
     name: string;
     commands: string[];
-    execute: (client: Client, message: Message) => Promise<void>;
+    execute: (client: Client, message: Message, args: string[]) => void | Promise<void>;
     type: ValuesOf<typeof COMMAND_TYPE>;
   }
 

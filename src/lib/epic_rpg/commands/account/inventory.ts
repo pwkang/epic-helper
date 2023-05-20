@@ -1,5 +1,5 @@
 import {Embed, User} from 'discord.js';
-import scanInventory from '../../../../utils/epic_rpg/scanInventory';
+import scanInventory from '../../../../utils/epic_rpg/inventory/scanInventory';
 import {updateUserRubyAmount} from '../../../../models/user/user.service';
 
 const RUBY_EMOJI = '<:ruby:603304907650629653>';
