@@ -1,6 +1,5 @@
 import {COMMAND_TYPE} from '../../../../constants/bot';
 import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
-import scanLootbox from '../../../../utils/epic_rpg/scanLootbox';
 import rpgOpenLootbox, {isLootboxOpen} from '../../../../lib/epic_rpg/commands/other/open';
 
 export default <PrefixCommand>{

@@ -1,7 +1,6 @@
 import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
 import {COMMAND_TYPE} from '../../../../constants/bot';
 import {
-  getEnchantType,
   isEnchantEquipmentBroken,
   isSuccessfullyEnchanted,
   rpgEnchant,

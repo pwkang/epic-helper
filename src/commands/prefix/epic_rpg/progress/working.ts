@@ -11,7 +11,6 @@ import rpgWorking, {
 } from '../../../../lib/epic_rpg/commands/progress/working';
 import {updateUserCooldown} from '../../../../models/user-reminder/user-reminder.service';
 import replyMessage from '../../../../lib/discord.js/message/replyMessage';
-import {hasNoSeedToPlant} from '../../../../lib/epic_rpg/commands/progress/farm';
 import {updateUserRubyAmount} from '../../../../models/user/user.service';
 
 export default <PrefixCommand>{
