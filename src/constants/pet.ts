@@ -2,15 +2,15 @@ export const RPG_PET_TYPE = {
   cat: 'cat',
   dog: 'dog',
   dragon: 'dragon',
-  pumpkinBat: 'Pumpkin Bat',
+  pumpkinBat: 'Pumpkin bat',
   hamster: 'Hamster',
-  pinkFish: 'Pink Fish',
+  pinkFish: 'Pink fish',
   snowball: 'Snowball',
   pony: 'Pony',
-  goldenBunny: 'Golden Bunny',
+  goldenBunny: 'Golden bunny',
   penguin: 'Penguin',
   snowman: 'Snowman',
-  epicPanda: 'Epic Panda',
+  epicPanda: 'Epic panda',
   voidDog: 'VoiDog',
 } as const;
 
@@ -20,7 +20,7 @@ export const RPG_PET_SKILL = {
   clever: 'Clever',
   digger: 'Digger',
   lucky: 'Lucky',
-  timeTraveler: 'Time Traveler',
+  timeTraveler: 'Time traveler',
   epic: 'EPIC',
   ascended: 'ASCENDED',
   fighter: 'FIGHTER',
@@ -37,4 +37,22 @@ export const RPG_SPECIAL_PET_SKILL = {
   pony: 'Farmer',
   epicPanda: 'Competitive',
   penguin: 'Antarctician',
+} as const;
+
+export const RPG_PET_STATUS = {
+  idle: 'idle',
+  adventure: 'adventure',
+  back: 'back',
+} as const;
+
+export const RPG_PET_SKILL_TIER = {
+  f: 1,
+  e: 2,
+  d: 3,
+  c: 4,
+  b: 5,
+  a: 6,
+  s: 7,
+  ss: 8,
+  'ss+': 9,
 } as const;

@@ -1,6 +1,6 @@
 import {Schema} from 'mongoose';
 import {IUserPet} from './user-pet.type';
-import {RPG_PET_TYPE} from '../../constants/pet';
+import {RPG_PET_STATUS, RPG_PET_TYPE} from '../../constants/pet';
 
 const userPetSchema = new Schema<IUserPet>({
   userId: {
@@ -35,6 +35,11 @@ const userPetSchema = new Schema<IUserPet>({
     type: Number,
     required: true,
   },
+  status: {
+    type: String,
+    enum: Object.values(RPG_PET_STATUS),
+  },
+  readyAt: Date,
 });
 
 export default userPetSchema;
