@@ -65,15 +65,11 @@ type Conditional =
       props: IFarmReminderProps;
     }
   | {
-      type: 'pet';
-      props: IPetReminderProps;
-    }
-  | {
       type: 'lootbox';
       props: ILootboxReminderProps;
     }
   | {
-      type: 'daily' | 'weekly' | 'vote' | 'duel' | 'horse' | 'arena' | 'dungeon';
+      type: 'daily' | 'weekly' | 'vote' | 'duel' | 'horse' | 'arena' | 'dungeon' | 'pet';
       props?: never;
     };
 
