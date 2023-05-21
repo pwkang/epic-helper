@@ -269,6 +269,31 @@ export const saveUserLootboxCooldown = async ({
   );
 };
 
+interface ISaveUserPetCooldown {
+  userId: string;
+  readyAt?: Date;
+}
+
+export const saveUserPetCooldown = async ({
+  userId,
+  readyAt,
+}: ISaveUserPetCooldown): Promise<void> => {
+  await dbUserReminder.findOneAndUpdate(
+    {
+      userId,
+      type: RPG_COMMAND_TYPE.pet,
+    },
+    {
+      $set: {
+        readyAt,
+      },
+    },
+    {
+      upsert: true,
+    }
+  );
+};
+
 interface IUpdateUserCooldown {
   userId: string;
   type: ValuesOf<typeof RPG_COMMAND_TYPE>;

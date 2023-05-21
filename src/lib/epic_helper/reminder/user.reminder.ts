@@ -7,6 +7,8 @@ import {getUserAccount} from '../../../models/user/user.service';
 import sendMessage from '../../discord.js/message/sendMessage';
 import {getCommandStr} from '../../epic_rpg/reminders/reminders-command-name';
 import ms from 'ms';
+import {RPG_COMMAND_TYPE} from '../../../constants/rpg';
+import {userPetReminderTimesUp} from './user-pet.reminder';
 
 export const userReminderTimesUp = async (client: Client, userId: string) => {
   const user = await getUserAccount(userId);
@@ -15,21 +17,26 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
 
   const readyCommands = await findUserReadyCommands(userId);
 
-  for (let command of readyCommands) {
-    if (Date.now() - command.readyAt.getTime() > ms('5s')) continue;
+  // for (let command of readyCommands) {
+  readyCommands.forEach((command) => {
+    if (Date.now() - command.readyAt.getTime() > ms('5s')) return;
+    if (command.type === RPG_COMMAND_TYPE.pet) {
+      userPetReminderTimesUp(client, user);
+      return;
+    }
     const commandName = getCommandStr({
       props: command.props,
       slash: false,
       type: command.type,
     });
-    await sendMessage({
+    sendMessage({
       client,
       channelId: user.config.channel,
       options: {
         content: `<@${userId}> **__${commandName}__** is ready!`,
       },
     });
-  }
+  });
   await deleteUserCooldowns({
     userId: user.userId,
     types: readyCommands.map((cmd) => cmd.type),

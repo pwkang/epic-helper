@@ -1,6 +1,7 @@
 import {mongoClient} from '../../services/mongoose/mongoose.service';
 import {IUserPet} from './user-pet.type';
 import userPetSchema from './user-pet.schema';
+import {RPG_PET_STATUS} from '../../constants/pet';
 
 const dbUserPet = mongoClient.model<IUserPet>('user-pet', userPetSchema);
 
@@ -74,4 +75,41 @@ export const deleteExtraPets = async ({userId, maxPetId}: IDeleteExtraPets) => {
       $gt: maxPetId,
     },
   });
+};
+
+interface IGetUserReadyPets {
+  userId: string;
+}
+
+export const getUserReadyPets = async ({userId}: IGetUserReadyPets) => {
+  return dbUserPet.find({
+    userId,
+    readyAt: {
+      $lte: new Date(),
+    },
+  });
+};
+
+interface IUpdateRemindedPets {
+  userId: string;
+  petIds: number[];
+}
+
+export const updateRemindedPets = async ({userId, petIds}: IUpdateRemindedPets) => {
+  return dbUserPet.updateMany(
+    {
+      userId,
+      petId: {
+        $in: petIds,
+      },
+    },
+    {
+      $unset: {
+        readyAt: 1,
+      },
+      $set: {
+        status: RPG_PET_STATUS.back,
+      },
+    }
+  );
 };
