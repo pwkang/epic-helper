@@ -9,7 +9,12 @@ interface IGetGuildSlashCommands {
 export const getGuildSlashCommands = async ({guild, client}: IGetGuildSlashCommands) => {
   if (!client.user) return [];
 
-  const data = await discordJsRest.get(Routes.applicationGuildCommands(client.user.id, guild.id));
+  try {
+    const data = await discordJsRest.get(Routes.applicationGuildCommands(client.user.id, guild.id));
 
-  return data as ApplicationCommand[];
+    return data as ApplicationCommand[];
+  } catch (e) {
+    console.log(e);
+    return [];
+  }
 };

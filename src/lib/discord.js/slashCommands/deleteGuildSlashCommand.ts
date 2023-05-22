@@ -13,5 +13,11 @@ export const deleteGuildSlashCommand = async ({
   commandId,
 }: IDeleteGuildSlashCommand) => {
   if (!client.user) return [];
-  await discordJsRest.delete(Routes.applicationGuildCommand(client.user.id!, guild.id, commandId));
+  try {
+    await discordJsRest.delete(
+      Routes.applicationGuildCommand(client.user.id!, guild.id, commandId)
+    );
+  } catch (e) {
+    console.log(e);
+  }
 };

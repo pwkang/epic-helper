@@ -7,8 +7,12 @@ interface IGetGlobalSlashCommands {
 
 export const getGlobalSlashCommands = async ({client}: IGetGlobalSlashCommands) => {
   if (!client.user) return [];
+  try {
+    const data = await discordJsRest.get(Routes.applicationCommands(client.user.id));
 
-  const data = await discordJsRest.get(Routes.applicationCommands(client.user.id));
-
-  return data as ApplicationCommand[];
+    return data as ApplicationCommand[];
+  } catch (e) {
+    console.log(e);
+    return [];
+  }
 };

@@ -13,11 +13,15 @@ export const createGuildSlashCommand = async ({
   guild,
 }: ICreateGuildSlashCommand) => {
   if (!client.user) return [];
-  const data = await discordJsRest.post(
-    Routes.applicationGuildCommands(client.user.id!, guild.id),
-    {
-      body: commands,
-    }
-  );
-  return data as ApplicationCommand;
+  try {
+    const data = await discordJsRest.post(
+      Routes.applicationGuildCommands(client.user.id!, guild.id),
+      {
+        body: commands,
+      }
+    );
+    return data as ApplicationCommand;
+  } catch (e) {
+    console.log(e);
+  }
 };

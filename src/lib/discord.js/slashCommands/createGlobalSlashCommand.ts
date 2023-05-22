@@ -7,8 +7,12 @@ interface ICreateGlobalSlashCommand {
 }
 
 export const createGlobalSlashCommand = async ({commands, client}: ICreateGlobalSlashCommand) => {
-  const data = await discordJsRest.post(Routes.applicationCommands(client.user?.id!), {
-    body: commands,
-  });
-  return data as ApplicationCommand;
+  try {
+    const data = await discordJsRest.post(Routes.applicationCommands(client.user?.id!), {
+      body: commands,
+    });
+    return data as ApplicationCommand;
+  } catch (e) {
+    console.log(e);
+  }
 };

@@ -8,5 +8,9 @@ interface IDeleteGuildSlashCommand {
 
 export const deleteGlobalSlashCommand = async ({client, commandId}: IDeleteGuildSlashCommand) => {
   if (!client.user) return [];
-  await discordJsRest.delete(Routes.applicationCommand(client.user.id!, commandId));
+  try {
+    await discordJsRest.delete(Routes.applicationCommand(client.user.id!, commandId));
+  } catch (e) {
+    console.log(e);
+  }
 };
