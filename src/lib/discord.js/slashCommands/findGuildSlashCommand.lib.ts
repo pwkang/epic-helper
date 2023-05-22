@@ -17,6 +17,6 @@ export const findGuildSlashCommand = async ({guild, client, commandId}: IGetGuil
 
     return data as ApplicationCommand;
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 };

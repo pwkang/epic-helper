@@ -18,6 +18,6 @@ export const deleteGuildSlashCommand = async ({
       Routes.applicationGuildCommand(client.user.id!, guild.id, commandId)
     );
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 };

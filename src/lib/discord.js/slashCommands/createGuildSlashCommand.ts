@@ -22,6 +22,6 @@ export const createGuildSlashCommand = async ({
     );
     return data as ApplicationCommand;
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 };

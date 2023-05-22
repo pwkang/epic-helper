@@ -12,7 +12,7 @@ export const getGlobalSlashCommands = async ({client}: IGetGlobalSlashCommands) 
 
     return data as ApplicationCommand[];
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return [];
   }
 };

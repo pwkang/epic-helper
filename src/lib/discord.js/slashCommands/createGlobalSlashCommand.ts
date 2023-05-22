@@ -13,6 +13,6 @@ export const createGlobalSlashCommand = async ({commands, client}: ICreateGlobal
     });
     return data as ApplicationCommand;
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 };

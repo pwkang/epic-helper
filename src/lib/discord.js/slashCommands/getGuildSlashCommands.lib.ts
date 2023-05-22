@@ -14,7 +14,7 @@ export const getGuildSlashCommands = async ({guild, client}: IGetGuildSlashComma
 
     return data as ApplicationCommand[];
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return [];
   }
 };
