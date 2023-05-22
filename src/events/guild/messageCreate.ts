@@ -28,6 +28,13 @@ const validateCommand = (commands: string[], args: string[]) => {
   );
 };
 
+const getMatchedCommandLength = (commands: string[], args: string[]) => {
+  const matched = commands.find((cmd) =>
+    cmd.split(' ').every((name, i) => name?.toLowerCase() === args[i]?.toLowerCase())
+  );
+  return matched?.split(' ').length ?? 0;
+};
+
 function searchCommand(
   client: Client,
   message: Message
@@ -36,6 +43,7 @@ function searchCommand(
   if (messageContent === '') return null;
   let args: string[] = [];
   let command;
+  let commandType: ValuesOf<typeof COMMAND_TYPE>;
 
   if (isRpgCommand(message)) {
     if (messageContent.startsWith(`${PREFIX.rpg} `)) {
@@ -48,24 +56,33 @@ function searchCommand(
         .filter((arg) => arg !== '');
     }
 
-    command = client.prefixCommands.find(
-      (cmd) => cmd.type === COMMAND_TYPE.rpg && validateCommand(cmd.commands, args)
-    );
+    commandType = COMMAND_TYPE.rpg;
   }
 
   if (PREFIX.bot && isBotCommand(message)) {
     args = messageContent.slice(PREFIX.bot.length).trim().split(' ');
 
-    command = client.prefixCommands.find(
-      (cmd) => cmd.type === COMMAND_TYPE.bot && validateCommand(cmd.commands, args)
-    );
+    commandType = COMMAND_TYPE.bot;
   }
   if (DEVS_ID.includes(message.author.id) && PREFIX.dev && messageContent.startsWith(PREFIX.dev)) {
     args = messageContent.slice(PREFIX.dev.length).trim().split(' ');
 
-    command = client.prefixCommands.find(
-      (cmd) => cmd.type === COMMAND_TYPE.dev && validateCommand(cmd.commands, args)
-    );
+    commandType = COMMAND_TYPE.dev;
+  }
+
+  const matchedCommands = client.prefixCommands.filter(
+    (cmd) => cmd.type === commandType && validateCommand(cmd.commands, args)
+  );
+  if (matchedCommands.size === 1) {
+    command = matchedCommands.first();
+  } else {
+    const commands = [...matchedCommands.values()];
+    command = matchedCommands
+      .sort(
+        (a, b) =>
+          getMatchedCommandLength(b.commands, args) - getMatchedCommandLength(a.commands, args)
+      )
+      .first();
   }
 
   return command ? {command, args} : null;
