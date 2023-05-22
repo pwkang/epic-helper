@@ -60,12 +60,12 @@ export default <PrefixCommand>{
         const guildCommand = registeredGuildSlashCommands.find(
           (gsc) => gsc.name === command.builder.name
         );
-        if (!guildCommand) continue;
-        await deleteGuildSlashCommand({
-          client,
-          commandId: guildCommand.id,
-          guild: message.guild!,
-        });
+        if (guildCommand)
+          await deleteGuildSlashCommand({
+            client,
+            commandId: guildCommand.id,
+            guild: message.guild!,
+          });
         deleted++;
         await editMessage({
           client,
@@ -82,11 +82,11 @@ export default <PrefixCommand>{
         const globalCommand = registeredGlobalSlashCommands.find(
           (gsc) => gsc.name === command.builder.name
         );
-        if (!globalCommand) continue;
-        await deleteGlobalSlashCommand({
-          client,
-          commandId: globalCommand.id,
-        });
+        if (globalCommand)
+          await deleteGlobalSlashCommand({
+            client,
+            commandId: globalCommand.id,
+          });
         deleted++;
         await editMessage({
           client,
