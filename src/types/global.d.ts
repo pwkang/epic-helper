@@ -1,6 +1,7 @@
 import type {Client, Interaction, Message, SlashCommandBuilder} from 'discord.js';
 import type {COMMAND_TYPE} from '../constants/bot';
 import type {ScheduleOptions} from 'node-cron';
+import {CommandInteraction} from 'discord.js';
 
 declare global {
   type ValuesOf<T extends Record<string, unknown>> = T[keyof T];
@@ -14,7 +15,7 @@ declare global {
 
   interface SlashCommand {
     name: string;
-    execute: (client: Client, interaction: Interaction) => Promise<void>;
+    execute: (client: Client, interaction: CommandInteraction) => Promise<void>;
     builder: SlashCommandBuilder;
   }
 
