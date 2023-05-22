@@ -19,4 +19,5 @@ export const DEVS_ID = process.env.DEVS_ID?.split(',') ?? [];
 
 export const BOT_COLOR = {
   embed: '#2BFF00',
+  devEmbed: '#eaf85e',
 } as const;

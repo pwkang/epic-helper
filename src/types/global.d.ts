@@ -1,4 +1,5 @@
-import type {Client, Interaction, Message, SlashCommandBuilder} from 'discord.js';
+import type {Client, Message, SlashCommandBuilder} from 'discord.js';
+import {CommandInteraction} from 'discord.js';
 import type {COMMAND_TYPE} from '../constants/bot';
 import type {ScheduleOptions} from 'node-cron';
 
@@ -14,7 +15,7 @@ declare global {
 
   interface SlashCommand {
     name: string;
-    execute: (client: Client, interaction: Interaction) => Promise<void>;
+    execute: (client: Client, interaction: CommandInteraction) => Promise<void>;
     builder: SlashCommandBuilder;
   }
 
