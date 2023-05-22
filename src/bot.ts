@@ -6,6 +6,7 @@ import loadCommands from './handler/commands.handler';
 import loadBotEvents from './handler/bot-events.handler';
 import loadCronJob from './handler/cron.handler';
 import {redisClient} from './services/redis/redis.service';
+import {initSentry} from './handler/sentry.handler';
 
 dotenv.config();
 const environment = process.env.NODE_ENV || 'development';
@@ -24,6 +25,7 @@ client.slashCommands = new Collection();
 
 if (environment === 'production') {
   client.cluster = new ClusterClient(client); // initialize the Client, so we access the .broadcastEval()
+  initSentry();
 }
 
 Promise.all([
