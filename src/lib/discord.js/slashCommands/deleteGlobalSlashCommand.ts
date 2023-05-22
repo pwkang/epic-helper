@@ -1,4 +1,4 @@
-import {ApplicationCommand, Client, Guild, Routes, SlashCommandBuilder} from 'discord.js';
+import {Client, Routes} from 'discord.js';
 import {discordJsRest} from '../../../services/discord.js/discordjs.service.ts';
 
 interface IDeleteGuildSlashCommand {

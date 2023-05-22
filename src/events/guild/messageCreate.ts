@@ -76,7 +76,6 @@ function searchCommand(
   if (matchedCommands.size === 1) {
     command = matchedCommands.first();
   } else {
-    const commands = [...matchedCommands.values()];
     command = matchedCommands
       .sort(
         (a, b) =>

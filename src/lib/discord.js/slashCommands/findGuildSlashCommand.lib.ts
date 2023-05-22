@@ -1,4 +1,4 @@
-import {ApplicationCommand, Client, Guild, REST, Routes} from 'discord.js';
+import {ApplicationCommand, Client, Guild, Routes} from 'discord.js';
 import {discordJsRest} from '../../../services/discord.js/discordjs.service.ts';
 
 interface IGetGuildSlashCommands {
