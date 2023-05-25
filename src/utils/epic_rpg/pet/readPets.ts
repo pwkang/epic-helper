@@ -92,7 +92,7 @@ const getPetTier = (fieldName: string) => {
 };
 
 const getPetReadyAt = (fieldValue: string) => {
-  if (getPetStatus(fieldValue) !== RPG_PET_STATUS.adventure) return;
+  if (getPetStatus(fieldValue) !== RPG_PET_STATUS.adventure) return null;
   const timeArr = fieldValue
     .split('\n')
     ?.find((row) => row.includes('Status'))
@@ -101,7 +101,7 @@ const getPetReadyAt = (fieldValue: string) => {
     ?.split(' ')
     .map((time) => time.replace('**', ''))
     .filter((time) => time !== '');
-  if (!timeArr) return;
+  if (!timeArr) return null;
   let duration = timeArr.reduce((acc, time) => {
     return acc + ms(time);
   }, 0);

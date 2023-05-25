@@ -39,7 +39,7 @@ function searchCommand(
   client: Client,
   message: Message
 ): {command: PrefixCommand; args: string[]} | null {
-  const messageContent = trimWhitespace(message.content);
+  const messageContent = trimWhitespace(message.content.toLowerCase());
   if (messageContent === '') return null;
   let args: string[] = [];
   let command;

@@ -1,5 +1,9 @@
 import {COMMAND_TYPE} from '../../constants/bot';
-import {getCalcSTTMessage} from '../../lib/epic_helper/features/calculator/calcSTT';
+import {
+  amountOfPetsSentToAdventure,
+  rpgPetAdventure,
+} from '../../lib/epic_rpg/commands/pets/petAdventure.lib';
+import {isSuccessfullyClaimedPet, rpgPetClaim} from '../../lib/epic_rpg/commands/pets/petClaim';
 
 export default <PrefixCommand>{
   name: 'test',
@@ -10,11 +14,17 @@ export default <PrefixCommand>{
     if (!args[2]) return;
     const msg = await message.channel.messages.fetch(args[2]);
     if (!msg) return;
-    getCalcSTTMessage({
-      embed: msg.embeds[0],
-      area: 15,
-      level: 5126,
+
+    console.log(
+      isSuccessfullyClaimedPet({
+        embed: msg.embeds[0],
+        author: message.author,
+      })
+    );
+    rpgPetClaim({
       author: message.author,
+      embed: msg.embeds[0],
+      client,
     });
   },
 };

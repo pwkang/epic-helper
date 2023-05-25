@@ -15,7 +15,6 @@ export const redisSetRpgMessageOwner = async ({
   userId,
   messageId,
 }: IRedisSetRpgMessageOwner) => {
-  console.log(`${prefix}${userId}`, messageId);
   await redisClient.set(`${prefix}${messageId}`, userId, {
     PX: ms('5m'),
   });

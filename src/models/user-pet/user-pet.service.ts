@@ -131,3 +131,43 @@ export const updateRemindedPets = async ({userId, petIds}: IUpdateRemindedPets) 
     }
   );
 };
+
+interface IGetAvailableEpicPets {
+  userId: string;
+}
+
+export const getAvailableEpicPets = async ({userId}: IGetAvailableEpicPets) => {
+  return dbUserPet.find({
+    userId,
+    status: RPG_PET_STATUS.idle,
+    'skills.epic': {
+      $ne: null,
+    },
+  });
+};
+
+export const claimAllPets = async ({userId}: {userId: string}) => {
+  return dbUserPet.updateMany(
+    {
+      userId,
+      $or: [
+        {
+          status: RPG_PET_STATUS.back,
+        },
+        {
+          readyAt: {
+            $lte: new Date(),
+          },
+        },
+      ],
+    },
+    {
+      $set: {
+        status: RPG_PET_STATUS.idle,
+      },
+      $unset: {
+        readyAt: 1,
+      },
+    }
+  );
+};

@@ -5,7 +5,7 @@ export interface IUserPet {
   petId: number;
   name: ValuesOf<typeof RPG_PET_TYPE>;
   tier: number;
-  readyAt?: Date;
+  readyAt: Date | null;
   status: ValuesOf<typeof RPG_PET_STATUS>;
   skills: {
     [key in keyof typeof RPG_PET_SKILL]?: number;
