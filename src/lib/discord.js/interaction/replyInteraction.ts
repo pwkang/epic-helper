@@ -36,7 +36,7 @@ export default async function replyInteraction({
     customId: string,
     callback: (
       collected: BaseInteraction
-    ) => Promise<InteractionUpdateOptions> | InteractionUpdateOptions
+    ) => Promise<InteractionUpdateOptions | null> | InteractionUpdateOptions | null
   ) {
     collector?.on('collect', async (collected) => {
       if (collected.customId !== customId) return;
