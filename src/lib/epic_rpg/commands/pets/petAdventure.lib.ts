@@ -54,6 +54,10 @@ export const rpgPetAdventure = async ({
       petId: petsToSend[0].petId,
       duration: 0,
     });
+    await updateInstantBackPet({
+      userId: author.id,
+      pet: petsToSend[0],
+    });
     petsToSend = [];
   }
 
@@ -67,6 +71,13 @@ export const rpgPetAdventure = async ({
         petId: convertPetIdToNum(petId),
         duration: 0,
       });
+      const pet = petsToSend.find((p) => p.petId === convertPetIdToNum(petId));
+      if (pet) {
+        await updateInstantBackPet({
+          userId: author.id,
+          pet,
+        });
+      }
     }
     petsToSend = petsToSend.filter((p) => !returnedPets.map(convertPetIdToNum).includes(p.petId));
   }
@@ -221,6 +232,26 @@ const sendPetToAdventure = async ({pet, userId}: ISendPetToAdventure) => {
     userId,
   });
   return adventureTime;
+};
+
+/*
+ *  ===================================================
+ *       Update pet status to back from adventure
+ *  ===================================================
+ */
+
+interface IUpdatePetStatus {
+  userId: string;
+  pet: IUserPet;
+}
+
+export const updateInstantBackPet = async ({pet, userId}: ISendPetToAdventure) => {
+  pet.status = RPG_PET_STATUS.back;
+  pet.readyAt = new Date();
+  await updateUserPet({
+    pet,
+    userId,
+  });
 };
 
 /*
