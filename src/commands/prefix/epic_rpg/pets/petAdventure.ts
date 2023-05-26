@@ -35,7 +35,6 @@ export default <PrefixCommand>{
       }
       if (isSuccessfullySentPetsToAdventure({message: collected, author: message.author})) {
         event.stop();
-        console.log('sent');
         const amountOfPetSent = amountOfPetsSentToAdventure({
           message: collected,
           author: message.author,
@@ -44,6 +43,7 @@ export default <PrefixCommand>{
           author: message.author,
           selectedPets: args.slice(3),
           amountOfPetSent,
+          message: collected,
         });
       }
     });

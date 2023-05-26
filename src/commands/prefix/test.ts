@@ -1,9 +1,12 @@
 import {COMMAND_TYPE} from '../../constants/bot';
 import {
   amountOfPetsSentToAdventure,
+  extractReturnedPetsId,
+  isSuccessfullySentPetsToAdventure,
   rpgPetAdventure,
 } from '../../lib/epic_rpg/commands/pets/petAdventure.lib';
 import {isSuccessfullyClaimedPet, rpgPetClaim} from '../../lib/epic_rpg/commands/pets/petClaim';
+import replyMessage from '../../lib/discord.js/message/replyMessage';
 
 export default <PrefixCommand>{
   name: 'test',
@@ -14,17 +17,39 @@ export default <PrefixCommand>{
     if (!args[2]) return;
     const msg = await message.channel.messages.fetch(args[2]);
     if (!msg) return;
-
-    console.log(
-      isSuccessfullyClaimedPet({
-        embed: msg.embeds[0],
-        author: message.author,
-      })
-    );
-    rpgPetClaim({
+    //
+    const options = await rpgPetAdventure({
+      message: msg,
       author: message.author,
-      embed: msg.embeds[0],
+      selectedPets: ['a', 'b', 'c', 'd', 'e'],
+      amountOfPetSent: amountOfPetsSentToAdventure({
+        message: msg,
+        author: message.author,
+      }),
+    });
+    replyMessage({
+      message,
+      options,
       client,
     });
+
+    // console.log(
+    //   extractReturnedPetsId({
+    //     message: msg,
+    //     author: message.author,
+    //   })
+    // );
+
+    // console.log(
+    //   isSuccessfullyClaimedPet({
+    //     embed: msg.embeds[0],
+    //     author: message.author,
+    //   })
+    // );
+    // rpgPetClaim({
+    //   author: message.author,
+    //   embed: msg.embeds[0],
+    //   client,
+    // });
   },
 };
