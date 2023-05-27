@@ -35,18 +35,16 @@ interface IRpgWorking {
   message: Message;
   author: User;
   isSlashCommand: boolean;
+  workingType: ValuesOf<typeof RPG_WORKING_TYPE>;
 }
 
-export function rpgWorking({client, message, author, isSlashCommand}: IRpgWorking) {
+export function rpgWorking({client, message, author, isSlashCommand, workingType}: IRpgWorking) {
   const event = createRpgCommandListener({
     channelId: message.channel.id,
     client,
     author,
   });
   if (!event) return;
-  const workingType = Object.values(RPG_WORKING_TYPE).find((type) =>
-    message.content.includes(type)
-  );
   event.on('content', async (content) => {
     if (isRpgWorkingSuccess({author, content})) {
       await rpgWorkingSuccess({

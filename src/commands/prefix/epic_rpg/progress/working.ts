@@ -6,12 +6,17 @@ export default <PrefixCommand>{
   name: 'rpgWorking',
   commands: Object.values(RPG_WORKING_TYPE),
   type: COMMAND_TYPE.rpg,
-  execute: async (client, message) => {
+  execute: async (client, message, args) => {
+    const workingType = Object.values(RPG_WORKING_TYPE).find((type) =>
+      args.map((ar) => ar.toLowerCase()).includes(type)
+    );
+    if (!workingType) return;
     rpgWorking({
       author: message.author,
       message,
       client,
       isSlashCommand: false,
+      workingType,
     });
   },
 };
