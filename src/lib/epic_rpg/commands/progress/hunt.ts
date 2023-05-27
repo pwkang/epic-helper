@@ -1,11 +1,70 @@
 import {Client, Embed, Message, User} from 'discord.js';
 import {HUNT_MONSTER_LIST} from '../../../../constants/monster';
-import {saveUserHuntCooldown} from '../../../../models/user-reminder/user-reminder.service';
+import {
+  saveUserHuntCooldown,
+  updateUserCooldown,
+} from '../../../../models/user-reminder/user-reminder.service';
 import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
 import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
+import {createRpgCommandListener} from '../../createRpgCommandListener';
+import replyMessage from '../../../discord.js/message/replyMessage';
 
 interface IRpgHunt {
+  client: Client;
+  message: Message;
+  author: User;
+  isSlashCommand?: boolean;
+}
+
+export function rpgHunt({author, message, client, isSlashCommand}: IRpgHunt) {
+  const event = createRpgCommandListener({
+    client,
+    channelId: message.channel.id,
+    author,
+  });
+  if (!event) return;
+  event.on('content', (content) => {
+    if (isRpgHuntSuccess({author, content}) || isZombieHordeEnded({author, content})) {
+      rpgHuntSuccess({
+        client,
+        channelId: message.channel.id,
+        author,
+        content,
+      });
+      event.stop();
+    }
+
+    if (isUserJoinedTheHorde({author, content})) {
+      replyMessage({
+        message,
+        client,
+        options: {
+          content: `You were moved to area 2, remember to go back your area!`,
+        },
+      });
+    }
+
+    if (isPartnerUnderCommand({author, message})) event.stop();
+  });
+  event.on('embed', (embed) => {
+    if (isUserEncounterZombieHorde({author, embed})) {
+      event.resetTimer(20000);
+      event.pendingAnswer();
+    }
+  });
+  event.on('cooldown', (cooldown) => {
+    updateUserCooldown({
+      userId: author.id,
+      type: RPG_COMMAND_TYPE.hunt,
+      readyAt: new Date(Date.now() + cooldown),
+    });
+    event.stop();
+  });
+  if (isSlashCommand) event.triggerCollect(message);
+}
+
+interface IRpgHuntSuccess {
   client: Client;
   channelId: string;
   author: User;
@@ -14,7 +73,7 @@ interface IRpgHunt {
 
 const HUNT_COOLDOWN = COMMAND_BASE_COOLDOWN.hunt;
 
-export default async function rpgHunt({author, content}: IRpgHunt) {
+export default async function rpgHuntSuccess({author, content}: IRpgHuntSuccess) {
   const hardMode = content.includes('(but stronger)');
   const together = content.includes('hunting together');
 
