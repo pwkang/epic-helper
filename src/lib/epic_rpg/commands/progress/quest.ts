@@ -1,10 +1,71 @@
 import {Client, Embed, Message, User} from 'discord.js';
-import {saveUserQuestCooldown} from '../../../../models/user-reminder/user-reminder.service';
+import {
+  saveUserQuestCooldown,
+  updateUserCooldown,
+} from '../../../../models/user-reminder/user-reminder.service';
 import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
 import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
+import {createRpgCommandListener} from '../../createRpgCommandListener';
 
 interface IRpgQuest {
+  client: Client;
+  message: Message;
+  author: User;
+  isSlashCommand: boolean;
+}
+
+export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
+  const event = createRpgCommandListener({
+    channelId: message.channel.id,
+    client,
+    author,
+  });
+  if (!event) return;
+  event.on('content', (content, collected) => {
+    if (isQuestAccepted({author, content})) {
+      rpgQuestSuccess({
+        author,
+        channelId: message.channel.id,
+        client,
+        questAccepted: true,
+      });
+      event.stop();
+    }
+    if (isQuestDeclined({message: collected, author})) {
+      rpgQuestSuccess({
+        author,
+        channelId: message.channel.id,
+        client,
+        questAccepted: false,
+      });
+    }
+  });
+  event.on('cooldown', (cooldown) => {
+    updateUserCooldown({
+      userId: message.author.id,
+      type: RPG_COMMAND_TYPE.quest,
+      readyAt: new Date(Date.now() + cooldown),
+    });
+  });
+  event.on('embed', (embed) => {
+    if (isCompletingQuest({author, embed})) {
+      event.stop();
+    }
+    if (isQuestOnGoing({author, embed})) {
+      event.stop();
+    }
+    if (isArenaQuest({author, embed})) {
+      event.stop();
+    }
+    if (isMinibossQuest({author, embed})) {
+      event.stop();
+    }
+  });
+  if (isSlashCommand) event.triggerCollect(message);
+}
+
+interface IRpgQuestSuccess {
   client: Client;
   channelId: string;
   author: User;
@@ -14,7 +75,7 @@ interface IRpgQuest {
 const QUEST_COOLDOWN = COMMAND_BASE_COOLDOWN.quest.accepted;
 const DECLINED_QUEST_COOLDOWN = COMMAND_BASE_COOLDOWN.quest.declined;
 
-export default async function rpgQuest({author, questAccepted}: IRpgQuest) {
+export default async function rpgQuestSuccess({author, questAccepted}: IRpgQuestSuccess) {
   const cooldown = await calcReducedCd({
     userId: author.id,
     commandType: RPG_COMMAND_TYPE.quest,
