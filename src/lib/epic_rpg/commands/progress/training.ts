@@ -42,7 +42,6 @@ export function rpgTraining({client, message, author, isSlashCommand}: IRpgTrain
         author,
         channelId: message.channel.id,
         client,
-        ultraining: false,
       });
     }
   });
@@ -65,12 +64,11 @@ interface IRpgTrainingSuccess {
   client: Client;
   channelId: string;
   author: User;
-  ultraining: boolean;
 }
 
 const TRAINING_COOLDOWN = COMMAND_BASE_COOLDOWN.training;
 
-export default async function rpgTrainingSuccess({author, ultraining}: IRpgTrainingSuccess) {
+export default async function rpgTrainingSuccess({author}: IRpgTrainingSuccess) {
   const cooldown = await calcReducedCd({
     userId: author.id,
     commandType: RPG_COMMAND_TYPE.training,
@@ -78,7 +76,7 @@ export default async function rpgTrainingSuccess({author, ultraining}: IRpgTrain
   });
   await saveUserTrainingCooldown({
     userId: author.id,
-    ultraining,
+    ultraining: false,
     readyAt: new Date(Date.now() + cooldown),
   });
 }
@@ -93,15 +91,6 @@ export function isRpgTrainingSuccess({author, content}: IIsRpgTrainingSuccess) {
     content.includes(author.username) &&
     ['Well done', 'Better luck next time'].some((msg) => content.includes(msg))
   );
-}
-
-interface IIsRpgUltrainingSuccess {
-  embed: Embed;
-  author: User;
-}
-
-export function isRpgUltrainingSuccess({author, embed}: IIsRpgUltrainingSuccess) {
-  return [author.username, 'Well done'].every((msg) => embed.description?.includes(msg));
 }
 
 interface IIsRpgTrainingQuestion {
