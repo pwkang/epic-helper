@@ -5,7 +5,17 @@ export default <BotEvent>{
   eventName: Events.MessageCreate,
   once: false,
   execute: async (client, message: Message) => {
-    if (!message.author.bot) {
+    if (isBotSlashCommand(message) && isNotDeferred(message)) {
+      const commands = client.slashCommandsOtherBot.filter((cmd) =>
+        cmd.commandName.some(
+          (name) => name.toLowerCase() === message.interaction?.commandName?.toLowerCase()
+        )
+      );
+      if (!commands.size) return;
+      commands.forEach((cmd) => cmd.execute(client, message, message.interaction?.user!));
+    }
+
+    if (isSentByUser(message)) {
       const result = searchCommand(client, message);
       if (!result) return;
       await result.command.execute(client, message, result.args);
@@ -48,7 +58,6 @@ function searchCommand(
   if (isRpgCommand(message)) {
     if (messageContent.startsWith(`${PREFIX.rpg} `)) {
       args = messageContent.split(' ').slice(1);
-      console.log(args);
     } else if (message.mentions.has(EPIC_RPG_ID)) {
       args = messageContent
         .replace(`<@${EPIC_RPG_ID}>`, '')
@@ -86,3 +95,8 @@ function searchCommand(
 
   return command ? {command, args} : null;
 }
+
+const isBotSlashCommand = (message: Message) => message.interaction && message.author.bot;
+const isSentByUser = (message: Message) => !message.author.bot;
+
+const isNotDeferred = (message: Message) => !(message.content === '' && !message.embeds.length);

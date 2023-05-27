@@ -6,5 +6,6 @@ declare module 'discord.js' {
     cluster?: ClusterClient<Client>;
     prefixCommands: Collection<string, PrefixCommand>;
     slashCommands: Collection<string, SlashCommand>;
+    slashCommandsOtherBot: Collection<string, SlashCommandOtherBot>;
   }
 }

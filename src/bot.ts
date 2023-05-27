@@ -22,6 +22,7 @@ const client = new Client({
 
 client.prefixCommands = new Collection();
 client.slashCommands = new Collection();
+client.slashCommandsOtherBot = new Collection();
 
 if (environment === 'production') {
   client.cluster = new ClusterClient(client); // initialize the Client, so we access the .broadcastEval()

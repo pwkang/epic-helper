@@ -1,33 +1,30 @@
 import {Client, Embed, Message, User} from 'discord.js';
+import {createRpgCommandListener} from '../../createRpgCommandListener';
 import {
-  saveUserDailyCooldown,
+  saveUserTrainingCooldown,
   updateUserCooldown,
 } from '../../../../models/user-reminder/user-reminder.service';
+import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
 import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
-import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
-import {createRpgCommandListener} from '../../createRpgCommandListener';
 
-const DAILY_COOLDOWN = COMMAND_BASE_COOLDOWN.daily;
-
-interface IRpgDaily {
+interface IRpgUltraining {
   client: Client;
   message: Message;
   author: User;
   isSlashCommand: boolean;
 }
 
-export function rpgDaily({client, message, author, isSlashCommand}: IRpgDaily) {
+export function rpgUltraining({client, message, author, isSlashCommand}: IRpgUltraining) {
   const event = createRpgCommandListener({
-    author,
     channelId: message.channel.id,
     client,
+    author,
   });
   if (!event) return;
   event.on('embed', (embed) => {
-    if (isRpgDailySuccess({embed, author})) {
-      rpgDailySuccess({
-        embed,
+    if (isRpgUltrainingSuccess({embed, author})) {
+      rpgUlTrainingSuccess({
         author,
         channelId: message.channel.id,
         client,
@@ -38,36 +35,39 @@ export function rpgDaily({client, message, author, isSlashCommand}: IRpgDaily) {
   event.on('cooldown', (cooldown) => {
     updateUserCooldown({
       userId: author.id,
+      type: RPG_COMMAND_TYPE.training,
       readyAt: new Date(Date.now() + cooldown),
-      type: RPG_COMMAND_TYPE.daily,
     });
   });
   if (isSlashCommand) event.triggerCollect(message);
 }
 
-interface IRpgDailySuccess {
+interface IIsRpgUltrainingSuccess {
+  embed: Embed;
+  author: User;
+}
+
+interface IRpgTrainingSuccess {
   client: Client;
   channelId: string;
   author: User;
-  embed: Embed;
 }
 
-export default async function rpgDailySuccess({author}: IRpgDailySuccess) {
+const TRAINING_COOLDOWN = COMMAND_BASE_COOLDOWN.training;
+
+export default async function rpgUlTrainingSuccess({author}: IRpgTrainingSuccess) {
   const cooldown = await calcReducedCd({
     userId: author.id,
-    commandType: RPG_COMMAND_TYPE.daily,
-    cooldown: DAILY_COOLDOWN,
+    commandType: RPG_COMMAND_TYPE.training,
+    cooldown: TRAINING_COOLDOWN,
   });
-  await saveUserDailyCooldown({
+  await saveUserTrainingCooldown({
     userId: author.id,
+    ultraining: true,
     readyAt: new Date(Date.now() + cooldown),
   });
 }
 
-interface IIsRpgDailySuccess {
-  embed: Embed;
-  author: User;
+export function isRpgUltrainingSuccess({author, embed}: IIsRpgUltrainingSuccess) {
+  return [author.username, 'Well done'].every((msg) => embed.description?.includes(msg));
 }
-
-export const isRpgDailySuccess = ({embed, author}: IIsRpgDailySuccess) =>
-  embed.author?.name === `${author.username} — daily reward`;

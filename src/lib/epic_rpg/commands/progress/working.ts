@@ -1,8 +1,14 @@
 import {RPG_COMMAND_TYPE, RPG_WORKING_TYPE} from '../../../../constants/rpg';
-import {Client, Embed, User} from 'discord.js';
-import {saveUserWorkingCooldown} from '../../../../models/user-reminder/user-reminder.service';
+import {Client, Embed, Message, User} from 'discord.js';
+import {
+  saveUserWorkingCooldown,
+  updateUserCooldown,
+} from '../../../../models/user-reminder/user-reminder.service';
 import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
+import {createRpgCommandListener} from '../../createRpgCommandListener';
+import {updateUserRubyAmount} from '../../../../models/user/user.service';
+import replyMessage from '../../../discord.js/message/replyMessage';
 
 const WORKING_ITEMS = [
   'normie fish',
@@ -26,12 +32,83 @@ const WORKING_COOLDOWN = COMMAND_BASE_COOLDOWN.working;
 
 interface IRpgWorking {
   client: Client;
+  message: Message;
+  author: User;
+  isSlashCommand: boolean;
+}
+
+export function rpgWorking({client, message, author, isSlashCommand}: IRpgWorking) {
+  const event = createRpgCommandListener({
+    channelId: message.channel.id,
+    client,
+    author,
+  });
+  if (!event) return;
+  const workingType = Object.values(RPG_WORKING_TYPE).find((type) =>
+    message.content.includes(type)
+  );
+  event.on('content', async (content) => {
+    if (isRpgWorkingSuccess({author, content})) {
+      await rpgWorkingSuccess({
+        client,
+        channelId: message.channel.id,
+        author,
+        workingType,
+      });
+      event.stop();
+    }
+    if (isWorkingInSpace({author, content})) {
+      event.stop();
+    }
+    if (isRubyMined({author, content})) {
+      const mined = rubyAmountMined({author, content});
+      await updateUserRubyAmount({
+        userId: author.id,
+        type: 'inc',
+        ruby: mined,
+      });
+      event.stop();
+    }
+    if (isFoughtRubyDragon({author, content})) {
+      await updateUserRubyAmount({
+        userId: author.id,
+        type: 'inc',
+        ruby: 10,
+      });
+      event.stop();
+      replyMessage({
+        client,
+        message,
+        options: {
+          content: 'You were moved to another area, remember to go back your area!',
+        },
+      });
+    }
+  });
+  event.on('cooldown', (cooldown) => {
+    updateUserCooldown({
+      userId: author.id,
+      type: RPG_COMMAND_TYPE.working,
+      readyAt: new Date(Date.now() + cooldown),
+    });
+  });
+  event.on('embed', (embed) => {
+    if (isEncounteringRubyDragon({embed, author})) {
+      event.pendingAnswer();
+      event.resetTimer(30000);
+    }
+  });
+  if (isSlashCommand) event.triggerCollect(message);
+}
+
+interface IRpgWorkingSuccess {
+  client: Client;
   channelId: string;
   author: User;
   workingType?: ValuesOf<typeof RPG_WORKING_TYPE>;
 }
 
-export default async function rpgWorking({author, workingType}: IRpgWorking) {
+export default async function rpgWorkingSuccess({author, workingType}: IRpgWorkingSuccess) {
   const cooldown = await calcReducedCd({
     userId: author.id,
     commandType: RPG_COMMAND_TYPE.working,

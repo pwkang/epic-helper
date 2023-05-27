@@ -21,6 +21,7 @@ type TExtraProps = {
   pendingAnswer: () => void;
   answered: () => void;
   resetTimer: (ms: number) => void;
+  triggerCollect: (message: Message) => void;
 };
 
 const filter = (m: Message) => m.author.id === EPIC_RPG_ID;
@@ -56,7 +57,13 @@ export const createRpgCommandListener = ({channelId, client, author}: IRpgComman
     collector?.resetTimer({time: ms});
   };
 
-  collector.on('collect', async (collected) => {
+  event.triggerCollect = (message: Message) => {
+    messageCollected(message).catch(console.error);
+  };
+
+  collector.on('collect', messageCollected);
+
+  async function messageCollected(collected: Message) {
     if (isSlashCommand({collected, author})) {
       await sleep(1000);
       collected = collector?.channel.messages.cache.get(collected.id) as Message;
@@ -118,7 +125,7 @@ export const createRpgCommandListener = ({channelId, client, author}: IRpgComman
       if (police) return;
       event.emit('content', collected.content, collected);
     }
-  });
+  }
 
   return event;
 };

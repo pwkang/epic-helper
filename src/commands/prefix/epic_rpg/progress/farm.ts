@@ -1,47 +1,16 @@
 import {COMMAND_TYPE} from '../../../../constants/bot';
-import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
-import {updateUserCooldown} from '../../../../models/user-reminder/user-reminder.service';
-import rpgFarm, {
-  hasNoSeedToPlant,
-  isFarmingInSpace,
-  isRpgFarmSuccess,
-} from '../../../../lib/epic_rpg/commands/progress/farm';
-import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
+import {rpgFarm} from '../../../../lib/epic_rpg/commands/progress/farm';
 
 export default <PrefixCommand>{
   name: 'rpgFarm',
   commands: ['farm'],
   type: COMMAND_TYPE.rpg,
   execute: async (client, message) => {
-    const event = createRpgCommandListener({
+    rpgFarm({
       author: message.author,
       client,
-      channelId: message.channel.id,
-    });
-    if (!event) return;
-    event.on('content', (content, collected) => {
-      if (isRpgFarmSuccess({content, author: message.author})) {
-        rpgFarm({
-          author: message.author,
-          client,
-          channelId: message.channel.id,
-          content,
-        });
-        event.stop();
-      }
-      if (isFarmingInSpace({content, author: message.author})) {
-        event.stop();
-      }
-      if (hasNoSeedToPlant({message: collected, author: message.author})) {
-        event.stop();
-      }
-    });
-    event.on('cooldown', (cooldown) => {
-      updateUserCooldown({
-        userId: message.author.id,
-        readyAt: new Date(Date.now() + cooldown),
-        type: RPG_COMMAND_TYPE.farm,
-      });
+      isSlashCommand: false,
+      message,
     });
   },
 };
