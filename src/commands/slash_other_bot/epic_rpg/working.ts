@@ -8,11 +8,16 @@ export default <SlashCommandOtherBot>{
   bot: OTHER_BOT_TYPE.rpg,
   commandName: Object.values(RPG_WORKING_TYPE),
   execute: async (client, message, author) => {
+    const workingType = Object.values(RPG_WORKING_TYPE).find(
+      (type) => message.interaction?.commandName === type
+    );
+    if (!workingType) return;
     rpgWorking({
       author,
       message,
       client,
       isSlashCommand: true,
+      workingType,
     });
   },
 };
