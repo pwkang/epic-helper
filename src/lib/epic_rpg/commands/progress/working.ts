@@ -63,7 +63,7 @@ export function rpgWorking({client, message, author, isSlashCommand}: IRpgWorkin
     if (isRubyMined({author, content})) {
       const mined = rubyAmountMined({author, content});
       await updateUserRubyAmount({
-        userId: message.author.id,
+        userId: author.id,
         type: 'inc',
         ruby: mined,
       });

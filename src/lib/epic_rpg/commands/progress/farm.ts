@@ -43,7 +43,7 @@ export function rpgFarm({client, message, author, isSlashCommand}: IRpgFarm) {
   });
   event.on('cooldown', (cooldown) => {
     updateUserCooldown({
-      userId: message.author.id,
+      userId: author.id,
       readyAt: new Date(Date.now() + cooldown),
       type: RPG_COMMAND_TYPE.farm,
     });

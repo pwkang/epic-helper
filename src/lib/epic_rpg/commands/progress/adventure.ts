@@ -36,7 +36,7 @@ export function rpgAdventure({client, message, author, isSlashCommand}: IRpgAdve
   });
   event.on('cooldown', (cooldown) => {
     updateUserCooldown({
-      userId: message.author.id,
+      userId: author.id,
       type: RPG_COMMAND_TYPE.adventure,
       readyAt: new Date(Date.now() + cooldown),
     });

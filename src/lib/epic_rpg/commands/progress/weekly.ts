@@ -37,7 +37,7 @@ export function rpgWeekly({client, message, author, isSlashCommand}: IRpgWeekly)
   });
   event.on('cooldown', (cooldown) => {
     updateUserCooldown({
-      userId: message.author.id,
+      userId: author.id,
       readyAt: new Date(Date.now() + cooldown),
       type: RPG_COMMAND_TYPE.weekly,
     });

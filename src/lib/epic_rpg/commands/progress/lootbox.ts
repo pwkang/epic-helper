@@ -46,7 +46,7 @@ export function rpgBuyLootbox({client, message, author, isSlashCommand}: IRpgLoo
     updateUserCooldown({
       type: RPG_COMMAND_TYPE.lootbox,
       readyAt: new Date(Date.now() + cooldown),
-      userId: message.author.id,
+      userId: author.id,
     });
   });
   if (isSlashCommand) event.triggerCollect(message);

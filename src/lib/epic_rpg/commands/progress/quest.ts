@@ -43,7 +43,7 @@ export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
   });
   event.on('cooldown', (cooldown) => {
     updateUserCooldown({
-      userId: message.author.id,
+      userId: author.id,
       type: RPG_COMMAND_TYPE.quest,
       readyAt: new Date(Date.now() + cooldown),
     });

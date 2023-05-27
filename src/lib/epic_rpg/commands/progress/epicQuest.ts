@@ -41,7 +41,7 @@ export function rpgEpicQuest({client, message, author, isSlashCommand}: IRpgEpic
   });
   event.on('cooldown', async (cooldown) => {
     await updateUserCooldown({
-      userId: message.author.id,
+      userId: author.id,
       readyAt: new Date(Date.now() + cooldown),
       type: RPG_COMMAND_TYPE.quest,
     });

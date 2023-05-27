@@ -47,7 +47,7 @@ export function rpgTraining({client, message, author, isSlashCommand}: IRpgTrain
   });
   event.on('cooldown', (cooldown) => {
     updateUserCooldown({
-      userId: message.author.id,
+      userId: author.id,
       type: RPG_COMMAND_TYPE.training,
       readyAt: new Date(Date.now() + cooldown),
     });
