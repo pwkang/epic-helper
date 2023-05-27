@@ -5,7 +5,7 @@ import {redisGetRpgMessageOwner} from '../../services/redis/rpg-message-owner.re
 export default <BotEvent>{
   eventName: Events.MessageUpdate,
   execute: async (client, oldMessage: Message, newMessage: Message) => {
-    if (isBotSlashCommand(newMessage)) {
+    if (isBotSlashCommand(newMessage) && isFirstUpdateAfterDeferred(oldMessage)) {
       const commands = client.slashCommandsOtherBot.filter((cmd) =>
         cmd.commandName.some(
           (name) => name.toLowerCase() === newMessage.interaction?.commandName?.toLowerCase()
@@ -38,3 +38,6 @@ export default <BotEvent>{
 };
 
 const isBotSlashCommand = (message: Message) => message.interaction && message.author.bot;
+
+const isFirstUpdateAfterDeferred = (oldMessage: Message) =>
+  oldMessage.content === '' && oldMessage.embeds.length === 0;
