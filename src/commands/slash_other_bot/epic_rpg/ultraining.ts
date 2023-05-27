@@ -10,6 +10,7 @@ export default <SlashCommandOtherBot>{
       author,
       message,
       client,
+      isSlashCommand: true,
     });
   },
 };

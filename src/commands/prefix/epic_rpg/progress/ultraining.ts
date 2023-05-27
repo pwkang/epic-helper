@@ -10,6 +10,7 @@ export default <PrefixCommand>{
       author: message.author,
       client,
       message,
+      isSlashCommand: false,
     });
   },
 };

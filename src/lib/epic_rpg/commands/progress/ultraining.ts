@@ -12,9 +12,10 @@ interface IRpgUltraining {
   client: Client;
   message: Message;
   author: User;
+  isSlashCommand: boolean;
 }
 
-export function rpgUltraining({client, message, author}: IRpgUltraining) {
+export function rpgUltraining({client, message, author, isSlashCommand}: IRpgUltraining) {
   const event = createRpgCommandListener({
     channelId: message.channel.id,
     client,
@@ -38,6 +39,7 @@ export function rpgUltraining({client, message, author}: IRpgUltraining) {
       readyAt: new Date(Date.now() + cooldown),
     });
   });
+  if (isSlashCommand) event.triggerCollect(message);
 }
 
 interface IIsRpgUltrainingSuccess {
