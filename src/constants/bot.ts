@@ -13,6 +13,10 @@ export const COMMAND_TYPE = {
   bot: 'bot',
 } as const;
 
+export const OTHER_BOT_TYPE = {
+  rpg: 'rpg',
+} as const;
+
 export const EPIC_RPG_ID = '555955826880413696';
 
 export const DEVS_ID = process.env.DEVS_ID?.split(',') ?? [];
