@@ -1,19 +1,21 @@
 import {IPetSubcommand} from '../pet.type';
 import replyInteraction from '../../../../lib/discord.js/interaction/replyInteraction';
-import {ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, User} from 'discord.js';
-import {generatePetListEmbed} from '../../../../lib/epic_helper/features/pets/petListEmbed.lib';
+import {ButtonStyle, Client, User} from 'discord.js';
+import {
+  generatePetListEmbed,
+  generatePetListNavigationRow,
+  PET_LIST_PET_PET_PAGE,
+} from '../../../../lib/epic_helper/features/pets/petListEmbed.lib';
 import {calcTotalPets, getUserPets} from '../../../../models/user-pet/user-pet.service';
 import sendMessage from '../../../../lib/discord.js/message/sendMessage';
 import {sleep} from '../../../../utils/sleep';
-
-const petPerPage = 21;
 
 export default async function petList({client, interaction}: IPetSubcommand) {
   let page = 0;
   const totalPets = await calcTotalPets({
     userId: interaction.user.id,
   });
-  const row = generateNavigationRow(page, totalPets);
+  const row = generatePetListNavigationRow(page, totalPets);
   const embed = await generateEmbed(page, interaction.user);
   const event = await replyInteraction({
     client,
@@ -29,7 +31,7 @@ export default async function petList({client, interaction}: IPetSubcommand) {
   event.on('first', async (interaction) => {
     page = 0;
     const embed = await generateEmbed(page, interaction.user);
-    const row = generateNavigationRow(page, totalPets);
+    const row = generatePetListNavigationRow(page, totalPets);
     return {
       embeds: [embed],
       components: [row],
@@ -38,7 +40,7 @@ export default async function petList({client, interaction}: IPetSubcommand) {
   event.on('prev', async (interaction) => {
     page--;
     const embed = await generateEmbed(page, interaction.user);
-    const row = generateNavigationRow(page, totalPets);
+    const row = generatePetListNavigationRow(page, totalPets);
     return {
       embeds: [embed],
       components: [row],
@@ -47,16 +49,16 @@ export default async function petList({client, interaction}: IPetSubcommand) {
   event.on('next', async (interaction) => {
     page++;
     const embed = await generateEmbed(page, interaction.user);
-    const row = generateNavigationRow(page, totalPets);
+    const row = generatePetListNavigationRow(page, totalPets);
     return {
       embeds: [embed],
       components: [row],
     };
   });
   event.on('last', async (interaction) => {
-    page = Math.floor(totalPets / petPerPage);
+    page = Math.floor(totalPets / PET_LIST_PET_PET_PAGE);
     const embed = await generateEmbed(page, interaction.user);
-    const row = generateNavigationRow(page, totalPets);
+    const row = generatePetListNavigationRow(page, totalPets);
     return {
       embeds: [embed],
       components: [row],
@@ -85,7 +87,7 @@ interface IShowAllPets {
 }
 
 const showAllPets = async ({author, client, totalPets, channelId}: IShowAllPets) => {
-  const totalPage = Math.floor(totalPets / petPerPage);
+  const totalPage = Math.floor(totalPets / PET_LIST_PET_PET_PAGE);
   for (let i = 0; i <= totalPage; i++) {
     const embed = await generateEmbed(i, author);
     await sendMessage({
@@ -100,46 +102,10 @@ const showAllPets = async ({author, client, totalPets, channelId}: IShowAllPets)
 };
 
 const generateEmbed = async (page: number, author: User) => {
-  const pets = await getUserPets({page, limit: petPerPage, userId: author.id});
+  const pets = await getUserPets({page, limit: PET_LIST_PET_PET_PAGE, userId: author.id});
 
   return generatePetListEmbed({
     pets,
     author,
   });
-};
-
-const generateNavigationRow = (page: number, totalPets: number) => {
-  const row = new ActionRowBuilder<ButtonBuilder>();
-  row.addComponents(
-    new ButtonBuilder()
-      .setCustomId('first')
-      .setStyle(ButtonStyle.Primary)
-      .setEmoji('⏪')
-      .setDisabled(page === 0)
-  );
-  row.addComponents(
-    new ButtonBuilder()
-      .setCustomId('prev')
-      .setStyle(ButtonStyle.Primary)
-      .setEmoji('⬅️')
-      .setDisabled(page === 0)
-  );
-  row.addComponents(
-    new ButtonBuilder()
-      .setCustomId('next')
-      .setStyle(ButtonStyle.Primary)
-      .setEmoji('➡️')
-      .setDisabled(page === Math.floor(totalPets / petPerPage))
-  );
-  row.addComponents(
-    new ButtonBuilder()
-      .setCustomId('last')
-      .setStyle(ButtonStyle.Primary)
-      .setEmoji('⏩')
-      .setDisabled(page === Math.floor(totalPets / petPerPage))
-  );
-  row.addComponents(
-    new ButtonBuilder().setCustomId('all').setStyle(ButtonStyle.Primary).setLabel('All')
-  );
-  return row;
 };

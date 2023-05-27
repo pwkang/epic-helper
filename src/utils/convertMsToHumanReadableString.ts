@@ -18,7 +18,7 @@ export default function convertMsToHumanReadableString(milliseconds: number) {
 
   let timeString = '';
   for (let i = 0; i < time.length; i++) {
-    if (time[i] > 0) {
+    if (time[i] > 0 || timeString !== '') {
       timeString += `${time[i]}${timeUnit[i]} `;
     }
   }
