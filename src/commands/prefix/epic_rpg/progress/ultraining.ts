@@ -1,6 +1,6 @@
 import {COMMAND_TYPE} from '../../../../constants/bot';
 import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
-import rpgTraining, {
+import rpgTrainingSuccess, {
   isRpgUltrainingSuccess,
 } from '../../../../lib/epic_rpg/commands/progress/training';
 import {updateUserCooldown} from '../../../../models/user-reminder/user-reminder.service';
@@ -19,7 +19,7 @@ export default <PrefixCommand>{
     if (!event) return;
     event.on('embed', (embed) => {
       if (isRpgUltrainingSuccess({embed, author: message.author})) {
-        rpgTraining({
+        rpgTrainingSuccess({
           author: message.author,
           channelId: message.channel.id,
           client,

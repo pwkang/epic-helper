@@ -1,10 +1,67 @@
 import type {Client, Embed, Message, User} from 'discord.js';
-import {saveUserTrainingCooldown} from '../../../../models/user-reminder/user-reminder.service';
+import {
+  saveUserTrainingCooldown,
+  updateUserCooldown,
+} from '../../../../models/user-reminder/user-reminder.service';
 import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
 import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
+import {createRpgCommandListener} from '../../createRpgCommandListener';
+import getTrainingAnswer from '../../../../utils/epic_rpg/trainingAnswer';
+import sendMessage from '../../../discord.js/message/sendMessage';
 
 interface IRpgTraining {
+  client: Client;
+  message: Message;
+  author: User;
+  isSlashCommand: boolean;
+}
+
+export function rpgTraining({client, message, author, isSlashCommand}: IRpgTraining) {
+  const event = createRpgCommandListener({
+    channelId: message.channel.id,
+    client,
+    author,
+  });
+  if (!event) return;
+  event.on('content', async (content) => {
+    if (isRpgTrainingQuestion({author, content})) {
+      event.pendingAnswer();
+      const answer = await getTrainingAnswer({author, content});
+      sendMessage({
+        channelId: message.channel.id,
+        client,
+        options: {
+          components: answer,
+        },
+      });
+    }
+
+    if (isRpgTrainingSuccess({author, content})) {
+      rpgTrainingSuccess({
+        author,
+        channelId: message.channel.id,
+        client,
+        ultraining: false,
+      });
+    }
+  });
+  event.on('cooldown', (cooldown) => {
+    updateUserCooldown({
+      userId: message.author.id,
+      type: RPG_COMMAND_TYPE.training,
+      readyAt: new Date(Date.now() + cooldown),
+    });
+  });
+  event.on('embed', (embed) => {
+    if (isEncounteringPet({author, embed})) {
+      event.stop();
+    }
+  });
+  if (isSlashCommand) event.triggerCollect(message);
+}
+
+interface IRpgTrainingSuccess {
   client: Client;
   channelId: string;
   author: User;
@@ -13,7 +70,7 @@ interface IRpgTraining {
 
 const TRAINING_COOLDOWN = COMMAND_BASE_COOLDOWN.training;
 
-export default async function rpgTraining({author, ultraining}: IRpgTraining) {
+export default async function rpgTrainingSuccess({author, ultraining}: IRpgTrainingSuccess) {
   const cooldown = await calcReducedCd({
     userId: author.id,
     commandType: RPG_COMMAND_TYPE.training,
