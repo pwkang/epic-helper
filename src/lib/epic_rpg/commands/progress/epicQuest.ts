@@ -1,10 +1,55 @@
-import {Client, Embed, User} from 'discord.js';
-import {saveUserQuestCooldown} from '../../../../models/user-reminder/user-reminder.service';
+import {Client, Embed, Message, User} from 'discord.js';
+import {
+  saveUserQuestCooldown,
+  updateUserCooldown,
+} from '../../../../models/user-reminder/user-reminder.service';
 import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
 import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
+import {createRpgCommandListener} from '../../createRpgCommandListener';
 
 interface IRpgEpicQuest {
+  client: Client;
+  message: Message;
+  author: User;
+  isSlashCommand: boolean;
+}
+
+export function rpgEpicQuest({client, message, author, isSlashCommand}: IRpgEpicQuest) {
+  const event = createRpgCommandListener({
+    author,
+    client,
+    channelId: message.channel.id,
+  });
+  if (!event) return;
+  event.on('embed', async (embed) => {
+    if (isEpicQuestSuccess({embed, author})) {
+      await rpgEpicQuestSuccess({
+        author,
+        channelId: message.channel.id,
+        client,
+      });
+    }
+  });
+  event.on('content', async (content) => {
+    if (isEpicHorseMissing({content})) {
+      event.stop();
+    }
+    if (isHavingQuest({content})) {
+      event.stop();
+    }
+  });
+  event.on('cooldown', async (cooldown) => {
+    await updateUserCooldown({
+      userId: message.author.id,
+      readyAt: new Date(Date.now() + cooldown),
+      type: RPG_COMMAND_TYPE.quest,
+    });
+  });
+  if (isSlashCommand) event.triggerCollect(message);
+}
+
+interface IRpgEpicQuestSuccess {
   client: Client;
   channelId: string;
   author: User;
@@ -12,7 +57,7 @@ interface IRpgEpicQuest {
 
 const QUEST_COOLDOWN = COMMAND_BASE_COOLDOWN.epicQuest;
 
-export default async function rpgEpicQuest({author}: IRpgEpicQuest) {
+export default async function rpgEpicQuestSuccess({author}: IRpgEpicQuestSuccess) {
   const cooldown = await calcReducedCd({
     userId: author.id,
     commandType: RPG_COMMAND_TYPE.quest,
