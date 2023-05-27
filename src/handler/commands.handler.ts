@@ -21,12 +21,15 @@ function loadPrefixCommands(client: Client) {
 
 function loadSlashCommands(client: Client) {
   return new Promise((resolve) => {
-    readdirp(`./${handlerRoot}/commands/slash`, {fileFilter: handlerFileFilter})
+    readdirp(`./${handlerRoot}/commands/slash`, {
+      fileFilter: [handlerFileFilter, '!*.type.ts'],
+      directoryFilter: ['!subcommand'],
+    })
       .on('data', async (entry: EntryInfo) => {
         const {fullPath} = entry;
         const file = await import(fullPath);
-        const command = file.default.default as SlashCommand;
-        if (!command?.name) return;
+        const command = file.default.default;
+        if (!command || !('name' in command)) return;
         client.slashCommands.set(command.name, command);
       })
       .on('end', () => {

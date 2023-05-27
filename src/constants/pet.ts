@@ -11,10 +11,11 @@ export const RPG_PET_TYPE = {
   penguin: 'Penguin',
   snowman: 'Snowman',
   epicPanda: 'Epic panda',
-  voidDog: 'VoiDog',
+  voiDog: 'VoiDog',
 } as const;
 
 export const RPG_PET_SKILL = {
+  normie: 'Normie',
   fast: 'Fast',
   happy: 'Happy',
   clever: 'Clever',
@@ -25,6 +26,7 @@ export const RPG_PET_SKILL = {
   ascended: 'ASCENDED',
   fighter: 'FIGHTER',
   perfect: 'PERFECT',
+  master: 'MASTER',
 };
 
 export const RPG_SPECIAL_PET_SKILL = {
@@ -45,7 +47,10 @@ export const RPG_PET_STATUS = {
   back: 'back',
 } as const;
 
-export const RPG_PET_SKILL_TIER = {
+type TSkillTierStr = 'f' | 'e' | 'd' | 'c' | 'b' | 'a' | 's' | 'ss' | 'ss+';
+type TSkillTierNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+
+export const RPG_PET_SKILL_TIER: Record<TSkillTierStr, TSkillTierNumber> = {
   f: 1,
   e: 2,
   d: 3,
@@ -55,4 +60,16 @@ export const RPG_PET_SKILL_TIER = {
   s: 7,
   ss: 8,
   'ss+': 9,
+} as const;
+
+export const RPG_PET_SKILL_TIER_REVERSE: Record<TSkillTierNumber, TSkillTierStr> = {
+  1: 'f',
+  2: 'e',
+  3: 'd',
+  4: 'c',
+  5: 'b',
+  6: 'a',
+  7: 's',
+  8: 'ss',
+  9: 'ss+',
 } as const;

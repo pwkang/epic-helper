@@ -2,27 +2,45 @@ import {mongoClient} from '../../services/mongoose/mongoose.service';
 import {IUserPet} from './user-pet.type';
 import userPetSchema from './user-pet.schema';
 import {RPG_PET_STATUS} from '../../constants/pet';
+import {QueryOptions} from 'mongoose';
 
 const dbUserPet = mongoClient.model<IUserPet>('user-pet', userPetSchema);
 
 interface IGetUserPets {
   userId: string;
   petsId?: number[];
+  page?: number;
+  limit?: number;
 }
 
-export const getUserPets = async ({userId, petsId}: IGetUserPets) => {
+export const getUserPets = async ({userId, petsId, page, limit}: IGetUserPets) => {
   const query: any = {
     userId,
+  };
+  const options: QueryOptions<IUserPet> = {
+    sort: {
+      petId: 1,
+    },
   };
   if (petsId) {
     query.petId = {
       $in: petsId,
     };
   }
-  return dbUserPet.find(query, null, {
-    sort: {
-      petId: 1,
-    },
+  if (page !== undefined && limit) {
+    options.skip = page * limit;
+    options.limit = limit;
+  }
+  return dbUserPet.find(query, null, options);
+};
+
+interface ICalcTotalPets {
+  userId: string;
+}
+
+export const calcTotalPets = async ({userId}: ICalcTotalPets) => {
+  return dbUserPet.countDocuments({
+    userId,
   });
 };
 
@@ -109,6 +127,46 @@ export const updateRemindedPets = async ({userId, petIds}: IUpdateRemindedPets) 
       },
       $set: {
         status: RPG_PET_STATUS.back,
+      },
+    }
+  );
+};
+
+interface IGetAvailableEpicPets {
+  userId: string;
+}
+
+export const getAvailableEpicPets = async ({userId}: IGetAvailableEpicPets) => {
+  return dbUserPet.find({
+    userId,
+    status: RPG_PET_STATUS.idle,
+    'skills.epic': {
+      $ne: null,
+    },
+  });
+};
+
+export const claimAllPets = async ({userId}: {userId: string}) => {
+  return dbUserPet.updateMany(
+    {
+      userId,
+      $or: [
+        {
+          status: RPG_PET_STATUS.back,
+        },
+        {
+          readyAt: {
+            $lte: new Date(),
+          },
+        },
+      ],
+    },
+    {
+      $set: {
+        status: RPG_PET_STATUS.idle,
+      },
+      $unset: {
+        readyAt: 1,
       },
     }
   );
