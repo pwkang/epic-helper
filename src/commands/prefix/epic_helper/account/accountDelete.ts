@@ -3,6 +3,8 @@ import {isUserAccountExist, userAccountDelete} from '../../../../models/user/use
 import sendInteractiveMessage from '../../../../lib/discord.js/message/sendInteractiveMessage';
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle} from 'discord.js';
 import replyMessage from '../../../../lib/discord.js/message/replyMessage';
+import {clearUserCooldowns} from '../../../../models/user-reminder/user-reminder.service';
+import {clearUserPets} from '../../../../models/user-pet/user-pet.service';
 
 export default <PrefixCommand>{
   name: 'accountDelete',
@@ -18,16 +20,6 @@ export default <PrefixCommand>{
       });
     }
 
-    const confirm = new ButtonBuilder()
-      .setCustomId('confirm')
-      .setLabel('Confirm')
-      .setStyle(ButtonStyle.Primary);
-    const cancel = new ButtonBuilder()
-      .setCustomId('cancel')
-      .setLabel('Cancel')
-      .setStyle(ButtonStyle.Secondary);
-    const row = new ActionRowBuilder<ButtonBuilder>().addComponents(confirm, cancel);
-
     const event = await sendInteractiveMessage({
       client,
       channelId: message.channel.id,
@@ -40,6 +32,8 @@ export default <PrefixCommand>{
 
     event.on('confirm', async () => {
       await userAccountDelete(message.author.id);
+      await clearUserCooldowns(message.author.id);
+      await clearUserPets(message.author.id);
       event.stop();
       return {
         content: `Successfully deleted your account!`,
@@ -55,3 +49,13 @@ export default <PrefixCommand>{
     });
   },
 };
+
+const confirm = new ButtonBuilder()
+  .setCustomId('confirm')
+  .setLabel('Confirm')
+  .setStyle(ButtonStyle.Primary);
+const cancel = new ButtonBuilder()
+  .setCustomId('cancel')
+  .setLabel('Cancel')
+  .setStyle(ButtonStyle.Secondary);
+const row = new ActionRowBuilder<ButtonBuilder>().addComponents(confirm, cancel);

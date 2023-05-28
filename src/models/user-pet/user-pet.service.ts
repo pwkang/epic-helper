@@ -172,7 +172,7 @@ export const claimAllPets = async ({userId}: {userId: string}) => {
   );
 };
 
-export const clearUserPetsAdventure = async (userId: string) => {
+export const resetUserPetsAdvStatus = async (userId: string) => {
   return dbUserPet.updateMany(
     {
       userId,
@@ -186,4 +186,10 @@ export const clearUserPetsAdventure = async (userId: string) => {
       },
     }
   );
+};
+
+export const clearUserPets = async (userId: string) => {
+  return dbUserPet.deleteMany({
+    userId,
+  });
 };

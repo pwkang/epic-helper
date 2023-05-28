@@ -60,7 +60,7 @@ export default async function rpgCooldown({author, embed}: IRpgCooldown) {
       }
     } else {
       const readyAt = extractAndCalculateReadyAt(row);
-      
+
       const currentCooldown = currentCooldowns.find((cooldown) => cooldown.type === commandType);
       if (currentCooldown) {
         if (Math.abs(currentCooldown.readyAt.getTime() - readyAt.getTime()) > 1000) {
@@ -100,7 +100,7 @@ const extractCommandsCooldown = (embedRow: EmbedField['value']) =>
 const searchCommandType = (fieldRow: string) => {
   const commandList = extractCommandsCooldown(fieldRow);
 
-  return Object.entries(RPG_COMMAND_CATEGORY).find(([key, value]) =>
+  return Object.entries(RPG_COMMAND_CATEGORY).find(([_, value]) =>
     value.some((command) => commandList.some((name) => name.includes(command)))
   )?.[0] as keyof typeof RPG_COMMAND_CATEGORY;
 };
