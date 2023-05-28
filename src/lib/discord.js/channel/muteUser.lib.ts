@@ -27,7 +27,7 @@ export const muteUser = async ({userId, client, channelId, unMuteIn}: IMuteUser)
     });
     return;
   }
-  
+
   await channel.permissionOverwrites.edit(userId, {
     SendMessages: false,
   });
