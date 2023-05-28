@@ -1,11 +1,8 @@
 import {COMMAND_TYPE} from '../../constants/bot';
 import {
   amountOfPetsSentToAdventure,
-  extractReturnedPetsId,
-  isSuccessfullySentPetsToAdventure,
   rpgPetAdventure,
 } from '../../lib/epic_rpg/commands/pets/petAdventure.lib';
-import {isSuccessfullyClaimedPet, rpgPetClaim} from '../../lib/epic_rpg/commands/pets/petClaim';
 import replyMessage from '../../lib/discord.js/message/replyMessage';
 
 export default <PrefixCommand>{

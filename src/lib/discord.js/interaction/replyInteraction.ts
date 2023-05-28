@@ -3,11 +3,8 @@ import {
   Client,
   InteractionReplyOptions,
   InteractionUpdateOptions,
-  StringSelectMenuInteraction,
 } from 'discord.js';
 import ms from 'ms';
-import editMessage from '../message/editMessage';
-import updateInteraction from './updateInteraction';
 
 interface IReplyInteraction {
   client: Client;

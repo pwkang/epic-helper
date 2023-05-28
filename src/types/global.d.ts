@@ -1,8 +1,8 @@
 import type {Client, Message, SlashCommandBuilder, User} from 'discord.js';
 import {ChatInputCommandInteraction} from 'discord.js';
 import type {COMMAND_TYPE} from '../constants/bot';
-import type {ScheduleOptions} from 'node-cron';
 import {OTHER_BOT_TYPE} from '../constants/bot';
+import type {ScheduleOptions} from 'node-cron';
 
 declare global {
   type ValuesOf<T extends Record<string, unknown>> = T[keyof T];
