@@ -1,6 +1,4 @@
 import {OTHER_BOT_TYPE} from '../../../constants/bot';
-import {rpgDaily} from '../../../lib/epic_rpg/commands/progress/daily';
-import {rpgFarm} from '../../../lib/epic_rpg/commands/progress/farm';
 import {rpgQuest} from '../../../lib/epic_rpg/commands/progress/quest';
 
 export default <SlashCommandOtherBot>{

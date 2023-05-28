@@ -1,4 +1,4 @@
-import {Client, Embed, Message, User} from 'discord.js';
+import {Embed, Message, User} from 'discord.js';
 
 export interface IMessageContentChecker {
   message: Message;

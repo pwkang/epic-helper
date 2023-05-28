@@ -6,11 +6,7 @@ export default <BotEvent>{
   once: false,
   execute: async (client, message: Message) => {
     if (isBotSlashCommand(message) && isNotDeferred(message)) {
-      const commands = client.slashCommandsOtherBot.filter((cmd) =>
-        cmd.commandName.some(
-          (name) => name.toLowerCase() === message.interaction?.commandName?.toLowerCase()
-        )
-      );
+      const commands = searchOtherBotSlashCommands(client, message);
       if (!commands.size) return;
       commands.forEach((cmd) => cmd.execute(client, message, message.interaction?.user!));
     }
@@ -22,6 +18,13 @@ export default <BotEvent>{
     }
   },
 };
+
+const searchOtherBotSlashCommands = (client: Client, message: Message) =>
+  client.slashCommandsOtherBot.filter((cmd) =>
+    cmd.commandName.some(
+      (name) => name.toLowerCase() === message.interaction?.commandName?.toLowerCase()
+    )
+  );
 
 const trimWhitespace = (str: string) => str.split('\n').join('').replace(/\s+/g, ' ').trim();
 

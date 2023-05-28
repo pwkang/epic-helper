@@ -1,10 +1,4 @@
-import {
-  BaseInteraction,
-  ChatInputCommandInteraction,
-  Client,
-  InteractionUpdateOptions,
-  MessageComponentInteraction,
-} from 'discord.js';
+import {Client, InteractionUpdateOptions, MessageComponentInteraction} from 'discord.js';
 
 interface IUpdateInteraction {
   client: Client;
