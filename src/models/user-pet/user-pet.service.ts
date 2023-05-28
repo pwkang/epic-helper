@@ -171,3 +171,19 @@ export const claimAllPets = async ({userId}: {userId: string}) => {
     }
   );
 };
+
+export const clearUserPetsAdventure = async (userId: string) => {
+  return dbUserPet.updateMany(
+    {
+      userId,
+    },
+    {
+      $set: {
+        status: RPG_PET_STATUS.idle,
+      },
+      $unset: {
+        readyAt: 1,
+      },
+    }
+  );
+};

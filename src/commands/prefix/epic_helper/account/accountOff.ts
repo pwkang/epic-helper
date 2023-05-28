@@ -1,6 +1,8 @@
 import {COMMAND_TYPE} from '../../../../constants/bot';
 import {userAccountOff} from '../../../../models/user/user.service';
 import replyMessage from '../../../../lib/discord.js/message/replyMessage';
+import {clearUserCooldowns} from '../../../../models/user-reminder/user-reminder.service';
+import {clearUserPetsAdventure} from '../../../../models/user-pet/user-pet.service';
 
 export default <PrefixCommand>{
   name: 'accountOff',
@@ -8,6 +10,8 @@ export default <PrefixCommand>{
   type: COMMAND_TYPE.bot,
   execute: async (client, message) => {
     await userAccountOff(message.author.id);
+    await clearUserCooldowns(message.author.id);
+    await clearUserPetsAdventure(message.author.id);
     replyMessage({
       client,
       message,
