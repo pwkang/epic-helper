@@ -6,9 +6,11 @@ import {
 } from '../../../../models/user-reminder/user-reminder.service';
 import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
-import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
+import {DONOR_CD_REDUCTION, RPG_COMMAND_TYPE} from '../../../../constants/rpg';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
 import replyMessage from '../../../discord.js/message/replyMessage';
+import {getUserAccount} from '../../../../models/user/user.service';
+import {calcDonorPExtraHuntCd} from '../../../epic_helper/reminder/calcHuntCdWithDonorP';
 
 interface IRpgHunt {
   client: Client;

@@ -267,3 +267,17 @@ export const STT_SCORE = {
   zombieEye: 2 / 20,
   wolfSkin: 1 / 20,
 } as const;
+
+export const DONOR_CD_REDUCTION = {
+  nonDonor: 1,
+  donor10: 0.9,
+  donor20: 0.8,
+  donor35: 0.65,
+} as const;
+
+export const RPG_DONOR_TIER = {
+  nonDonor: 'nonDonor',
+  donor10: 'donor10',
+  donor20: 'donor20',
+  donor35: 'donor35',
+} as const;

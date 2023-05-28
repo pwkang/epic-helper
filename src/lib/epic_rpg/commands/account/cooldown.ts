@@ -5,6 +5,9 @@ import {
   updateUserCooldown,
 } from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
+import {getUserAccount} from '../../../../models/user/user.service';
+import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
+import {calcDonorPExtraHuntCd} from '../../../epic_helper/reminder/calcHuntCdWithDonorP';
 
 const isReady = (str: string) => str.includes(':white_check_mark:');
 
@@ -45,6 +48,8 @@ interface IRpgCooldown {
 
 export default async function rpgCooldown({author, embed}: IRpgCooldown) {
   const currentCooldowns = await getUserAllCooldowns(author.id);
+  const userProfile = await getUserAccount(author.id);
+  if (!userProfile) return;
 
   const fields = embed.fields.flatMap((field) => field.value.split('\n'));
 
@@ -59,8 +64,16 @@ export default async function rpgCooldown({author, embed}: IRpgCooldown) {
         });
       }
     } else {
-      const readyAt = extractAndCalculateReadyAt(row);
-
+      let readyIn = extractAndCalculateReadyAt(row);
+      if (commandType === RPG_COMMAND_TYPE.hunt && userProfile.config.donorP) {
+        const extraDuration = calcDonorPExtraHuntCd({
+          baseCd: readyIn,
+          donorP: userProfile.config.donorP,
+          donor: userProfile.config.donor,
+        });
+        readyIn += extraDuration;
+      }
+      const readyAt = new Date(Date.now() + readyIn);
       const currentCooldown = currentCooldowns.find((cooldown) => cooldown.type === commandType);
       if (currentCooldown) {
         if (Math.abs(currentCooldown.readyAt.getTime() - readyAt.getTime()) > 1000) {
@@ -107,8 +120,7 @@ const searchCommandType = (fieldRow: string) => {
 
 const extractAndCalculateReadyAt = (fieldRow: string) => {
   const timeLeftList = fieldRow.split('(**')[1].split('**)')[0].split(' ');
-  const timeLeft = timeLeftList.reduce((acc, cur) => {
+  return timeLeftList.reduce((acc, cur) => {
     return acc + ms(cur);
   }, 0);
-  return new Date(Date.now() + timeLeft);
 };

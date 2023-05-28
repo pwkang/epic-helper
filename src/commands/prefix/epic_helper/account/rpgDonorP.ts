@@ -2,7 +2,7 @@ import {COMMAND_TYPE} from '../../../../constants/bot';
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle} from 'discord.js';
 import sendInteractiveMessage from '../../../../lib/discord.js/message/sendInteractiveMessage';
 import {removeRpgDonorPTier, updateRpgDonorPTier} from '../../../../models/user/user.service';
-import {RPG_DONOR_TIER} from '../../../../models/user/user.type';
+import {RPG_DONOR_TIER} from '../../../../constants/rpg';
 
 export default <PrefixCommand>{
   name: 'rpgDonorP',
