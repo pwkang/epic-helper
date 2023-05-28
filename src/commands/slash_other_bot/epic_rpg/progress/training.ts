@@ -1,5 +1,5 @@
-import {OTHER_BOT_TYPE} from '../../../constants/bot';
-import {rpgTraining} from '../../../lib/epic_rpg/commands/progress/training';
+import {OTHER_BOT_TYPE} from '../../../../constants/bot';
+import {rpgTraining} from '../../../../lib/epic_rpg/commands/progress/training';
 
 export default <SlashCommandOtherBot>{
   name: 'rpgTraining',

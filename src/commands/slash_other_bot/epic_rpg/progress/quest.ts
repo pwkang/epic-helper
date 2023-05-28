@@ -1,12 +1,12 @@
-import {OTHER_BOT_TYPE} from '../../../constants/bot';
-import {rpgHunt} from '../../../lib/epic_rpg/commands/progress/hunt';
+import {OTHER_BOT_TYPE} from '../../../../constants/bot';
+import {rpgQuest} from '../../../../lib/epic_rpg/commands/progress/quest';
 
 export default <SlashCommandOtherBot>{
-  name: 'rpgHunt',
+  name: 'rpgQuest',
   bot: OTHER_BOT_TYPE.rpg,
-  commandName: ['hunt'],
+  commandName: ['quest start'],
   execute: async (client, message, author) => {
-    rpgHunt({
+    rpgQuest({
       author,
       message,
       client,

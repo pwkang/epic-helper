@@ -1,12 +1,12 @@
-import {OTHER_BOT_TYPE} from '../../../constants/bot';
-import {rpgDaily} from '../../../lib/epic_rpg/commands/progress/daily';
+import {OTHER_BOT_TYPE} from '../../../../constants/bot';
+import {rpgWeekly} from '../../../../lib/epic_rpg/commands/progress/weekly';
 
 export default <SlashCommandOtherBot>{
-  name: 'rpgDaily',
+  name: 'rpgWeekly',
   bot: OTHER_BOT_TYPE.rpg,
-  commandName: ['daily'],
+  commandName: ['weekly'],
   execute: async (client, message, author) => {
-    rpgDaily({
+    rpgWeekly({
       author,
       message,
       client,
