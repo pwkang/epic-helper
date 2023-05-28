@@ -1,5 +1,5 @@
-import {OTHER_BOT_TYPE} from '../../../constants/bot';
-import {rpgEpicQuest} from '../../../lib/epic_rpg/commands/progress/epicQuest';
+import {OTHER_BOT_TYPE} from '../../../../constants/bot';
+import {rpgEpicQuest} from '../../../../lib/epic_rpg/commands/progress/epicQuest';
 
 export default <SlashCommandOtherBot>{
   name: 'rpgEpicQuest',

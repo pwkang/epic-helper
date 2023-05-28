@@ -1,6 +1,7 @@
-import {Message, User} from 'discord.js';
+import {Client, Message, User} from 'discord.js';
 import {RPG_EQUIPMENT} from '../../../../constants/rpg_equipment';
 import {updateUserRubyAmount} from '../../../../models/user/user.service';
+import {createRpgCommandListener} from '../../createRpgCommandListener';
 
 const rubyConsumed = {
   [RPG_EQUIPMENT.rubySword]: 4,
@@ -9,11 +10,36 @@ const rubyConsumed = {
 };
 
 interface IRpgCraft {
+  client: Client;
+  message: Message;
+  author: User;
+  isSlashCommand: boolean;
+}
+
+export function rpgCraft({client, message, author, isSlashCommand}: IRpgCraft) {
+  const event = createRpgCommandListener({
+    channelId: message.channel.id,
+    client,
+    author,
+  });
+  if (!event) return;
+  event.on('content', async (content) => {
+    if (isSuccessfullyCrafted({content})) {
+      await rpgCraftSuccess({
+        author,
+        content,
+      });
+    }
+  });
+  if (isSlashCommand) event.triggerCollect(message);
+}
+
+interface IRpgCraftSuccess {
   content: Message['content'];
   author: User;
 }
 
-const rpgCraft = async ({content, author}: IRpgCraft) => {
+const rpgCraftSuccess = async ({content, author}: IRpgCraftSuccess) => {
   const item = Object.entries(RPG_EQUIPMENT).find(([_, item]) =>
     content.toLowerCase().includes(item)
   )?.[1] as keyof typeof RPG_EQUIPMENT;
@@ -36,7 +62,7 @@ const rpgCraft = async ({content, author}: IRpgCraft) => {
   }
 };
 
-export default rpgCraft;
+export default rpgCraftSuccess;
 
 interface IIsSuccessfullyCrafted {
   content: Message['content'];

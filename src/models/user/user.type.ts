@@ -1,4 +1,4 @@
-import {RPG_COMMAND_TYPE} from '../../constants/rpg';
+import {RPG_COMMAND_TYPE, RPG_DONOR_TIER} from '../../constants/rpg';
 import {TIMEZONE_LIST} from '../../constants/timezone';
 import {ENCHANT_LEVEL} from '../../constants/enchant';
 
@@ -6,12 +6,6 @@ type ToggleDmOptions = keyof typeof RPG_COMMAND_TYPE | 'all';
 type ToggleReminderOptions = keyof typeof RPG_COMMAND_TYPE | 'all';
 type ToggleMentionsOptions = keyof typeof RPG_COMMAND_TYPE | 'all' | 'trainingAnswer' | 'petCatch';
 type CustomMessageOptions = keyof typeof RPG_COMMAND_TYPE;
-export const RPG_DONOR_TIER = {
-  nonDonor: 'nonDonor',
-  donor10: 'donor10',
-  donor20: 'donor20',
-  donor35: 'donor35',
-} as const;
 
 export interface IUser {
   userId: string;

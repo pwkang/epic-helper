@@ -1,12 +1,13 @@
 import {mongoClient} from '../../services/mongoose/mongoose.service';
 import userSchema from './user.schema';
-import {IUser, RPG_DONOR_TIER} from './user.type';
+import {IUser} from './user.type';
 import {
   redisGetUserRubyAmount,
   redisSetUserRubyAmount,
 } from '../../services/redis/user-account.redis';
 import {UpdateQuery} from 'mongoose';
 import {ENCHANT_LEVEL} from '../../constants/enchant';
+import {RPG_DONOR_TIER} from '../../constants/rpg';
 
 const dbUser = mongoClient.model<IUser>('user', userSchema);
 

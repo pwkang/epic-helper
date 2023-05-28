@@ -346,3 +346,9 @@ export const getUserAllCooldowns = async (userId: string): Promise<IUserReminder
 
   return reminderList ? reminderList.map((reminder) => reminder.toObject()) : [];
 };
+
+export const clearUserCooldowns = async (userId: string): Promise<void> => {
+  await dbUserReminder.deleteMany({
+    userId,
+  });
+};

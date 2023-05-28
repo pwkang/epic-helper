@@ -1,5 +1,5 @@
-import {OTHER_BOT_TYPE} from '../../../constants/bot';
-import {rpgFarm} from '../../../lib/epic_rpg/commands/progress/farm';
+import {OTHER_BOT_TYPE} from '../../../../constants/bot';
+import {rpgFarm} from '../../../../lib/epic_rpg/commands/progress/farm';
 
 export default <SlashCommandOtherBot>{
   name: 'rpgFarm',

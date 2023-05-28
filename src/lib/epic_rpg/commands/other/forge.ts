@@ -1,17 +1,43 @@
-import {Message, User} from 'discord.js';
+import {Client, Message, User} from 'discord.js';
 import {RPG_EQUIPMENT} from '../../../../constants/rpg_equipment';
 import {updateUserRubyAmount} from '../../../../models/user/user.service';
+import {createRpgCommandListener} from '../../createRpgCommandListener';
 
 const rubyConsumed = {
   [RPG_EQUIPMENT.ultraEdgyArmor]: 400,
 };
 
 interface IRpgForge {
+  client: Client;
+  message: Message;
+  author: User;
+  isSlashCommand: boolean;
+}
+
+export function rpgForge({client, message, author, isSlashCommand}: IRpgForge) {
+  const event = createRpgCommandListener({
+    channelId: message.channel.id,
+    client,
+    author,
+  });
+  if (!event) return;
+  event.on('content', async (content) => {
+    if (isSuccessfullyForged({content})) {
+      await rpgForgeSuccess({
+        author,
+        content,
+      });
+    }
+  });
+  if (isSlashCommand) event.triggerCollect(message);
+}
+
+interface IRpgForgeSuccess {
   content: Message['content'];
   author: User;
 }
 
-const rpgForge = async ({content, author}: IRpgForge) => {
+const rpgForgeSuccess = async ({content, author}: IRpgForgeSuccess) => {
   const item = Object.entries(RPG_EQUIPMENT).find(([_, item]) =>
     content.toLowerCase().includes(item)
   )?.[1] as keyof typeof RPG_EQUIPMENT;
@@ -34,7 +60,7 @@ const rpgForge = async ({content, author}: IRpgForge) => {
   }
 };
 
-export default rpgForge;
+export default rpgForgeSuccess;
 
 interface IIsSuccessfullyForged {
   content: Message['content'];

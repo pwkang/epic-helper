@@ -1,10 +1,14 @@
-import {Embed, User} from 'discord.js';
+import {Client, Embed, EmbedField, Message, User} from 'discord.js';
 import {
   deleteUserCooldowns,
   getUserAllCooldowns,
   updateUserCooldown,
 } from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
+import {getUserAccount} from '../../../../models/user/user.service';
+import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
+import {calcDonorPExtraHuntCd} from '../../../epic_helper/reminder/calcHuntCdWithDonorP';
+import {createRpgCommandListener} from '../../createRpgCommandListener';
 
 const isReady = (str: string) => str.includes(':white_check_mark:');
 
@@ -39,25 +43,46 @@ const RPG_COMMAND_CATEGORY = {
 };
 
 interface IRpgCooldown {
+  client: Client;
+  message: Message;
+  author: User;
+  isSlashCommand: boolean;
+}
+
+export function rpgCooldown({client, message, author, isSlashCommand}: IRpgCooldown) {
+  const event = createRpgCommandListener({
+    client,
+    channelId: message.channel.id,
+    author,
+  });
+  if (!event) return;
+  event.on('embed', async (embed) => {
+    if (isRpgCooldownResponse({embed, author})) {
+      await rpgCooldownSuccess({
+        author,
+        embed,
+      });
+      event.stop();
+    }
+  });
+  if (isSlashCommand) event.triggerCollect(message);
+}
+
+interface IRpgCooldownSuccess {
   embed: Embed;
   author: User;
 }
 
-export default async function rpgCooldown({author, embed}: IRpgCooldown) {
+export default async function rpgCooldownSuccess({author, embed}: IRpgCooldownSuccess) {
   const currentCooldowns = await getUserAllCooldowns(author.id);
+  const userProfile = await getUserAccount(author.id);
+  if (!userProfile) return;
 
   const fields = embed.fields.flatMap((field) => field.value.split('\n'));
 
   for (let row of fields) {
-    const commandList = row
-      .toLowerCase()
-      .split('`')[1]
-      .split('|')
-      .map((str) => str.trim())
-      .flatMap((str) => str);
-    const commandType = Object.entries(RPG_COMMAND_CATEGORY).find(([key, value]) =>
-      value.some((command) => commandList.some((name) => name.includes(command)))
-    )?.[0] as keyof typeof RPG_COMMAND_CATEGORY;
+    const commandType = searchCommandType(row);
+
     if (isReady(row)) {
       if (currentCooldowns.some((cooldown) => cooldown.type === commandType)) {
         await deleteUserCooldowns({
@@ -66,11 +91,16 @@ export default async function rpgCooldown({author, embed}: IRpgCooldown) {
         });
       }
     } else {
-      const timeLeftList = row.split('(**')[1].split('**)')[0].split(' ');
-      const timeLeft = timeLeftList.reduce((acc, cur) => {
-        return acc + ms(cur);
-      }, 0);
-      const readyAt = new Date(Date.now() + timeLeft);
+      let readyIn = extractAndCalculateReadyAt(row);
+      if (commandType === RPG_COMMAND_TYPE.hunt && userProfile.config.donorP) {
+        const extraDuration = calcDonorPExtraHuntCd({
+          baseCd: readyIn,
+          donorP: userProfile.config.donorP,
+          donor: userProfile.config.donor,
+        });
+        readyIn += extraDuration;
+      }
+      const readyAt = new Date(Date.now() + readyIn);
       const currentCooldown = currentCooldowns.find((cooldown) => cooldown.type === commandType);
       if (currentCooldown) {
         if (Math.abs(currentCooldown.readyAt.getTime() - readyAt.getTime()) > 1000) {
@@ -98,3 +128,26 @@ interface IIsRpgCooldownResponse {
 
 export const isRpgCooldownResponse = ({embed, author}: IIsRpgCooldownResponse) =>
   embed.author?.name === `${author.username} — cooldowns`;
+
+const extractCommandsCooldown = (embedRow: EmbedField['value']) =>
+  embedRow
+    .toLowerCase()
+    .split('`')[1]
+    .split('|')
+    .map((str) => str.trim())
+    .flatMap((str) => str);
+
+const searchCommandType = (fieldRow: string) => {
+  const commandList = extractCommandsCooldown(fieldRow);
+
+  return Object.entries(RPG_COMMAND_CATEGORY).find(([_, value]) =>
+    value.some((command) => commandList.some((name) => name.includes(command)))
+  )?.[0] as keyof typeof RPG_COMMAND_CATEGORY;
+};
+
+const extractAndCalculateReadyAt = (fieldRow: string) => {
+  const timeLeftList = fieldRow.split('(**')[1].split('**)')[0].split(' ');
+  return timeLeftList.reduce((acc, cur) => {
+    return acc + ms(cur);
+  }, 0);
+};

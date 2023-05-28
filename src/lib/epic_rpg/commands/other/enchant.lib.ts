@@ -1,4 +1,4 @@
-import {Client, Embed, User} from 'discord.js';
+import {Client, Embed, Message, User} from 'discord.js';
 import {ENCHANT_LEVEL, ENCHANT_LEVEL_RANK} from '../../../../constants/enchant';
 import {getUserEnchantTier} from '../../../../models/user/user.service';
 import {muteUser} from '../../../discord.js/channel/muteUser.lib';
@@ -6,6 +6,7 @@ import ms from 'ms';
 import {EPIC_RPG_ID} from '../../../../constants/bot';
 import sendMessage from '../../../discord.js/message/sendMessage';
 import dynamicTimeStamp from '../../../../utils/discord/dynamicTimestamp';
+import {createRpgCommandListener} from '../../createRpgCommandListener';
 
 const ENCHANT_CMD_TYPE = {
   enchant: 'enchant',
@@ -20,13 +21,44 @@ const EQUIPMENT_TYPE = {
 } as const;
 
 interface IRpgEnchant {
+  client: Client;
+  message: Message;
+  author: User;
+  isSlashCommand: boolean;
+}
+
+export function rpgEnchant({client, message, author, isSlashCommand}: IRpgEnchant) {
+  const event = createRpgCommandListener({
+    channelId: message.channel.id,
+    client,
+    author,
+  });
+  if (!event) return;
+  event.on('embed', async (embed) => {
+    if (isSuccessfullyEnchanted({embed, author})) {
+      event.stop();
+      await rpgEnchantSuccess({
+        client,
+        channelId: message.channel.id,
+        author,
+        embed,
+      });
+    }
+    if (isEnchantEquipmentBroken({embed})) {
+      event.stop();
+    }
+  });
+  if (isSlashCommand) event.triggerCollect(message);
+}
+
+interface IRpgEnchantSuccess {
   embed: Embed;
   author: User;
   client: Client;
   channelId: string;
 }
 
-export const rpgEnchant = async ({embed, author, client, channelId}: IRpgEnchant) => {
+export const rpgEnchantSuccess = async ({embed, author, client, channelId}: IRpgEnchantSuccess) => {
   const enchantTier = getEnchantType({embed});
   const equipmentType = Object.values(EQUIPMENT_TYPE).find((type) =>
     embed.description?.toLowerCase().includes(type)

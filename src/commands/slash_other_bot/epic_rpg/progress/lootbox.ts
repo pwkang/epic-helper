@@ -1,5 +1,5 @@
-import {OTHER_BOT_TYPE} from '../../../constants/bot';
-import {rpgBuyLootbox} from '../../../lib/epic_rpg/commands/progress/lootbox';
+import {OTHER_BOT_TYPE} from '../../../../constants/bot';
+import {rpgBuyLootbox} from '../../../../lib/epic_rpg/commands/progress/lootbox';
 
 export default <SlashCommandOtherBot>{
   name: 'rpgBuyLootbox',

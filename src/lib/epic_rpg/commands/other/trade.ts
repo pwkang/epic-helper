@@ -1,13 +1,42 @@
-import {Embed, Message, User} from 'discord.js';
+import {Client, Embed, Message, User} from 'discord.js';
 import {RPG_ITEMS} from '../../../../constants/rpg_items';
 import {updateUserRubyAmount} from '../../../../models/user/user.service';
+import {createRpgCommandListener} from '../../createRpgCommandListener';
 
-interface IRpgTrade {
+interface IRpgSuccess {
+  client: Client;
+  message: Message;
+  author: User;
+  isSlashCommand: boolean;
+}
+
+export function rpgTrade({client, message, author, isSlashCommand}: IRpgSuccess) {
+  const event = createRpgCommandListener({
+    author,
+    channelId: message.channelId,
+    client,
+  });
+  if (!event) return;
+  event.on('embed', (embed) => {
+    if (isRpgTrade({embed, author})) {
+      rpgTradeSuccess({embed, author});
+      event.stop();
+    }
+  });
+  event.on('content', (content, collected) => {
+    if (isNotEnoughItems({message: collected, author})) {
+      event.stop();
+    }
+  });
+  if (isSlashCommand) event.triggerCollect(message);
+}
+
+interface IRpgTradeSuccess {
   embed: Embed;
   author: User;
 }
 
-const rpgTrade = async ({embed, author}: IRpgTrade) => {
+const rpgTradeSuccess = async ({embed, author}: IRpgTradeSuccess) => {
   const traded = extractTradedItems({embed, author});
   if (!traded.ruby) return;
   await updateUserRubyAmount({
@@ -17,7 +46,7 @@ const rpgTrade = async ({embed, author}: IRpgTrade) => {
   });
 };
 
-export default rpgTrade;
+export default rpgTradeSuccess;
 
 interface IExtractTradedItems {
   embed: Embed;
