@@ -1,9 +1,5 @@
 import {COMMAND_TYPE} from '../../../../constants/bot';
-import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
-import rpgCooldownSuccess, {
-  isRpgCooldownResponse,
-  rpgCooldown,
-} from '../../../../lib/epic_rpg/commands/account/cooldown';
+import {rpgCooldown} from '../../../../lib/epic_rpg/commands/account/cooldown';
 
 export default <PrefixCommand>{
   name: 'rpgCooldown',
