@@ -1,7 +1,8 @@
 import {COMMAND_TYPE} from '../../../../constants/bot';
 import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
-import rpgCooldown, {
+import rpgCooldownSuccess, {
   isRpgCooldownResponse,
+  rpgCooldown,
 } from '../../../../lib/epic_rpg/commands/account/cooldown';
 
 export default <PrefixCommand>{
@@ -9,20 +10,11 @@ export default <PrefixCommand>{
   commands: ['cooldowns', 'cooldown', 'cd'],
   type: COMMAND_TYPE.rpg,
   execute: async (client, message) => {
-    const event = createRpgCommandListener({
-      client,
-      channelId: message.channel.id,
+    rpgCooldown({
       author: message.author,
-    });
-    if (!event) return;
-    event.on('embed', async (embed) => {
-      if (isRpgCooldownResponse({embed, author: message.author})) {
-        await rpgCooldown({
-          author: message.author,
-          embed,
-        });
-        event.stop();
-      }
+      message,
+      isSlashCommand: false,
+      client,
     });
   },
 };

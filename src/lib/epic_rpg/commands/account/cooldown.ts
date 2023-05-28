@@ -1,4 +1,4 @@
-import {Embed, EmbedField, User} from 'discord.js';
+import {Client, Embed, EmbedField, Message, User} from 'discord.js';
 import {
   deleteUserCooldowns,
   getUserAllCooldowns,
@@ -8,6 +8,7 @@ import ms from 'ms';
 import {getUserAccount} from '../../../../models/user/user.service';
 import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
 import {calcDonorPExtraHuntCd} from '../../../epic_helper/reminder/calcHuntCdWithDonorP';
+import {createRpgCommandListener} from '../../createRpgCommandListener';
 
 const isReady = (str: string) => str.includes(':white_check_mark:');
 
@@ -42,11 +43,37 @@ const RPG_COMMAND_CATEGORY = {
 };
 
 interface IRpgCooldown {
+  client: Client;
+  message: Message;
+  author: User;
+  isSlashCommand: boolean;
+}
+
+export function rpgCooldown({client, message, author, isSlashCommand}: IRpgCooldown) {
+  const event = createRpgCommandListener({
+    client,
+    channelId: message.channel.id,
+    author,
+  });
+  if (!event) return;
+  event.on('embed', async (embed) => {
+    if (isRpgCooldownResponse({embed, author})) {
+      await rpgCooldownSuccess({
+        author,
+        embed,
+      });
+      event.stop();
+    }
+  });
+  if (isSlashCommand) event.triggerCollect(message);
+}
+
+interface IRpgCooldownSuccess {
   embed: Embed;
   author: User;
 }
 
-export default async function rpgCooldown({author, embed}: IRpgCooldown) {
+export default async function rpgCooldownSuccess({author, embed}: IRpgCooldownSuccess) {
   const currentCooldowns = await getUserAllCooldowns(author.id);
   const userProfile = await getUserAccount(author.id);
   if (!userProfile) return;
