@@ -179,7 +179,7 @@ export const updateUserRubyAmount = async ({
 };
 
 export const getUserRubyAmount = async (userId: string): Promise<number> => {
-  const cb = async () => {
+  return redisGetUserRubyAmount(userId, async () => {
     const user = await dbUser.findOne(
       {
         userId,
@@ -191,9 +191,7 @@ export const getUserRubyAmount = async (userId: string): Promise<number> => {
       }
     );
     return user?.toJSON() as IUser;
-  };
-
-  return await redisGetUserRubyAmount(userId, cb);
+  });
 };
 
 interface ISetUserEnchantTier {
@@ -247,4 +245,57 @@ export const getUserEnchantTier = async ({
     }
   );
   return user?.config.enchant ?? null;
+};
+
+interface IRemoveUserHealReminder {
+  userId: string;
+}
+
+export const removeUserHealReminder = async ({userId}: IRemoveUserHealReminder): Promise<void> => {
+  await dbUser.findOneAndUpdate(
+    {
+      userId,
+    },
+    {
+      $unset: {
+        'config.heal': '',
+      },
+    }
+  );
+};
+
+interface IGetUserHealReminder {
+  userId: string;
+}
+
+export const getUserHealReminder = async ({
+  userId,
+}: IGetUserHealReminder): Promise<number | null> => {
+  const user = await dbUser.findOne(
+    {
+      userId,
+    },
+    {
+      'config.heal': 1,
+    }
+  );
+  return user?.config.heal ?? null;
+};
+
+interface ISetUserHealReminder {
+  userId: string;
+  hp: number;
+}
+
+export const setUserHealReminder = async ({userId, hp}: ISetUserHealReminder): Promise<void> => {
+  await dbUser.findOneAndUpdate(
+    {
+      userId,
+    },
+    {
+      $set: {
+        'config.heal': hp,
+      },
+    }
+  );
 };
