@@ -6,6 +6,7 @@ import {
   isSuccessfullySentPetsToAdventure,
   rpgPetAdventure,
 } from '../../../../lib/epic_rpg/commands/pets/petAdventure.lib';
+import sendMessage from '../../../../lib/discord.js/message/sendMessage';
 
 const args1 = ['pets', 'pet'];
 const args2 = ['adventure', 'adv'];
@@ -38,11 +39,16 @@ export default <PrefixCommand>{
           message: collected,
           author: message.author,
         });
-        await rpgPetAdventure({
+        const options = await rpgPetAdventure({
           author: message.author,
           selectedPets: args.slice(3),
           amountOfPetSent,
           message: collected,
+        });
+        sendMessage({
+          client,
+          channelId: message.channel.id,
+          options,
         });
       }
     });
