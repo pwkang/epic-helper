@@ -6,15 +6,35 @@ import {BOT_EMOJI} from '../../../../constants/bot_emojis';
 import {numberToRoman} from '../../../../romanConversion';
 import {RPG_PET_STATUS, RPG_PET_TYPE} from '../../../../constants/pet';
 import dynamicTimeStamp from '../../../../utils/discord/dynamicTimestamp';
+import {getUserPets} from '../../../../models/user-pet/user-pet.service';
 
 export const PET_CD_PET_PAGE = 21;
+
+interface IPaginatePetCd {
+  page: number;
+  user: User;
+}
+
+export const paginatePetCd = async ({user, page}: IPaginatePetCd) => {
+  const pets = await getUserPets({
+    page,
+    limit: PET_CD_PET_PAGE,
+    status: ['adventure', 'back'],
+    userId: user.id,
+    orderBy: 'petId',
+  });
+  return generateEmbed({
+    pets,
+    author: user,
+  });
+};
 
 interface IGeneratePetCdEmbed {
   author: User;
   pets: IUserPet[];
 }
 
-export const generatePetCdEmbed = ({author, pets}: IGeneratePetCdEmbed) => {
+const generateEmbed = ({author, pets}: IGeneratePetCdEmbed) => {
   const fields = generateEmbedFields(pets);
   const embed = new EmbedBuilder()
     .setAuthor({
