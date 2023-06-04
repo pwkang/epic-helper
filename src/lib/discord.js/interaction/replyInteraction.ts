@@ -3,6 +3,7 @@ import {
   Client,
   InteractionReplyOptions,
   InteractionUpdateOptions,
+  StringSelectMenuInteraction,
 } from 'discord.js';
 import ms from 'ms';
 
@@ -32,7 +33,7 @@ export default async function replyInteraction({
   function on(
     customId: string,
     callback: (
-      collected: BaseInteraction
+      collected: BaseInteraction | StringSelectMenuInteraction
     ) => Promise<InteractionUpdateOptions | null> | InteractionUpdateOptions | null
   ) {
     collector?.on('collect', async (collected) => {

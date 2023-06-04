@@ -54,11 +54,9 @@ const generateEmbedFields = (pets: IUserPet[]) => {
 
 const getStatusText = (pet: IUserPet) => {
   const readyAt = pet.readyAt ? new Date(pet.readyAt).getTime() : null;
-  if (!readyAt) {
-    return '**Idle**';
-  } else if (pet.status === RPG_PET_STATUS.back || readyAt < Date.now()) {
+  if (pet.status === RPG_PET_STATUS.back || (readyAt && readyAt < Date.now())) {
     return '`BACK FROM ADVENTURE`';
-  } else if (pet.status === RPG_PET_STATUS.adventure && readyAt > Date.now()) {
+  } else if (pet.status === RPG_PET_STATUS.adventure && readyAt && readyAt > Date.now()) {
     return `**Claim ${dynamicTimeStamp({
       time: readyAt,
     })}**`;
@@ -66,4 +64,4 @@ const getStatusText = (pet: IUserPet) => {
   return '**Idle**';
 };
 
-const isPetInIdleStatus = (pet: IUserPet) => pet.status === RPG_PET_STATUS.idle || !pet.readyAt;
+const isPetInIdleStatus = (pet: IUserPet) => pet.status === RPG_PET_STATUS.idle;

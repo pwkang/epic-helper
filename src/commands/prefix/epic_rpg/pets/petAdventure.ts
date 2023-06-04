@@ -29,7 +29,6 @@ export default <PrefixCommand>{
     });
     if (!event) return;
     event.on('content', async (content, collected) => {
-      console.log('content');
       if (isFailToSendPetsToAdventure({message: collected, author: message.author})) {
         event.stop();
       }

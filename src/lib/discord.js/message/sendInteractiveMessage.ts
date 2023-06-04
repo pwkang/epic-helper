@@ -38,7 +38,7 @@ export default async function sendInteractiveMessage({
     customId: string,
     callback: (
       collected: BaseInteraction | StringSelectMenuInteraction
-    ) => Promise<InteractionUpdateOptions> | InteractionUpdateOptions
+    ) => Promise<InteractionUpdateOptions | null> | InteractionUpdateOptions | null
   ) {
     collector?.on('collect', async (collected) => {
       if (collected.customId !== customId) return;

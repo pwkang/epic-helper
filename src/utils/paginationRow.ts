@@ -3,11 +3,11 @@ import {ActionRowBuilder, ButtonBuilder, ButtonStyle} from 'discord.js';
 interface IGenerateNavigationRow {
   page: number;
   total: number;
-  itemPerPage: number;
+  itemsPerPage: number;
   all?: boolean;
 }
 
-export const generateNavigationRow = ({page, total, itemPerPage, all}: IGenerateNavigationRow) => {
+export const generateNavigationRow = ({page, total, itemsPerPage, all}: IGenerateNavigationRow) => {
   const row = new ActionRowBuilder<ButtonBuilder>();
   row.addComponents(
     new ButtonBuilder()
@@ -28,14 +28,14 @@ export const generateNavigationRow = ({page, total, itemPerPage, all}: IGenerate
       .setCustomId('next')
       .setStyle(ButtonStyle.Primary)
       .setEmoji('➡️')
-      .setDisabled(page === Math.floor(total / itemPerPage))
+      .setDisabled(page === Math.floor(total / itemsPerPage))
   );
   row.addComponents(
     new ButtonBuilder()
       .setCustomId('last')
       .setStyle(ButtonStyle.Primary)
       .setEmoji('⏩')
-      .setDisabled(page === Math.floor(total / itemPerPage))
+      .setDisabled(page === Math.floor(total / itemsPerPage))
   );
   if (all)
     row.addComponents(
