@@ -57,7 +57,6 @@ export const itemListingHelper = async ({
     },
   };
   for (const [key, fn] of Object.entries(events)) {
-    // @ts-ignore
     event.on(key, () => {
       fn();
       return createPage({
@@ -65,10 +64,9 @@ export const itemListingHelper = async ({
         itemsPerPage,
         page,
         totalItems,
-      });
+      }) as InteractionUpdateOptions;
     });
   }
-  // @ts-ignore
   event.on('all', async () => {
     showAllItems({
       channelId,
@@ -81,7 +79,7 @@ export const itemListingHelper = async ({
       content: '‍',
       embeds: [],
       components: [],
-    };
+    } as InteractionUpdateOptions;
   });
 };
 
@@ -124,18 +122,18 @@ interface IGenerateResponse {
 const generateResponse = async ({client, message, interaction, options}: IGenerateResponse) => {
   let event;
   if (message) {
+    let _options = options as MessageCreateOptions;
     event = await sendInteractiveMessage({
       client,
       channelId: message.channel.id,
-      // @ts-ignore
-      options,
+      options: _options,
     });
   } else if (interaction) {
+    let _options = options as InteractionReplyOptions;
     event = await replyInteraction({
       client,
       interaction,
-      // @ts-ignore
-      options,
+      options: _options,
       interactive: true,
     });
   }
