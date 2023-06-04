@@ -3,25 +3,29 @@ import replyInteraction from '../../../../lib/discord.js/interaction/replyIntera
 import {ButtonStyle, Client, User} from 'discord.js';
 import {
   generatePetListEmbed,
-  generatePetListNavigationRow,
   PET_LIST_PET_PET_PAGE,
 } from '../../../../lib/epic_helper/features/pets/petListEmbed.lib';
 import {calcTotalPets, getUserPets} from '../../../../models/user-pet/user-pet.service';
 import sendMessage from '../../../../lib/discord.js/message/sendMessage';
 import {sleep} from '../../../../utils/sleep';
+import {generateNavigationRow} from '../../../../utils/paginationRow';
 
 export default async function petList({client, interaction}: IPetSubcommand) {
   let page = 0;
   const totalPets = await calcTotalPets({
     userId: interaction.user.id,
   });
-  const row = generatePetListNavigationRow(page, totalPets);
+  const row = generateNavigationRow({
+    page,
+    itemPerPage: PET_LIST_PET_PET_PAGE,
+    all: true,
+    total: totalPets,
+  });
   const embed = await generateEmbed(page, interaction.user);
   const event = await replyInteraction({
     client,
     interaction,
     options: {
-      content: 'List',
       components: [row],
       embeds: [embed],
     },
@@ -30,39 +34,19 @@ export default async function petList({client, interaction}: IPetSubcommand) {
   if (!event) return;
   event.on('first', async (interaction) => {
     page = 0;
-    const embed = await generateEmbed(page, interaction.user);
-    const row = generatePetListNavigationRow(page, totalPets);
-    return {
-      embeds: [embed],
-      components: [row],
-    };
+    return await updatePage(page, totalPets, interaction.user, event);
   });
   event.on('prev', async (interaction) => {
     page--;
-    const embed = await generateEmbed(page, interaction.user);
-    const row = generatePetListNavigationRow(page, totalPets);
-    return {
-      embeds: [embed],
-      components: [row],
-    };
+    return await updatePage(page, totalPets, interaction.user, event);
   });
   event.on('next', async (interaction) => {
     page++;
-    const embed = await generateEmbed(page, interaction.user);
-    const row = generatePetListNavigationRow(page, totalPets);
-    return {
-      embeds: [embed],
-      components: [row],
-    };
+    return await updatePage(page, totalPets, interaction.user, event);
   });
   event.on('last', async (interaction) => {
     page = Math.floor(totalPets / PET_LIST_PET_PET_PAGE);
-    const embed = await generateEmbed(page, interaction.user);
-    const row = generatePetListNavigationRow(page, totalPets);
-    return {
-      embeds: [embed],
-      components: [row],
-    };
+    return await updatePage(page, totalPets, interaction.user, event);
   });
   event.on('all', async (collected) => {
     showAllPets({
@@ -108,4 +92,18 @@ const generateEmbed = async (page: number, author: User) => {
     pets,
     author,
   });
+};
+
+const updatePage = async (page: number, totalPets: number, author: User, event: any) => {
+  const embed = await generateEmbed(page, author);
+  const row = generateNavigationRow({
+    page,
+    itemPerPage: PET_LIST_PET_PET_PAGE,
+    all: true,
+    total: totalPets,
+  });
+  return {
+    embeds: [embed],
+    components: [row],
+  };
 };

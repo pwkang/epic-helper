@@ -92,39 +92,3 @@ const generatePetSkillsRows = (pet: IUserPet) => {
   if (!str.length) str.push(`${BOT_EMOJI.petSkill.normie} ${RPG_PET_SKILL.normie}`);
   return str.join('\n');
 };
-
-export const generatePetListNavigationRow = (page: number, totalPets: number) => {
-  const row = new ActionRowBuilder<ButtonBuilder>();
-  row.addComponents(
-    new ButtonBuilder()
-      .setCustomId('first')
-      .setStyle(ButtonStyle.Primary)
-      .setEmoji('⏪')
-      .setDisabled(page === 0)
-  );
-  row.addComponents(
-    new ButtonBuilder()
-      .setCustomId('prev')
-      .setStyle(ButtonStyle.Primary)
-      .setEmoji('⬅️')
-      .setDisabled(page === 0)
-  );
-  row.addComponents(
-    new ButtonBuilder()
-      .setCustomId('next')
-      .setStyle(ButtonStyle.Primary)
-      .setEmoji('➡️')
-      .setDisabled(page === Math.floor(totalPets / PET_LIST_PET_PET_PAGE))
-  );
-  row.addComponents(
-    new ButtonBuilder()
-      .setCustomId('last')
-      .setStyle(ButtonStyle.Primary)
-      .setEmoji('⏩')
-      .setDisabled(page === Math.floor(totalPets / PET_LIST_PET_PET_PAGE))
-  );
-  row.addComponents(
-    new ButtonBuilder().setCustomId('all').setStyle(ButtonStyle.Primary).setLabel('All')
-  );
-  return row;
-};
