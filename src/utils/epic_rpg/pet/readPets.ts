@@ -5,7 +5,7 @@ import {
   RPG_PET_STATUS,
   RPG_PET_TYPE,
 } from '../../../constants/pet';
-import {romanToNumber} from '../../../romanConversion';
+import {convertRomanToNumber} from '../../romanConversion';
 import ms from 'ms';
 import {convertPetIdToNum} from './petIdConversion';
 import {IUserPet} from '../../../models/user-pet/user-pet.type';
@@ -88,7 +88,7 @@ const getPetSkills = (fieldValue: string) => {
 
 const getPetTier = (fieldName: string) => {
   const tier = fieldName.split(' ').pop();
-  return tier ? romanToNumber(tier) : 1;
+  return tier ? convertRomanToNumber(tier) : 1;
 };
 
 const getPetReadyAt = (fieldValue: string) => {

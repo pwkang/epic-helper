@@ -4,7 +4,7 @@ import {IUserPet} from '../../../../models/user-pet/user-pet.type';
 import {RPG_PET_SKILL, RPG_PET_SKILL_TIER_REVERSE, RPG_PET_TYPE} from '../../../../constants/pet';
 import {BOT_EMOJI} from '../../../../constants/bot_emojis';
 import {convertNumToPetId} from '../../../../utils/epic_rpg/pet/petIdConversion';
-import {numberToRoman} from '../../../../romanConversion';
+import {convertNumberToRoman} from '../../../../utils/romanConversion';
 import {getUserPets} from '../../../../models/user-pet/user-pet.service';
 
 export const PET_LIST_PET_PET_PAGE = 21;
@@ -49,7 +49,7 @@ const generateEmbedFields = (pets: IUserPet[]) => {
     fields.push({
       name:
         `\`ID: ${convertNumToPetId(pet.petId).toUpperCase()}\`\n` +
-        `${petEmoji} ${pet.name} — ${numberToRoman(pet.tier)}`,
+        `${petEmoji} ${pet.name} — ${convertNumberToRoman(pet.tier)}`,
       value: generatePetSkillsRows(pet),
       inline: true,
     });

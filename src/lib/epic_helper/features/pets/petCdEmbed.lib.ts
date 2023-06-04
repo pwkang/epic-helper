@@ -3,7 +3,7 @@ import {EmbedBuilder, EmbedField, User} from 'discord.js';
 import {BOT_COLOR} from '../../../../constants/bot';
 import {convertNumToPetId} from '../../../../utils/epic_rpg/pet/petIdConversion';
 import {BOT_EMOJI} from '../../../../constants/bot_emojis';
-import {numberToRoman} from '../../../../romanConversion';
+import {convertNumberToRoman} from '../../../../utils/romanConversion';
 import {RPG_PET_STATUS, RPG_PET_TYPE} from '../../../../constants/pet';
 import dynamicTimeStamp from '../../../../utils/discord/dynamicTimestamp';
 import {getUserPets} from '../../../../models/user-pet/user-pet.service';
@@ -56,7 +56,7 @@ const generateEmbedFields = (pets: IUserPet[]) => {
     const epic = !!pet.skills.epic ? BOT_EMOJI.petSkill.epic : '';
     const timeTraveler = !!pet.skills.timeTraveler ? BOT_EMOJI.petSkill.timeTraveler : '';
     const petId = convertNumToPetId(pet.petId).toUpperCase();
-    const petTier = numberToRoman(pet.tier);
+    const petTier = convertNumberToRoman(pet.tier);
     const petNameKey = Object.entries(RPG_PET_TYPE).find(
       ([_, value]) => value === pet.name
     )?.[0] as keyof typeof RPG_PET_TYPE;
