@@ -1,10 +1,6 @@
 import {IPetSubcommand} from '../pet.type';
-import {ButtonStyle, User} from 'discord.js';
-import {
-  generatePetListEmbed,
-  PET_LIST_PET_PET_PAGE,
-} from '../../../../lib/epic_helper/features/pets/petListEmbed.lib';
-import {calcTotalPets, getUserPets} from '../../../../models/user-pet/user-pet.service';
+import {ButtonStyle} from 'discord.js';
+import {calcTotalPets} from '../../../../models/user-pet/user-pet.service';
 import {itemListingHelper} from '../../../../lib/epic_helper/itemListingHelper';
 import {
   paginatePetCd,

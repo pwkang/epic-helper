@@ -2,7 +2,7 @@ import {mongoClient} from '../../services/mongoose/mongoose.service';
 import {IUserPet} from './user-pet.type';
 import userPetSchema from './user-pet.schema';
 import {RPG_PET_STATUS} from '../../constants/pet';
-import {FilterQuery, QueryOptions, QuerySelector} from 'mongoose';
+import {FilterQuery, QueryOptions} from 'mongoose';
 
 const dbUserPet = mongoClient.model<IUserPet>('user-pet', userPetSchema);
 

@@ -6,11 +6,10 @@ import {
 } from '../../../../models/user-reminder/user-reminder.service';
 import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
-import {DONOR_CD_REDUCTION, RPG_COMMAND_TYPE} from '../../../../constants/rpg';
+import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
 import replyMessage from '../../../discord.js/message/replyMessage';
-import {getUserAccount, getUserHealReminder} from '../../../../models/user/user.service';
-import {calcDonorPExtraHuntCd} from '../../../epic_helper/reminder/calcHuntCdWithDonorP';
+import {getUserHealReminder} from '../../../../models/user/user.service';
 import {CLICKABLE_SLASH_RPG} from '../../../../constants/clickable_slash';
 import sendMessage from '../../../discord.js/message/sendMessage';
 

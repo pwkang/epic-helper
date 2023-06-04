@@ -56,7 +56,7 @@ interface IExtractTradedItems {
 type ITradedItem = {
   [key in keyof typeof RPG_ITEMS]?: number;
 };
-const extractTradedItems = ({embed, author}: IExtractTradedItems): ITradedItem => {
+const extractTradedItems = ({embed}: IExtractTradedItems): ITradedItem => {
   const items = embed.fields[0].value.split('\n');
 
   const tradedItemName = Object.entries(RPG_ITEMS).find(([_, item]) =>

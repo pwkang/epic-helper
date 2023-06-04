@@ -8,7 +8,7 @@ interface IRpgPetClaim {
   client: Client;
 }
 
-export const rpgPetClaim = async ({embed, author, client}: IRpgPetClaim) => {
+export const rpgPetClaim = async ({author}: IRpgPetClaim) => {
   await claimAllPets({
     userId: author.id,
   });

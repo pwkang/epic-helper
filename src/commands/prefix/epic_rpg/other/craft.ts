@@ -1,9 +1,5 @@
 import {COMMAND_TYPE} from '../../../../constants/bot';
-import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
-import rpgCraftSuccess, {
-  isSuccessfullyCrafted,
-  rpgCraft,
-} from '../../../../lib/epic_rpg/commands/other/craft';
+import {rpgCraft} from '../../../../lib/epic_rpg/commands/other/craft';
 
 export default <PrefixCommand>{
   name: 'rpgCraft',

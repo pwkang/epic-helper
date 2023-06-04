@@ -1,11 +1,4 @@
-import {
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  EmbedBuilder,
-  EmbedField,
-  User,
-} from 'discord.js';
+import {ButtonStyle, EmbedBuilder, EmbedField, User} from 'discord.js';
 import {BOT_COLOR} from '../../../../constants/bot';
 import {IUserPet} from '../../../../models/user-pet/user-pet.type';
 import {RPG_PET_SKILL, RPG_PET_SKILL_TIER_REVERSE, RPG_PET_TYPE} from '../../../../constants/pet';
@@ -50,7 +43,7 @@ const generateEmbedFields = (pets: IUserPet[]) => {
   const fields: EmbedField[] = [];
   for (let pet of pets) {
     const petNameKey = Object.entries(RPG_PET_TYPE).find(
-      ([key, value]) => value === pet.name
+      ([_, value]) => value === pet.name
     )?.[0] as keyof typeof RPG_PET_TYPE;
     const petEmoji = petNameKey ? BOT_EMOJI.pet[petNameKey] : '';
     fields.push({

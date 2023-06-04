@@ -1,5 +1,4 @@
 import {OTHER_BOT_TYPE} from '../../../../constants/bot';
-import {rpgCooldown} from '../../../../lib/epic_rpg/commands/account/cooldown';
 import {rpgInventory} from '../../../../lib/epic_rpg/commands/account/inventory';
 
 export default <SlashCommandOtherBot>{

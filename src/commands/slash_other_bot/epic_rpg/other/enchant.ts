@@ -1,5 +1,4 @@
 import {OTHER_BOT_TYPE} from '../../../../constants/bot';
-import {rpgCraft} from '../../../../lib/epic_rpg/commands/other/craft';
 import {rpgEnchant} from '../../../../lib/epic_rpg/commands/other/enchant.lib';
 
 export default <SlashCommandOtherBot>{

@@ -10,7 +10,7 @@ export const setHealReminder = async ({client, interaction}: IUserConfig) => {
   const toRemove = interaction.options.getBoolean('remove');
   const hp = interaction.options.getNumber('hp');
 
-  let message = '';
+  let message;
   if (toRemove) {
     await removeUserHealReminder({
       userId,

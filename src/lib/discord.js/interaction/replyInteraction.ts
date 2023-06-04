@@ -16,7 +16,6 @@ interface IReplyInteraction {
 
 export default async function replyInteraction({
   interaction,
-  client,
   interactive,
   options,
 }: IReplyInteraction) {

@@ -149,7 +149,7 @@ const isSentSinglePetToAdventure = ({message, author}: IMessageContentChecker) =
     author,
   });
 
-const isSentMultiplePetsToAdventure = ({message, author}: IMessageContentChecker) =>
+const isSentMultiplePetsToAdventure = ({message}: IMessageContentChecker) =>
   message.content.includes('of your pets have started an adventure!');
 
 const isPetComebackInstantly = ({message}: IMessageContentChecker) =>
@@ -245,7 +245,7 @@ interface IUpdatePetStatus {
   pet: IUserPet;
 }
 
-export const updateInstantBackPet = async ({pet, userId}: ISendPetToAdventure) => {
+export const updateInstantBackPet = async ({pet, userId}: IUpdatePetStatus) => {
   pet.status = RPG_PET_STATUS.back;
   pet.readyAt = new Date();
   await updateUserPet({
@@ -298,7 +298,7 @@ const generateResult = (result: ISentResult[]) => {
 export const hasPetsReturnedInstantly = (content: string) =>
   content.includes('the following pets are back instantly:');
 
-export const extractReturnedPetsId = ({message, author}: IMessageContentChecker) => {
+export const extractReturnedPetsId = ({message}: IMessageContentChecker) => {
   if (!hasPetsReturnedInstantly(message.content)) return [];
   const targetRow = message.content.split('\n').find(hasPetsReturnedInstantly) ?? '';
   const petIds = targetRow.match(/`(\w+)`/g);
