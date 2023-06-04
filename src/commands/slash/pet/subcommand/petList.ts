@@ -1,10 +1,10 @@
 import {IPetSubcommand} from '../pet.type';
-import {ButtonStyle, User} from 'discord.js';
+import {ButtonStyle} from 'discord.js';
 import {
-  generatePetListEmbed,
+  paginatePetList,
   PET_LIST_PET_PET_PAGE,
 } from '../../../../lib/epic_helper/features/pets/petListEmbed.lib';
-import {calcTotalPets, getUserPets} from '../../../../models/user-pet/user-pet.service';
+import {calcTotalPets} from '../../../../models/user-pet/user-pet.service';
 import {itemListingHelper} from '../../../../lib/epic_helper/itemListingHelper';
 
 export default async function petList({client, interaction}: IPetSubcommand) {
@@ -15,18 +15,13 @@ export default async function petList({client, interaction}: IPetSubcommand) {
   await itemListingHelper({
     channelId: interaction.channelId,
     client,
-    embedFn: (page) => generateEmbed(page, interaction.user),
+    embedFn: (page) =>
+      paginatePetList({
+        page,
+        author: interaction.user,
+      }),
     interaction,
     itemsPerPage: PET_LIST_PET_PET_PAGE,
     totalItems: totalPets,
   });
 }
-
-const generateEmbed = async (page: number, author: User) => {
-  const pets = await getUserPets({page, limit: PET_LIST_PET_PET_PAGE, userId: author.id});
-
-  return generatePetListEmbed({
-    pets,
-    author,
-  });
-};

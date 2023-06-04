@@ -12,15 +12,30 @@ import {RPG_PET_SKILL, RPG_PET_SKILL_TIER_REVERSE, RPG_PET_TYPE} from '../../../
 import {BOT_EMOJI} from '../../../../constants/bot_emojis';
 import {convertNumToPetId} from '../../../../utils/epic_rpg/pet/petIdConversion';
 import {numberToRoman} from '../../../../romanConversion';
+import {getUserPets} from '../../../../models/user-pet/user-pet.service';
 
 export const PET_LIST_PET_PET_PAGE = 21;
+
+interface IPaginatePetList {
+  page: number;
+  author: User;
+}
+
+export const paginatePetList = async ({author, page}: IPaginatePetList) => {
+  const pets = await getUserPets({page, limit: PET_LIST_PET_PET_PAGE, userId: author.id});
+
+  return generateEmbed({
+    pets,
+    author,
+  });
+};
 
 interface IGeneratePetListEmbed {
   pets: IUserPet[];
   author: User;
 }
 
-export const generatePetListEmbed = async ({pets, author}: IGeneratePetListEmbed) => {
+const generateEmbed = async ({pets, author}: IGeneratePetListEmbed) => {
   const fields = generateEmbedFields(pets);
   return new EmbedBuilder()
     .setAuthor({
