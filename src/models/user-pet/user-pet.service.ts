@@ -168,6 +168,22 @@ export const getAvailableEpicPets = async ({userId}: IGetAvailableEpicPets) => {
   });
 };
 
+interface IGetAdventureEpicPets {
+  userId: string;
+}
+
+export const getAdventureEpicPets = async ({userId}: IGetAdventureEpicPets) => {
+  return dbUserPet.find({
+    userId,
+    status: {
+      $in: [RPG_PET_STATUS.adventure, RPG_PET_STATUS.back],
+    },
+    'skills.epic': {
+      $ne: null,
+    },
+  });
+};
+
 export const claimAllPets = async ({userId}: {userId: string}) => {
   return dbUserPet.updateMany(
     {
@@ -214,4 +230,28 @@ export const clearUserPets = async (userId: string) => {
   return dbUserPet.deleteMany({
     userId,
   });
+};
+
+interface ICancelAdventurePets {
+  userId: string;
+  petIds: number[];
+}
+
+export const cancelAdventurePets = async ({userId, petIds}: ICancelAdventurePets) => {
+  return dbUserPet.updateMany(
+    {
+      userId,
+      petId: {
+        $in: petIds,
+      },
+    },
+    {
+      $set: {
+        status: RPG_PET_STATUS.idle,
+      },
+      $unset: {
+        readyAt: 1,
+      },
+    }
+  );
 };

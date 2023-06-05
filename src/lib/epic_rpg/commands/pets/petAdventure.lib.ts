@@ -1,5 +1,5 @@
 import {IMessageContentChecker} from '../../../../types/utils';
-import {Message, MessageCreateOptions, User} from 'discord.js';
+import {BaseMessageOptions, Message, MessageCreateOptions, User} from 'discord.js';
 import {
   getAvailableEpicPets,
   getUserPets,
@@ -34,7 +34,7 @@ export const rpgPetAdventure = async ({
   selectedPets,
   amountOfPetSent,
   message,
-}: IRpgPetAdventure): Promise<MessageCreateOptions> => {
+}: IRpgPetAdventure): Promise<BaseMessageOptions> => {
   let petsToSend = await fetchPetsToSend({
     userId: author.id,
     selectedPets: selectedPets,
