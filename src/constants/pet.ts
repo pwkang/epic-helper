@@ -1,7 +1,7 @@
 export const RPG_PET_TYPE = {
-  cat: 'cat',
-  dog: 'dog',
-  dragon: 'dragon',
+  cat: 'Cat',
+  dog: 'Dog',
+  dragon: 'Dragon',
   pumpkinBat: 'Pumpkin bat',
   hamster: 'Hamster',
   pinkFish: 'Pink fish',

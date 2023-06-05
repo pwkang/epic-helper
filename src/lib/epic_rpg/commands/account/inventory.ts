@@ -13,8 +13,6 @@ import {
 } from '../../../epic_helper/features/calculator/calcSTT';
 import sendMessage from '../../../discord.js/message/sendMessage';
 
-const RUBY_EMOJI = '<:ruby:603304907650629653>';
-
 interface IRpg {
   client: Client;
   message: Message;

@@ -13,7 +13,7 @@ const roman = {
   I: 1,
 } as const;
 
-export const numberToRoman = (num: number) => {
+export const convertNumberToRoman = (num: number) => {
   let str = '';
   for (let i = 0; i < Object.values(roman).length; i++) {
     const current = Object.values(roman)[i];
@@ -35,7 +35,7 @@ export const numberToRoman = (num: number) => {
   return str;
 };
 
-export const romanToNumber = (str: string) => {
+export const convertRomanToNumber = (str: string) => {
   let num = 0;
   for (let i = 0; i < str.length; i++) {
     const current = roman[str[i] as keyof typeof roman];

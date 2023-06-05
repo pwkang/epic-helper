@@ -14,7 +14,6 @@ export default <PrefixCommand>{
       author: message.author,
     });
     if (!event) return;
-    event.on('content', (content) => {});
     event.on('embed', async (embed, collected) => {
       if (isRpgPet({embed, author: message.author})) {
         event.stop();

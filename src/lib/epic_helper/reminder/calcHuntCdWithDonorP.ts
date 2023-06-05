@@ -7,7 +7,7 @@ interface ICalcDonorPExtraHuntCd {
   donorP: ValuesOf<typeof RPG_DONOR_TIER> | null;
 }
 
-export const calcDonorPExtraHuntCd = ({baseCd, donorP, donor}: ICalcDonorPExtraHuntCd) => {
+export const calcDonorPExtraHuntCd = ({donorP, donor}: ICalcDonorPExtraHuntCd) => {
   if (!donorP) return 0;
 
   const extraDuration =

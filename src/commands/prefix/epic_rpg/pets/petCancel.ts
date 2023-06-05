@@ -1,16 +1,16 @@
 import {COMMAND_TYPE} from '../../../../constants/bot';
 import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
 import {
-  amountOfPetsSentToAdventure,
-  isFailToSendPetsToAdventure,
-  isSuccessfullySentPetsToAdventure,
-  rpgPetAdventure,
-} from '../../../../lib/epic_rpg/commands/pets/petAdventure.lib';
+  extractCancelledPetAmount,
+  isFailToCancelPet,
+  isPetSuccessfullyCancelled,
+  rpgPetAdvCancel,
+} from '../../../../lib/epic_rpg/commands/pets/petCancel.lib';
 import sendMessage from '../../../../lib/discord.js/message/sendMessage';
 
 const args1 = ['pets', 'pet'];
 const args2 = ['adventure', 'adv'];
-const args3 = ['learn', 'drill', 'find'];
+const args3 = ['cancel'];
 
 function generateAllPossibleCommands(args1: string[], args2: string[], args3: string[]) {
   return args1.flatMap((arg1) =>
@@ -19,7 +19,7 @@ function generateAllPossibleCommands(args1: string[], args2: string[], args3: st
 }
 
 export default <PrefixCommand>{
-  name: 'petAdventure',
+  name: 'petCancel',
   commands: generateAllPossibleCommands(args1, args2, args3),
   type: COMMAND_TYPE.rpg,
   execute: (client, message, args) => {
@@ -30,26 +30,35 @@ export default <PrefixCommand>{
     });
     if (!event) return;
     event.on('content', async (content, collected) => {
-      if (isFailToSendPetsToAdventure({message: collected, author: message.author})) {
-        event.stop();
-      }
-      if (isSuccessfullySentPetsToAdventure({message: collected, author: message.author})) {
-        event.stop();
-        const amountOfPetSent = amountOfPetsSentToAdventure({
+      if (
+        isPetSuccessfullyCancelled({
           message: collected,
           author: message.author,
+        })
+      ) {
+        const cancelledPetAmount = extractCancelledPetAmount({
+          message: collected,
         });
-        const options = await rpgPetAdventure({
+        const options = await rpgPetAdvCancel({
+          message: collected,
           author: message.author,
           selectedPets: args.slice(3),
-          amountOfPetSent,
-          message: collected,
+          amountOfPetCancelled: cancelledPetAmount,
         });
         sendMessage({
           client,
           channelId: message.channel.id,
           options,
         });
+        event.stop();
+      }
+      if (
+        isFailToCancelPet({
+          message: collected,
+          author: message.author,
+        })
+      ) {
+        event.stop();
       }
     });
   },

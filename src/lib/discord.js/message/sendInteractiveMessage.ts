@@ -29,8 +29,9 @@ export default async function sendInteractiveMessage({
     client,
     options,
   });
+  if (!sentMessage) return;
 
-  const collector = sentMessage?.createMessageComponentCollector({
+  const collector = sentMessage.createMessageComponentCollector({
     idle: ms('1m'),
   });
 
@@ -38,9 +39,9 @@ export default async function sendInteractiveMessage({
     customId: string,
     callback: (
       collected: BaseInteraction | StringSelectMenuInteraction
-    ) => Promise<InteractionUpdateOptions> | InteractionUpdateOptions
+    ) => Promise<InteractionUpdateOptions | null> | InteractionUpdateOptions | null
   ) {
-    collector?.on('collect', async (collected) => {
+    collector.on('collect', async (collected) => {
       if (collected.customId !== customId) return;
       const replyMsg = await callback(collected);
       if (!replyMsg) return;
@@ -49,11 +50,15 @@ export default async function sendInteractiveMessage({
   }
 
   function stop() {
-    collector?.stop();
-    collector?.removeAllListeners();
+    collector.stop();
+    collector.removeAllListeners();
   }
 
-  collector?.on('end', (collected, reason) => {
+  function isEnded() {
+    return collector.ended;
+  }
+
+  collector.on('end', (collected, reason) => {
     if (!sentMessage) return;
 
     if (reason === 'idle')
@@ -69,6 +74,8 @@ export default async function sendInteractiveMessage({
   return {
     on,
     stop,
+    isEnded,
+    message: sentMessage,
   };
 }
 

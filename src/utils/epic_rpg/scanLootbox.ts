@@ -15,7 +15,7 @@ export default function scanLootbox({embed}: IScanLootbox) {
   const itemsList = embed.fields.flatMap((field) => field.value.split('\n'));
   const items: IInventoryItem = {};
   for (let row of itemsList) {
-    const itemName = Object.entries(RPG_ITEMS).find(([key, value]) =>
+    const itemName = Object.entries(RPG_ITEMS).find(([_, value]) =>
       row.toLowerCase().includes(value)
     )?.[0] as ItemName;
     if (!itemName) continue;

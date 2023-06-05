@@ -2,7 +2,7 @@ import {mongoClient} from '../../services/mongoose/mongoose.service';
 import {IUserPet} from './user-pet.type';
 import userPetSchema from './user-pet.schema';
 import {RPG_PET_STATUS} from '../../constants/pet';
-import {QueryOptions} from 'mongoose';
+import {FilterQuery, QueryOptions} from 'mongoose';
 
 const dbUserPet = mongoClient.model<IUserPet>('user-pet', userPetSchema);
 
@@ -11,20 +11,35 @@ interface IGetUserPets {
   petsId?: number[];
   page?: number;
   limit?: number;
+  status?: ValuesOf<typeof RPG_PET_STATUS>[];
+  orderBy?: 'petId' | 'readyAt';
 }
 
-export const getUserPets = async ({userId, petsId, page, limit}: IGetUserPets) => {
-  const query: any = {
+export const getUserPets = async ({
+  userId,
+  petsId,
+  page,
+  limit,
+  status,
+  orderBy = 'petId',
+}: IGetUserPets) => {
+  const query: FilterQuery<IUserPet> = {
     userId,
-  };
-  const options: QueryOptions<IUserPet> = {
-    sort: {
-      petId: 1,
-    },
   };
   if (petsId) {
     query.petId = {
       $in: petsId,
+    };
+  }
+  if (status) {
+    query.status = {
+      $in: status,
+    };
+  }
+  const options: QueryOptions<IUserPet> = {};
+  if (orderBy) {
+    options.sort = {
+      [orderBy]: 1,
     };
   }
   if (page !== undefined && limit) {
@@ -36,12 +51,19 @@ export const getUserPets = async ({userId, petsId, page, limit}: IGetUserPets) =
 
 interface ICalcTotalPets {
   userId: string;
+  status?: ValuesOf<typeof RPG_PET_STATUS>[];
 }
 
-export const calcTotalPets = async ({userId}: ICalcTotalPets) => {
-  return dbUserPet.countDocuments({
+export const calcTotalPets = async ({userId, status}: ICalcTotalPets) => {
+  const query: FilterQuery<IUserPet> = {
     userId,
-  });
+  };
+  if (status) {
+    query.status = {
+      $in: status,
+    };
+  }
+  return dbUserPet.countDocuments(query);
 };
 
 interface ICreateUserPet {
@@ -146,6 +168,22 @@ export const getAvailableEpicPets = async ({userId}: IGetAvailableEpicPets) => {
   });
 };
 
+interface IGetAdventureEpicPets {
+  userId: string;
+}
+
+export const getAdventureEpicPets = async ({userId}: IGetAdventureEpicPets) => {
+  return dbUserPet.find({
+    userId,
+    status: {
+      $in: [RPG_PET_STATUS.adventure, RPG_PET_STATUS.back],
+    },
+    'skills.epic': {
+      $ne: null,
+    },
+  });
+};
+
 export const claimAllPets = async ({userId}: {userId: string}) => {
   return dbUserPet.updateMany(
     {
@@ -192,4 +230,28 @@ export const clearUserPets = async (userId: string) => {
   return dbUserPet.deleteMany({
     userId,
   });
+};
+
+interface ICancelAdventurePets {
+  userId: string;
+  petIds: number[];
+}
+
+export const cancelAdventurePets = async ({userId, petIds}: ICancelAdventurePets) => {
+  return dbUserPet.updateMany(
+    {
+      userId,
+      petId: {
+        $in: petIds,
+      },
+    },
+    {
+      $set: {
+        status: RPG_PET_STATUS.idle,
+      },
+      $unset: {
+        readyAt: 1,
+      },
+    }
+  );
 };

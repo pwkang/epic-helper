@@ -1,5 +1,5 @@
 import {IMessageContentChecker} from '../../../../types/utils';
-import {Message, MessageCreateOptions, User} from 'discord.js';
+import {BaseMessageOptions, Message, MessageCreateOptions, User} from 'discord.js';
 import {
   getAvailableEpicPets,
   getUserPets,
@@ -34,7 +34,7 @@ export const rpgPetAdventure = async ({
   selectedPets,
   amountOfPetSent,
   message,
-}: IRpgPetAdventure): Promise<MessageCreateOptions> => {
+}: IRpgPetAdventure): Promise<BaseMessageOptions> => {
   let petsToSend = await fetchPetsToSend({
     userId: author.id,
     selectedPets: selectedPets,
@@ -149,7 +149,7 @@ const isSentSinglePetToAdventure = ({message, author}: IMessageContentChecker) =
     author,
   });
 
-const isSentMultiplePetsToAdventure = ({message, author}: IMessageContentChecker) =>
+const isSentMultiplePetsToAdventure = ({message}: IMessageContentChecker) =>
   message.content.includes('of your pets have started an adventure!');
 
 const isPetComebackInstantly = ({message}: IMessageContentChecker) =>
@@ -245,7 +245,7 @@ interface IUpdatePetStatus {
   pet: IUserPet;
 }
 
-export const updateInstantBackPet = async ({pet, userId}: ISendPetToAdventure) => {
+export const updateInstantBackPet = async ({pet, userId}: IUpdatePetStatus) => {
   pet.status = RPG_PET_STATUS.back;
   pet.readyAt = new Date();
   await updateUserPet({
@@ -298,10 +298,25 @@ const generateResult = (result: ISentResult[]) => {
 export const hasPetsReturnedInstantly = (content: string) =>
   content.includes('the following pets are back instantly:');
 
-export const extractReturnedPetsId = ({message, author}: IMessageContentChecker) => {
+export const extractReturnedPetsId = ({message}: IMessageContentChecker) => {
   if (!hasPetsReturnedInstantly(message.content)) return [];
   const targetRow = message.content.split('\n').find(hasPetsReturnedInstantly) ?? '';
   const petIds = targetRow.match(/`(\w+)`/g);
   if (!petIds) return [];
   return petIds.map((p) => p.replace(/`/g, ''));
 };
+
+/**
+ * ===================================================
+ *     check whether the pets id is valid or not
+ * ===================================================
+ */
+
+export const isPetsIdValid = (ids: string[]) =>
+  ids
+    .filter((id) => id !== 'epic')
+    .every((id) => {
+      if (!/^[a-z]+$/.test(id)) return false;
+      const petId = convertPetIdToNum(id);
+      return petId > 0;
+    });

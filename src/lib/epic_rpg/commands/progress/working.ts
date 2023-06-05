@@ -133,7 +133,7 @@ interface IIsWorkingInSpace {
   author: User;
 }
 
-export const isWorkingInSpace = ({author, content}: IIsWorkingInSpace) =>
+export const isWorkingInSpace = ({content}: IIsWorkingInSpace) =>
   [
     'no trees to chop',
     'what are you going to mine?',
@@ -154,7 +154,7 @@ interface IRubyAmountMined {
   author: User;
 }
 
-export const rubyAmountMined = ({content, author}: IRubyAmountMined) => {
+export const rubyAmountMined = ({content}: IRubyAmountMined) => {
   const regex = new RegExp('GOT (\\d+) <:ruby:603456286184701953>');
   const match = content.match(regex);
   return match ? parseInt(match[1]) : 0;
