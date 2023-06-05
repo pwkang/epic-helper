@@ -1,11 +1,9 @@
 import {
+  BaseMessageOptions,
   ChatInputCommandInteraction,
   Client,
   EmbedBuilder,
-  InteractionReplyOptions,
-  InteractionUpdateOptions,
   Message,
-  MessageCreateOptions,
 } from 'discord.js';
 import {generateNavigationRow} from '../../utils/paginationRow';
 import sendInteractiveMessage from '../discord.js/message/sendInteractiveMessage';
@@ -64,7 +62,7 @@ export const itemListingHelper = async ({
         itemsPerPage,
         page,
         totalItems,
-      }) as InteractionUpdateOptions;
+      });
     });
   }
   event.on('all', async () => {
@@ -79,7 +77,7 @@ export const itemListingHelper = async ({
       content: '‍',
       embeds: [],
       components: [],
-    } as InteractionUpdateOptions;
+    };
   });
 };
 
@@ -122,18 +120,16 @@ interface IGenerateResponse {
 const generateResponse = async ({client, message, interaction, options}: IGenerateResponse) => {
   let event;
   if (message) {
-    let _options = options as MessageCreateOptions;
     event = await sendInteractiveMessage({
       client,
       channelId: message.channel.id,
-      options: _options,
+      options,
     });
   } else if (interaction) {
-    let _options = options as InteractionReplyOptions;
     event = await replyInteraction({
       client,
       interaction,
-      options: _options,
+      options,
       interactive: true,
     });
   }
@@ -152,9 +148,7 @@ const createPage = async ({
   totalItems,
   embedFn,
   itemsPerPage,
-}: ICreatePage): Promise<
-  MessageCreateOptions | InteractionReplyOptions | InteractionUpdateOptions
-> => {
+}: ICreatePage): Promise<BaseMessageOptions> => {
   const embed = await embedFn(page);
   const row = generateNavigationRow({
     page,
