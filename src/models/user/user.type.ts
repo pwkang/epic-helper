@@ -6,20 +6,15 @@ type ToggleDmOptions = keyof typeof RPG_COMMAND_TYPE | 'all';
 type ToggleReminderOptions = keyof typeof RPG_COMMAND_TYPE | 'all';
 type ToggleMentionsOptions = keyof typeof RPG_COMMAND_TYPE | 'all' | 'trainingAnswer' | 'petCatch';
 type CustomMessageOptions = keyof typeof RPG_COMMAND_TYPE;
+type ReminderChannelOptions = keyof typeof RPG_COMMAND_TYPE | 'all';
 
 export interface IUser {
   userId: string;
   username: string;
   toggle: {
-    dm: {
-      [key in ToggleDmOptions]: boolean;
-    };
-    reminder: {
-      [key in ToggleReminderOptions]: boolean;
-    };
-    mentions: {
-      [key in ToggleMentionsOptions]: boolean;
-    };
+    dm: Record<ToggleDmOptions, boolean>;
+    reminder: Record<ToggleReminderOptions, boolean>;
+    mentions: Record<ToggleMentionsOptions, boolean>;
     training: {
       all: boolean;
       ruby: boolean;
@@ -40,16 +35,14 @@ export interface IUser {
       pet: boolean;
     };
   };
-  customMessage: {
-    [key in CustomMessageOptions]: string;
-  };
+  customMessage: Record<CustomMessageOptions, string>;
+  channel: Record<ReminderChannelOptions, string>;
   config: {
     timezone: keyof typeof TIMEZONE_LIST;
     heal: number;
     enchant: keyof typeof ENCHANT_LEVEL;
     donor: ValuesOf<typeof RPG_DONOR_TIER>;
     donorP: ValuesOf<typeof RPG_DONOR_TIER> | null;
-    channel: string;
     huntSwitch: boolean;
     onOff: boolean;
     timeFormat: '12h' | '24h';

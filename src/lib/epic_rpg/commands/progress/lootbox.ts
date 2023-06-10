@@ -8,6 +8,7 @@ import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
 import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
+import {updateReminderChannel} from '../../../../utils/reminderChannel';
 
 const LOOTBOX_COOLDOWN = COMMAND_BASE_COOLDOWN.lootbox;
 
@@ -59,7 +60,11 @@ interface IRpgBuyLootboxSuccess {
   content: Message['content'];
 }
 
-export default async function rpgBuyLootboxSuccess({author, content}: IRpgBuyLootboxSuccess) {
+export default async function rpgBuyLootboxSuccess({
+  author,
+  content,
+  channelId,
+}: IRpgBuyLootboxSuccess) {
   const lootboxType = Object.values(LOOTBOX_TYPE).find((type) =>
     content.toLowerCase().includes(type)
   );
@@ -72,6 +77,10 @@ export default async function rpgBuyLootboxSuccess({author, content}: IRpgBuyLoo
     userId: author.id,
     readyAt: new Date(Date.now() + cooldown),
     lootboxType,
+  });
+  updateReminderChannel({
+    userId: author.id,
+    channelId,
   });
 }
 

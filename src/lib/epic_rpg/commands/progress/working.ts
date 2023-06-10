@@ -9,6 +9,7 @@ import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
 import {updateUserRubyAmount} from '../../../../models/user/user.service';
 import replyMessage from '../../../discord.js/message/replyMessage';
+import {updateReminderChannel} from '../../../../utils/reminderChannel';
 
 const WORKING_ITEMS = [
   'normie fish',
@@ -106,7 +107,11 @@ interface IRpgWorkingSuccess {
   workingType?: ValuesOf<typeof RPG_WORKING_TYPE>;
 }
 
-export default async function rpgWorkingSuccess({author, workingType}: IRpgWorkingSuccess) {
+export default async function rpgWorkingSuccess({
+  author,
+  workingType,
+  channelId,
+}: IRpgWorkingSuccess) {
   const cooldown = await calcReducedCd({
     userId: author.id,
     commandType: RPG_COMMAND_TYPE.working,
@@ -116,6 +121,10 @@ export default async function rpgWorkingSuccess({author, workingType}: IRpgWorki
     userId: author.id,
     workingType,
     readyAt: new Date(Date.now() + cooldown),
+  });
+  updateReminderChannel({
+    userId: author.id,
+    channelId,
   });
 }
 

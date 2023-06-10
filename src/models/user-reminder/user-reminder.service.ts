@@ -4,6 +4,7 @@ import userReminderSchema from './user-reminder.schema';
 import {RPG_COMMAND_TYPE, RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../constants/rpg';
 import {LOOTBOX_TYPE} from '../../constants/lootbox';
 import {IUserPet} from '../user-pet/user-pet.type';
+import {updateReminderChannel} from '../../utils/reminderChannel';
 
 const dbUserReminder = mongoClient.model<IUserReminder>('user-reminder', userReminderSchema);
 

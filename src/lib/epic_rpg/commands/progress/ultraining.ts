@@ -7,6 +7,7 @@ import {
 import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
 import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
+import {updateReminderChannel} from '../../../../utils/reminderChannel';
 
 interface IRpgUltraining {
   client: Client;
@@ -55,7 +56,7 @@ interface IRpgTrainingSuccess {
 
 const TRAINING_COOLDOWN = COMMAND_BASE_COOLDOWN.training;
 
-export default async function rpgUlTrainingSuccess({author}: IRpgTrainingSuccess) {
+export default async function rpgUlTrainingSuccess({author, channelId}: IRpgTrainingSuccess) {
   const cooldown = await calcReducedCd({
     userId: author.id,
     commandType: RPG_COMMAND_TYPE.training,
@@ -65,6 +66,10 @@ export default async function rpgUlTrainingSuccess({author}: IRpgTrainingSuccess
     userId: author.id,
     ultraining: true,
     readyAt: new Date(Date.now() + cooldown),
+  });
+  updateReminderChannel({
+    userId: author.id,
+    channelId,
   });
 }
 

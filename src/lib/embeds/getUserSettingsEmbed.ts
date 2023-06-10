@@ -79,10 +79,10 @@ export const getUserSettingsEmbed = ({userProfile, author}: IGetUserSettingsEmbe
       value: `Heal below **${userProfile.config.heal}** HP`,
     });
 
-  if (userProfile.config.channel)
+  if (userProfile.channel.all)
     helperSettings.push({
       icon: '💈',
-      value: `Reminder send to <#${userProfile.config.channel}>`,
+      value: `Reminder send to <#${userProfile.channel.all}>`,
     });
 
   embed.addFields({

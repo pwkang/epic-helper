@@ -1,5 +1,6 @@
 import {COMMAND_TYPE} from '../../../../constants/bot';
 import {rpgCooldown} from '../../../../lib/epic_rpg/commands/account/cooldown';
+import {updateReminderChannel} from '../../../../utils/reminderChannel';
 
 export default <PrefixCommand>{
   name: 'rpgCooldown',
@@ -11,6 +12,10 @@ export default <PrefixCommand>{
       message,
       isSlashCommand: false,
       client,
+    });
+    await updateReminderChannel({
+      userId: message.author.id,
+      channelId: message.channelId,
     });
   },
 };

@@ -299,3 +299,44 @@ export const setUserHealReminder = async ({userId, hp}: ISetUserHealReminder): P
     }
   );
 };
+
+interface ISetUserReminderChannel {
+  userId: string;
+  commandType: keyof IUser['channel'];
+  channelId: string;
+}
+
+export const setUserReminderChannel = async ({
+  userId,
+  commandType,
+  channelId,
+}: ISetUserReminderChannel) => {
+  await dbUser.findOneAndUpdate(
+    {
+      userId,
+    },
+    {
+      $set: {
+        [`channel.${commandType}`]: channelId,
+      },
+    }
+  );
+};
+
+interface IGetUserReminderChannel {
+  userId: string;
+}
+
+export const getUserReminderChannel = async ({
+  userId,
+}: IGetUserReminderChannel): Promise<IUser['channel'] | null> => {
+  const user = await dbUser.findOne(
+    {
+      userId,
+    },
+    {
+      channel: 1,
+    }
+  );
+  return user?.channel ?? null;
+};

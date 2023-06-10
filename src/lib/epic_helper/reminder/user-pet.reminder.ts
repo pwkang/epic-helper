@@ -11,7 +11,7 @@ export const userPetReminderTimesUp = async (client: Client, user: IUser) => {
   const petIdsStr = petIds.map(convertNumToPetId).map((i) => i.toUpperCase());
   await sendMessage({
     client,
-    channelId: user.config.channel,
+    channelId: user.channel.all,
     options: {
       content: `<@${userId}> pets \`${petIdsStr.join(' ')}\` ready to claim!`,
     },

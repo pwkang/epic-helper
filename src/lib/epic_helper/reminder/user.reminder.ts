@@ -13,7 +13,7 @@ import {userPetReminderTimesUp} from './user-pet.reminder';
 export const userReminderTimesUp = async (client: Client, userId: string) => {
   const user = await getUserAccount(userId);
   if (!user?.config?.onOff) return;
-  if (!client.channels.cache.has(user.config.channel)) return;
+  if (!client.channels.cache.has(user.channel.all)) return;
 
   const readyCommands = await findUserReadyCommands(userId);
 
@@ -31,7 +31,7 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
     });
     sendMessage({
       client,
-      channelId: user.config.channel,
+      channelId: user.channel.all,
       options: {
         content: `<@${userId}> **__${commandName}__** is ready!`,
       },
