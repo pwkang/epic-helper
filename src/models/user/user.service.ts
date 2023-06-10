@@ -302,7 +302,7 @@ export const setUserHealReminder = async ({userId, hp}: ISetUserHealReminder): P
 
 interface ISetUserReminderChannel {
   userId: string;
-  commandType: keyof IUser['channel'];
+  commandType: (keyof IUser['channel'])[];
   channelId: string;
 }
 
@@ -311,14 +311,40 @@ export const setUserReminderChannel = async ({
   commandType,
   channelId,
 }: ISetUserReminderChannel) => {
+  const updateQuery: Record<string, string> = {};
+  commandType.forEach((type) => {
+    updateQuery[`channel.${type}`] = channelId;
+  });
   await dbUser.findOneAndUpdate(
     {
       userId,
     },
     {
-      $set: {
-        [`channel.${commandType}`]: channelId,
-      },
+      $set: updateQuery,
+    }
+  );
+};
+
+interface IRemoveUserReminderChannel {
+  userId: string;
+  commandType: (keyof IUser['channel'])[];
+}
+
+export const removeUserReminderChannel = async ({
+  userId,
+  commandType,
+}: IRemoveUserReminderChannel) => {
+  const updateQuery: Record<string, string> = {};
+  commandType.forEach((type) => {
+    if (type === 'all') return;
+    updateQuery[`channel.${type}`] = '';
+  });
+  await dbUser.findOneAndUpdate(
+    {
+      userId,
+    },
+    {
+      $unset: updateQuery,
     }
   );
 };

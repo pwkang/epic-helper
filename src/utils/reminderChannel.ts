@@ -12,19 +12,19 @@ export const updateReminderChannel = async ({channelId, userId}: IUpdateReminder
   await setUserReminderChannel({
     userId,
     channelId,
-    commandType: 'all',
+    commandType: ['all'],
   });
 };
 
 interface IGetReminderChannel {
-  author: User;
+  userId: string;
   client: Client;
   commandType: keyof typeof RPG_COMMAND_TYPE;
 }
 
-export const getReminderChannel = async ({commandType, author, client}: IGetReminderChannel) => {
+export const getReminderChannel = async ({commandType, userId, client}: IGetReminderChannel) => {
   const settings = await getUserReminderChannel({
-    userId: author.id,
+    userId,
   });
   if (!settings) return null;
   return settings[commandType] ?? settings.all;

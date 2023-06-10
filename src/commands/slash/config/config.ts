@@ -1,5 +1,7 @@
 import {SlashCommandBuilder} from 'discord.js';
 import {setHealReminder} from './subcommand/user/healReminder';
+import {RPG_COMMAND_TYPE} from '../../../constants/rpg';
+import {setReminderChannelSlash} from './subcommand/user/reminderChannel.slash';
 
 export default <SlashCommand>{
   name: 'config',
@@ -21,6 +23,35 @@ export default <SlashCommand>{
               option.setName('remove').setDescription('Remove and disable heal reminder')
             )
         )
+        .addSubcommand((subcommand) =>
+          subcommand
+            .setName('reminder-channel')
+            .setDescription('Customize the the channel for different reminders')
+            .addStringOption((option) =>
+              option
+                .setName('reminder-type')
+                .setDescription(
+                  'Type of reminder, separate different type with space. e.g. hunt adv use'
+                )
+                .setRequired(true)
+            )
+            .addStringOption((option) =>
+              option
+                .setName('action')
+                .setDescription('Action to perform')
+                .setRequired(true)
+                .setChoices(
+                  {
+                    name: 'Set',
+                    value: 'set',
+                  },
+                  {
+                    name: 'Remove',
+                    value: 'remove',
+                  }
+                )
+            )
+        )
     ),
   execute: async (client, interaction) => {
     switch (interaction.options.getSubcommandGroup()) {
@@ -31,6 +62,12 @@ export default <SlashCommand>{
               client,
               interaction,
             });
+          case 'reminder-channel':
+            setReminderChannelSlash({
+              client,
+              interaction,
+            });
+            break;
         }
         break;
     }
