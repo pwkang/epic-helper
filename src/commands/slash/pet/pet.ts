@@ -1,6 +1,7 @@
 import {SlashCommandBuilder} from 'discord.js';
 import petList from './subcommand/petList';
 import petCd from './subcommand/petCd';
+import petCalcFusionScore from './subcommand/petCalcFusionScore.slash';
 
 export default <SlashCommand>{
   name: 'pet',
@@ -12,6 +13,17 @@ export default <SlashCommand>{
     )
     .addSubcommand((subcommand) =>
       subcommand.setName('cd').setDescription('List all your pets on adventure')
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName('calc-fusion-score')
+        .setDescription('Calculate fusion score')
+        .addStringOption((option) =>
+          option
+            .setName('pet-id')
+            .setDescription('ID of the pet, separate multiple pets with space')
+            .setRequired(true)
+        )
     ),
   execute: async (client, interaction) => {
     switch (interaction.options.getSubcommand()) {
@@ -20,6 +32,9 @@ export default <SlashCommand>{
         break;
       case 'cd':
         await petCd({client, interaction});
+        break;
+      case 'calc-fusion-score':
+        await petCalcFusionScore({client, interaction});
         break;
     }
   },

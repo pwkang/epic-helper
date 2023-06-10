@@ -7,7 +7,5 @@ export interface IUserPet {
   tier: number;
   readyAt: Date | null;
   status: ValuesOf<typeof RPG_PET_STATUS>;
-  skills: {
-    [key in keyof typeof RPG_PET_SKILL]?: number;
-  };
+  skills: Partial<Record<keyof typeof RPG_PET_SKILL, number>>;
 }
