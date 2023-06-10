@@ -27,7 +27,7 @@ export const RPG_PET_SKILL = {
   fighter: 'FIGHTER',
   perfect: 'PERFECT',
   master: 'MASTER',
-};
+} as const;
 
 export const RPG_SPECIAL_PET_SKILL = {
   pinkFish: 'Fisherfish',

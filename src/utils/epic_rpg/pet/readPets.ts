@@ -23,9 +23,7 @@ interface IPetInfo {
   id: number;
   status: TPetStatus;
   readyAt?: Date;
-  skill: {
-    [key in keyof typeof RPG_PET_SKILL]?: number;
-  };
+  skill: Record<keyof typeof RPG_PET_SKILL, number>;
 }
 
 export const readPets = ({embed, author}: IReadPets) => {
@@ -71,16 +69,16 @@ const getPetName = (fieldName: string) => {
 };
 
 const getPetSkills = (fieldValue: string) => {
-  const skill: IPetInfo['skill'] = {};
+  const skill: Partial<IPetInfo['skill']> = {};
   for (let line of fieldValue.split('\n')) {
     const skillName = Object.entries(RPG_PET_SKILL).find(([_, skill]) =>
       line.includes(`${skill}**`)
-    )?.[0];
+    )?.[0] as keyof typeof RPG_PET_SKILL;
     const skillTier = line.match(/\[(SS\+|SS|S|A|B|C|D|E|F)]/)?.[1];
     if (!skillName) continue;
     if (!skillTier) continue;
 
-    skill[skillName as keyof typeof RPG_PET_SKILL] =
+    skill[skillName] =
       RPG_PET_SKILL_TIER[skillTier.toLowerCase() as keyof typeof RPG_PET_SKILL_TIER];
   }
   return skill;

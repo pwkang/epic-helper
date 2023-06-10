@@ -29,7 +29,7 @@ interface IGeneratePetListEmbed {
 }
 
 const generateEmbed = async ({pets, author}: IGeneratePetListEmbed) => {
-  const fields = generateEmbedFields(pets);
+  const fields = generateEmbedPetFields(pets);
   return new EmbedBuilder()
     .setAuthor({
       name: `${author.username}'s pets`,
@@ -39,7 +39,7 @@ const generateEmbed = async ({pets, author}: IGeneratePetListEmbed) => {
     .setFields(fields);
 };
 
-const generateEmbedFields = (pets: IUserPet[]) => {
+export const generateEmbedPetFields = (pets: IUserPet[]) => {
   const fields: EmbedField[] = [];
   for (let pet of pets) {
     const petNameKey = Object.entries(RPG_PET_TYPE).find(
