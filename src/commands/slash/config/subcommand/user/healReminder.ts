@@ -1,9 +1,6 @@
 import {IUserConfig} from '../config.type';
-import {
-  removeUserHealReminder,
-  setUserHealReminder,
-} from '../../../../../../models/user/user.service';
-import replyInteraction from '../../../../../../lib/discord.js/interaction/replyInteraction';
+import {removeUserHealReminder, setUserHealReminder} from '../../../../../models/user/user.service';
+import replyInteraction from '../../../../../lib/discord.js/interaction/replyInteraction';
 
 export const setHealReminder = async ({client, interaction}: IUserConfig) => {
   const userId = interaction.user.id;
