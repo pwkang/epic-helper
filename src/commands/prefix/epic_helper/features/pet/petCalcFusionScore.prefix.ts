@@ -5,7 +5,7 @@ import sendMessage from '../../../../../lib/discord.js/message/sendMessage';
 export default <PrefixCommand>{
   name: 'petCalcFusionScore',
   type: COMMAND_TYPE.bot,
-  commands: ['petFuse', 'pf'],
+  commands: ['petFuse', 'petFusion', 'pf'],
   execute: async (client, message, args) => {
     const embeds = await generateFusionScoreEmbed({
       author: message.author,
