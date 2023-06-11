@@ -299,3 +299,70 @@ export const setUserHealReminder = async ({userId, hp}: ISetUserHealReminder): P
     }
   );
 };
+
+interface ISetUserReminderChannel {
+  userId: string;
+  commandType: (keyof IUser['channel'])[];
+  channelId: string;
+}
+
+export const setUserReminderChannel = async ({
+  userId,
+  commandType,
+  channelId,
+}: ISetUserReminderChannel) => {
+  const updateQuery: Record<string, string> = {};
+  commandType.forEach((type) => {
+    updateQuery[`channel.${type}`] = channelId;
+  });
+  await dbUser.findOneAndUpdate(
+    {
+      userId,
+    },
+    {
+      $set: updateQuery,
+    }
+  );
+};
+
+interface IRemoveUserReminderChannel {
+  userId: string;
+  commandType: (keyof IUser['channel'])[];
+}
+
+export const removeUserReminderChannel = async ({
+  userId,
+  commandType,
+}: IRemoveUserReminderChannel) => {
+  const updateQuery: Record<string, string> = {};
+  commandType.forEach((type) => {
+    if (type === 'all') return;
+    updateQuery[`channel.${type}`] = '';
+  });
+  await dbUser.findOneAndUpdate(
+    {
+      userId,
+    },
+    {
+      $unset: updateQuery,
+    }
+  );
+};
+
+interface IGetUserReminderChannel {
+  userId: string;
+}
+
+export const getUserReminderChannel = async ({
+  userId,
+}: IGetUserReminderChannel): Promise<IUser['channel'] | null> => {
+  const user = await dbUser.findOne(
+    {
+      userId,
+    },
+    {
+      channel: 1,
+    }
+  );
+  return user?.channel ?? null;
+};

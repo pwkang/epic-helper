@@ -7,6 +7,7 @@ import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
 import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
+import {updateReminderChannel} from '../../../../utils/reminderChannel';
 
 interface IRpgQuest {
   client: Client;
@@ -75,7 +76,11 @@ interface IRpgQuestSuccess {
 const QUEST_COOLDOWN = COMMAND_BASE_COOLDOWN.quest.accepted;
 const DECLINED_QUEST_COOLDOWN = COMMAND_BASE_COOLDOWN.quest.declined;
 
-export default async function rpgQuestSuccess({author, questAccepted}: IRpgQuestSuccess) {
+export default async function rpgQuestSuccess({
+  author,
+  questAccepted,
+  channelId,
+}: IRpgQuestSuccess) {
   const cooldown = await calcReducedCd({
     userId: author.id,
     commandType: RPG_COMMAND_TYPE.quest,
@@ -85,6 +90,10 @@ export default async function rpgQuestSuccess({author, questAccepted}: IRpgQuest
     epicQuest: false,
     userId: author.id,
     readyAt: new Date(Date.now() + cooldown),
+  });
+  updateReminderChannel({
+    userId: author.id,
+    channelId,
   });
 }
 

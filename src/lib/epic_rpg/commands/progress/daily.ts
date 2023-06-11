@@ -7,6 +7,7 @@ import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
 import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
+import {updateReminderChannel} from '../../../../utils/reminderChannel';
 
 const DAILY_COOLDOWN = COMMAND_BASE_COOLDOWN.daily;
 
@@ -32,6 +33,10 @@ export function rpgDaily({client, message, author, isSlashCommand}: IRpgDaily) {
         channelId: message.channel.id,
         client,
       });
+      updateReminderChannel({
+        userId: author.id,
+        channelId: message.channel.id,
+      });
       event.stop();
     }
   });
@@ -52,7 +57,7 @@ interface IRpgDailySuccess {
   embed: Embed;
 }
 
-export default async function rpgDailySuccess({author}: IRpgDailySuccess) {
+export default async function rpgDailySuccess({author, channelId}: IRpgDailySuccess) {
   const cooldown = await calcReducedCd({
     userId: author.id,
     commandType: RPG_COMMAND_TYPE.daily,
@@ -61,6 +66,10 @@ export default async function rpgDailySuccess({author}: IRpgDailySuccess) {
   await saveUserDailyCooldown({
     userId: author.id,
     readyAt: new Date(Date.now() + cooldown),
+  });
+  updateReminderChannel({
+    userId: author.id,
+    channelId,
   });
 }
 

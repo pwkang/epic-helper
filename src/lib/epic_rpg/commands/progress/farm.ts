@@ -7,6 +7,7 @@ import {RPG_COMMAND_TYPE, RPG_FARM_SEED} from '../../../../constants/rpg';
 import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
+import {updateReminderChannel} from '../../../../utils/reminderChannel';
 
 const FARM_COOLDOWN = COMMAND_BASE_COOLDOWN.farm;
 
@@ -58,7 +59,7 @@ interface IRpgFarmSuccess {
   content: Message['content'];
 }
 
-export default async function rpgFarmSuccess({content, author}: IRpgFarmSuccess) {
+export default async function rpgFarmSuccess({content, author, channelId}: IRpgFarmSuccess) {
   const seedType = whatIsTheSeed(content);
   const cooldown = await calcReducedCd({
     userId: author.id,
@@ -69,6 +70,10 @@ export default async function rpgFarmSuccess({content, author}: IRpgFarmSuccess)
     userId: author.id,
     readyAt: new Date(Date.now() + cooldown),
     seedType,
+  });
+  updateReminderChannel({
+    userId: author.id,
+    channelId,
   });
 }
 

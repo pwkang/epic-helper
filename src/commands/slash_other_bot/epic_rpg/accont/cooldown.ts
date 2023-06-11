@@ -1,5 +1,6 @@
 import {OTHER_BOT_TYPE} from '../../../../constants/bot';
 import {rpgCooldown} from '../../../../lib/epic_rpg/commands/account/cooldown';
+import {updateReminderChannel} from '../../../../utils/reminderChannel';
 
 export default <SlashCommandOtherBot>{
   name: 'rpgCooldown',
@@ -11,6 +12,10 @@ export default <SlashCommandOtherBot>{
       author,
       message,
       isSlashCommand: true,
+    });
+    await updateReminderChannel({
+      userId: author.id,
+      channelId: message.channelId,
     });
   },
 };

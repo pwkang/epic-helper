@@ -12,6 +12,7 @@ import replyMessage from '../../../discord.js/message/replyMessage';
 import {getUserHealReminder} from '../../../../models/user/user.service';
 import {CLICKABLE_SLASH_RPG} from '../../../../constants/clickable_slash';
 import sendMessage from '../../../discord.js/message/sendMessage';
+import {updateReminderChannel} from '../../../../utils/reminderChannel';
 
 interface IRpgHunt {
   client: Client;
@@ -85,7 +86,7 @@ interface IRpgHuntSuccess {
 
 const HUNT_COOLDOWN = COMMAND_BASE_COOLDOWN.hunt;
 
-async function rpgHuntSuccess({author, content}: IRpgHuntSuccess) {
+async function rpgHuntSuccess({author, content, channelId}: IRpgHuntSuccess) {
   const hardMode = content.includes('(but stronger)');
   const together = content.includes('hunting together');
 
@@ -99,6 +100,10 @@ async function rpgHuntSuccess({author, content}: IRpgHuntSuccess) {
     hardMode,
     together,
     readyAt: new Date(Date.now() + cooldown),
+  });
+  updateReminderChannel({
+    userId: author.id,
+    channelId,
   });
 }
 

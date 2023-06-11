@@ -7,6 +7,7 @@ import ms from 'ms';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
 import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
+import {updateReminderChannel} from '../../../../utils/reminderChannel';
 
 const WEEKLY_COOLDOWN = ms('1w') - ms('10m');
 
@@ -52,7 +53,7 @@ interface IRpgWeeklySuccess {
   embed: Embed;
 }
 
-export default async function rpgWeeklySuccess({author}: IRpgWeeklySuccess) {
+export default async function rpgWeeklySuccess({author, channelId}: IRpgWeeklySuccess) {
   const cooldown = await calcReducedCd({
     userId: author.id,
     commandType: RPG_COMMAND_TYPE.weekly,
@@ -61,6 +62,10 @@ export default async function rpgWeeklySuccess({author}: IRpgWeeklySuccess) {
   await saveUserWeeklyCooldown({
     userId: author.id,
     readyAt: new Date(Date.now() + cooldown),
+  });
+  updateReminderChannel({
+    userId: author.id,
+    channelId,
   });
 }
 

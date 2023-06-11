@@ -11,6 +11,7 @@ import {createRpgCommandListener} from '../../createRpgCommandListener';
 import {CLICKABLE_SLASH_RPG} from '../../../../constants/clickable_slash';
 import {getUserHealReminder} from '../../../../models/user/user.service';
 import sendMessage from '../../../discord.js/message/sendMessage';
+import {updateReminderChannel} from '../../../../utils/reminderChannel';
 
 interface IRpgAdventure {
   client: Client;
@@ -62,7 +63,11 @@ interface IRpgAdventureSuccess {
 
 const ADVENTURE_COOLDOWN = COMMAND_BASE_COOLDOWN.adventure;
 
-export default async function rpgAdventureSuccess({author, content}: IRpgAdventureSuccess) {
+export default async function rpgAdventureSuccess({
+  author,
+  content,
+  channelId,
+}: IRpgAdventureSuccess) {
   const hardMode = content.includes('(but stronger)');
 
   const cooldown = await calcReducedCd({
@@ -74,6 +79,11 @@ export default async function rpgAdventureSuccess({author, content}: IRpgAdventu
     userId: author.id,
     hardMode,
     readyAt: new Date(Date.now() + cooldown),
+  });
+
+  updateReminderChannel({
+    userId: author.id,
+    channelId,
   });
 }
 
