@@ -12,6 +12,17 @@ export const setReminderChannelSlash = async ({client, interaction}: IUserConfig
 
   const reminderType = matchReminderType(optionReminderType);
 
+  if (!reminderType.length)
+    return replyInteraction({
+      client,
+      interaction,
+      options: {
+        content: `Invalid reminder type. Valid reminder types are: ${Object.keys(RPG_COMMAND_TYPE)
+          .map((i) => `\`${i}\``)
+          .join(', ')}`,
+      },
+    });
+
   let message: string;
 
   switch (optionAction) {
