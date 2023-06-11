@@ -8,6 +8,8 @@ import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
 import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
 import {updateReminderChannel} from '../../../../utils/reminderChannel';
+import {countUserStats} from '../../../../models/user-stats/user-stats.service';
+import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
 
 interface IRpgUltraining {
   client: Client;
@@ -70,6 +72,11 @@ export default async function rpgUlTrainingSuccess({author, channelId}: IRpgTrai
   updateReminderChannel({
     userId: author.id,
     channelId,
+  });
+
+  countUserStats({
+    userId: author.id,
+    type: USER_STATS_RPG_COMMAND_TYPE.ultraining,
   });
 }
 

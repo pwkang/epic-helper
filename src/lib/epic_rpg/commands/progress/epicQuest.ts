@@ -8,6 +8,8 @@ import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
 import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
 import {updateReminderChannel} from '../../../../utils/reminderChannel';
+import {countUserStats} from '../../../../models/user-stats/user-stats.service';
+import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
 
 interface IRpgEpicQuest {
   client: Client;
@@ -72,6 +74,11 @@ export default async function rpgEpicQuestSuccess({author, channelId}: IRpgEpicQ
   updateReminderChannel({
     userId: author.id,
     channelId,
+  });
+
+  countUserStats({
+    userId: author.id,
+    type: USER_STATS_RPG_COMMAND_TYPE.epicQuest,
   });
 }
 

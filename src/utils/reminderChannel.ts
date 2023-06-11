@@ -22,7 +22,7 @@ interface IGetReminderChannel {
   commandType: keyof typeof RPG_COMMAND_TYPE;
 }
 
-export const getReminderChannel = async ({commandType, userId, client}: IGetReminderChannel) => {
+export const getReminderChannel = async ({commandType, userId}: IGetReminderChannel) => {
   const settings = await getUserReminderChannel({
     userId,
   });

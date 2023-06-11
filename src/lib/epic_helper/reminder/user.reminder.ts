@@ -19,10 +19,9 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
 
   for (let command of readyCommands) {
     if (Date.now() - command.readyAt.getTime() > ms('5s')) return;
-    
+
     if (command.type === RPG_COMMAND_TYPE.pet) {
-      userPetReminderTimesUp(client, user);
-      return;
+      return userPetReminderTimesUp(client, user);
     }
 
     const channelId = await getReminderChannel({

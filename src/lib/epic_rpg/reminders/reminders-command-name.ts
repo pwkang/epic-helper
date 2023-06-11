@@ -3,6 +3,22 @@ import {RPG_COMMAND_TYPE, RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../../consta
 import {IUserReminder} from '../../../models/user-reminder/user-reminder.type';
 import {LOOTBOX_TYPE} from '../../../constants/lootbox';
 
+interface IGetDailyCommandStr {
+  slash?: boolean;
+}
+
+const getDailyCommandStr = ({slash}: IGetDailyCommandStr) => {
+  return slash ? CLICKABLE_SLASH_RPG.daily : `RPG DAILY`;
+};
+
+interface IGetWeeklyCommandStr {
+  slash?: boolean;
+}
+
+const getWeeklyCommandStr = ({slash}: IGetWeeklyCommandStr) => {
+  return slash ? CLICKABLE_SLASH_RPG.weekly : `RPG WEEKLY`;
+};
+
 interface IGetHuntCommandStr {
   hardMode?: boolean;
   together?: boolean;
@@ -125,6 +141,14 @@ const GetLootboxCommandStr = ({slash, lootboxType}: IGetLootboxCommandStr) => {
     : `RPG BUY ${lootboxType?.toUpperCase() || ''} LOOTBOX`;
 };
 
+interface IGetVoteCommandStr {
+  slash?: boolean;
+}
+
+const GetVoteCommandStr = ({slash}: IGetVoteCommandStr) => {
+  return slash ? CLICKABLE_SLASH_RPG.vote : `RPG VOTE`;
+};
+
 interface IGetCommandStr {
   type: ValuesOf<typeof RPG_COMMAND_TYPE>;
   props?: IUserReminder['props'];
@@ -133,6 +157,14 @@ interface IGetCommandStr {
 
 export const getCommandStr = ({slash, type, props}: IGetCommandStr) => {
   switch (type) {
+    case RPG_COMMAND_TYPE.daily:
+      return getDailyCommandStr({...props, slash});
+    case RPG_COMMAND_TYPE.weekly:
+      return getWeeklyCommandStr({...props, slash});
+    case RPG_COMMAND_TYPE.lootbox:
+      return GetLootboxCommandStr({...props, slash});
+    case RPG_COMMAND_TYPE.vote:
+      return GetVoteCommandStr({...props, slash});
     case RPG_COMMAND_TYPE.hunt:
       return getHuntCommandStr({...props, slash});
     case RPG_COMMAND_TYPE.adventure:
@@ -153,8 +185,6 @@ export const getCommandStr = ({slash, type, props}: IGetCommandStr) => {
       return GetArenaCommandStr({slash});
     case RPG_COMMAND_TYPE.dungeon:
       return GetDungeonCommandStr({slash});
-    case RPG_COMMAND_TYPE.lootbox:
-      return GetLootboxCommandStr({...props, slash});
     default:
       return '';
   }

@@ -10,6 +10,8 @@ import {createRpgCommandListener} from '../../createRpgCommandListener';
 import {updateUserRubyAmount} from '../../../../models/user/user.service';
 import replyMessage from '../../../discord.js/message/replyMessage';
 import {updateReminderChannel} from '../../../../utils/reminderChannel';
+import {countUserStats} from '../../../../models/user-stats/user-stats.service';
+import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
 
 const WORKING_ITEMS = [
   'normie fish',
@@ -125,6 +127,11 @@ export default async function rpgWorkingSuccess({
   updateReminderChannel({
     userId: author.id,
     channelId,
+  });
+
+  countUserStats({
+    userId: author.id,
+    type: USER_STATS_RPG_COMMAND_TYPE.working,
   });
 }
 
