@@ -1,6 +1,5 @@
 import {SlashCommandBuilder} from 'discord.js';
 import {setHealReminder} from './subcommand/user/healReminder';
-import {RPG_COMMAND_TYPE} from '../../../constants/epic_rpg/rpg';
 import {setReminderChannelSlash} from './subcommand/user/reminderChannel.slash';
 
 export default <SlashCommand>{

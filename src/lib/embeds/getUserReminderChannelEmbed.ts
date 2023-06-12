@@ -1,15 +1,7 @@
 import {IUser} from '../../models/user/user.type';
-import {EmbedBuilder, EmbedField, User} from 'discord.js';
+import {EmbedBuilder, User} from 'discord.js';
 import {BOT_COLOR} from '../../constants/epic_helper/general';
 import {RPG_COMMAND_TYPE} from '../../constants/epic_rpg/rpg';
-import {
-  IAdventureReminderProps,
-  IFarmReminderProps,
-  IHuntReminderProps,
-  IQuestReminderProps,
-  ITrainingReminderProps,
-  IWorkingReminderProps,
-} from '../../models/user-reminder/user-reminder.type';
 
 interface IGetUserReminderChannelEmbed {
   userProfile: IUser;

@@ -1,7 +1,6 @@
-import {Channel, Client, User} from 'discord.js';
+import {Channel, Client} from 'discord.js';
 import {RPG_COMMAND_TYPE} from '../constants/epic_rpg/rpg';
 import {getUserReminderChannel, setUserReminderChannel} from '../models/user/user.service';
-import {set} from 'mongoose';
 
 interface IUpdateReminderChannel {
   userId: string;

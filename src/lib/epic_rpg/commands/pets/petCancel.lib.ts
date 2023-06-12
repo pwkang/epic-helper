@@ -2,7 +2,6 @@ import {BaseMessageOptions, Message, User} from 'discord.js';
 import {
   cancelAdventurePets,
   getAdventureEpicPets,
-  getAvailableEpicPets,
   getUserPets,
 } from '../../../../models/user-pet/user-pet.service';
 import {convertNumToPetId, convertPetIdToNum} from '../../../../utils/epic_rpg/pet/petIdConversion';

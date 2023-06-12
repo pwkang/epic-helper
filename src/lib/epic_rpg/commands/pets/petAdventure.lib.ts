@@ -1,5 +1,5 @@
 import {IMessageContentChecker} from '../../../../types/utils';
-import {BaseMessageOptions, Message, MessageCreateOptions, User} from 'discord.js';
+import {BaseMessageOptions, Message, User} from 'discord.js';
 import {
   getAvailableEpicPets,
   getUserPets,
