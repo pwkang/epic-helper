@@ -185,12 +185,10 @@ export const getUserRubyAmount = async (userId: string): Promise<number> => {
         userId,
       },
       {
-        projection: {
-          'items.ruby': 1,
-        },
+        'items.ruby': 1,
       }
     );
-    return user?.toJSON() as IUser;
+    return user?.toObject() as IUser;
   });
 };
 
