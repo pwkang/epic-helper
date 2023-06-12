@@ -2,7 +2,14 @@ import {
   getUserBestStats,
   getUserStatsOfLast2Weeks,
 } from '../../../models/user-stats/user-stats.service';
-import {EmbedBuilder, EmbedField, User} from 'discord.js';
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  EmbedBuilder,
+  EmbedField,
+  User,
+} from 'discord.js';
 import {BOT_COLOR} from '../../../constants/bot';
 import {
   getDayOfWeek,
@@ -221,3 +228,16 @@ const calculateTotal = (stats: IUserStats['rpg'][]): Partial<IUserStats['rpg']> 
 
   return avg;
 };
+
+export type TEventTypes = 'default' | 'thisWeek' | 'lastWeek';
+
+export const statsActionRow = new ActionRowBuilder<ButtonBuilder>()
+  .addComponents(
+    new ButtonBuilder().setCustomId('default').setLabel('Default').setStyle(ButtonStyle.Primary)
+  )
+  .addComponents(
+    new ButtonBuilder().setCustomId('thisWeek').setLabel('This Week').setStyle(ButtonStyle.Primary)
+  )
+  .addComponents(
+    new ButtonBuilder().setCustomId('lastWeek').setLabel('Last Week').setStyle(ButtonStyle.Primary)
+  );

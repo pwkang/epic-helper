@@ -14,7 +14,7 @@ interface IReplyInteraction {
   options: InteractionReplyOptions;
 }
 
-export default async function replyInteraction({
+export default async function replyInteraction<T>({
   interaction,
   interactive,
   options,
@@ -30,7 +30,7 @@ export default async function replyInteraction({
   });
 
   function on(
-    customId: string,
+    customId: T extends undefined ? string : T,
     callback: (
       collected: BaseInteraction | StringSelectMenuInteraction
     ) => Promise<InteractionUpdateOptions | null> | InteractionUpdateOptions | null

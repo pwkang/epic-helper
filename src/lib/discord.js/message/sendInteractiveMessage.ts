@@ -16,7 +16,7 @@ interface SendInteractiveMessageProps {
   options: string | MessagePayload | MessageCreateOptions;
 }
 
-export default async function sendInteractiveMessage({
+export default async function sendInteractiveMessage<EventType extends string>({
   channelId,
   options,
   client,
@@ -36,7 +36,7 @@ export default async function sendInteractiveMessage({
   });
 
   function on(
-    customId: string,
+    customId: EventType extends undefined ? string : EventType,
     callback: (
       collected: BaseInteraction | StringSelectMenuInteraction
     ) => Promise<InteractionUpdateOptions | null> | InteractionUpdateOptions | null

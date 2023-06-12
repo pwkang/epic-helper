@@ -1,24 +1,23 @@
-import {COMMAND_TYPE} from '../../../../constants/bot';
+import {SlashCommandBuilder} from 'discord.js';
 import {
   getStatsEmbeds,
   statsActionRow,
   TEventTypes,
-} from '../../../../lib/epic_helper/features/stats.lib';
-import sendInteractiveMessage from '../../../../lib/discord.js/message/sendInteractiveMessage';
-import {ButtonStyle} from 'discord.js';
+} from '../../lib/epic_helper/features/stats.lib';
+import replyInteraction from '../../lib/discord.js/interaction/replyInteraction';
 
-export default <PrefixCommand>{
-  name: 'stats',
-  type: COMMAND_TYPE.bot,
-  commands: ['stats', 'stat', 'st'],
-  execute: async (client, message) => {
+export default <SlashCommand>{
+  name: 'user-stats',
+  builder: new SlashCommandBuilder().setName('stats').setDescription('Commands counter'),
+  execute: async (client, interaction) => {
     const embeds = await getStatsEmbeds({
-      author: message.author,
+      author: interaction.user,
     });
-    const event = await sendInteractiveMessage<TEventTypes>({
+    const event = await replyInteraction<TEventTypes>({
       client,
-      channelId: message.channel.id,
+      interaction,
       options: {embeds: [embeds.donor], components: [statsActionRow]},
+      interactive: true,
     });
     if (!event) return;
     event.on('default', async () => {
