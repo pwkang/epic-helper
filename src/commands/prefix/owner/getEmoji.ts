@@ -1,4 +1,4 @@
-import {COMMAND_TYPE} from '../../../constants/bot';
+import {PREFIX_COMMAND_TYPE} from '../../../constants/bot';
 
 interface Type {
   [key: string]: string;
@@ -7,7 +7,7 @@ interface Type {
 export default <PrefixCommand>{
   name: 'listEmoji',
   commands: ['list emoji', 'le'],
-  type: COMMAND_TYPE.dev,
+  type: PREFIX_COMMAND_TYPE.dev,
   execute: (client, message) => {
     const emojis = message.guild && [...message.guild?.emojis.cache.values()];
     const emojiList =

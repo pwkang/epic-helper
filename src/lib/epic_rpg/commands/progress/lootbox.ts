@@ -3,8 +3,8 @@ import {
   saveUserLootboxCooldown,
   updateUserCooldown,
 } from '../../../../models/user-reminder/user-reminder.service';
-import {LOOTBOX_TYPE} from '../../../../constants/epic_rpg/lootbox';
-import {COMMAND_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
+import {RPG_LOOTBOX_TYPE} from '../../../../constants/epic_rpg/lootbox';
+import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
 import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
@@ -12,7 +12,7 @@ import {updateReminderChannel} from '../../../../utils/reminderChannel';
 import {countUserStats} from '../../../../models/user-stats/user-stats.service';
 import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
 
-const LOOTBOX_COOLDOWN = COMMAND_BASE_COOLDOWN.lootbox;
+const LOOTBOX_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.lootbox;
 
 interface IRpgLootbox {
   client: Client;
@@ -67,7 +67,7 @@ export default async function rpgBuyLootboxSuccess({
   content,
   channelId,
 }: IRpgBuyLootboxSuccess) {
-  const lootboxType = Object.values(LOOTBOX_TYPE).find((type) =>
+  const lootboxType = Object.values(RPG_LOOTBOX_TYPE).find((type) =>
     content.toLowerCase().includes(type)
   );
   const cooldown = await calcReducedCd({
@@ -96,7 +96,7 @@ interface IIsLootboxSuccessfullyBought {
 }
 
 export const isLootboxSuccessfullyBought = ({content}: IIsLootboxSuccessfullyBought) =>
-  Object.values(LOOTBOX_TYPE).some((lb) => content.toLowerCase().includes(lb)) &&
+  Object.values(RPG_LOOTBOX_TYPE).some((lb) => content.toLowerCase().includes(lb)) &&
   content.includes('successfully bought for');
 
 interface IIsNotEligibleToBuyLootbox {

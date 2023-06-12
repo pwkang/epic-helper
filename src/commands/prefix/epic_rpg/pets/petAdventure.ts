@@ -1,4 +1,4 @@
-import {COMMAND_TYPE} from '../../../../constants/bot';
+import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
 import {
   amountOfPetsSentToAdventure,
@@ -21,7 +21,7 @@ function generateAllPossibleCommands(args1: string[], args2: string[], args3: st
 export default <PrefixCommand>{
   name: 'petAdventure',
   commands: generateAllPossibleCommands(args1, args2, args3),
-  type: COMMAND_TYPE.rpg,
+  type: PREFIX_COMMAND_TYPE.rpg,
   execute: (client, message, args) => {
     const event = createRpgCommandListener({
       channelId: message.channel.id,

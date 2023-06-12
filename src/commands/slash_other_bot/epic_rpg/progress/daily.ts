@@ -1,9 +1,9 @@
-import {OTHER_BOT_TYPE} from '../../../../constants/bot';
+import {SLASH_MESSAGE_BOT_TYPE} from '../../../../constants/bot';
 import {rpgDaily} from '../../../../lib/epic_rpg/commands/progress/daily';
 
 export default <SlashCommandOtherBot>{
   name: 'rpgDaily',
-  bot: OTHER_BOT_TYPE.rpg,
+  bot: SLASH_MESSAGE_BOT_TYPE.rpg,
   commandName: ['daily'],
   execute: async (client, message, author) => {
     rpgDaily({

@@ -1,14 +1,14 @@
-import {CLICKABLE_SLASH_RPG} from '../../../constants/epic_rpg/clickable_slash';
+import {RPG_CLICKABLE_SLASH_COMMANDS} from '../../../constants/epic_rpg/clickable_slash';
 import {RPG_COMMAND_TYPE, RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../../constants/epic_rpg/rpg';
 import {IUserReminder} from '../../../models/user-reminder/user-reminder.type';
-import {LOOTBOX_TYPE} from '../../../constants/epic_rpg/lootbox';
+import {RPG_LOOTBOX_TYPE} from '../../../constants/epic_rpg/lootbox';
 
 interface IGetDailyCommandStr {
   slash?: boolean;
 }
 
 const getDailyCommandStr = ({slash}: IGetDailyCommandStr) => {
-  return slash ? CLICKABLE_SLASH_RPG.daily : `RPG DAILY`;
+  return slash ? RPG_CLICKABLE_SLASH_COMMANDS.daily : `RPG DAILY`;
 };
 
 interface IGetWeeklyCommandStr {
@@ -16,7 +16,7 @@ interface IGetWeeklyCommandStr {
 }
 
 const getWeeklyCommandStr = ({slash}: IGetWeeklyCommandStr) => {
-  return slash ? CLICKABLE_SLASH_RPG.weekly : `RPG WEEKLY`;
+  return slash ? RPG_CLICKABLE_SLASH_COMMANDS.weekly : `RPG WEEKLY`;
 };
 
 interface IGetHuntCommandStr {
@@ -27,7 +27,7 @@ interface IGetHuntCommandStr {
 
 const getHuntCommandStr = ({hardMode, together, slash}: IGetHuntCommandStr) => {
   return slash
-    ? CLICKABLE_SLASH_RPG.hunt
+    ? RPG_CLICKABLE_SLASH_COMMANDS.hunt
     : `RPG HUNT${hardMode ? ' HARDMODE' : ''}${together ? ' TOGETHER' : ''}`;
 };
 
@@ -37,7 +37,9 @@ interface IGetAdventureCommandStr {
 }
 
 const getAdventureCommandStr = ({hardMode, slash}: IGetAdventureCommandStr) => {
-  return slash ? CLICKABLE_SLASH_RPG.adventure : `RPG ADVENTURE${hardMode ? ' HARDMODE' : ''}`;
+  return slash
+    ? RPG_CLICKABLE_SLASH_COMMANDS.adventure
+    : `RPG ADVENTURE${hardMode ? ' HARDMODE' : ''}`;
 };
 
 interface IGetTrainingCommandStr {
@@ -48,8 +50,8 @@ interface IGetTrainingCommandStr {
 const getTrainingCommandStr = ({ultraining, slash}: IGetTrainingCommandStr) => {
   return slash
     ? ultraining
-      ? CLICKABLE_SLASH_RPG.ultraining
-      : CLICKABLE_SLASH_RPG.training
+      ? RPG_CLICKABLE_SLASH_COMMANDS.ultraining
+      : RPG_CLICKABLE_SLASH_COMMANDS.training
     : ultraining
     ? `RPG ULTRAINING`
     : `RPG TRAINING`;
@@ -60,7 +62,7 @@ interface IGetDuelCommandStr {
 }
 
 const getDuelCommandStr = ({slash}: IGetDuelCommandStr) => {
-  return slash ? CLICKABLE_SLASH_RPG.duel : `RPG DUEL`;
+  return slash ? RPG_CLICKABLE_SLASH_COMMANDS.duel : `RPG DUEL`;
 };
 
 interface IGetQuestCommandStr {
@@ -71,8 +73,8 @@ interface IGetQuestCommandStr {
 const getQuestCommandStr = ({epicQuest, slash}: IGetQuestCommandStr) => {
   return slash
     ? epicQuest
-      ? CLICKABLE_SLASH_RPG.epicQuest
-      : CLICKABLE_SLASH_RPG.quest
+      ? RPG_CLICKABLE_SLASH_COMMANDS.epicQuest
+      : RPG_CLICKABLE_SLASH_COMMANDS.quest
     : epicQuest
     ? `RPG EPIC QUEST`
     : `RPG QUEST`;
@@ -86,7 +88,7 @@ interface IGetWorkCommandStr {
 const getWorkCommandStr = ({workingType, slash}: IGetWorkCommandStr) => {
   return workingType
     ? slash
-      ? CLICKABLE_SLASH_RPG[workingType]
+      ? RPG_CLICKABLE_SLASH_COMMANDS[workingType]
       : `RPG ${workingType.toUpperCase()}`
     : 'RPG WORKING';
 };
@@ -99,7 +101,7 @@ interface IGetFarmCommandStr {
 const getFarmCommandStr = ({seedType, slash}: IGetFarmCommandStr) => {
   return seedType
     ? slash
-      ? CLICKABLE_SLASH_RPG.farm
+      ? RPG_CLICKABLE_SLASH_COMMANDS.farm
       : `RPG FARM ${seedType.toUpperCase()}`
     : 'RPG FARM';
 };
@@ -110,7 +112,7 @@ interface IGetHorseCommandStr {
 
 const getHorseCommandStr = ({slash}: IGetHorseCommandStr) => {
   return slash
-    ? `${CLICKABLE_SLASH_RPG.horseRace} ${CLICKABLE_SLASH_RPG.horseBreeding}`
+    ? `${RPG_CLICKABLE_SLASH_COMMANDS.horseRace} ${RPG_CLICKABLE_SLASH_COMMANDS.horseBreeding}`
     : `RPG HORSE RACE/BREEDING`;
 };
 
@@ -119,7 +121,7 @@ interface IGetArenaCommandStr {
 }
 
 const GetArenaCommandStr = ({slash}: IGetArenaCommandStr) => {
-  return slash ? CLICKABLE_SLASH_RPG.arena : `RPG ARENA`;
+  return slash ? RPG_CLICKABLE_SLASH_COMMANDS.arena : `RPG ARENA`;
 };
 
 interface IGetDungeonCommandStr {
@@ -127,17 +129,17 @@ interface IGetDungeonCommandStr {
 }
 
 const GetDungeonCommandStr = ({slash}: IGetDungeonCommandStr) => {
-  return slash ? CLICKABLE_SLASH_RPG.dungeon : `RPG DUNGEON`;
+  return slash ? RPG_CLICKABLE_SLASH_COMMANDS.dungeon : `RPG DUNGEON`;
 };
 
 interface IGetLootboxCommandStr {
   slash?: boolean;
-  lootboxType?: ValuesOf<typeof LOOTBOX_TYPE>;
+  lootboxType?: ValuesOf<typeof RPG_LOOTBOX_TYPE>;
 }
 
 const GetLootboxCommandStr = ({slash, lootboxType}: IGetLootboxCommandStr) => {
   return slash
-    ? CLICKABLE_SLASH_RPG.lootbox
+    ? RPG_CLICKABLE_SLASH_COMMANDS.lootbox
     : `RPG BUY ${lootboxType?.toUpperCase() || ''} LOOTBOX`;
 };
 
@@ -146,7 +148,7 @@ interface IGetVoteCommandStr {
 }
 
 const GetVoteCommandStr = ({slash}: IGetVoteCommandStr) => {
-  return slash ? CLICKABLE_SLASH_RPG.vote : `RPG VOTE`;
+  return slash ? RPG_CLICKABLE_SLASH_COMMANDS.vote : `RPG VOTE`;
 };
 
 interface IGetCommandStr {

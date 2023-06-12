@@ -1,4 +1,4 @@
-import {COMMAND_TYPE} from '../../../../../constants/bot';
+import {PREFIX_COMMAND_TYPE} from '../../../../../constants/bot';
 import {calcTotalPets} from '../../../../../models/user-pet/user-pet.service';
 import {
   paginatePetCd,
@@ -9,7 +9,7 @@ import {itemListingHelper} from '../../../../../lib/epic_helper/itemListingHelpe
 export default <PrefixCommand>{
   name: 'petCd',
   commands: ['petCd'],
-  type: COMMAND_TYPE.bot,
+  type: PREFIX_COMMAND_TYPE.bot,
   execute: async (client, message) => {
     const totalPets = await calcTotalPets({
       userId: message.author.id,

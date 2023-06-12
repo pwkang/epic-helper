@@ -1,12 +1,12 @@
 import {Client, Message, User} from 'discord.js';
-import {RPG_EQUIPMENT} from '../../../../constants/epic_rpg/rpg_equipment';
+import {RPG_EQUIPMENTS} from '../../../../constants/epic_rpg/equipments';
 import {updateUserRubyAmount} from '../../../../models/user/user.service';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
 
 const rubyConsumed = {
-  [RPG_EQUIPMENT.rubySword]: 4,
-  [RPG_EQUIPMENT.rubyArmor]: 7,
-  [RPG_EQUIPMENT.coinSword]: 4,
+  [RPG_EQUIPMENTS.rubySword]: 4,
+  [RPG_EQUIPMENTS.rubyArmor]: 7,
+  [RPG_EQUIPMENTS.coinSword]: 4,
 };
 
 interface IRpgCraft {
@@ -40,9 +40,9 @@ interface IRpgCraftSuccess {
 }
 
 const rpgCraftSuccess = async ({content, author}: IRpgCraftSuccess) => {
-  const item = Object.entries(RPG_EQUIPMENT).find(([_, item]) =>
+  const item = Object.entries(RPG_EQUIPMENTS).find(([_, item]) =>
     content.toLowerCase().includes(item)
-  )?.[1] as keyof typeof RPG_EQUIPMENT;
+  )?.[1] as keyof typeof RPG_EQUIPMENTS;
   if (!item) return;
 
   if (Object.keys(rubyConsumed).includes(item)) {

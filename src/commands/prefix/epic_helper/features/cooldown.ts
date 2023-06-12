@@ -1,4 +1,6 @@
-import {BOT_COLOR, COMMAND_TYPE} from '../../../../constants/bot';
+import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
+import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
+import {BOT_COLOR} from '../../../../constants/epic_helper/general';
 import {getUserAllCooldowns} from '../../../../models/user-reminder/user-reminder.service';
 import {
   IAdventureReminderProps,
@@ -10,7 +12,6 @@ import {
 } from '../../../../models/user-reminder/user-reminder.type';
 import {EmbedBuilder} from 'discord.js';
 import sendMessage from '../../../../lib/discord.js/message/sendMessage';
-import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
 import dynamicTimeStamp from '../../../../utils/discord/dynamicTimestamp';
 
 const EMOJI = {
@@ -113,7 +114,7 @@ const cmd: ICooldown[] = [
 export default <PrefixCommand>{
   name: 'ehCooldown',
   commands: ['cooldowns', 'cooldown', 'cd'],
-  type: COMMAND_TYPE.bot,
+  type: PREFIX_COMMAND_TYPE.bot,
   execute: async (client, message) => {
     const cooldowns = await getUserAllCooldowns(message.author.id);
     const embed = new EmbedBuilder()

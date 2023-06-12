@@ -1,12 +1,12 @@
-import {COMMAND_TYPE} from '../../../../constants/bot';
+import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {registerUserAccount} from '../../../../models/user/user.service';
-import {CLICKABLE_SLASH_RPG} from '../../../../constants/epic_rpg/clickable_slash';
+import {RPG_CLICKABLE_SLASH_COMMANDS} from '../../../../constants/epic_rpg/clickable_slash';
 import replyMessage from '../../../../lib/discord.js/message/replyMessage';
 
 export default <PrefixCommand>{
   name: 'register',
   commands: ['register'],
-  type: COMMAND_TYPE.bot,
+  type: PREFIX_COMMAND_TYPE.bot,
   execute: async (client, message) => {
     const created = await registerUserAccount({
       userId: message.author.id,
@@ -17,7 +17,7 @@ export default <PrefixCommand>{
       replyMessage({
         client,
         message,
-        options: `Successfully registered!\nUse ${CLICKABLE_SLASH_RPG.inventory} to start tracking your ruby amount.`,
+        options: `Successfully registered!\nUse ${RPG_CLICKABLE_SLASH_COMMANDS.inventory} to start tracking your ruby amount.`,
       });
     } else {
       replyMessage({

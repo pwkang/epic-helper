@@ -1,4 +1,4 @@
-export const ENCHANT_LEVEL = {
+export const RPG_ENCHANT_LEVEL = {
   normie: 'normie',
   good: 'good',
   great: 'great',
@@ -15,11 +15,11 @@ export const ENCHANT_LEVEL = {
   void: 'void',
 } as const;
 
-type IEnchantLevelRank = {
-  [key in ValuesOf<typeof ENCHANT_LEVEL>]: number;
+type IRpgEnchantLevelRank = {
+  [key in ValuesOf<typeof RPG_ENCHANT_LEVEL>]: number;
 };
 
-export const ENCHANT_LEVEL_RANK: IEnchantLevelRank = {
+export const RPG_ENCHANT_LEVEL_RANK: IRpgEnchantLevelRank = {
   normie: 1,
   good: 2,
   great: 3,

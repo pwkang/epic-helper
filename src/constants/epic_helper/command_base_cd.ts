@@ -1,6 +1,6 @@
 import ms from 'ms';
 
-export const COMMAND_BASE_COOLDOWN = {
+export const BOT_REMINDER_BASE_COOLDOWN = {
   daily: ms('1d') - ms('10m'),
   weekly: ms('1w') - ms('10m'),
   lootbox: ms('3h'),

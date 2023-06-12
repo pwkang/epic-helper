@@ -4,7 +4,7 @@ import {
   saveUserWorkingCooldown,
   updateUserCooldown,
 } from '../../../../models/user-reminder/user-reminder.service';
-import {COMMAND_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
+import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
 import {updateUserRubyAmount} from '../../../../models/user/user.service';
@@ -31,7 +31,7 @@ const WORKING_ITEMS = [
   'nothing',
 ];
 
-const WORKING_COOLDOWN = COMMAND_BASE_COOLDOWN.working;
+const WORKING_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.working;
 
 interface IRpgWorking {
   client: Client;

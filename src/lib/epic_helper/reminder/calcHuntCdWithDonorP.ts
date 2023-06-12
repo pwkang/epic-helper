@@ -1,5 +1,5 @@
-import {COMMAND_BASE_COOLDOWN} from '../../../constants/epic_helper/command_base_cd';
-import {DONOR_CD_REDUCTION, RPG_DONOR_TIER} from '../../../constants/epic_rpg/rpg';
+import {BOT_REMINDER_BASE_COOLDOWN} from '../../../constants/epic_helper/command_base_cd';
+import {RPG_DONOR_CD_REDUCTION, RPG_DONOR_TIER} from '../../../constants/epic_rpg/rpg';
 
 interface ICalcDonorPExtraHuntCd {
   baseCd: number;
@@ -11,8 +11,8 @@ export const calcDonorPExtraHuntCd = ({donorP, donor}: ICalcDonorPExtraHuntCd) =
   if (!donorP) return 0;
 
   const extraDuration =
-    COMMAND_BASE_COOLDOWN.hunt * DONOR_CD_REDUCTION[donorP] -
-    COMMAND_BASE_COOLDOWN.hunt * DONOR_CD_REDUCTION[donor];
+    BOT_REMINDER_BASE_COOLDOWN.hunt * RPG_DONOR_CD_REDUCTION[donorP] -
+    BOT_REMINDER_BASE_COOLDOWN.hunt * RPG_DONOR_CD_REDUCTION[donor];
 
   return extraDuration < 0 ? 0 : extraDuration;
 };

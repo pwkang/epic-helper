@@ -1,11 +1,11 @@
-import {COMMAND_TYPE} from '../../../../constants/bot';
+import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {toggleHuntSwitch} from '../../../../models/user/user.service';
 import replyMessage from '../../../../lib/discord.js/message/replyMessage';
 
 export default <PrefixCommand>{
   name: 'accountHuntSwitch',
   commands: ['hunt switch', 'hs'],
-  type: COMMAND_TYPE.bot,
+  type: PREFIX_COMMAND_TYPE.bot,
   execute: async (client, message) => {
     const newStatus = await toggleHuntSwitch(message.author.id);
 

@@ -4,11 +4,11 @@ import {
   saveUserAdventureCooldown,
   updateUserCooldown,
 } from '../../../../models/user-reminder/user-reminder.service';
-import {COMMAND_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
+import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
 import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
-import {CLICKABLE_SLASH_RPG} from '../../../../constants/epic_rpg/clickable_slash';
+import {RPG_CLICKABLE_SLASH_COMMANDS} from '../../../../constants/epic_rpg/clickable_slash';
 import {getUserHealReminder} from '../../../../models/user/user.service';
 import sendMessage from '../../../discord.js/message/sendMessage';
 import {updateReminderChannel} from '../../../../utils/reminderChannel';
@@ -63,7 +63,7 @@ interface IRpgAdventureSuccess {
   content: Message['content'];
 }
 
-const ADVENTURE_COOLDOWN = COMMAND_BASE_COOLDOWN.adventure;
+const ADVENTURE_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.adventure;
 
 export default async function rpgAdventureSuccess({
   author,
@@ -161,15 +161,15 @@ export async function getHealReminderMsg({
   }
   let msg;
   if (horseSaved) {
-    msg = `Your horse saved you from dying, ${CLICKABLE_SLASH_RPG.heal} yourself now`;
+    msg = `Your horse saved you from dying, ${RPG_CLICKABLE_SLASH_COMMANDS.heal} yourself now`;
   } else if (Number(hpLost) && Number(hpLost) >= Number(hp)) {
-    msg = `It's hard to kill the next monster, Time to ${CLICKABLE_SLASH_RPG.heal} now`;
+    msg = `It's hard to kill the next monster, Time to ${RPG_CLICKABLE_SLASH_COMMANDS.heal} now`;
   } else if (dead) {
     return;
   } else if (hpLost && Number(hpLost) !== 0) {
     // user is damaged
     if (target && Number(hp) <= Number(target))
-      msg = `Your HP is getting low. Time to ${CLICKABLE_SLASH_RPG.heal} now`;
+      msg = `Your HP is getting low. Time to ${RPG_CLICKABLE_SLASH_COMMANDS.heal} now`;
   }
   return msg;
 }

@@ -3,7 +3,7 @@ import {
   saveUserQuestCooldown,
   updateUserCooldown,
 } from '../../../../models/user-reminder/user-reminder.service';
-import {COMMAND_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
+import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
 import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
@@ -75,8 +75,8 @@ interface IRpgQuestSuccess {
   questAccepted?: boolean;
 }
 
-const QUEST_COOLDOWN = COMMAND_BASE_COOLDOWN.quest.accepted;
-const DECLINED_QUEST_COOLDOWN = COMMAND_BASE_COOLDOWN.quest.declined;
+const QUEST_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.quest.accepted;
+const DECLINED_QUEST_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.quest.declined;
 
 export default async function rpgQuestSuccess({
   author,

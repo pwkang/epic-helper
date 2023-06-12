@@ -1,4 +1,4 @@
-import {COMMAND_TYPE} from '../../../../constants/bot';
+import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
 import {
   isNoPetsToClaim,
@@ -9,7 +9,7 @@ import {
 export default <PrefixCommand>{
   name: 'petClaim',
   commands: ['pet claim', 'pets claim'],
-  type: COMMAND_TYPE.rpg,
+  type: PREFIX_COMMAND_TYPE.rpg,
   execute: (client, message) => {
     const event = createRpgCommandListener({
       channelId: message.channel.id,

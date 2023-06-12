@@ -1,4 +1,4 @@
-import {COMMAND_TYPE} from '../../../../constants/bot';
+import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {getUserSettingsEmbed} from '../../../../lib/embeds/getUserSettingsEmbed';
 import {getUserAccount} from '../../../../models/user/user.service';
 import {ActionRowBuilder, StringSelectMenuBuilder} from 'discord.js';
@@ -8,7 +8,7 @@ import {getUserReminderChannelEmbed} from '../../../../lib/embeds/getUserReminde
 export default <PrefixCommand>{
   name: 'settings',
   commands: ['settings', 's'],
-  type: COMMAND_TYPE.bot,
+  type: PREFIX_COMMAND_TYPE.bot,
   execute: async (client, message) => {
     const userProfile = await getUserAccount(message.author.id);
     if (!userProfile) return;

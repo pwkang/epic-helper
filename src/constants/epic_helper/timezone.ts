@@ -1,4 +1,4 @@
-export const TIMEZONE_LIST = {
+export const BOT_TIMEZONE_LIST = {
   'UTC-12': 'UTC-12',
   'UTC-11': 'UTC-11',
   'UTC-10': 'UTC-10',

@@ -1,10 +1,10 @@
-import {COMMAND_TYPE} from '../../../../constants/bot';
+import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {rpgTrade} from '../../../../lib/epic_rpg/commands/other/trade';
 
 export default <PrefixCommand>{
   name: 'rpgTrade',
   commands: ['trade e', 'trade f'],
-  type: COMMAND_TYPE.rpg,
+  type: PREFIX_COMMAND_TYPE.rpg,
   execute: async (client, message) => {
     rpgTrade({
       author: message.author,

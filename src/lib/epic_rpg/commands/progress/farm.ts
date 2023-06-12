@@ -4,14 +4,14 @@ import {
   updateUserCooldown,
 } from '../../../../models/user-reminder/user-reminder.service';
 import {RPG_COMMAND_TYPE, RPG_FARM_SEED} from '../../../../constants/epic_rpg/rpg';
-import {COMMAND_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
+import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
 import {updateReminderChannel} from '../../../../utils/reminderChannel';
 import {countUserStats} from '../../../../models/user-stats/user-stats.service';
 import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
 
-const FARM_COOLDOWN = COMMAND_BASE_COOLDOWN.farm;
+const FARM_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.farm;
 
 interface IRpgFarm {
   client: Client;

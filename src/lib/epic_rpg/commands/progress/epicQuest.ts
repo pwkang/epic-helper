@@ -3,7 +3,7 @@ import {
   saveUserQuestCooldown,
   updateUserCooldown,
 } from '../../../../models/user-reminder/user-reminder.service';
-import {COMMAND_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
+import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
 import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
@@ -58,7 +58,7 @@ interface IRpgEpicQuestSuccess {
   author: User;
 }
 
-const QUEST_COOLDOWN = COMMAND_BASE_COOLDOWN.epicQuest;
+const QUEST_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.epicQuest;
 
 export default async function rpgEpicQuestSuccess({author, channelId}: IRpgEpicQuestSuccess) {
   const cooldown = await calcReducedCd({

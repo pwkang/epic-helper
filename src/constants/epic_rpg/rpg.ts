@@ -76,7 +76,7 @@ type ITradeRate = {
   };
 };
 
-export const TRADE_RATE: ITradeRate = {
+export const RPG_TRADE_RATE: ITradeRate = {
   [RPG_AREA.a0]: {},
   [RPG_AREA.a1]: {
     tradeA: 1,
@@ -236,7 +236,7 @@ export const TRADE_RATE: ITradeRate = {
   },
 };
 
-export const STT_SCORE = {
+export const RPG_STT_SCORE = {
   level: 0.5,
   stats: 0.4,
   commonLootbox: 0.05,
@@ -268,7 +268,7 @@ export const STT_SCORE = {
   wolfSkin: 1 / 20,
 } as const;
 
-export const DONOR_CD_REDUCTION = {
+export const RPG_DONOR_CD_REDUCTION = {
   nonDonor: 1,
   donor10: 0.9,
   donor20: 0.8,

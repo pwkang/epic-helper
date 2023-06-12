@@ -1,4 +1,4 @@
-export const HUNT_MONSTER_AREA_LIST = {
+export const RPG_HUNT_MONSTER_AREA_LIST = {
   a1: ['WOLF', 'GOBLIN', 'SLIME'],
   a2: ['NYMPH', 'SKELETON'],
   a3: ['ZOMBIE', 'BABY DEMON', 'GHOST'],
@@ -24,7 +24,7 @@ export const HUNT_MONSTER_AREA_LIST = {
   christmas: ['CHRISTMAS REINDEER', 'ELF', 'SNOWMAN', 'CHRISTMAS SLIME'],
 };
 
-export const ADVENTURE_MONSTER_AREA_LIST = {
+export const RPG_ADVENTURE_MONSTER_AREA_LIST = {
   a1: ['BUNCH OF BEES', 'GIANT SPIDER', 'MUTANT WATER BOTTLE'],
   a2: ['HYPER GIANT BOWL', 'OGRE', 'DARK KNIGHT'],
   a3: ['WEREWOLF', 'CENTAUR', 'MUTANT SHOE'],
@@ -49,6 +49,6 @@ export const ADVENTURE_MONSTER_AREA_LIST = {
   halloween: ['bat slime'],
 };
 
-export const HUNT_MONSTER_LIST = Object.values(HUNT_MONSTER_AREA_LIST).flat();
+export const HUNT_MONSTER_LIST = Object.values(RPG_HUNT_MONSTER_AREA_LIST).flat();
 
-export const ADVENTURE_MONSTER_LIST = Object.values(ADVENTURE_MONSTER_AREA_LIST).flat();
+export const ADVENTURE_MONSTER_LIST = Object.values(RPG_ADVENTURE_MONSTER_AREA_LIST).flat();

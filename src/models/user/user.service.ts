@@ -6,7 +6,7 @@ import {
   redisSetUserRubyAmount,
 } from '../../services/redis/user-account.redis';
 import {UpdateQuery} from 'mongoose';
-import {ENCHANT_LEVEL} from '../../constants/epic_rpg/enchant';
+import {RPG_ENCHANT_LEVEL} from '../../constants/epic_rpg/enchant';
 import {RPG_DONOR_TIER} from '../../constants/epic_rpg/rpg';
 
 const dbUser = mongoClient.model<IUser>('user', userSchema);
@@ -194,7 +194,7 @@ export const getUserRubyAmount = async (userId: string): Promise<number> => {
 
 interface ISetUserEnchantTier {
   userId: string;
-  tier: ValuesOf<typeof ENCHANT_LEVEL>;
+  tier: ValuesOf<typeof RPG_ENCHANT_LEVEL>;
 }
 
 export const setUserEnchantTier = async ({userId, tier}: ISetUserEnchantTier): Promise<void> => {
@@ -233,7 +233,7 @@ interface IGetUserEnchantTier {
 
 export const getUserEnchantTier = async ({
   userId,
-}: IGetUserEnchantTier): Promise<ValuesOf<typeof ENCHANT_LEVEL> | null> => {
+}: IGetUserEnchantTier): Promise<ValuesOf<typeof RPG_ENCHANT_LEVEL> | null> => {
   const user = await dbUser.findOne(
     {
       userId,

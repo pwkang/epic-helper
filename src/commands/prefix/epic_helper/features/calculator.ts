@@ -1,4 +1,4 @@
-import {COMMAND_TYPE} from '../../../../constants/bot';
+import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
 import {
   getCalcInstructionMessage,
@@ -18,7 +18,7 @@ import {
 export default <PrefixCommand>{
   name: 'matsCalc',
   commands: ['calc', 'c'],
-  type: COMMAND_TYPE.bot,
+  type: PREFIX_COMMAND_TYPE.bot,
   execute: (client, message, args) => {
     if (!isCalcSTT(args) && !isCalcMaterial(args))
       return replyMessage({

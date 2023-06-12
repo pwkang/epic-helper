@@ -1,4 +1,4 @@
-export const LOOTBOX_TYPE = {
+export const RPG_LOOTBOX_TYPE = {
   common: 'common',
   uncommon: 'uncommon',
   rare: 'rare',
@@ -8,7 +8,7 @@ export const LOOTBOX_TYPE = {
   godly: 'godly',
 } as const;
 
-export const LOOTBOX_ABBREVIATION = {
+export const RPG_LOOTBOX_ABBREVIATION = {
   common: ['c', 'co', 'common'],
   uncommon: ['u', 'un', 'uncommon'],
   rare: ['r', 'ra', 'rare'],

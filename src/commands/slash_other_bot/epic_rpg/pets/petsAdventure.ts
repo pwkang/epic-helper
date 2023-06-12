@@ -1,4 +1,4 @@
-import {OTHER_BOT_TYPE} from '../../../../constants/bot';
+import {SLASH_MESSAGE_BOT_TYPE} from '../../../../constants/bot';
 import {
   amountOfPetsSentToAdventure,
   isFailToSendPetsToAdventure,
@@ -23,7 +23,7 @@ import {
 
 export default <SlashCommandOtherBot>{
   name: 'petsAdventure',
-  bot: OTHER_BOT_TYPE.rpg,
+  bot: SLASH_MESSAGE_BOT_TYPE.rpg,
   commandName: ['pets adventure'],
   execute: async (client, message, author) => {
     const event = createRpgCommandListener({

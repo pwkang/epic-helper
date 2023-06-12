@@ -1,6 +1,6 @@
 import {IInventoryItem} from './scanInventory';
 import {RpgArea} from '../../../types/rpg.types';
-import {TRADE_RATE} from '../../../constants/epic_rpg/rpg';
+import {RPG_TRADE_RATE} from '../../../constants/epic_rpg/rpg';
 import {dismantleRecommend} from './dismantleMaterals';
 
 interface IStartTrading {
@@ -63,7 +63,7 @@ export function initTrade(inventory: IInventoryItem) {
   return <IInitTradeReturn>{
     ...inventory,
     tradeA: function (area) {
-      const tradeRate = TRADE_RATE[area]?.tradeA;
+      const tradeRate = RPG_TRADE_RATE[area]?.tradeA;
       if (!tradeRate) return this;
       const {normieFish, woodenLog} = trade(this, 'normieFish', 'woodenLog', tradeRate);
       this.normieFish = normieFish;
@@ -71,7 +71,7 @@ export function initTrade(inventory: IInventoryItem) {
       return this;
     },
     tradeB: function (area) {
-      const tradeRate = TRADE_RATE[area]?.tradeB;
+      const tradeRate = RPG_TRADE_RATE[area]?.tradeB;
       if (!tradeRate) return this;
       const {woodenLog, normieFish} = trade(this, 'woodenLog', 'normieFish', tradeRate);
       this.woodenLog = woodenLog;
@@ -79,7 +79,7 @@ export function initTrade(inventory: IInventoryItem) {
       return this;
     },
     tradeC: function (area) {
-      const tradeRate = TRADE_RATE[area]?.tradeC;
+      const tradeRate = RPG_TRADE_RATE[area]?.tradeC;
       if (!tradeRate) return this;
       const {apple, woodenLog} = trade(this, 'apple', 'woodenLog', tradeRate);
       this.apple = apple;
@@ -87,7 +87,7 @@ export function initTrade(inventory: IInventoryItem) {
       return this;
     },
     tradeD: function (area) {
-      const tradeRate = TRADE_RATE[area]?.tradeD;
+      const tradeRate = RPG_TRADE_RATE[area]?.tradeD;
       if (!tradeRate) return this;
       const {woodenLog, apple} = trade(this, 'woodenLog', 'apple', tradeRate);
       this.woodenLog = woodenLog;
@@ -95,7 +95,7 @@ export function initTrade(inventory: IInventoryItem) {
       return this;
     },
     tradeE: function (area) {
-      const tradeRate = TRADE_RATE[area]?.tradeE;
+      const tradeRate = RPG_TRADE_RATE[area]?.tradeE;
       if (!tradeRate) return this;
       const {ruby, woodenLog} = trade(this, 'ruby', 'woodenLog', tradeRate);
       this.ruby = ruby;
@@ -103,7 +103,7 @@ export function initTrade(inventory: IInventoryItem) {
       return this;
     },
     tradeF: function (area) {
-      const tradeRate = TRADE_RATE[area]?.tradeF;
+      const tradeRate = RPG_TRADE_RATE[area]?.tradeF;
       if (!tradeRate) return this;
       const {woodenLog, ruby} = trade(this, 'woodenLog', 'ruby', tradeRate);
       this.woodenLog = woodenLog;

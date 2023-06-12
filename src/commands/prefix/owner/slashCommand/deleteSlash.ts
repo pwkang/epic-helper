@@ -1,4 +1,4 @@
-import {COMMAND_TYPE} from '../../../../constants/bot';
+import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {listSlashCommands} from '../../../../utils/listSlashCommands';
 import {deleteGuildSlashCommand} from '../../../../lib/discord.js/slashCommands/deleteGuildSlashCommand';
 import {getGuildSlashCommands} from '../../../../lib/discord.js/slashCommands/getGuildSlashCommands.lib';
@@ -12,7 +12,7 @@ import {sleep} from '../../../../utils/sleep';
 export default <PrefixCommand>{
   name: 'deleteSlash',
   commands: ['slash delete'],
-  type: COMMAND_TYPE.dev,
+  type: PREFIX_COMMAND_TYPE.dev,
   execute: async (client, message, args) => {
     const slashCommands = await listSlashCommands();
 

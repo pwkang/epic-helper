@@ -1,4 +1,4 @@
-export const RPG_EQUIPMENT = {
+export const RPG_EQUIPMENTS = {
   woodenSword: 'wooden sword',
   fishArmor: 'fish armor',
   fishSword: 'fish sword',

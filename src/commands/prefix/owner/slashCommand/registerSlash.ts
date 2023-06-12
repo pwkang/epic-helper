@@ -1,4 +1,4 @@
-import {COMMAND_TYPE} from '../../../../constants/bot';
+import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {listSlashCommands} from '../../../../utils/listSlashCommands';
 import {createGuildSlashCommand} from '../../../../lib/discord.js/slashCommands/createGuildSlashCommand';
 import {createGlobalSlashCommand} from '../../../../lib/discord.js/slashCommands/createGlobalSlashCommand';
@@ -9,7 +9,7 @@ import editMessage from '../../../../lib/discord.js/message/editMessage';
 export default <PrefixCommand>{
   name: 'registerSlash',
   commands: ['slash register'],
-  type: COMMAND_TYPE.dev,
+  type: PREFIX_COMMAND_TYPE.dev,
   execute: async (client, message, args) => {
     const slashCommands = await listSlashCommands();
 

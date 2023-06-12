@@ -1,15 +1,15 @@
-import {COMMAND_TYPE} from '../../../../constants/bot';
+import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuInteraction} from 'discord.js';
-import {ENCHANT_LEVEL} from '../../../../constants/epic_rpg/enchant';
+import {RPG_ENCHANT_LEVEL} from '../../../../constants/epic_rpg/enchant';
 import sendInteractiveMessage from '../../../../lib/discord.js/message/sendInteractiveMessage';
 import {removeUserEnchantTier, setUserEnchantTier} from '../../../../models/user/user.service';
 
-type SelectOptionsValue = ValuesOf<typeof ENCHANT_LEVEL> | 'remove';
+type SelectOptionsValue = ValuesOf<typeof RPG_ENCHANT_LEVEL> | 'remove';
 
 export default <PrefixCommand>{
   name: 'setEnchant',
   commands: ['set enchant', 'setEnchant', 'se'],
-  type: COMMAND_TYPE.bot,
+  type: PREFIX_COMMAND_TYPE.bot,
   execute: async (client, message) => {
     const event = await sendInteractiveMessage({
       options: {
@@ -55,59 +55,59 @@ const selectMenu = new StringSelectMenuBuilder()
   .setOptions([
     {
       label: 'Normie',
-      value: ENCHANT_LEVEL.normie,
+      value: RPG_ENCHANT_LEVEL.normie,
     },
     {
       label: 'Good',
-      value: ENCHANT_LEVEL.good,
+      value: RPG_ENCHANT_LEVEL.good,
     },
     {
       label: 'Great',
-      value: ENCHANT_LEVEL.great,
+      value: RPG_ENCHANT_LEVEL.great,
     },
     {
       label: 'Mega',
-      value: ENCHANT_LEVEL.mega,
+      value: RPG_ENCHANT_LEVEL.mega,
     },
     {
       label: 'Epic',
-      value: ENCHANT_LEVEL.epic,
+      value: RPG_ENCHANT_LEVEL.epic,
     },
     {
       label: 'Hyper',
-      value: ENCHANT_LEVEL.hyper,
+      value: RPG_ENCHANT_LEVEL.hyper,
     },
     {
       label: 'Ultimate',
-      value: ENCHANT_LEVEL.ultimate,
+      value: RPG_ENCHANT_LEVEL.ultimate,
     },
     {
       label: 'Perfect',
-      value: ENCHANT_LEVEL.perfect,
+      value: RPG_ENCHANT_LEVEL.perfect,
     },
     {
       label: 'Edgy',
-      value: ENCHANT_LEVEL.edgy,
+      value: RPG_ENCHANT_LEVEL.edgy,
     },
     {
       label: 'Ultra Edgy',
-      value: ENCHANT_LEVEL['ultra-edgy'],
+      value: RPG_ENCHANT_LEVEL['ultra-edgy'],
     },
     {
       label: 'Omega',
-      value: ENCHANT_LEVEL.omega,
+      value: RPG_ENCHANT_LEVEL.omega,
     },
     {
       label: 'Ultra Omega',
-      value: ENCHANT_LEVEL['ultra-omega'],
+      value: RPG_ENCHANT_LEVEL['ultra-omega'],
     },
     {
       label: 'Godly',
-      value: ENCHANT_LEVEL.godly,
+      value: RPG_ENCHANT_LEVEL.godly,
     },
     {
       label: 'Void',
-      value: ENCHANT_LEVEL.void,
+      value: RPG_ENCHANT_LEVEL.void,
     },
     {
       label: 'Remove',

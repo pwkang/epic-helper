@@ -1,12 +1,12 @@
 import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
-import {COMMAND_TYPE} from '../../../../constants/bot';
+import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {isRpgPet, rpgPet} from '../../../../lib/epic_rpg/pets/pet.lib';
 import {redisSetRpgMessageOwner} from '../../../../services/redis/rpg-message-owner.redis';
 
 export default <PrefixCommand>{
   name: 'petList',
   commands: ['pets', 'pet'],
-  type: COMMAND_TYPE.rpg,
+  type: PREFIX_COMMAND_TYPE.rpg,
   execute: (client, message) => {
     const event = createRpgCommandListener({
       channelId: message.channel.id,

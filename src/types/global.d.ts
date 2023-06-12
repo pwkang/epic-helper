@@ -1,7 +1,7 @@
 import type {Client, Message, SlashCommandBuilder, User} from 'discord.js';
 import {ChatInputCommandInteraction} from 'discord.js';
-import type {COMMAND_TYPE} from '../constants/bot';
-import {OTHER_BOT_TYPE} from '../constants/bot';
+import type {PREFIX_COMMAND_TYPE} from '../constants/bot';
+import {SLASH_MESSAGE_BOT_TYPE} from '../constants/bot';
 import type {ScheduleOptions} from 'node-cron';
 
 declare global {
@@ -11,7 +11,7 @@ declare global {
     name: string;
     commands: string[];
     execute: (client: Client, message: Message, args: string[]) => void | Promise<void>;
-    type: ValuesOf<typeof COMMAND_TYPE>;
+    type: ValuesOf<typeof PREFIX_COMMAND_TYPE>;
   }
 
   interface SlashCommand<T = ChatInputCommandInteraction> {
@@ -24,7 +24,7 @@ declare global {
   interface SlashCommandOtherBot {
     name: string;
     commandName: string[];
-    bot: ValuesOf<typeof OTHER_BOT_TYPE>;
+    bot: ValuesOf<typeof SLASH_MESSAGE_BOT_TYPE>;
     execute: (client: Client, message: Message, author: User) => Promise<void>;
   }
 

@@ -4,13 +4,13 @@ import {
   saveUserHuntCooldown,
   updateUserCooldown,
 } from '../../../../models/user-reminder/user-reminder.service';
-import {COMMAND_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
+import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
 import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
 import replyMessage from '../../../discord.js/message/replyMessage';
 import {getUserHealReminder} from '../../../../models/user/user.service';
-import {CLICKABLE_SLASH_RPG} from '../../../../constants/epic_rpg/clickable_slash';
+import {RPG_CLICKABLE_SLASH_COMMANDS} from '../../../../constants/epic_rpg/clickable_slash';
 import sendMessage from '../../../discord.js/message/sendMessage';
 import {updateReminderChannel} from '../../../../utils/reminderChannel';
 import {countUserStats} from '../../../../models/user-stats/user-stats.service';
@@ -87,7 +87,7 @@ interface IRpgHuntSuccess {
   content: Message['content'];
 }
 
-const HUNT_COOLDOWN = COMMAND_BASE_COOLDOWN.hunt;
+const HUNT_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.hunt;
 
 async function rpgHuntSuccess({author, content, channelId}: IRpgHuntSuccess) {
   const hardMode = content.includes('(but stronger)');
@@ -284,19 +284,19 @@ export function getHealReminderMsg({
   }
   let msg;
   if (horseSaved) {
-    msg = `Your horse saved you from dying, ${CLICKABLE_SLASH_RPG.heal} yourself now`;
+    msg = `Your horse saved you from dying, ${RPG_CLICKABLE_SLASH_COMMANDS.heal} yourself now`;
   } else if (Number(hpLost) && Number(hpLost) >= Number(hp)) {
-    msg = `It's hard to kill the next monster, Time to ${CLICKABLE_SLASH_RPG.heal} now`;
+    msg = `It's hard to kill the next monster, Time to ${RPG_CLICKABLE_SLASH_COMMANDS.heal} now`;
   } else if (dead) {
     if (partnerSaved) {
-      msg = `You were killed by a monster, but your partner saved you, ${CLICKABLE_SLASH_RPG.heal} yourself now`;
+      msg = `You were killed by a monster, but your partner saved you, ${RPG_CLICKABLE_SLASH_COMMANDS.heal} yourself now`;
     } else {
       return;
     }
   } else if (hpLost && Number(hpLost) !== 0) {
     // user is damaged
     if (target && Number(hp) <= Number(target))
-      msg = `Your HP is getting low. Time to ${CLICKABLE_SLASH_RPG.heal} now`;
+      msg = `Your HP is getting low. Time to ${RPG_CLICKABLE_SLASH_COMMANDS.heal} now`;
   }
   return msg;
 }

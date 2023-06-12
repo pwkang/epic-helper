@@ -3,13 +3,13 @@ import {
   saveUserDailyCooldown,
   updateUserCooldown,
 } from '../../../../models/user-reminder/user-reminder.service';
-import {COMMAND_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
+import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
 import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
 import {updateReminderChannel} from '../../../../utils/reminderChannel';
 
-const DAILY_COOLDOWN = COMMAND_BASE_COOLDOWN.daily;
+const DAILY_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.daily;
 
 interface IRpgDaily {
   client: Client;

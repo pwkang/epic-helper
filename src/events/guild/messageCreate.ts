@@ -1,5 +1,5 @@
 import {Client, Events, Message} from 'discord.js';
-import {COMMAND_TYPE, DEVS_ID, EPIC_RPG_ID, PREFIX} from '../../constants/bot';
+import {PREFIX_COMMAND_TYPE, DEVS_ID, EPIC_RPG_ID, PREFIX} from '../../constants/bot';
 
 export default <BotEvent>{
   eventName: Events.MessageCreate,
@@ -56,7 +56,7 @@ function searchCommand(
   if (messageContent === '') return null;
   let args: string[] = [];
   let command;
-  let commandType: ValuesOf<typeof COMMAND_TYPE>;
+  let commandType: ValuesOf<typeof PREFIX_COMMAND_TYPE>;
 
   if (isRpgCommand(message)) {
     if (messageContent.startsWith(`${PREFIX.rpg} `)) {
@@ -68,18 +68,18 @@ function searchCommand(
         .filter((arg) => arg !== '');
     }
 
-    commandType = COMMAND_TYPE.rpg;
+    commandType = PREFIX_COMMAND_TYPE.rpg;
   }
 
   if (PREFIX.bot && isBotCommand(message)) {
     args = messageContent.slice(PREFIX.bot.length).trim().split(' ');
 
-    commandType = COMMAND_TYPE.bot;
+    commandType = PREFIX_COMMAND_TYPE.bot;
   }
   if (DEVS_ID.includes(message.author.id) && PREFIX.dev && messageContent.startsWith(PREFIX.dev)) {
     args = messageContent.slice(PREFIX.dev.length).trim().split(' ');
 
-    commandType = COMMAND_TYPE.dev;
+    commandType = PREFIX_COMMAND_TYPE.dev;
   }
 
   const matchedCommands = client.prefixCommands.filter(

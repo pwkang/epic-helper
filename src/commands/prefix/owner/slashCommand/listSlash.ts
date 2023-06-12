@@ -1,4 +1,5 @@
-import {BOT_COLOR, COMMAND_TYPE} from '../../../../constants/bot';
+import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
+import {BOT_COLOR} from '../../../../constants/epic_helper/general';
 import {listSlashCommands} from '../../../../utils/listSlashCommands';
 import {EmbedBuilder} from 'discord.js';
 import sendMessage from '../../../../lib/discord.js/message/sendMessage';
@@ -8,7 +9,7 @@ import {getGlobalSlashCommands} from '../../../../lib/discord.js/slashCommands/g
 export default <PrefixCommand>{
   name: 'listSlash',
   commands: ['slash'],
-  type: COMMAND_TYPE.dev,
+  type: PREFIX_COMMAND_TYPE.dev,
   execute: async (client, message) => {
     const slashCommands = await listSlashCommands();
     const guildSlashCommands = await getGuildSlashCommands({client, guild: message.guild!});

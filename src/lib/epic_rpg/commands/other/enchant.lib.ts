@@ -1,5 +1,5 @@
 import {Client, Embed, Message, User} from 'discord.js';
-import {ENCHANT_LEVEL, ENCHANT_LEVEL_RANK} from '../../../../constants/epic_rpg/enchant';
+import {RPG_ENCHANT_LEVEL, RPG_ENCHANT_LEVEL_RANK} from '../../../../constants/epic_rpg/enchant';
 import {getUserEnchantTier} from '../../../../models/user/user.service';
 import {muteUser} from '../../../discord.js/channel/muteUser.lib';
 import ms from 'ms';
@@ -65,7 +65,7 @@ export const rpgEnchantSuccess = async ({embed, author, client, channelId}: IRpg
   );
   const targetTier = await getUserEnchantTier({userId: author.id});
   if (!targetTier || !enchantTier || !equipmentType) return;
-  if (ENCHANT_LEVEL_RANK[enchantTier] < ENCHANT_LEVEL_RANK[targetTier]) return;
+  if (RPG_ENCHANT_LEVEL_RANK[enchantTier] < RPG_ENCHANT_LEVEL_RANK[targetTier]) return;
 
   await sendMessage({
     channelId,
@@ -94,7 +94,7 @@ interface IEnchantGet {
 }
 
 export const getEnchantType = ({embed}: IEnchantGet) =>
-  Object.values(ENCHANT_LEVEL).find((level) =>
+  Object.values(RPG_ENCHANT_LEVEL).find((level) =>
     embed.fields[0].name.toLowerCase().includes(`**${level}**`)
   );
 

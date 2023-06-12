@@ -2,9 +2,9 @@ import {Embed, EmbedBuilder, EmbedField, MessageCreateOptions, User} from 'disco
 import {RpgArea} from '../../../../types/rpg.types';
 import scanInventory from '../../../../utils/epic_rpg/inventory/scanInventory';
 import {startTrading} from '../../../../utils/epic_rpg/inventory/tradeMaterials';
-import {STT_SCORE} from '../../../../constants/epic_rpg/rpg';
+import {RPG_STT_SCORE} from '../../../../constants/epic_rpg/rpg';
 import {dismantleRecommend} from '../../../../utils/epic_rpg/inventory/dismantleMaterals';
-import {BOT_COLOR} from '../../../../constants/bot';
+import {BOT_COLOR} from '../../../../constants/epic_helper/general';
 import {BOT_EMOJI} from '../../../../constants/epic_helper/bot_emojis';
 
 interface ICalcSttOptions {
@@ -16,7 +16,7 @@ interface ICalcSttOptions {
 
 type TCalcFunc = (options: ICalcSttOptions) => MessageCreateOptions;
 
-type SttItems = keyof typeof STT_SCORE;
+type SttItems = keyof typeof RPG_STT_SCORE;
 
 type ICalcSTTScore = {
   [key in SttItems]?: number;
@@ -32,9 +32,9 @@ export const getCalcSTTMessage: TCalcFunc = ({embed, area, level, author}) => {
   });
   const dismantleAll = dismantleRecommend(a15Inventory);
   const score: ICalcSTTScore = {
-    level: level * STT_SCORE.level,
+    level: level * RPG_STT_SCORE.level,
   };
-  for (const [key, rate] of Object.entries(STT_SCORE) as [SttItems, number][]) {
+  for (const [key, rate] of Object.entries(RPG_STT_SCORE) as [SttItems, number][]) {
     if (key === 'level') {
     } else if (key === 'stats') {
     } else if (key in dismantleAll) {
@@ -114,7 +114,7 @@ const buildCalcSTTEmbed = ({items, author, total}: IBuildCalcSTTEmbed) => {
  */
 
 interface IGroupItem {
-  key: keyof typeof STT_SCORE;
+  key: keyof typeof RPG_STT_SCORE;
   label: string;
   emoji?: string;
 }

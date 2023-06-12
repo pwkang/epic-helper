@@ -1,4 +1,4 @@
-import {COMMAND_TYPE} from '../../../../constants/bot';
+import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {
   getStatsEmbeds,
   statsActionRow,
@@ -9,7 +9,7 @@ import {ButtonStyle} from 'discord.js';
 
 export default <PrefixCommand>{
   name: 'stats',
-  type: COMMAND_TYPE.bot,
+  type: PREFIX_COMMAND_TYPE.bot,
   commands: ['stats', 'stat', 'st'],
   execute: async (client, message) => {
     const embeds = await getStatsEmbeds({

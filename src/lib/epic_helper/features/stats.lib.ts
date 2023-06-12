@@ -10,7 +10,6 @@ import {
   EmbedField,
   User,
 } from 'discord.js';
-import {BOT_COLOR} from '../../../constants/bot';
 import {
   getDayOfWeek,
   getStartOfLastWeek,
@@ -19,6 +18,7 @@ import {
   getStartOfYesterday,
 } from '../../../utils/datetime';
 import {IUserStats, USER_STATS_RPG_COMMAND_TYPE} from '../../../models/user-stats/user-stats.types';
+import {BOT_COLOR} from '../../../constants/epic_helper/general';
 
 interface IGetDonorStatsEmbed {
   author: User;

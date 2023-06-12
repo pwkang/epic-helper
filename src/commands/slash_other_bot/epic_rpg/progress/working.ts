@@ -1,10 +1,10 @@
-import {OTHER_BOT_TYPE} from '../../../../constants/bot';
+import {SLASH_MESSAGE_BOT_TYPE} from '../../../../constants/bot';
 import {RPG_WORKING_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {rpgWorking} from '../../../../lib/epic_rpg/commands/progress/working';
 
 export default <SlashCommandOtherBot>{
   name: 'rpgWorking',
-  bot: OTHER_BOT_TYPE.rpg,
+  bot: SLASH_MESSAGE_BOT_TYPE.rpg,
   commandName: Object.values(RPG_WORKING_TYPE),
   execute: async (client, message, author) => {
     const workingType = Object.values(RPG_WORKING_TYPE).find(

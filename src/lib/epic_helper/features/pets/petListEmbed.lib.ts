@@ -1,5 +1,5 @@
 import {ButtonStyle, EmbedBuilder, EmbedField, User} from 'discord.js';
-import {BOT_COLOR} from '../../../../constants/bot';
+import {BOT_COLOR} from '../../../../constants/epic_helper/general';
 import {IUserPet} from '../../../../models/user-pet/user-pet.type';
 import {
   RPG_PET_SKILL,

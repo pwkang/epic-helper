@@ -1,4 +1,4 @@
-export const CLICKABLE_SLASH_RPG = {
+export const RPG_CLICKABLE_SLASH_COMMANDS = {
   inventory: '</inventory:958555797590265896>',
   daily: '</daily:956658466099982386>',
   weekly: '</weekly:956658465185603645>',
