@@ -12,6 +12,8 @@ import {CLICKABLE_SLASH_RPG} from '../../../../constants/clickable_slash';
 import {getUserHealReminder} from '../../../../models/user/user.service';
 import sendMessage from '../../../discord.js/message/sendMessage';
 import {updateReminderChannel} from '../../../../utils/reminderChannel';
+import {countUserStats} from '../../../../models/user-stats/user-stats.service';
+import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
 
 interface IRpgAdventure {
   client: Client;
@@ -84,6 +86,11 @@ export default async function rpgAdventureSuccess({
   updateReminderChannel({
     userId: author.id,
     channelId,
+  });
+
+  countUserStats({
+    userId: author.id,
+    type: USER_STATS_RPG_COMMAND_TYPE.adventure,
   });
 }
 

@@ -10,6 +10,8 @@ import {createRpgCommandListener} from '../../createRpgCommandListener';
 import getTrainingAnswer from '../../../../utils/epic_rpg/trainingAnswer';
 import sendMessage from '../../../discord.js/message/sendMessage';
 import {updateReminderChannel} from '../../../../utils/reminderChannel';
+import {countUserStats} from '../../../../models/user-stats/user-stats.service';
+import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
 
 interface IRpgTraining {
   client: Client;
@@ -19,7 +21,6 @@ interface IRpgTraining {
 }
 
 export function rpgTraining({client, message, author, isSlashCommand}: IRpgTraining) {
-  console.log('rpgTraining');
   const event = createRpgCommandListener({
     channelId: message.channel.id,
     client,
@@ -84,6 +85,11 @@ export default async function rpgTrainingSuccess({author, channelId}: IRpgTraini
   updateReminderChannel({
     userId: author.id,
     channelId,
+  });
+
+  countUserStats({
+    userId: author.id,
+    type: USER_STATS_RPG_COMMAND_TYPE.training,
   });
 }
 
