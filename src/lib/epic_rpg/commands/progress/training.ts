@@ -21,7 +21,6 @@ interface IRpgTraining {
 }
 
 export function rpgTraining({client, message, author, isSlashCommand}: IRpgTraining) {
-  console.log('rpgTraining');
   const event = createRpgCommandListener({
     channelId: message.channel.id,
     client,
