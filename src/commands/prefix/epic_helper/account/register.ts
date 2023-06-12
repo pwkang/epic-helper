@@ -1,6 +1,6 @@
 import {COMMAND_TYPE} from '../../../../constants/bot';
 import {registerUserAccount} from '../../../../models/user/user.service';
-import {CLICKABLE_SLASH_RPG} from '../../../../constants/clickable_slash';
+import {CLICKABLE_SLASH_RPG} from '../../../../constants/epic_rpg/clickable_slash';
 import replyMessage from '../../../../lib/discord.js/message/replyMessage';
 
 export default <PrefixCommand>{

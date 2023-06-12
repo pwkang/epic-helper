@@ -1,6 +1,6 @@
 import {Model, Schema} from 'mongoose';
 import {IUserReminder} from './user-reminder.type';
-import {RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../constants/rpg';
+import {RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../constants/epic_rpg/rpg';
 import {
   redisDeleteUserNextReminderTime,
   redisUpdateUserNextReminderTime,

@@ -1,7 +1,7 @@
 import {IUser} from '../../models/user/user.type';
 import {EmbedBuilder, EmbedField, User} from 'discord.js';
 import {BOT_COLOR} from '../../constants/bot';
-import {RPG_COMMAND_TYPE} from '../../constants/rpg';
+import {RPG_COMMAND_TYPE} from '../../constants/epic_rpg/rpg';
 import {
   IAdventureReminderProps,
   IFarmReminderProps,

@@ -6,10 +6,10 @@ import {
   RPG_PET_SKILL,
   RPG_PET_SKILL_TIER,
   RPG_PET_SKILL_TIER_REVERSE,
-} from '../../../../constants/pet';
+} from '../../../../constants/epic_rpg/pet';
 import {generateEmbedPetFields} from './petListEmbed.lib';
 import {BOT_COLOR} from '../../../../constants/bot';
-import {BOT_EMOJI} from '../../../../constants/bot_emojis';
+import {BOT_EMOJI} from '../../../../constants/epic_helper/bot_emojis';
 
 interface IGenerateFusionScoreEmbed {
   author: User;

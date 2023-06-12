@@ -5,7 +5,7 @@ import {
 } from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
-import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
+import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
 import {updateReminderChannel} from '../../../../utils/reminderChannel';
 

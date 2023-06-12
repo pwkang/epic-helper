@@ -1,8 +1,8 @@
 import {mongoClient} from '../../services/mongoose/mongoose.service';
 import {IUserReminder} from './user-reminder.type';
 import userReminderSchema from './user-reminder.schema';
-import {RPG_COMMAND_TYPE, RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../constants/rpg';
-import {LOOTBOX_TYPE} from '../../constants/lootbox';
+import {RPG_COMMAND_TYPE, RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../constants/epic_rpg/rpg';
+import {LOOTBOX_TYPE} from '../../constants/epic_rpg/lootbox';
 import {IUserPet} from '../user-pet/user-pet.type';
 import {updateReminderChannel} from '../../utils/reminderChannel';
 

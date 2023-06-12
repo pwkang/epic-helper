@@ -6,7 +6,7 @@ import {
   getUserPets,
 } from '../../../../models/user-pet/user-pet.service';
 import {convertNumToPetId, convertPetIdToNum} from '../../../../utils/epic_rpg/pet/petIdConversion';
-import {RPG_PET_STATUS} from '../../../../constants/pet';
+import {RPG_PET_STATUS} from '../../../../constants/epic_rpg/pet';
 import {IUserPet} from '../../../../models/user-pet/user-pet.type';
 
 interface IRpgPetAdvCancel {

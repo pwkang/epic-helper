@@ -1,5 +1,5 @@
-import {COMMAND_BASE_COOLDOWN} from '../../../constants/command_base_cd';
-import {DONOR_CD_REDUCTION, RPG_DONOR_TIER} from '../../../constants/rpg';
+import {COMMAND_BASE_COOLDOWN} from '../../../constants/epic_helper/command_base_cd';
+import {DONOR_CD_REDUCTION, RPG_DONOR_TIER} from '../../../constants/epic_rpg/rpg';
 
 interface ICalcDonorPExtraHuntCd {
   baseCd: number;

@@ -1,5 +1,5 @@
 import {Client, Message, User} from 'discord.js';
-import {RPG_EQUIPMENT} from '../../../../constants/rpg_equipment';
+import {RPG_EQUIPMENT} from '../../../../constants/epic_rpg/rpg_equipment';
 import {updateUserRubyAmount} from '../../../../models/user/user.service';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
 

@@ -2,7 +2,7 @@ import {COMMAND_TYPE} from '../../../../constants/bot';
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle} from 'discord.js';
 import sendInteractiveMessage from '../../../../lib/discord.js/message/sendInteractiveMessage';
 import {updateRpgDonorTier} from '../../../../models/user/user.service';
-import {RPG_DONOR_TIER} from '../../../../constants/rpg';
+import {RPG_DONOR_TIER} from '../../../../constants/epic_rpg/rpg';
 
 export default <PrefixCommand>{
   name: 'rpgDonor',

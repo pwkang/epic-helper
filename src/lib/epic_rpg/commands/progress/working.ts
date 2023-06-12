@@ -1,10 +1,10 @@
-import {RPG_COMMAND_TYPE, RPG_WORKING_TYPE} from '../../../../constants/rpg';
+import {RPG_COMMAND_TYPE, RPG_WORKING_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {Client, Embed, Message, User} from 'discord.js';
 import {
   saveUserWorkingCooldown,
   updateUserCooldown,
 } from '../../../../models/user-reminder/user-reminder.service';
-import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
+import {COMMAND_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
 import {updateUserRubyAmount} from '../../../../models/user/user.service';

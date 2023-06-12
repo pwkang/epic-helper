@@ -1,6 +1,6 @@
 import {COMMAND_TYPE} from '../../../../constants/bot';
 import {ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuInteraction} from 'discord.js';
-import {ENCHANT_LEVEL} from '../../../../constants/enchant';
+import {ENCHANT_LEVEL} from '../../../../constants/epic_rpg/enchant';
 import sendInteractiveMessage from '../../../../lib/discord.js/message/sendInteractiveMessage';
 import {removeUserEnchantTier, setUserEnchantTier} from '../../../../models/user/user.service';
 

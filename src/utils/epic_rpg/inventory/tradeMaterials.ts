@@ -1,6 +1,6 @@
 import {IInventoryItem} from './scanInventory';
 import {RpgArea} from '../../../types/rpg.types';
-import {TRADE_RATE} from '../../../constants/rpg';
+import {TRADE_RATE} from '../../../constants/epic_rpg/rpg';
 import {dismantleRecommend} from './dismantleMaterals';
 
 interface IStartTrading {

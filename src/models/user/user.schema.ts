@@ -1,7 +1,7 @@
 import {Schema} from 'mongoose';
 import {IUser} from './user.type';
-import {TIMEZONE_LIST} from '../../constants/timezone';
-import {RPG_DONOR_TIER} from '../../constants/rpg';
+import {TIMEZONE_LIST} from '../../constants/epic_helper/timezone';
+import {RPG_DONOR_TIER} from '../../constants/epic_rpg/rpg';
 
 const userSchema = new Schema<IUser>({
   userId: {

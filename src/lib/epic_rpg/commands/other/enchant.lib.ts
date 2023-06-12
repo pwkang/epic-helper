@@ -1,5 +1,5 @@
 import {Client, Embed, Message, User} from 'discord.js';
-import {ENCHANT_LEVEL, ENCHANT_LEVEL_RANK} from '../../../../constants/enchant';
+import {ENCHANT_LEVEL, ENCHANT_LEVEL_RANK} from '../../../../constants/epic_rpg/enchant';
 import {getUserEnchantTier} from '../../../../models/user/user.service';
 import {muteUser} from '../../../discord.js/channel/muteUser.lib';
 import ms from 'ms';

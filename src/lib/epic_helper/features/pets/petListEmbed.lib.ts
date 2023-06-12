@@ -1,8 +1,12 @@
 import {ButtonStyle, EmbedBuilder, EmbedField, User} from 'discord.js';
 import {BOT_COLOR} from '../../../../constants/bot';
 import {IUserPet} from '../../../../models/user-pet/user-pet.type';
-import {RPG_PET_SKILL, RPG_PET_SKILL_TIER_REVERSE, RPG_PET_TYPE} from '../../../../constants/pet';
-import {BOT_EMOJI} from '../../../../constants/bot_emojis';
+import {
+  RPG_PET_SKILL,
+  RPG_PET_SKILL_TIER_REVERSE,
+  RPG_PET_TYPE,
+} from '../../../../constants/epic_rpg/pet';
+import {BOT_EMOJI} from '../../../../constants/epic_helper/bot_emojis';
 import {convertNumToPetId} from '../../../../utils/epic_rpg/pet/petIdConversion';
 import {convertNumberToRoman} from '../../../../utils/romanConversion';
 import {getUserPets} from '../../../../models/user-pet/user-pet.service';

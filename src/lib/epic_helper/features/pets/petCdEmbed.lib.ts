@@ -2,9 +2,9 @@ import {IUserPet} from '../../../../models/user-pet/user-pet.type';
 import {EmbedBuilder, EmbedField, User} from 'discord.js';
 import {BOT_COLOR} from '../../../../constants/bot';
 import {convertNumToPetId} from '../../../../utils/epic_rpg/pet/petIdConversion';
-import {BOT_EMOJI} from '../../../../constants/bot_emojis';
+import {BOT_EMOJI} from '../../../../constants/epic_helper/bot_emojis';
 import {convertNumberToRoman} from '../../../../utils/romanConversion';
-import {RPG_PET_STATUS, RPG_PET_TYPE} from '../../../../constants/pet';
+import {RPG_PET_STATUS, RPG_PET_TYPE} from '../../../../constants/epic_rpg/pet';
 import dynamicTimeStamp from '../../../../utils/discord/dynamicTimestamp';
 import {getUserPets} from '../../../../models/user-pet/user-pet.service';
 

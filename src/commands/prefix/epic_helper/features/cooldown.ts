@@ -10,7 +10,7 @@ import {
 } from '../../../../models/user-reminder/user-reminder.type';
 import {EmbedBuilder} from 'discord.js';
 import sendMessage from '../../../../lib/discord.js/message/sendMessage';
-import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
+import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
 import dynamicTimeStamp from '../../../../utils/discord/dynamicTimestamp';
 
 const EMOJI = {

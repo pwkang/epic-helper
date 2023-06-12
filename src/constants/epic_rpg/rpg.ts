@@ -1,4 +1,4 @@
-import {RpgArea} from '../types/rpg.types';
+import {RpgArea} from '../../types/rpg.types';
 
 export const RPG_COMMAND_TYPE = {
   daily: 'daily',

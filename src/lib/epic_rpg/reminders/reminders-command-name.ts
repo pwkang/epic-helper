@@ -1,7 +1,7 @@
-import {CLICKABLE_SLASH_RPG} from '../../../constants/clickable_slash';
-import {RPG_COMMAND_TYPE, RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../../constants/rpg';
+import {CLICKABLE_SLASH_RPG} from '../../../constants/epic_rpg/clickable_slash';
+import {RPG_COMMAND_TYPE, RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../../constants/epic_rpg/rpg';
 import {IUserReminder} from '../../../models/user-reminder/user-reminder.type';
-import {LOOTBOX_TYPE} from '../../../constants/lootbox';
+import {LOOTBOX_TYPE} from '../../../constants/epic_rpg/lootbox';
 
 interface IGetDailyCommandStr {
   slash?: boolean;

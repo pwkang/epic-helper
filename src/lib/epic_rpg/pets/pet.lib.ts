@@ -7,7 +7,7 @@ import {
   updateUserPet,
 } from '../../../models/user-pet/user-pet.service';
 import {IUserPet} from '../../../models/user-pet/user-pet.type';
-import {RPG_PET_SKILL} from '../../../constants/pet';
+import {RPG_PET_SKILL} from '../../../constants/epic_rpg/pet';
 import ms from 'ms';
 
 interface IRpgPet {

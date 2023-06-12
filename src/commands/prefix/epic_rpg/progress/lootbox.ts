@@ -1,5 +1,5 @@
 import {COMMAND_TYPE} from '../../../../constants/bot';
-import {LOOTBOX_ABBREVIATION} from '../../../../constants/lootbox';
+import {LOOTBOX_ABBREVIATION} from '../../../../constants/epic_rpg/lootbox';
 import {rpgBuyLootbox} from '../../../../lib/epic_rpg/commands/progress/lootbox';
 
 export default <PrefixCommand>{

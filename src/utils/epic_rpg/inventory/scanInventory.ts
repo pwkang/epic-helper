@@ -1,5 +1,5 @@
 import {Embed} from 'discord.js';
-import {RPG_ITEMS} from '../../../constants/rpg_items';
+import {RPG_ITEMS} from '../../../constants/epic_rpg/rpg_items';
 
 interface IScanInventory {
   embed: Embed;

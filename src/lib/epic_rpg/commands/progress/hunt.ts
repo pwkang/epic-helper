@@ -1,16 +1,16 @@
 import {Client, Embed, Message, User} from 'discord.js';
-import {HUNT_MONSTER_LIST} from '../../../../constants/monster';
+import {HUNT_MONSTER_LIST} from '../../../../constants/epic_rpg/monster';
 import {
   saveUserHuntCooldown,
   updateUserCooldown,
 } from '../../../../models/user-reminder/user-reminder.service';
-import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
+import {COMMAND_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
-import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
+import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
 import replyMessage from '../../../discord.js/message/replyMessage';
 import {getUserHealReminder} from '../../../../models/user/user.service';
-import {CLICKABLE_SLASH_RPG} from '../../../../constants/clickable_slash';
+import {CLICKABLE_SLASH_RPG} from '../../../../constants/epic_rpg/clickable_slash';
 import sendMessage from '../../../discord.js/message/sendMessage';
 import {updateReminderChannel} from '../../../../utils/reminderChannel';
 import {countUserStats} from '../../../../models/user-stats/user-stats.service';

@@ -6,8 +6,8 @@ import {
   redisSetUserRubyAmount,
 } from '../../services/redis/user-account.redis';
 import {UpdateQuery} from 'mongoose';
-import {ENCHANT_LEVEL} from '../../constants/enchant';
-import {RPG_DONOR_TIER} from '../../constants/rpg';
+import {ENCHANT_LEVEL} from '../../constants/epic_rpg/enchant';
+import {RPG_DONOR_TIER} from '../../constants/epic_rpg/rpg';
 
 const dbUser = mongoClient.model<IUser>('user', userSchema);
 

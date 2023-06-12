@@ -2,10 +2,10 @@ import {Embed, EmbedBuilder, EmbedField, MessageCreateOptions, User} from 'disco
 import {RpgArea} from '../../../../types/rpg.types';
 import scanInventory from '../../../../utils/epic_rpg/inventory/scanInventory';
 import {startTrading} from '../../../../utils/epic_rpg/inventory/tradeMaterials';
-import {STT_SCORE} from '../../../../constants/rpg';
+import {STT_SCORE} from '../../../../constants/epic_rpg/rpg';
 import {dismantleRecommend} from '../../../../utils/epic_rpg/inventory/dismantleMaterals';
 import {BOT_COLOR} from '../../../../constants/bot';
-import {BOT_EMOJI} from '../../../../constants/bot_emojis';
+import {BOT_EMOJI} from '../../../../constants/epic_helper/bot_emojis';
 
 interface ICalcSttOptions {
   embed: Embed;

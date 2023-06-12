@@ -6,7 +6,7 @@ import {
 } from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
 import {getUserAccount} from '../../../../models/user/user.service';
-import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
+import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {calcDonorPExtraHuntCd} from '../../../epic_helper/reminder/calcHuntCdWithDonorP';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
 

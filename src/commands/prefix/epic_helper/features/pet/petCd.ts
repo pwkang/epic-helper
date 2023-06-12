@@ -15,7 +15,7 @@ export default <PrefixCommand>{
       userId: message.author.id,
       status: ['adventure', 'back'],
     });
-    
+
     await itemListingHelper({
       channelId: message.channel.id,
       embedFn: (page) =>

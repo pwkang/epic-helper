@@ -1,6 +1,6 @@
 import {IUserConfig} from '../config.type';
 import replyInteraction from '../../../../../lib/discord.js/interaction/replyInteraction';
-import {RPG_COMMAND_TYPE, RPG_WORKING_TYPE} from '../../../../../constants/rpg';
+import {RPG_COMMAND_TYPE, RPG_WORKING_TYPE} from '../../../../../constants/epic_rpg/rpg';
 import {
   removeUserReminderChannel,
   setUserReminderChannel,

@@ -4,7 +4,7 @@ import {
   RPG_PET_SKILL_TIER,
   RPG_PET_STATUS,
   RPG_PET_TYPE,
-} from '../../../constants/pet';
+} from '../../../constants/epic_rpg/pet';
 import {convertRomanToNumber} from '../../romanConversion';
 import ms from 'ms';
 import {convertPetIdToNum} from './petIdConversion';

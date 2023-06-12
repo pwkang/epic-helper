@@ -4,8 +4,8 @@ import {
   saveUserTrainingCooldown,
   updateUserCooldown,
 } from '../../../../models/user-reminder/user-reminder.service';
-import {RPG_COMMAND_TYPE} from '../../../../constants/rpg';
-import {COMMAND_BASE_COOLDOWN} from '../../../../constants/command_base_cd';
+import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
+import {COMMAND_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
 import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
 import {updateReminderChannel} from '../../../../utils/reminderChannel';
 import {countUserStats} from '../../../../models/user-stats/user-stats.service';

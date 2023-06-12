@@ -1,4 +1,4 @@
-import {RPG_COMMAND_TYPE} from '../../constants/rpg';
+import {RPG_COMMAND_TYPE} from '../../constants/epic_rpg/rpg';
 import {User} from 'discord.js';
 import {getUserAccount} from '../../models/user/user.service';
 

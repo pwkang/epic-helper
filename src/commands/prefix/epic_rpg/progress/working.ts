@@ -1,5 +1,5 @@
 import {COMMAND_TYPE} from '../../../../constants/bot';
-import {RPG_WORKING_TYPE} from '../../../../constants/rpg';
+import {RPG_WORKING_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {rpgWorking} from '../../../../lib/epic_rpg/commands/progress/working';
 
 export default <PrefixCommand>{
