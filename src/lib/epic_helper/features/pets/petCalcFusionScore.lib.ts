@@ -1,13 +1,13 @@
 import {EmbedBuilder, EmbedField, User} from 'discord.js';
 import {getUserPets} from '../../../../models/user-pet/user-pet.service';
-import {convertPetIdToNum} from '../../../../utils/epic_rpg/pet/petIdConversion';
+import {convertPetIdToNum} from '../../../epic_rpg/pets/petIdConversion';
 import {IUserPet} from '../../../../models/user-pet/user-pet.type';
 import {
   RPG_PET_SKILL,
   RPG_PET_SKILL_TIER,
   RPG_PET_SKILL_TIER_REVERSE,
 } from '../../../../constants/epic_rpg/pet';
-import {generateEmbedPetFields} from './petListEmbed.lib';
+import {generateEmbedPetFields} from './petList.lib';
 import {BOT_COLOR} from '../../../../constants/epic_helper/general';
 import {BOT_EMOJI} from '../../../../constants/epic_helper/bot_emojis';
 

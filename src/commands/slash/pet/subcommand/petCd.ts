@@ -1,11 +1,8 @@
 import {IPetSubcommand} from '../pet.type';
 import {ButtonStyle} from 'discord.js';
 import {calcTotalPets} from '../../../../models/user-pet/user-pet.service';
-import {itemListingHelper} from '../../../../lib/epic_helper/itemListingHelper';
-import {
-  paginatePetCd,
-  PET_CD_PET_PAGE,
-} from '../../../../lib/epic_helper/features/pets/petCdEmbed.lib';
+import {itemListingHelper} from '../../../../utils/itemListingHelper';
+import {paginatePetCd, PET_CD_PET_PAGE} from '../../../../lib/epic_helper/features/pets/petCd.lib';
 
 export default async function petCd({client, interaction}: IPetSubcommand) {
   const totalPets = await calcTotalPets({

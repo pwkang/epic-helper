@@ -1,9 +1,8 @@
 import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
-import {getUserSettingsEmbed} from '../../../../lib/embeds/getUserSettingsEmbed';
 import {getUserAccount} from '../../../../models/user/user.service';
 import {ActionRowBuilder, StringSelectMenuBuilder} from 'discord.js';
 import sendInteractiveMessage from '../../../../lib/discord.js/message/sendInteractiveMessage';
-import {getUserReminderChannelEmbed} from '../../../../lib/embeds/getUserReminderChannelEmbed';
+import embedsList from '../../../../lib/epic_helper/embeds';
 
 export default <PrefixCommand>{
   name: 'settings',
@@ -12,12 +11,12 @@ export default <PrefixCommand>{
   execute: async (client, message) => {
     const userProfile = await getUserAccount(message.author.id);
     if (!userProfile) return;
-    const userSettingsEmbed = getUserSettingsEmbed({
+    const userSettingsEmbed = embedsList.userSettings({
       client,
       author: message.author,
       userProfile,
     });
-    const userReminderChannelEmbed = getUserReminderChannelEmbed({
+    const userReminderChannelEmbed = embedsList.reminderChannel({
       userProfile,
       author: message.author,
     });

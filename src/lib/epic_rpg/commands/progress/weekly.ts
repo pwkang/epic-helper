@@ -4,10 +4,10 @@ import {
   updateUserCooldown,
 } from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
-import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
+import {calcCdReduction} from '../../../epic_helper/reminders/commandsCooldown';
 import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
-import {updateReminderChannel} from '../../../../utils/reminderChannel';
+import {updateReminderChannel} from '../../../epic_helper/reminders/reminderChannel';
 
 const WEEKLY_COOLDOWN = ms('1w') - ms('10m');
 
@@ -54,7 +54,7 @@ interface IRpgWeeklySuccess {
 }
 
 export default async function rpgWeeklySuccess({author, channelId}: IRpgWeeklySuccess) {
-  const cooldown = await calcReducedCd({
+  const cooldown = await calcCdReduction({
     userId: author.id,
     commandType: RPG_COMMAND_TYPE.weekly,
     cooldown: WEEKLY_COOLDOWN,

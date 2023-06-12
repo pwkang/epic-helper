@@ -5,7 +5,7 @@ import {
   getUserPets,
   updateUserPet,
 } from '../../../../models/user-pet/user-pet.service';
-import {convertNumToPetId, convertPetIdToNum} from '../../../../utils/epic_rpg/pet/petIdConversion';
+import {convertNumToPetId, convertPetIdToNum} from '../../pets/petIdConversion';
 import {IUserPet} from '../../../../models/user-pet/user-pet.type';
 import {RPG_PET_STATUS, RPG_PET_TYPE} from '../../../../constants/epic_rpg/pet';
 import ms from 'ms';

@@ -5,11 +5,11 @@ import {
   updateUserCooldown,
 } from '../../../../models/user-reminder/user-reminder.service';
 import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
-import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
+import {calcCdReduction} from '../../../epic_helper/reminders/commandsCooldown';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
 import {updateUserRubyAmount} from '../../../../models/user/user.service';
 import replyMessage from '../../../discord.js/message/replyMessage';
-import {updateReminderChannel} from '../../../../utils/reminderChannel';
+import {updateReminderChannel} from '../../../epic_helper/reminders/reminderChannel';
 import {countUserStats} from '../../../../models/user-stats/user-stats.service';
 import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
 
@@ -114,7 +114,7 @@ export default async function rpgWorkingSuccess({
   workingType,
   channelId,
 }: IRpgWorkingSuccess) {
-  const cooldown = await calcReducedCd({
+  const cooldown = await calcCdReduction({
     userId: author.id,
     commandType: RPG_COMMAND_TYPE.working,
     cooldown: WORKING_COOLDOWN,

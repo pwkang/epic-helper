@@ -5,7 +5,7 @@ import {
   getCalcMaterialMessage,
   getInvalidCalcArgsMessage,
   isCalcMaterial,
-} from '../../../../lib/epic_helper/features/calculator/calcMats';
+} from '../../../../lib/epic_helper/features/calculator/materialCalculator';
 import sendMessage from '../../../../lib/discord.js/message/sendMessage';
 import replyMessage from '../../../../lib/discord.js/message/replyMessage';
 import {isUserInventory} from '../../../../lib/epic_rpg/commands/account/inventory';
@@ -13,7 +13,7 @@ import {
   getCalcInfo,
   getCalcSTTMessage,
   isCalcSTT,
-} from '../../../../lib/epic_helper/features/calculator/calcSTT';
+} from '../../../../lib/epic_helper/features/calculator/sttScoreCalculator';
 
 export default <PrefixCommand>{
   name: 'matsCalc',

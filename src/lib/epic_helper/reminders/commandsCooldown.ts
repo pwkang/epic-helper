@@ -1,6 +1,11 @@
-import {RPG_COMMAND_TYPE} from '../../constants/epic_rpg/rpg';
+import {
+  RPG_COMMAND_TYPE,
+  RPG_DONOR_CD_REDUCTION,
+  RPG_DONOR_TIER,
+} from '../../../constants/epic_rpg/rpg';
 import {User} from 'discord.js';
-import {getUserAccount} from '../../models/user/user.service';
+import {getUserAccount} from '../../../models/user/user.service';
+import {BOT_REMINDER_BASE_COOLDOWN} from '../../../constants/epic_helper/command_base_cd';
 
 interface IGetCdReduction {
   commandType: ValuesOf<Omit<typeof RPG_COMMAND_TYPE, 'pet'>>;
@@ -33,7 +38,7 @@ const canReducedByDonor = {
   use: false,
 };
 
-export const calcReducedCd = async ({commandType, userId, cooldown}: IGetCdReduction) => {
+export const calcCdReduction = async ({commandType, userId, cooldown}: IGetCdReduction) => {
   const userAccount = await getUserAccount(userId);
   if (!userAccount) return cooldown;
   const donor = userAccount.config.donor;
@@ -49,4 +54,19 @@ export const calcReducedCd = async ({commandType, userId, cooldown}: IGetCdReduc
   }
 
   return cooldown;
+};
+
+interface ICalcDonorPExtraHuntCd {
+  donor: ValuesOf<typeof RPG_DONOR_TIER>;
+  donorP: ValuesOf<typeof RPG_DONOR_TIER> | null;
+}
+
+export const calcExtraHuntCdWithPartner = ({donorP, donor}: ICalcDonorPExtraHuntCd) => {
+  if (!donorP) return 0;
+
+  const extraDuration =
+    BOT_REMINDER_BASE_COOLDOWN.hunt * RPG_DONOR_CD_REDUCTION[donorP] -
+    BOT_REMINDER_BASE_COOLDOWN.hunt * RPG_DONOR_CD_REDUCTION[donor];
+
+  return extraDuration < 0 ? 0 : extraDuration;
 };

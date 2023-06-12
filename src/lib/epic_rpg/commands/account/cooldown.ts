@@ -7,8 +7,8 @@ import {
 import ms from 'ms';
 import {getUserAccount} from '../../../../models/user/user.service';
 import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
-import {calcDonorPExtraHuntCd} from '../../../epic_helper/reminder/calcHuntCdWithDonorP';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
+import {calcExtraHuntCdWithPartner} from '../../../epic_helper/reminders/commandsCooldown';
 
 const isReady = (str: string) => str.includes(':white_check_mark:');
 
@@ -93,8 +93,7 @@ export default async function rpgCooldownSuccess({author, embed}: IRpgCooldownSu
     } else {
       let readyIn = extractAndCalculateReadyAt(row);
       if (commandType === RPG_COMMAND_TYPE.hunt && userProfile.config.donorP) {
-        const extraDuration = calcDonorPExtraHuntCd({
-          baseCd: readyIn,
+        const extraDuration = calcExtraHuntCdWithPartner({
           donorP: userProfile.config.donorP,
           donor: userProfile.config.donor,
         });

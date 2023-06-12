@@ -15,6 +15,8 @@ export const BOT_EMOJI = {
     sub: '<:sub:1108797568013578280>',
     off: '<:off:1108797571343843349>',
     on: '<:on:1108797573432614922>',
+    ready: '<:on:863824531445121034>',
+    notReady: '🕓',
   },
   halloween: {
     pumpkin: '<:pumpkin:1108800482169851904>',

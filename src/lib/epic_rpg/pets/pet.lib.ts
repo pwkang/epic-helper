@@ -1,5 +1,5 @@
 import {Embed, User} from 'discord.js';
-import {readPets} from '../../../utils/epic_rpg/pet/readPets';
+import {readPets} from './readPets';
 import {
   createUserPet,
   deleteExtraPets,

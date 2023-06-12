@@ -5,9 +5,9 @@ import {
 } from '../../../../models/user-reminder/user-reminder.service';
 import {RPG_COMMAND_TYPE, RPG_FARM_SEED} from '../../../../constants/epic_rpg/rpg';
 import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
-import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
+import {calcCdReduction} from '../../../epic_helper/reminders/commandsCooldown';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
-import {updateReminderChannel} from '../../../../utils/reminderChannel';
+import {updateReminderChannel} from '../../../epic_helper/reminders/reminderChannel';
 import {countUserStats} from '../../../../models/user-stats/user-stats.service';
 import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
 
@@ -63,7 +63,7 @@ interface IRpgFarmSuccess {
 
 export default async function rpgFarmSuccess({content, author, channelId}: IRpgFarmSuccess) {
   const seedType = whatIsTheSeed(content);
-  const cooldown = await calcReducedCd({
+  const cooldown = await calcCdReduction({
     userId: author.id,
     commandType: RPG_COMMAND_TYPE.farm,
     cooldown: FARM_COOLDOWN,

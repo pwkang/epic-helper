@@ -1,16 +1,16 @@
 import {Client, Embed, Message, User} from 'discord.js';
-import scanInventory from '../../../../utils/epic_rpg/inventory/scanInventory';
+import scanInventory from '../../inventory/scanInventory';
 import {updateUserRubyAmount} from '../../../../models/user/user.service';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
 import {
   getCalcMaterialMessage,
   isCalcMaterial,
-} from '../../../epic_helper/features/calculator/calcMats';
+} from '../../../epic_helper/features/calculator/materialCalculator';
 import {
   getCalcInfo,
   getCalcSTTMessage,
   isCalcSTT,
-} from '../../../epic_helper/features/calculator/calcSTT';
+} from '../../../epic_helper/features/calculator/sttScoreCalculator';
 import sendMessage from '../../../discord.js/message/sendMessage';
 
 interface IRpg {

@@ -61,6 +61,7 @@ export default <SlashCommand>{
               client,
               interaction,
             });
+            break;
           case 'reminder-channel':
             setReminderChannelSlash({
               client,
@@ -68,7 +69,6 @@ export default <SlashCommand>{
             });
             break;
         }
-        break;
     }
   },
 };

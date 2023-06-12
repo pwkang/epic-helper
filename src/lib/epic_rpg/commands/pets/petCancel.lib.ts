@@ -4,7 +4,7 @@ import {
   getAdventureEpicPets,
   getUserPets,
 } from '../../../../models/user-pet/user-pet.service';
-import {convertNumToPetId, convertPetIdToNum} from '../../../../utils/epic_rpg/pet/petIdConversion';
+import {convertNumToPetId, convertPetIdToNum} from '../../pets/petIdConversion';
 import {RPG_PET_STATUS} from '../../../../constants/epic_rpg/pet';
 import {IUserPet} from '../../../../models/user-pet/user-pet.type';
 
@@ -19,7 +19,6 @@ export const rpgPetAdvCancel = async ({
   author,
   selectedPets,
   amountOfPetCancelled,
-  message,
 }: IRpgPetAdvCancel): Promise<BaseMessageOptions> => {
   const petsToCancel = await fetchPetsToCancel({
     userId: author.id,

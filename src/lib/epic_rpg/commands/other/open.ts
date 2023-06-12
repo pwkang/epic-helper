@@ -1,5 +1,5 @@
 import {Client, Embed, Message, User} from 'discord.js';
-import scanLootbox from '../../../../utils/epic_rpg/scanLootbox';
+import scanLootbox from '../../scanLootbox';
 import {updateUserRubyAmount} from '../../../../models/user/user.service';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
 

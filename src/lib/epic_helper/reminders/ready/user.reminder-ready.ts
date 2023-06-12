@@ -2,14 +2,14 @@ import {Client} from 'discord.js';
 import {
   deleteUserCooldowns,
   findUserReadyCommands,
-} from '../../../models/user-reminder/user-reminder.service';
-import {getUserAccount} from '../../../models/user/user.service';
-import sendMessage from '../../discord.js/message/sendMessage';
-import {getCommandStr} from '../../epic_rpg/reminders/reminders-command-name';
+} from '../../../../models/user-reminder/user-reminder.service';
+import {getUserAccount} from '../../../../models/user/user.service';
+import sendMessage from '../../../discord.js/message/sendMessage';
+import {getCommandStr} from '../../../epic_rpg/reminders/reminders-command-name';
 import ms from 'ms';
-import {RPG_COMMAND_TYPE} from '../../../constants/epic_rpg/rpg';
-import {userPetReminderTimesUp} from './user-pet.reminder';
-import {getReminderChannel} from '../../../utils/reminderChannel';
+import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
+import {userPetReminderTimesUp} from './user-pet.reminder-ready';
+import {getReminderChannel} from '../reminderChannel';
 
 export const userReminderTimesUp = async (client: Client, userId: string) => {
   const user = await getUserAccount(userId);

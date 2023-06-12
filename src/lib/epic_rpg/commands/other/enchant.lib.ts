@@ -5,7 +5,7 @@ import {muteUser} from '../../../discord.js/channel/muteUser.lib';
 import ms from 'ms';
 import {EPIC_RPG_ID} from '../../../../constants/bot';
 import sendMessage from '../../../discord.js/message/sendMessage';
-import dynamicTimeStamp from '../../../../utils/discord/dynamicTimestamp';
+import dynamicTimeStamp from '../../../discord.js/dynamicTimestamp';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
 
 const ENCHANT_CMD_TYPE = {

@@ -1,11 +1,11 @@
 import {IUserPet} from '../../../../models/user-pet/user-pet.type';
 import {EmbedBuilder, EmbedField, User} from 'discord.js';
 import {BOT_COLOR} from '../../../../constants/epic_helper/general';
-import {convertNumToPetId} from '../../../../utils/epic_rpg/pet/petIdConversion';
+import {convertNumToPetId} from '../../../epic_rpg/pets/petIdConversion';
 import {BOT_EMOJI} from '../../../../constants/epic_helper/bot_emojis';
 import {convertNumberToRoman} from '../../../../utils/romanConversion';
 import {RPG_PET_STATUS, RPG_PET_TYPE} from '../../../../constants/epic_rpg/pet';
-import dynamicTimeStamp from '../../../../utils/discord/dynamicTimestamp';
+import dynamicTimeStamp from '../../../discord.js/dynamicTimestamp';
 import {getUserPets} from '../../../../models/user-pet/user-pet.service';
 
 export const PET_CD_PET_PAGE = 21;

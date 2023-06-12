@@ -1,5 +1,5 @@
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle, User} from 'discord.js';
-import {getUserRubyAmount} from '../../models/user/user.service';
+import {getUserRubyAmount} from '../../../models/user/user.service';
 
 type TAnswerType = string | number | boolean;
 

@@ -1,9 +1,9 @@
 import {Embed, EmbedBuilder, EmbedField, MessageCreateOptions, User} from 'discord.js';
 import {RpgArea} from '../../../../types/rpg.types';
-import scanInventory from '../../../../utils/epic_rpg/inventory/scanInventory';
-import {startTrading} from '../../../../utils/epic_rpg/inventory/tradeMaterials';
+import scanInventory from '../../../epic_rpg/inventory/scanInventory';
+import {startTrading} from '../../../epic_rpg/inventory/tradeMaterials';
 import {RPG_STT_SCORE} from '../../../../constants/epic_rpg/rpg';
-import {dismantleRecommend} from '../../../../utils/epic_rpg/inventory/dismantleMaterals';
+import {dismantleRecommend} from '../../../epic_rpg/inventory/dismantleMaterals';
 import {BOT_COLOR} from '../../../../constants/epic_helper/general';
 import {BOT_EMOJI} from '../../../../constants/epic_helper/bot_emojis';
 
@@ -83,8 +83,6 @@ const buildCalcSTTEmbed = ({items, author, total}: IBuildCalcSTTEmbed) => {
     .setFooter({
       text: 'Feel free to report to support server if you have more accurate value,',
     });
-
-  console.log(groupItems);
 
   const fields: EmbedField[] = [];
   for (const {label, items: itemList} of groupItems) {

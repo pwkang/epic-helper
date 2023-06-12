@@ -4,10 +4,10 @@ import {
   updateUserCooldown,
 } from '../../../../models/user-reminder/user-reminder.service';
 import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
-import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
+import {calcCdReduction} from '../../../epic_helper/reminders/commandsCooldown';
 import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
-import {updateReminderChannel} from '../../../../utils/reminderChannel';
+import {updateReminderChannel} from '../../../epic_helper/reminders/reminderChannel';
 
 const DAILY_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.daily;
 
@@ -58,7 +58,7 @@ interface IRpgDailySuccess {
 }
 
 export default async function rpgDailySuccess({author, channelId}: IRpgDailySuccess) {
-  const cooldown = await calcReducedCd({
+  const cooldown = await calcCdReduction({
     userId: author.id,
     commandType: RPG_COMMAND_TYPE.daily,
     cooldown: DAILY_COOLDOWN,

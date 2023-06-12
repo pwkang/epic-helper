@@ -1,7 +1,7 @@
-import {IUser} from '../../models/user/user.type';
+import {IUser} from '../../../models/user/user.type';
 import {EmbedBuilder, User} from 'discord.js';
-import {BOT_COLOR} from '../../constants/epic_helper/general';
-import {RPG_COMMAND_TYPE} from '../../constants/epic_rpg/rpg';
+import {BOT_COLOR} from '../../../constants/epic_helper/general';
+import {RPG_COMMAND_TYPE} from '../../../constants/epic_rpg/rpg';
 
 interface IGetUserReminderChannelEmbed {
   userProfile: IUser;
@@ -106,10 +106,7 @@ const cmd: ICooldown[] = [
   },
 ];
 
-export const getUserReminderChannelEmbed = ({
-  userProfile,
-  author,
-}: IGetUserReminderChannelEmbed) => {
+const getUserReminderChannelEmbed = ({userProfile, author}: IGetUserReminderChannelEmbed) => {
   const embed = new EmbedBuilder()
     .setAuthor({
       name: `${author.username}'s reminder channel`,
@@ -142,3 +139,5 @@ export const getUserReminderChannelEmbed = ({
   });
   return embed;
 };
+
+export default getUserReminderChannelEmbed;

@@ -8,7 +8,7 @@ import {
 } from '../../../../lib/epic_rpg/commands/pets/petAdventure.lib';
 import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
 import sendInteractiveMessage from '../../../../lib/discord.js/message/sendInteractiveMessage';
-import dynamicTimeStamp from '../../../../utils/discord/dynamicTimestamp';
+import dynamicTimeStamp from '../../../../lib/discord.js/dynamicTimestamp';
 import ms from 'ms';
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Message, User} from 'discord.js';
 import updateInteraction from '../../../../lib/discord.js/interaction/updateInteraction';

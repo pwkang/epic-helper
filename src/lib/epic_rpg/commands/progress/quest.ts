@@ -4,10 +4,10 @@ import {
   updateUserCooldown,
 } from '../../../../models/user-reminder/user-reminder.service';
 import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
-import {calcReducedCd} from '../../../../utils/epic_rpg/calcReducedCd';
+import {calcCdReduction} from '../../../epic_helper/reminders/commandsCooldown';
 import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {createRpgCommandListener} from '../../createRpgCommandListener';
-import {updateReminderChannel} from '../../../../utils/reminderChannel';
+import {updateReminderChannel} from '../../../epic_helper/reminders/reminderChannel';
 import {countUserStats} from '../../../../models/user-stats/user-stats.service';
 import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
 
@@ -83,7 +83,7 @@ export default async function rpgQuestSuccess({
   questAccepted,
   channelId,
 }: IRpgQuestSuccess) {
-  const cooldown = await calcReducedCd({
+  const cooldown = await calcCdReduction({
     userId: author.id,
     commandType: RPG_COMMAND_TYPE.quest,
     cooldown: questAccepted ? QUEST_COOLDOWN : DECLINED_QUEST_COOLDOWN,

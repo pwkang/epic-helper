@@ -5,11 +5,11 @@ import {
   EmbedBuilder,
   Message,
 } from 'discord.js';
-import {generateNavigationRow} from '../../utils/paginationRow';
-import sendInteractiveMessage from '../discord.js/message/sendInteractiveMessage';
-import replyInteraction from '../discord.js/interaction/replyInteraction';
-import sendMessage from '../discord.js/message/sendMessage';
-import {sleep} from '../../utils/sleep';
+import {generateNavigationRow} from './paginationRow';
+import sendInteractiveMessage from '../lib/discord.js/message/sendInteractiveMessage';
+import replyInteraction from '../lib/discord.js/interaction/replyInteraction';
+import sendMessage from '../lib/discord.js/message/sendMessage';
+import {sleep} from './sleep';
 
 type TActionType =
   | {message: Message; interaction?: never}

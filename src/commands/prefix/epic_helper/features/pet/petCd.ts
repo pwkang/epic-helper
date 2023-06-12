@@ -3,8 +3,8 @@ import {calcTotalPets} from '../../../../../models/user-pet/user-pet.service';
 import {
   paginatePetCd,
   PET_CD_PET_PAGE,
-} from '../../../../../lib/epic_helper/features/pets/petCdEmbed.lib';
-import {itemListingHelper} from '../../../../../lib/epic_helper/itemListingHelper';
+} from '../../../../../lib/epic_helper/features/pets/petCd.lib';
+import {itemListingHelper} from '../../../../../utils/itemListingHelper';
 
 export default <PrefixCommand>{
   name: 'petCd',

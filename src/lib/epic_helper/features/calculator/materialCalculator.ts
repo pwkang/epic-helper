@@ -1,10 +1,10 @@
 import {Embed, EmbedBuilder, MessageCreateOptions, User} from 'discord.js';
 import {BOT_COLOR} from '../../../../constants/epic_helper/general';
 import {RPG_CLICKABLE_SLASH_COMMANDS} from '../../../../constants/epic_rpg/clickable_slash';
-import scanInventory from '../../../../utils/epic_rpg/inventory/scanInventory';
+import scanInventory from '../../../epic_rpg/inventory/scanInventory';
 import {RpgArea} from '../../../../types/rpg.types';
 import {BOT_EMOJI} from '../../../../constants/epic_helper/bot_emojis';
-import {startTrading} from '../../../../utils/epic_rpg/inventory/tradeMaterials';
+import {startTrading} from '../../../epic_rpg/inventory/tradeMaterials';
 import {PREFIX} from '../../../../constants/bot';
 
 interface ICalcOptions {
