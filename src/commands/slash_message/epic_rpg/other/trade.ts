@@ -1,15 +1,15 @@
 import {SLASH_MESSAGE_BOT_TYPE} from '../../../../constants/bot';
-import {rpgWeekly} from '../../../../lib/epic_rpg/commands/progress/weekly';
+import {rpgTrade} from '../../../../lib/epic_rpg/commands/other/trade';
 
-export default <SlashCommandOtherBot>{
-  name: 'rpgWeekly',
+export default <SlashMessage>{
+  name: 'rpgTrade',
   bot: SLASH_MESSAGE_BOT_TYPE.rpg,
-  commandName: ['weekly'],
+  commandName: ['trade items'],
   execute: async (client, message, author) => {
-    rpgWeekly({
+    rpgTrade({
+      client,
       author,
       message,
-      client,
       isSlashCommand: true,
     });
   },

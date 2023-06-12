@@ -1,15 +1,15 @@
 import {SLASH_MESSAGE_BOT_TYPE} from '../../../../constants/bot';
-import {rpgOpenLootbox} from '../../../../lib/epic_rpg/commands/other/open';
+import {rpgWeekly} from '../../../../lib/epic_rpg/commands/progress/weekly';
 
-export default <SlashCommandOtherBot>{
-  name: 'rpgOpenLootbox',
+export default <SlashMessage>{
+  name: 'rpgWeekly',
   bot: SLASH_MESSAGE_BOT_TYPE.rpg,
-  commandName: ['open'],
+  commandName: ['weekly'],
   execute: async (client, message, author) => {
-    rpgOpenLootbox({
-      client,
+    rpgWeekly({
       author,
       message,
+      client,
       isSlashCommand: true,
     });
   },

@@ -6,9 +6,9 @@ export default <BotEvent>{
   once: false,
   execute: async (client, message: Message) => {
     if (isBotSlashCommand(message) && isNotDeferred(message)) {
-      const commands = searchOtherBotSlashCommands(client, message);
-      if (!commands.size) return;
-      commands.forEach((cmd) => cmd.execute(client, message, message.interaction?.user!));
+      const messages = searchSlashMessages(client, message);
+      if (!messages.size) return;
+      messages.forEach((cmd) => cmd.execute(client, message, message.interaction?.user!));
     }
 
     if (isSentByUser(message)) {
@@ -19,8 +19,8 @@ export default <BotEvent>{
   },
 };
 
-const searchOtherBotSlashCommands = (client: Client, message: Message) =>
-  client.slashCommandsOtherBot.filter((cmd) =>
+const searchSlashMessages = (client: Client, message: Message) =>
+  client.slashMessages.filter((cmd) =>
     cmd.commandName.some(
       (name) => name.toLowerCase() === message.interaction?.commandName?.toLowerCase()
     )

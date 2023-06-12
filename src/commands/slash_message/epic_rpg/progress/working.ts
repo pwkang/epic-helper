@@ -2,7 +2,7 @@ import {SLASH_MESSAGE_BOT_TYPE} from '../../../../constants/bot';
 import {RPG_WORKING_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {rpgWorking} from '../../../../lib/epic_rpg/commands/progress/working';
 
-export default <SlashCommandOtherBot>{
+export default <SlashMessage>{
   name: 'rpgWorking',
   bot: SLASH_MESSAGE_BOT_TYPE.rpg,
   commandName: Object.values(RPG_WORKING_TYPE),

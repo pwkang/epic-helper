@@ -1,15 +1,15 @@
 import {SLASH_MESSAGE_BOT_TYPE} from '../../../../constants/bot';
-import {rpgTraining} from '../../../../lib/epic_rpg/commands/progress/training';
+import {rpgInventory} from '../../../../lib/epic_rpg/commands/account/inventory';
 
-export default <SlashCommandOtherBot>{
-  name: 'rpgTraining',
+export default <SlashMessage>{
+  name: 'rpgInventory',
   bot: SLASH_MESSAGE_BOT_TYPE.rpg,
-  commandName: ['training'],
+  commandName: ['inventory'],
   execute: async (client, message, author) => {
-    rpgTraining({
+    rpgInventory({
+      client,
       author,
       message,
-      client,
       isSlashCommand: true,
     });
   },

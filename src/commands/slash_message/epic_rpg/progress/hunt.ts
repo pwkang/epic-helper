@@ -1,15 +1,15 @@
 import {SLASH_MESSAGE_BOT_TYPE} from '../../../../constants/bot';
-import {rpgCraft} from '../../../../lib/epic_rpg/commands/other/craft';
+import {rpgHunt} from '../../../../lib/epic_rpg/commands/progress/hunt';
 
-export default <SlashCommandOtherBot>{
-  name: 'rpgCraft',
+export default <SlashMessage>{
+  name: 'rpgHunt',
   bot: SLASH_MESSAGE_BOT_TYPE.rpg,
-  commandName: ['craft'],
+  commandName: ['hunt'],
   execute: async (client, message, author) => {
-    rpgCraft({
-      client,
+    rpgHunt({
       author,
       message,
+      client,
       isSlashCommand: true,
     });
   },

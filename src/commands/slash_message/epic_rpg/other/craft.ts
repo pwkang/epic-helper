@@ -1,12 +1,12 @@
 import {SLASH_MESSAGE_BOT_TYPE} from '../../../../constants/bot';
-import {rpgEnchant} from '../../../../lib/epic_rpg/commands/other/enchant.lib';
+import {rpgCraft} from '../../../../lib/epic_rpg/commands/other/craft';
 
-export default <SlashCommandOtherBot>{
-  name: 'rpgEnchant',
+export default <SlashMessage>{
+  name: 'rpgCraft',
   bot: SLASH_MESSAGE_BOT_TYPE.rpg,
-  commandName: ['enchant', 'refine', 'transmute', 'transcend'],
+  commandName: ['craft'],
   execute: async (client, message, author) => {
-    rpgEnchant({
+    rpgCraft({
       client,
       author,
       message,

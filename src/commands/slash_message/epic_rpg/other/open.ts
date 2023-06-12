@@ -1,15 +1,15 @@
 import {SLASH_MESSAGE_BOT_TYPE} from '../../../../constants/bot';
-import {rpgUltraining} from '../../../../lib/epic_rpg/commands/progress/ultraining';
+import {rpgOpenLootbox} from '../../../../lib/epic_rpg/commands/other/open';
 
-export default <SlashCommandOtherBot>{
-  name: 'rpgUltraining',
+export default <SlashMessage>{
+  name: 'rpgOpenLootbox',
   bot: SLASH_MESSAGE_BOT_TYPE.rpg,
-  commandName: ['ultraining start'],
+  commandName: ['open'],
   execute: async (client, message, author) => {
-    rpgUltraining({
+    rpgOpenLootbox({
+      client,
       author,
       message,
-      client,
       isSlashCommand: true,
     });
   },

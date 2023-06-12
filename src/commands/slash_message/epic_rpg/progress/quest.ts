@@ -1,15 +1,15 @@
 import {SLASH_MESSAGE_BOT_TYPE} from '../../../../constants/bot';
-import {rpgForge} from '../../../../lib/epic_rpg/commands/other/forge';
+import {rpgQuest} from '../../../../lib/epic_rpg/commands/progress/quest';
 
-export default <SlashCommandOtherBot>{
-  name: 'rpgForge',
+export default <SlashMessage>{
+  name: 'rpgQuest',
   bot: SLASH_MESSAGE_BOT_TYPE.rpg,
-  commandName: ['forge'],
+  commandName: ['quest start'],
   execute: async (client, message, author) => {
-    rpgForge({
-      client,
+    rpgQuest({
       author,
       message,
+      client,
       isSlashCommand: true,
     });
   },

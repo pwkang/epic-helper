@@ -1,12 +1,12 @@
 import {SLASH_MESSAGE_BOT_TYPE} from '../../../../constants/bot';
-import {rpgEpicQuest} from '../../../../lib/epic_rpg/commands/progress/epicQuest';
+import {rpgTraining} from '../../../../lib/epic_rpg/commands/progress/training';
 
-export default <SlashCommandOtherBot>{
-  name: 'rpgEpicQuest',
+export default <SlashMessage>{
+  name: 'rpgTraining',
   bot: SLASH_MESSAGE_BOT_TYPE.rpg,
-  commandName: ['epic quest'],
+  commandName: ['training'],
   execute: async (client, message, author) => {
-    rpgEpicQuest({
+    rpgTraining({
       author,
       message,
       client,

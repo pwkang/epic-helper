@@ -1,12 +1,12 @@
 import {SLASH_MESSAGE_BOT_TYPE} from '../../../../constants/bot';
-import {rpgFarm} from '../../../../lib/epic_rpg/commands/progress/farm';
+import {rpgUltraining} from '../../../../lib/epic_rpg/commands/progress/ultraining';
 
-export default <SlashCommandOtherBot>{
-  name: 'rpgFarm',
+export default <SlashMessage>{
+  name: 'rpgUltraining',
   bot: SLASH_MESSAGE_BOT_TYPE.rpg,
-  commandName: ['farm'],
+  commandName: ['ultraining start'],
   execute: async (client, message, author) => {
-    rpgFarm({
+    rpgUltraining({
       author,
       message,
       client,

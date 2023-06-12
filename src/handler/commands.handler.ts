@@ -38,7 +38,7 @@ function loadSlashCommands(client: Client) {
   });
 }
 
-function loadOtherBotSlashCommands(client: Client) {
+function loadSlashMessages(client: Client) {
   return new Promise((resolve) => {
     readdirp(`./${handlerRoot}/commands/slash_other_bot`, {
       fileFilter: [handlerFileFilter],
@@ -48,7 +48,7 @@ function loadOtherBotSlashCommands(client: Client) {
         const file = await import(fullPath);
         const command = file.default.default;
         if (!command || !('name' in command)) return;
-        client.slashCommandsOtherBot.set(command.name, command);
+        client.slashMessages.set(command.name, command);
       })
       .on('end', () => {
         resolve({});
@@ -60,6 +60,6 @@ export default function loadCommands(client: Client) {
   return Promise.all([
     loadPrefixCommands(client),
     loadSlashCommands(client),
-    loadOtherBotSlashCommands(client),
+    loadSlashMessages(client),
   ]);
 }

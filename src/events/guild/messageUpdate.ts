@@ -6,9 +6,9 @@ export default <BotEvent>{
   eventName: Events.MessageUpdate,
   execute: async (client, oldMessage: Message, newMessage: Message) => {
     if (isBotSlashCommand(newMessage) && isFirstUpdateAfterDeferred(oldMessage)) {
-      const commands = searchOtherBotSlashCommands(client, newMessage);
-      if (!commands.size) return;
-      commands.forEach((cmd) => cmd.execute(client, newMessage, newMessage.interaction?.user!));
+      const messages = searchSlashMessages(client, newMessage);
+      if (!messages.size) return;
+      messages.forEach((cmd) => cmd.execute(client, newMessage, newMessage.interaction?.user!));
     }
 
     const ownerId = await redisGetRpgMessageOwner({
@@ -33,8 +33,8 @@ const isBotSlashCommand = (message: Message) => message.interaction && message.a
 const isFirstUpdateAfterDeferred = (oldMessage: Message) =>
   oldMessage.content === '' && oldMessage.embeds.length === 0;
 
-const searchOtherBotSlashCommands = (client: Client, message: Message) =>
-  client.slashCommandsOtherBot.filter((cmd) =>
+const searchSlashMessages = (client: Client, message: Message) =>
+  client.slashMessages.filter((cmd) =>
     cmd.commandName.some(
       (name) => name.toLowerCase() === message.interaction?.commandName?.toLowerCase()
     )

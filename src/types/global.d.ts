@@ -21,7 +21,7 @@ declare global {
     builder: SlashCommandBuilder;
   }
 
-  interface SlashCommandOtherBot {
+  interface SlashMessage {
     name: string;
     commandName: string[];
     bot: ValuesOf<typeof SLASH_MESSAGE_BOT_TYPE>;

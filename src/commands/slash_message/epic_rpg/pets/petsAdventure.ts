@@ -21,7 +21,7 @@ import {
   rpgPetAdvCancel,
 } from '../../../../lib/epic_rpg/commands/pets/petCancel.lib';
 
-export default <SlashCommandOtherBot>{
+export default <SlashMessage>{
   name: 'petsAdventure',
   bot: SLASH_MESSAGE_BOT_TYPE.rpg,
   commandName: ['pets adventure'],

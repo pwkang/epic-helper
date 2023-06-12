@@ -1,12 +1,12 @@
 import {SLASH_MESSAGE_BOT_TYPE} from '../../../../constants/bot';
-import {rpgTrade} from '../../../../lib/epic_rpg/commands/other/trade';
+import {rpgForge} from '../../../../lib/epic_rpg/commands/other/forge';
 
-export default <SlashCommandOtherBot>{
-  name: 'rpgTrade',
+export default <SlashMessage>{
+  name: 'rpgForge',
   bot: SLASH_MESSAGE_BOT_TYPE.rpg,
-  commandName: ['trade items'],
+  commandName: ['forge'],
   execute: async (client, message, author) => {
-    rpgTrade({
+    rpgForge({
       client,
       author,
       message,

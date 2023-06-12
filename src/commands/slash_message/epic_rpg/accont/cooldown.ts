@@ -2,7 +2,7 @@ import {SLASH_MESSAGE_BOT_TYPE} from '../../../../constants/bot';
 import {rpgCooldown} from '../../../../lib/epic_rpg/commands/account/cooldown';
 import {updateReminderChannel} from '../../../../utils/reminderChannel';
 
-export default <SlashCommandOtherBot>{
+export default <SlashMessage>{
   name: 'rpgCooldown',
   bot: SLASH_MESSAGE_BOT_TYPE.rpg,
   commandName: ['cd'],
