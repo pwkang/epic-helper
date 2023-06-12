@@ -1,8 +1,8 @@
 import {Client, Embed, Message, MessageCollector, TextChannel, User} from 'discord.js';
-import {EPIC_RPG_ID} from '../../constants/bot';
-import {TypedEventEmitter} from '../../utils/TypedEventEmitter';
+import {EPIC_RPG_ID} from '../constants/bot';
+import {TypedEventEmitter} from './TypedEventEmitter';
 import ms from 'ms';
-import {sleep} from '../../utils/sleep';
+import {sleep} from './sleep';
 
 interface IRpgCommandListener {
   client: Client;

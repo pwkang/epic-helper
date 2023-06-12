@@ -1,5 +1,5 @@
 import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
-import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
+import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import {
   amountOfPetsSentToAdventure,
   isFailToSendPetsToAdventure,

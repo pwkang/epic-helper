@@ -1,6 +1,6 @@
-import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
+import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
-import {isRpgPet, rpgPet} from '../../../../lib/epic_rpg/pets/pet.lib';
+import {isRpgPet, rpgPetList} from '../../../../lib/epic_rpg/commands/pets/petList.lib';
 import {redisSetRpgMessageOwner} from '../../../../services/redis/rpg-message-owner.redis';
 
 export default <PrefixCommand>{
@@ -22,7 +22,7 @@ export default <PrefixCommand>{
           messageId: collected.id,
           userId: message.author.id,
         });
-        await rpgPet({
+        await rpgPetList({
           embed,
           author: message.author,
         });

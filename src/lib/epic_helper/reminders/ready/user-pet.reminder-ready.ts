@@ -1,6 +1,6 @@
 import {Client} from 'discord.js';
 import {getUserReadyPets, updateRemindedPets} from '../../../../models/user-pet/user-pet.service';
-import {convertNumToPetId} from '../../../epic_rpg/pets/petIdConversion';
+import {convertNumToPetId} from '../../../../utils/petIdConversion';
 import sendMessage from '../../../discord.js/message/sendMessage';
 import {IUser} from '../../../../models/user/user.type';
 import {getReminderChannel} from '../reminderChannel';

@@ -1,7 +1,7 @@
-import {IInventoryItem} from './scanInventory';
+import {IInventoryItem} from '../embedReaders/inventory.reader';
 import {RpgArea} from '../../../types/rpg.types';
 import {RPG_TRADE_RATE} from '../../../constants/epic_rpg/rpg';
-import {dismantleRecommend} from './dismantleMaterals';
+import {dismantleRecommend} from './rpgDismantleHelper';
 
 interface IStartTrading {
   inventory: IInventoryItem;
@@ -30,7 +30,6 @@ export const startTrading = ({startArea, endArea, inventory, tradeTo}: IStartTra
       }
     }
   }
-  console.log('newInventory', newInventory);
   switch (tradeTo) {
     case 'normieFish':
       newInventory = newInventory.tradeE(endArea).tradeC(endArea).tradeB(endArea);
@@ -59,7 +58,7 @@ interface IInitTradeReturn extends IInventoryItem {
   dismantleAll(area: RpgArea): IInitTradeReturn;
 }
 
-export function initTrade(inventory: IInventoryItem) {
+function initTrade(inventory: IInventoryItem) {
   return <IInitTradeReturn>{
     ...inventory,
     tradeA: function (area) {

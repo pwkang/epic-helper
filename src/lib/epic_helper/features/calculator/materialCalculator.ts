@@ -1,11 +1,11 @@
 import {Embed, EmbedBuilder, MessageCreateOptions, User} from 'discord.js';
 import {BOT_COLOR} from '../../../../constants/epic_helper/general';
 import {RPG_CLICKABLE_SLASH_COMMANDS} from '../../../../constants/epic_rpg/clickable_slash';
-import scanInventory from '../../../epic_rpg/inventory/scanInventory';
 import {RpgArea} from '../../../../types/rpg.types';
 import {BOT_EMOJI} from '../../../../constants/epic_helper/bot_emojis';
-import {startTrading} from '../../../epic_rpg/inventory/tradeMaterials';
+import {startTrading} from '../../../epic_rpg/inventory/rpgTraderHelper';
 import {PREFIX} from '../../../../constants/bot';
+import embedReaders from '../../../epic_rpg/embedReaders';
 
 interface ICalcOptions {
   embed: Embed;
@@ -16,7 +16,7 @@ interface ICalcOptions {
 type TCalcFunc = (options: ICalcOptions) => MessageCreateOptions;
 
 export const getCalcMaterialMessage: TCalcFunc = ({embed, area, author}) => {
-  const inventory = scanInventory({embed});
+  const inventory = embedReaders.inventory({embed});
   const a3Fish = startTrading({
     startArea: area,
     endArea: 3,

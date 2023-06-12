@@ -7,7 +7,7 @@ import {
 import ms from 'ms';
 import {getUserAccount} from '../../../../models/user/user.service';
 import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
-import {createRpgCommandListener} from '../../createRpgCommandListener';
+import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import {calcExtraHuntCdWithPartner} from '../../../epic_helper/reminders/commandsCooldown';
 
 const isReady = (str: string) => str.includes(':white_check_mark:');

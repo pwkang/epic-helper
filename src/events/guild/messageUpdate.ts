@@ -1,5 +1,5 @@
 import {Client, Events, Message} from 'discord.js';
-import {isRpgPet, rpgPet} from '../../lib/epic_rpg/pets/pet.lib';
+import {isRpgPet, rpgPetList} from '../../lib/epic_rpg/commands/pets/petList.lib';
 import {redisGetRpgMessageOwner} from '../../services/redis/rpg-message-owner.redis';
 
 export default <BotEvent>{
@@ -19,7 +19,7 @@ export default <BotEvent>{
     const owner = client.users.cache.get(ownerId);
     if (owner) {
       if (isRpgPet({author: owner, embed: newMessage.embeds[0]})) {
-        rpgPet({
+        rpgPetList({
           embed: newMessage.embeds[0],
           author: owner,
         });

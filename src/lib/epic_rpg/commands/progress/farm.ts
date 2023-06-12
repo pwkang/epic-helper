@@ -6,7 +6,7 @@ import {
 import {RPG_COMMAND_TYPE, RPG_FARM_SEED} from '../../../../constants/epic_rpg/rpg';
 import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
 import {calcCdReduction} from '../../../epic_helper/reminders/commandsCooldown';
-import {createRpgCommandListener} from '../../createRpgCommandListener';
+import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import {updateReminderChannel} from '../../../epic_helper/reminders/reminderChannel';
 import {countUserStats} from '../../../../models/user-stats/user-stats.service';
 import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';

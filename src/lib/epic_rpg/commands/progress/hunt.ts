@@ -7,7 +7,7 @@ import {
 import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
 import {calcCdReduction} from '../../../epic_helper/reminders/commandsCooldown';
 import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
-import {createRpgCommandListener} from '../../createRpgCommandListener';
+import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import replyMessage from '../../../discord.js/message/replyMessage';
 import {getUserHealReminder} from '../../../../models/user/user.service';
 import {RPG_CLICKABLE_SLASH_COMMANDS} from '../../../../constants/epic_rpg/clickable_slash';

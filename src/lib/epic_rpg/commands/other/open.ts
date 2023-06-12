@@ -1,7 +1,8 @@
 import {Client, Embed, Message, User} from 'discord.js';
-import scanLootbox from '../../scanLootbox';
+import lootboxReader from '../../embedReaders/lootbox.reader';
 import {updateUserRubyAmount} from '../../../../models/user/user.service';
-import {createRpgCommandListener} from '../../createRpgCommandListener';
+import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
+import embedReaders from '../../embedReaders';
 
 interface IRpgOpenLootbox {
   client: Client;
@@ -32,7 +33,7 @@ interface IRpgOpenLootboxSuccess {
 }
 
 const rpgOpenLootboxSuccess = async ({embed, author}: IRpgOpenLootboxSuccess) => {
-  const openedItems = scanLootbox({embed});
+  const openedItems = embedReaders.lootbox({embed});
   if (openedItems.ruby) {
     await updateUserRubyAmount({
       ruby: openedItems.ruby,

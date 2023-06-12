@@ -1,6 +1,6 @@
 import {EmbedBuilder, EmbedField, User} from 'discord.js';
 import {getUserPets} from '../../../../models/user-pet/user-pet.service';
-import {convertPetIdToNum} from '../../../epic_rpg/pets/petIdConversion';
+import {convertPetIdToNum} from '../../../../utils/petIdConversion';
 import {IUserPet} from '../../../../models/user-pet/user-pet.type';
 import {
   RPG_PET_SKILL,

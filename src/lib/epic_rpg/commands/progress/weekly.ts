@@ -6,7 +6,7 @@ import {
 import ms from 'ms';
 import {calcCdReduction} from '../../../epic_helper/reminders/commandsCooldown';
 import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
-import {createRpgCommandListener} from '../../createRpgCommandListener';
+import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import {updateReminderChannel} from '../../../epic_helper/reminders/reminderChannel';
 
 const WEEKLY_COOLDOWN = ms('1w') - ms('10m');

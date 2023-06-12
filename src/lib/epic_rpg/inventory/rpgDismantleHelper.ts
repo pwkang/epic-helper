@@ -1,4 +1,4 @@
-import {IInventoryItem} from './scanInventory';
+import {IInventoryItem} from '../embedReaders/inventory.reader';
 import {RpgArea} from '../../../types/rpg.types';
 
 type IDismantleEverything = (inventory: IInventoryItem, currentArea?: RpgArea) => IInventoryItem;

@@ -1,10 +1,10 @@
 import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
-import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
+import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import {
   isNoPetsToClaim,
   isSuccessfullyClaimedPet,
   rpgPetClaim,
-} from '../../../../lib/epic_rpg/commands/pets/petClaim';
+} from '../../../../lib/epic_rpg/commands/pets/petClaim.lib';
 
 export default <PrefixCommand>{
   name: 'petClaim',

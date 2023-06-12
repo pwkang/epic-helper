@@ -1,11 +1,11 @@
 import {Embed, EmbedBuilder, EmbedField, MessageCreateOptions, User} from 'discord.js';
 import {RpgArea} from '../../../../types/rpg.types';
-import scanInventory from '../../../epic_rpg/inventory/scanInventory';
-import {startTrading} from '../../../epic_rpg/inventory/tradeMaterials';
+import {startTrading} from '../../../epic_rpg/inventory/rpgTraderHelper';
 import {RPG_STT_SCORE} from '../../../../constants/epic_rpg/rpg';
-import {dismantleRecommend} from '../../../epic_rpg/inventory/dismantleMaterals';
+import {dismantleRecommend} from '../../../epic_rpg/inventory/rpgDismantleHelper';
 import {BOT_COLOR} from '../../../../constants/epic_helper/general';
 import {BOT_EMOJI} from '../../../../constants/epic_helper/bot_emojis';
+import embedReaders from '../../../epic_rpg/embedReaders';
 
 interface ICalcSttOptions {
   embed: Embed;
@@ -23,7 +23,7 @@ type ICalcSTTScore = {
 };
 
 export const getCalcSTTMessage: TCalcFunc = ({embed, area, level, author}) => {
-  const inventory = scanInventory({embed});
+  const inventory = embedReaders.inventory({embed});
   const a15Inventory = startTrading({
     startArea: area,
     endArea: 15,

@@ -6,7 +6,7 @@ import {
 } from '../../../../models/user-reminder/user-reminder.service';
 import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
 import {calcCdReduction} from '../../../epic_helper/reminders/commandsCooldown';
-import {createRpgCommandListener} from '../../createRpgCommandListener';
+import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import {updateUserRubyAmount} from '../../../../models/user/user.service';
 import replyMessage from '../../../discord.js/message/replyMessage';
 import {updateReminderChannel} from '../../../epic_helper/reminders/reminderChannel';

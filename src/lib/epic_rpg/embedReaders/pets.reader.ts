@@ -7,7 +7,7 @@ import {
 } from '../../../constants/epic_rpg/pet';
 import {convertRomanToNumber} from '../../../utils/romanConversion';
 import ms from 'ms';
-import {convertPetIdToNum} from './petIdConversion';
+import {convertPetIdToNum} from '../../../utils/petIdConversion';
 import {IUserPet} from '../../../models/user-pet/user-pet.type';
 
 interface IReadPets {
@@ -26,7 +26,7 @@ interface IPetInfo {
   skill: Record<keyof typeof RPG_PET_SKILL, number>;
 }
 
-export const readPets = ({embed, author}: IReadPets) => {
+const petsReader = ({embed, author}: IReadPets) => {
   const pets: IUserPet[] = [];
 
   for (let field of embed.fields) {
@@ -105,3 +105,5 @@ const getPetReadyAt = (fieldValue: string) => {
   }, 0);
   return new Date(Date.now() + duration);
 };
+
+export default petsReader;

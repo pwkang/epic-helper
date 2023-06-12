@@ -1,5 +1,5 @@
 import {Client, Embed, Message, User} from 'discord.js';
-import {createRpgCommandListener} from '../../createRpgCommandListener';
+import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import {
   saveUserTrainingCooldown,
   updateUserCooldown,

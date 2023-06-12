@@ -6,7 +6,7 @@ import ms from 'ms';
 import {EPIC_RPG_ID} from '../../../../constants/bot';
 import sendMessage from '../../../discord.js/message/sendMessage';
 import dynamicTimeStamp from '../../../discord.js/dynamicTimestamp';
-import {createRpgCommandListener} from '../../createRpgCommandListener';
+import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 
 const ENCHANT_CMD_TYPE = {
   enchant: 'enchant',

@@ -1,7 +1,6 @@
 import {Client, Embed, Message, User} from 'discord.js';
-import scanInventory from '../../inventory/scanInventory';
 import {updateUserRubyAmount} from '../../../../models/user/user.service';
-import {createRpgCommandListener} from '../../createRpgCommandListener';
+import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import {
   getCalcMaterialMessage,
   isCalcMaterial,
@@ -12,6 +11,7 @@ import {
   isCalcSTT,
 } from '../../../epic_helper/features/calculator/sttScoreCalculator';
 import sendMessage from '../../../discord.js/message/sendMessage';
+import embedReaders from '../../embedReaders';
 
 interface IRpg {
   client: Client;
@@ -66,7 +66,7 @@ interface IRpgInventorySuccess {
 }
 
 export default async function rpgInventorySuccess({author, embed}: IRpgInventorySuccess) {
-  const inventory = scanInventory({embed});
+  const inventory = embedReaders.inventory({embed});
   await updateUserRubyAmount({
     userId: author.id,
     type: 'set',

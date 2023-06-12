@@ -1,22 +1,22 @@
 import {Embed, User} from 'discord.js';
-import {readPets} from './readPets';
 import {
   createUserPet,
   deleteExtraPets,
   getUserPets,
   updateUserPet,
-} from '../../../models/user-pet/user-pet.service';
-import {IUserPet} from '../../../models/user-pet/user-pet.type';
-import {RPG_PET_SKILL} from '../../../constants/epic_rpg/pet';
+} from '../../../../models/user-pet/user-pet.service';
+import {IUserPet} from '../../../../models/user-pet/user-pet.type';
+import {RPG_PET_SKILL} from '../../../../constants/epic_rpg/pet';
 import ms from 'ms';
+import embedReaders from '../../embedReaders';
 
 interface IRpgPet {
   embed: Embed;
   author: User;
 }
 
-export const rpgPet = async ({author, embed}: IRpgPet) => {
-  const pets = readPets({embed, author});
+export const rpgPetList = async ({author, embed}: IRpgPet) => {
+  const pets = embedReaders.pets({embed, author});
   const dbPetsList = await getUserPets({
     userId: author.id,
     petsId: pets.map((pet) => pet.petId),

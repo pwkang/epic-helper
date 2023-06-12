@@ -6,7 +6,7 @@ import {
   isSuccessfullySentPetsToAdventure,
   rpgPetAdventure,
 } from '../../../../lib/epic_rpg/commands/pets/petAdventure.lib';
-import {createRpgCommandListener} from '../../../../lib/epic_rpg/createRpgCommandListener';
+import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import sendInteractiveMessage from '../../../../lib/discord.js/message/sendInteractiveMessage';
 import dynamicTimeStamp from '../../../../lib/discord.js/dynamicTimestamp';
 import ms from 'ms';

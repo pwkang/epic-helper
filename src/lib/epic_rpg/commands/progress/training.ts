@@ -6,7 +6,7 @@ import {
 import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
 import {calcCdReduction} from '../../../epic_helper/reminders/commandsCooldown';
 import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
-import {createRpgCommandListener} from '../../createRpgCommandListener';
+import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import getTrainingAnswer from '../../../epic_helper/features/trainingHelper';
 import sendMessage from '../../../discord.js/message/sendMessage';
 import {updateReminderChannel} from '../../../epic_helper/reminders/reminderChannel';
