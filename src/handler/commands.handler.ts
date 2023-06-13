@@ -1,58 +1,47 @@
-import type {EntryInfo} from 'readdirp';
-import readdirp from 'readdirp';
 import {Client} from 'discord.js';
 import {handlerFileFilter, handlerRoot} from './constant';
+import {importFiles} from '../utils/filesImport';
 
-function loadPrefixCommands(client: Client) {
-  return new Promise((resolve) => {
-    readdirp(`./${handlerRoot}/commands/prefix`, {fileFilter: handlerFileFilter})
-      .on('data', async (entry: EntryInfo) => {
-        const {fullPath} = entry;
-        const file = await import(fullPath);
-        const command = file.default.default as PrefixCommand;
-        if (!command?.name) return;
-        client.prefixCommands.set(`${command.type}:${command.name}`, command);
-      })
-      .on('end', () => {
-        resolve({});
-      });
+async function loadPrefixCommands(client: Client) {
+  const commands = await importFiles<PrefixCommand>({
+    path: `./${handlerRoot}/commands/prefix`,
+    options: {
+      fileFilter: [handlerFileFilter],
+    },
+  });
+  console.log(`Loaded ${commands.length} prefix commands`);
+  commands.forEach((command) => {
+    if (!command?.name) return;
+    client.prefixCommands.set(`${command.type}:${command.name}`, command);
   });
 }
 
-function loadSlashCommands(client: Client) {
-  return new Promise((resolve) => {
-    readdirp(`./${handlerRoot}/commands/slash`, {
+async function loadSlashCommands(client: Client) {
+  const commands = await importFiles<SlashCommand>({
+    path: `./${handlerRoot}/commands/slash`,
+    options: {
       fileFilter: [handlerFileFilter, '!*.type.ts'],
       directoryFilter: ['!subcommand'],
-    })
-      .on('data', async (entry: EntryInfo) => {
-        const {fullPath} = entry;
-        const file = await import(fullPath);
-        const command = file.default.default;
-        if (!command || !('name' in command)) return;
-        client.slashCommands.set(command.name, command);
-      })
-      .on('end', () => {
-        resolve({});
-      });
+    },
+  });
+  console.log(`Loaded ${commands.length} slash commands`);
+  commands.forEach((command) => {
+    if (!command?.name) return;
+    client.slashCommands.set(command.name, command);
   });
 }
 
-function loadSlashMessages(client: Client) {
-  return new Promise((resolve) => {
-    readdirp(`./${handlerRoot}/commands/slash_other_bot`, {
+async function loadSlashMessages(client: Client) {
+  const commands = await importFiles<SlashMessage>({
+    path: `./${handlerRoot}/commands/slash-message`,
+    options: {
       fileFilter: [handlerFileFilter],
-    })
-      .on('data', async (entry: EntryInfo) => {
-        const {fullPath} = entry;
-        const file = await import(fullPath);
-        const command = file.default.default;
-        if (!command || !('name' in command)) return;
-        client.slashMessages.set(command.name, command);
-      })
-      .on('end', () => {
-        resolve({});
-      });
+    },
+  });
+  console.log(`Loaded ${commands.length} slash messages`);
+  commands.forEach((command) => {
+    if (!command?.name) return;
+    client.slashMessages.set(command.name, command);
   });
 }
 
