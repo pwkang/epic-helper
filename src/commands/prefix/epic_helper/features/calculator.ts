@@ -1,17 +1,8 @@
 import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
-import {
-  getCalcInstructionMessage,
-  getCalcMaterialMessage,
-  getInvalidCalcArgsMessage,
-  isCalcMaterial,
-} from '../../../../lib/epic_helper/features/calculator/materialCalculator';
+import materialCalculator from '../../../../lib/epic_helper/features/calculator/materialCalculator';
 import {rpgInventoryChecker} from '../../../../lib/epic_rpg/commands/account/inventory';
-import {
-  getCalcInfo,
-  getCalcSTTMessage,
-  isCalcSTT,
-} from '../../../../lib/epic_helper/features/calculator/sttScoreCalculator';
+import sttScoreCalculator from '../../../../lib/epic_helper/features/calculator/sttScoreCalculator';
 import {djsMessageHelper} from '../../../../lib/discord.js/message';
 
 export default <PrefixCommand>{
@@ -19,20 +10,20 @@ export default <PrefixCommand>{
   commands: ['calc', 'c'],
   type: PREFIX_COMMAND_TYPE.bot,
   execute: (client, message, args) => {
-    if (!isCalcSTT(args) && !isCalcMaterial(args))
+    if (!sttScoreCalculator.isCalcSTT(args) && !materialCalculator.isCalcMaterial(args))
       return djsMessageHelper.reply({
         client,
         message,
-        options: getInvalidCalcArgsMessage(),
+        options: materialCalculator.getInvalidCalcArgsMessage(),
       });
 
     djsMessageHelper.reply({
       client,
       message,
-      options: getCalcInstructionMessage(),
+      options: materialCalculator.getCalcInstructionMessage(),
     });
 
-    const calcInfo = getCalcInfo(args);
+    const calcInfo = sttScoreCalculator.getCalcInfo(args);
 
     const event = createRpgCommandListener({
       channelId: message.channel.id,
@@ -46,9 +37,13 @@ export default <PrefixCommand>{
         await djsMessageHelper.send({
           client,
           channelId: message.channel.id,
-          options: isCalcMaterial(args)
-            ? getCalcMaterialMessage({embed, area: calcInfo.area ?? 0, author: message.author})
-            : getCalcSTTMessage({
+          options: materialCalculator.isCalcMaterial(args)
+            ? materialCalculator.getCalcMaterialMessage({
+                embed,
+                area: calcInfo.area ?? 0,
+                author: message.author,
+              })
+            : sttScoreCalculator.getCalcSTTMessage({
                 embed,
                 area: calcInfo.area ?? 0,
                 author: message.author,

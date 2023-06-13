@@ -3,7 +3,7 @@ import {BOT_COLOR} from '../../../../constants/epic_helper/general';
 import {RPG_CLICKABLE_SLASH_COMMANDS} from '../../../../constants/epic_rpg/clickable_slash';
 import {RpgArea} from '../../../../types/rpg.types';
 import {BOT_EMOJI} from '../../../../constants/epic_helper/bot_emojis';
-import {startTrading} from '../../../epic_rpg/inventory/rpgTraderHelper';
+import tradeHelper from '../../../epic_rpg/inventory/rpgTraderHelper';
 import {PREFIX} from '../../../../constants/bot';
 import embedReaders from '../../../epic_rpg/embedReaders';
 
@@ -17,55 +17,55 @@ type TCalcFunc = (options: ICalcOptions) => MessageCreateOptions;
 
 export const getCalcMaterialMessage: TCalcFunc = ({embed, area, author}) => {
   const inventory = embedReaders.inventory({embed});
-  const a3Fish = startTrading({
+  const a3Fish = tradeHelper.startTrading({
     startArea: area,
     endArea: 3,
     inventory,
     tradeTo: 'normieFish',
   }).normieFish;
-  const a5Apple = startTrading({
+  const a5Apple = tradeHelper.startTrading({
     startArea: area,
     endArea: 5,
     inventory,
     tradeTo: 'apple',
   }).apple;
-  const a10Log = startTrading({
+  const a10Log = tradeHelper.startTrading({
     startArea: area,
     endArea: 10,
     inventory,
     tradeTo: 'woodenLog',
   }).woodenLog;
-  const a11Apple = startTrading({
+  const a11Apple = tradeHelper.startTrading({
     startArea: area,
     endArea: 11,
     inventory,
     tradeTo: 'apple',
   }).apple;
-  const a12Ruby = startTrading({
+  const a12Ruby = tradeHelper.startTrading({
     startArea: area,
     endArea: 12,
     inventory,
     tradeTo: 'ruby',
   }).ruby;
-  const topFish = startTrading({
+  const topFish = tradeHelper.startTrading({
     startArea: area,
     endArea: 'top',
     inventory,
     tradeTo: 'normieFish',
   }).normieFish;
-  const topLog = startTrading({
+  const topLog = tradeHelper.startTrading({
     startArea: area,
     endArea: 'top',
     inventory,
     tradeTo: 'woodenLog',
   }).woodenLog;
-  const topApple = startTrading({
+  const topApple = tradeHelper.startTrading({
     startArea: area,
     endArea: 'top',
     inventory,
     tradeTo: 'apple',
   }).apple;
-  const topRuby = startTrading({
+  const topRuby = tradeHelper.startTrading({
     startArea: area,
     endArea: 'top',
     inventory,
@@ -129,3 +129,12 @@ export const getCalcInstructionMessage = (): MessageCreateOptions => {
     content: `Use ${RPG_CLICKABLE_SLASH_COMMANDS.inventory} once`,
   };
 };
+
+const materialCalculator = {
+  getCalcMaterialMessage,
+  isCalcMaterial,
+  getInvalidCalcArgsMessage,
+  getCalcInstructionMessage,
+};
+
+export default materialCalculator;

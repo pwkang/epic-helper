@@ -1,7 +1,7 @@
 import {IInventoryItem} from '../embedReaders/inventory.reader';
 import {RpgArea} from '../../../types/rpg.types';
 import {RPG_TRADE_RATE} from '../../../constants/epic_rpg/rpg';
-import {dismantleRecommend} from './rpgDismantleHelper';
+import dismantleHelper from './rpgDismantleHelper';
 
 interface IStartTrading {
   inventory: IInventoryItem;
@@ -112,7 +112,7 @@ function initTrade(inventory: IInventoryItem) {
     dismantleAll: function (area) {
       return {
         ...this,
-        ...dismantleRecommend(this, area),
+        ...dismantleHelper.dismantleRecommend(this, area),
       };
     },
     end: function () {
@@ -143,3 +143,9 @@ const trade = <T, X extends keyof IInventoryItem, Y extends keyof IInventoryItem
     [toItem]: inventory[toItem],
   } as Record<X | Y, number>;
 };
+
+const tradeHelper = {
+  startTrading,
+};
+
+export default tradeHelper;

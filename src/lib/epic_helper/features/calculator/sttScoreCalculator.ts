@@ -1,8 +1,8 @@
 import {Embed, EmbedBuilder, EmbedField, MessageCreateOptions, User} from 'discord.js';
 import {RpgArea} from '../../../../types/rpg.types';
-import {startTrading} from '../../../epic_rpg/inventory/rpgTraderHelper';
+import tradeHelper from '../../../epic_rpg/inventory/rpgTraderHelper';
 import {RPG_STT_SCORE} from '../../../../constants/epic_rpg/rpg';
-import {dismantleRecommend} from '../../../epic_rpg/inventory/rpgDismantleHelper';
+import dismantleHelper from '../../../epic_rpg/inventory/rpgDismantleHelper';
 import {BOT_COLOR} from '../../../../constants/epic_helper/general';
 import {BOT_EMOJI} from '../../../../constants/epic_helper/bot_emojis';
 import embedReaders from '../../../epic_rpg/embedReaders';
@@ -24,13 +24,13 @@ type ICalcSTTScore = {
 
 export const getCalcSTTMessage: TCalcFunc = ({embed, area, level, author}) => {
   const inventory = embedReaders.inventory({embed});
-  const a15Inventory = startTrading({
+  const a15Inventory = tradeHelper.startTrading({
     startArea: area,
     endArea: 15,
     tradeTo: 'ruby',
     inventory,
   });
-  const dismantleAll = dismantleRecommend(a15Inventory);
+  const dismantleAll = dismantleHelper.dismantleRecommend(a15Inventory);
   const score: ICalcSTTScore = {
     level: level * RPG_STT_SCORE.level,
   };
@@ -104,6 +104,39 @@ const buildCalcSTTEmbed = ({items, author, total}: IBuildCalcSTTEmbed) => {
   embed.addFields(fields);
   return embed;
 };
+
+/**
+ *  ==========================================
+ *            List of Checker here
+ *  ==========================================
+ */
+
+export const isCalcSTT = (args: string[]) =>
+  (!isNaN(Number(args[1])) || args[1] === 'top') && !isNaN(Number(args[2]));
+
+type IGetCalcInfo = (args: string[]) => {
+  area: RpgArea | null;
+  level: number | null;
+};
+
+export const getCalcInfo: IGetCalcInfo = (args) => ({
+  area: isNaN(Number(args[1]))
+    ? args[1] === 'top'
+      ? 'top'
+      : null
+    : Number(args[1]) <= 15 && Number(args[1]) >= 1
+    ? (Number(args[1]) as RpgArea)
+    : null,
+  level: isNaN(Number(args[2])) ? null : Number(args[2]),
+});
+
+const sttScoreCalculator = {
+  isCalcSTT,
+  getCalcInfo,
+  getCalcSTTMessage,
+};
+
+export default sttScoreCalculator;
 
 /**
  * ==========================================
@@ -301,28 +334,3 @@ const groupItems: IGroupItems[] = [
     ],
   },
 ];
-
-/**
- *  ==========================================
- *            List of Checker here
- *  ==========================================
- */
-
-export const isCalcSTT = (args: string[]) =>
-  (!isNaN(Number(args[1])) || args[1] === 'top') && !isNaN(Number(args[2]));
-
-type IGetCalcInfo = (args: string[]) => {
-  area: RpgArea | null;
-  level: number | null;
-};
-
-export const getCalcInfo: IGetCalcInfo = (args) => ({
-  area: isNaN(Number(args[1]))
-    ? args[1] === 'top'
-      ? 'top'
-      : null
-    : Number(args[1]) <= 15 && Number(args[1]) >= 1
-    ? (Number(args[1]) as RpgArea)
-    : null,
-  level: isNaN(Number(args[2])) ? null : Number(args[2]),
-});

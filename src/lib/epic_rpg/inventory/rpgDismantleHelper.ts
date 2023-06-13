@@ -3,8 +3,8 @@ import {RpgArea} from '../../../types/rpg.types';
 
 type IDismantleEverything = (inventory: IInventoryItem, currentArea?: RpgArea) => IInventoryItem;
 
-export const dismantleRecommend: IDismantleEverything = (inventory, currentArea) => {
-  const newInventory = initDismantle(inventory);
+const dismantleRecommend: IDismantleEverything = (inventory, currentArea) => {
+  const newInventory = dismantleHelper.initDismantle(inventory);
 
   if (typeof currentArea === 'number' && currentArea) {
     if (currentArea <= 3) {
@@ -80,7 +80,7 @@ interface IInitDismantleReturn extends IInventoryItem {
   dismantleBanana: () => IInitDismantleReturn;
 }
 
-function initDismantle(inventory: IInventoryItem) {
+const initDismantle = (inventory: IInventoryItem) => {
   return <IInitDismantleReturn>{
     ...inventory,
     dismantleGoldenFish: function () {
@@ -140,4 +140,11 @@ function initDismantle(inventory: IInventoryItem) {
       return this;
     },
   };
-}
+};
+
+const dismantleHelper = {
+  dismantleRecommend,
+  initDismantle,
+};
+
+export default dismantleHelper;
