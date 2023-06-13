@@ -1,10 +1,7 @@
 import {mongoClient} from '../../services/mongoose/mongoose.service';
 import userSchema from './user.schema';
 import {IUser} from './user.type';
-import {
-  redisGetUserRubyAmount,
-  redisSetUserRubyAmount,
-} from '../../services/redis/user-account.redis';
+import userAccountRedis from '../../services/redis/user-account.redis';
 import {UpdateQuery} from 'mongoose';
 import {RPG_ENCHANT_LEVEL} from '../../constants/epic_rpg/enchant';
 import {RPG_DONOR_TIER} from '../../constants/epic_rpg/rpg';
@@ -171,11 +168,11 @@ const updateUserRubyAmount = async ({ruby, userId, type}: IUpdateUserRubyAmount)
       },
     }
   );
-  if (user) await redisSetUserRubyAmount(userId, user.items.ruby);
+  if (user) await userAccountRedis.setRuby(userId, user.items.ruby);
 };
 
 const getUserRubyAmount = async (userId: string): Promise<number> => {
-  return redisGetUserRubyAmount(userId, async () => {
+  return userAccountRedis.getRuby(userId, async () => {
     const user = await dbUser.findOne(
       {
         userId,

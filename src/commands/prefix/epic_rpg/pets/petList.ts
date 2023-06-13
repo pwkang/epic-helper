@@ -1,7 +1,7 @@
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {rpgPetList, rpgPetListChecker} from '../../../../lib/epic_rpg/commands/pets/petList.lib';
-import {redisSetRpgMessageOwner} from '../../../../services/redis/rpg-message-owner.redis';
+import redisRpgMessageOwner from '../../../../services/redis/rpg-message-owner.redis';
 
 export default <PrefixCommand>{
   name: 'petList',
@@ -17,7 +17,7 @@ export default <PrefixCommand>{
     event.on('embed', async (embed, collected) => {
       if (rpgPetListChecker.isRpgPet({embed, author: message.author})) {
         event.stop();
-        await redisSetRpgMessageOwner({
+        await redisRpgMessageOwner.setOwner({
           client,
           messageId: collected.id,
           userId: message.author.id,

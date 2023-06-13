@@ -1,6 +1,6 @@
 import {Client, Events, Message} from 'discord.js';
 import {rpgPetList, rpgPetListChecker} from '../../lib/epic_rpg/commands/pets/petList.lib';
-import {redisGetRpgMessageOwner} from '../../services/redis/rpg-message-owner.redis';
+import redisRpgMessageOwner from '../../services/redis/rpg-message-owner.redis';
 
 export default <BotEvent>{
   eventName: Events.MessageUpdate,
@@ -11,7 +11,7 @@ export default <BotEvent>{
       messages.forEach((cmd) => cmd.execute(client, newMessage, newMessage.interaction?.user!));
     }
 
-    const ownerId = await redisGetRpgMessageOwner({
+    const ownerId = await redisRpgMessageOwner.getOwner({
       client,
       messageId: newMessage.id,
     });

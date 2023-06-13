@@ -1,10 +1,7 @@
 import {Model, Schema} from 'mongoose';
 import {IUserReminder} from './user-reminder.type';
 import {RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../constants/epic_rpg/rpg';
-import {
-  redisDeleteUserNextReminderTime,
-  redisUpdateUserNextReminderTime,
-} from '../../services/redis/user-reminder.redis';
+import redisUserReminder from '../../services/redis/user-reminder.redis';
 
 const userReminderSchema = new Schema<IUserReminder>(
   {
@@ -60,8 +57,8 @@ async function updateNextReminderTime(userId: string, model: Model<IUserReminder
     .sort({readyAt: 1})
     .limit(1);
   if (nextReminderTime.length)
-    await redisUpdateUserNextReminderTime(userId, nextReminderTime[0].readyAt);
-  else await redisDeleteUserNextReminderTime(userId);
+    await redisUserReminder.setReminderTime(userId, nextReminderTime[0].readyAt);
+  else await redisUserReminder.deleteReminderTime(userId);
 }
 
 export default userReminderSchema;

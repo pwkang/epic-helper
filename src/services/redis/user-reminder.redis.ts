@@ -7,10 +7,10 @@ interface IRedisUserReminder {
   readyAt: Date;
 }
 
-export const redisUpdateUserNextReminderTime: (
-  userId: string,
-  readyAt: Date
-) => Promise<void> = async (userId, readyAt) => {
+const setReminderTime: (userId: string, readyAt: Date) => Promise<void> = async (
+  userId,
+  readyAt
+) => {
   const data: IRedisUserReminder = {
     readyAt,
     userId,
@@ -18,7 +18,7 @@ export const redisUpdateUserNextReminderTime: (
   await redisClient.set(`${prefix}${userId}`, JSON.stringify(data));
 };
 
-export const redisGetReadyUserReminder: () => Promise<string[]> = async () => {
+const getReminderTime: () => Promise<string[]> = async () => {
   const keys = await redisClient.keys(`${prefix}*`);
   const usersId = await Promise.all(
     keys.map(async (key) => {
@@ -33,8 +33,14 @@ export const redisGetReadyUserReminder: () => Promise<string[]> = async () => {
   return usersId.filter((id) => id !== '');
 };
 
-export const redisDeleteUserNextReminderTime: (userId: string) => Promise<void> = async (
-  userId
-) => {
+const deleteReminderTime: (userId: string) => Promise<void> = async (userId) => {
   await redisClient.del(`${prefix}${userId}`);
 };
+
+const redisUserReminder = {
+  setReminderTime,
+  getReminderTime,
+  deleteReminderTime,
+};
+
+export default redisUserReminder;
