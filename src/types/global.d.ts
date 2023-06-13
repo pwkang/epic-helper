@@ -1,4 +1,4 @@
-import type {Client, Message, SlashCommandBuilder, User} from 'discord.js';
+import type {Client, ClientEvents, Message, SlashCommandBuilder, User} from 'discord.js';
 import {ChatInputCommandInteraction} from 'discord.js';
 import type {PREFIX_COMMAND_TYPE} from '../constants/bot';
 import {SLASH_MESSAGE_BOT_TYPE} from '../constants/bot';
@@ -30,7 +30,7 @@ declare global {
 
   interface BotEvent {
     once: boolean;
-    eventName: unknown;
+    eventName: keyof ClientEvents;
     execute: (client: Client, ...args: any[]) => Promise<void>;
   }
 

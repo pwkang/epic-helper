@@ -35,5 +35,6 @@ Promise.all([
   redisClient.connect(),
   loadCronJob(client),
 ]).then(() => {
-  // client.login(process.env.BOT_TOKEN).catch(console.error);
+  console.log('All handlers loaded, connecting to Discord...');
+  client.login(process.env.BOT_TOKEN).catch(console.error);
 });
