@@ -1,9 +1,7 @@
 import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import {
-  amountOfPetsSentToAdventure,
-  isFailToSendPetsToAdventure,
-  isSuccessfullySentPetsToAdventure,
+  rpgPetAdventureChecker,
   rpgPetAdventure,
 } from '../../../../lib/epic_rpg/commands/pets/petAdventure.lib';
 import sendMessage from '../../../../lib/discord.js/message/sendMessage';
@@ -30,12 +28,22 @@ export default <PrefixCommand>{
     });
     if (!event) return;
     event.on('content', async (content, collected) => {
-      if (isFailToSendPetsToAdventure({message: collected, author: message.author})) {
+      if (
+        rpgPetAdventureChecker.isFailToSendPetsToAdventure({
+          message: collected,
+          author: message.author,
+        })
+      ) {
         event.stop();
       }
-      if (isSuccessfullySentPetsToAdventure({message: collected, author: message.author})) {
+      if (
+        rpgPetAdventureChecker.isSuccessfullySentPetsToAdventure({
+          message: collected,
+          author: message.author,
+        })
+      ) {
         event.stop();
-        const amountOfPetSent = amountOfPetsSentToAdventure({
+        const amountOfPetSent = rpgPetAdventureChecker.amountOfPetsSentToAdventure({
           message: collected,
           author: message.author,
         });

@@ -78,11 +78,7 @@ interface IRpgQuestSuccess {
 const QUEST_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.quest.accepted;
 const DECLINED_QUEST_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.quest.declined;
 
-export default async function rpgQuestSuccess({
-  author,
-  questAccepted,
-  channelId,
-}: IRpgQuestSuccess) {
+const rpgQuestSuccess = async ({author, questAccepted, channelId}: IRpgQuestSuccess) => {
   const cooldown = await calcCdReduction({
     userId: author.id,
     commandType: RPG_COMMAND_TYPE.quest,
@@ -102,14 +98,14 @@ export default async function rpgQuestSuccess({
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.quest,
   });
-}
+};
 
 interface IIsQuestAccepted {
   content: string;
   author: User;
 }
 
-export const isQuestAccepted = ({content, author}: IIsQuestAccepted) =>
+const isQuestAccepted = ({content, author}: IIsQuestAccepted) =>
   content.includes(author.username) && content.includes('new quest');
 
 interface IIsQuestDeclined {
@@ -117,7 +113,7 @@ interface IIsQuestDeclined {
   author: User;
 }
 
-export const isQuestDeclined = ({message, author}: IIsQuestDeclined) =>
+const isQuestDeclined = ({message, author}: IIsQuestDeclined) =>
   message.mentions.has(author.id) && message.content.includes('you did not accept the quest');
 
 interface IIsQuestOnGoing {
@@ -125,7 +121,7 @@ interface IIsQuestOnGoing {
   author: User;
 }
 
-export const isQuestOnGoing = ({author, embed}: IIsQuestOnGoing) =>
+const isQuestOnGoing = ({author, embed}: IIsQuestOnGoing) =>
   embed.author?.name === `${author.username} — quest` && embed.description?.includes('quest quit');
 
 interface IIsCompletingQuest {
@@ -133,7 +129,7 @@ interface IIsCompletingQuest {
   author: User;
 }
 
-export const isCompletingQuest = ({author, embed}: IIsCompletingQuest) =>
+const isCompletingQuest = ({author, embed}: IIsCompletingQuest) =>
   embed.author?.name === `${author.username} — quest` && embed.description?.includes('Complete!');
 
 interface IIsArenaQuest {
@@ -141,7 +137,7 @@ interface IIsArenaQuest {
   author: User;
 }
 
-export const isArenaQuest = ({author, embed}: IIsArenaQuest) =>
+const isArenaQuest = ({author, embed}: IIsArenaQuest) =>
   embed.author?.name === `${author.username} — quest` &&
   embed.fields[0]?.value.includes('join an arena');
 
@@ -150,6 +146,6 @@ interface IIsMinibossQuest {
   author: User;
 }
 
-export const isMinibossQuest = ({author, embed}: IIsMinibossQuest) =>
+const isMinibossQuest = ({author, embed}: IIsMinibossQuest) =>
   embed.author?.name === `${author.username} — quest` &&
   embed.fields[0]?.value.includes('kill a miniboss');

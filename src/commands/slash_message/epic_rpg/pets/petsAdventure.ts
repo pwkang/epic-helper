@@ -1,10 +1,7 @@
 import {SLASH_MESSAGE_BOT_TYPE} from '../../../../constants/bot';
 import {
-  amountOfPetsSentToAdventure,
-  isFailToSendPetsToAdventure,
-  isPetsIdValid,
-  isSuccessfullySentPetsToAdventure,
   rpgPetAdventure,
+  rpgPetAdventureChecker,
 } from '../../../../lib/epic_rpg/commands/pets/petAdventure.lib';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import sendInteractiveMessage from '../../../../lib/discord.js/message/sendInteractiveMessage';
@@ -15,11 +12,10 @@ import updateInteraction from '../../../../lib/discord.js/interaction/updateInte
 import sendMessage from '../../../../lib/discord.js/message/sendMessage';
 import editMessage from '../../../../lib/discord.js/message/editMessage';
 import {
-  extractCancelledPetAmount,
-  isFailToCancelPet,
-  isPetSuccessfullyCancelled,
   rpgPetAdvCancel,
+  rpgPetCancelChecker,
 } from '../../../../lib/epic_rpg/commands/pets/petCancel.lib';
+import {isPetsIdValid} from '../../../../utils/petIdConversion';
 
 export default <SlashMessage>{
   name: 'petsAdventure',
@@ -34,15 +30,15 @@ export default <SlashMessage>{
     if (!event) return;
     event.on('content', async (content, collected) => {
       if (
-        isFailToSendPetsToAdventure({message: collected, author}) ||
-        isFailToCancelPet({message: collected, author})
+        rpgPetAdventureChecker.isFailToSendPetsToAdventure({message: collected, author}) ||
+        rpgPetCancelChecker.isFailToCancelPet({message: collected, author})
       ) {
         event.stop();
       }
-      if (isSuccessfullySentPetsToAdventure({message: collected, author})) {
+      if (rpgPetAdventureChecker.isSuccessfullySentPetsToAdventure({message: collected, author})) {
         event.stop();
 
-        const amountOfPetSent = amountOfPetsSentToAdventure({
+        const amountOfPetSent = rpgPetAdventureChecker.amountOfPetsSentToAdventure({
           message: collected,
           author,
         });
@@ -60,13 +56,13 @@ export default <SlashMessage>{
         sendMessage({channelId: message.channel.id, client, options});
       }
       if (
-        isPetSuccessfullyCancelled({
+        rpgPetCancelChecker.isPetSuccessfullyCancelled({
           author,
           message: collected,
         })
       ) {
         event.stop();
-        const amountOfPetCancelled = extractCancelledPetAmount({
+        const amountOfPetCancelled = rpgPetCancelChecker.extractCancelledPetAmount({
           message: collected,
         });
 

@@ -60,7 +60,7 @@ interface IRpgEpicQuestSuccess {
 
 const QUEST_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.epicQuest;
 
-export default async function rpgEpicQuestSuccess({author, channelId}: IRpgEpicQuestSuccess) {
+const rpgEpicQuestSuccess = async ({author, channelId}: IRpgEpicQuestSuccess) => {
   const cooldown = await calcCdReduction({
     userId: author.id,
     commandType: RPG_COMMAND_TYPE.quest,
@@ -80,14 +80,14 @@ export default async function rpgEpicQuestSuccess({author, channelId}: IRpgEpicQ
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.epicQuest,
   });
-}
+};
 
 interface IIsEpicQuestSuccess {
   embed: Embed;
   author: User;
 }
 
-export const isEpicQuestSuccess = ({embed, author}: IIsEpicQuestSuccess) =>
+const isEpicQuestSuccess = ({embed, author}: IIsEpicQuestSuccess) =>
   embed.author?.name === `${author.username} — epic quest` &&
   ['You failed the quest', 'Your profit was'].some((str) => embed.fields[0]?.value.includes(str));
 
@@ -95,12 +95,11 @@ interface IIsEpicHorseMissing {
   content: string;
 }
 
-export const isEpicHorseMissing = ({content}: IIsEpicHorseMissing) =>
-  content.includes('special horse');
+const isEpicHorseMissing = ({content}: IIsEpicHorseMissing) => content.includes('special horse');
 
 interface IIsHavingQuest {
   content: string;
 }
 
-export const isHavingQuest = ({content}: IIsHavingQuest) =>
+const isHavingQuest = ({content}: IIsHavingQuest) =>
   content.includes('You cannot do this if you have a pending quest!');

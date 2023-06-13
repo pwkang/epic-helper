@@ -14,7 +14,7 @@ interface IRpgForge {
   isSlashCommand: boolean;
 }
 
-export function rpgForge({client, message, author, isSlashCommand}: IRpgForge) {
+export const rpgForge = ({client, message, author, isSlashCommand}: IRpgForge) => {
   const event = createRpgCommandListener({
     channelId: message.channel.id,
     client,
@@ -30,7 +30,7 @@ export function rpgForge({client, message, author, isSlashCommand}: IRpgForge) {
     }
   });
   if (isSlashCommand) event.triggerCollect(message);
-}
+};
 
 interface IRpgForgeSuccess {
   content: Message['content'];
@@ -60,13 +60,11 @@ const rpgForgeSuccess = async ({content, author}: IRpgForgeSuccess) => {
   }
 };
 
-export default rpgForgeSuccess;
-
 interface IIsSuccessfullyForged {
   content: Message['content'];
 }
 
-export const isSuccessfullyForged = ({content}: IIsSuccessfullyForged) =>
+const isSuccessfullyForged = ({content}: IIsSuccessfullyForged) =>
   content.includes('successfully forged!');
 
 interface IIsReturnPortionRecipes {

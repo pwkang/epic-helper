@@ -135,7 +135,7 @@ const fetchPetsToSend = async ({selectedPets, userId}: IFetchPetsToSend) => {
  *  ===================================================
  */
 
-export const isSuccessfullySentPetsToAdventure = ({message, author}: IMessageContentChecker) =>
+const isSuccessfullySentPetsToAdventure = ({message, author}: IMessageContentChecker) =>
   isSentSinglePetToAdventure({message, author}) ||
   isSentMultiplePetsToAdventure({
     message,
@@ -161,7 +161,7 @@ const isPetComebackInstantly = ({message}: IMessageContentChecker) =>
  *  ===================================================
  */
 
-export const isFailToSendPetsToAdventure = ({message, author}: IMessageContentChecker) =>
+const isFailToSendPetsToAdventure = ({message, author}: IMessageContentChecker) =>
   isNoAvailablePetToSend({message, author}) ||
   isSendingMultipleNonEpicPets({message, author}) ||
   isSelectedPetsInAdventure({message, author}) ||
@@ -195,7 +195,7 @@ const isSelectingPetsMultipleTimes = ({message, author}: IMessageContentChecker)
  *  ================================================================
  */
 
-export const amountOfPetsSentToAdventure = ({message, author}: IMessageContentChecker) => {
+const amountOfPetsSentToAdventure = ({message, author}: IMessageContentChecker) => {
   if (isSentSinglePetToAdventure({message, author})) return 1;
   if (isSentMultiplePetsToAdventure({message, author})) {
     const amount = message.content.match(/\*\*(\d+)\*\* of your pets have started an adventure!/);
@@ -245,7 +245,7 @@ interface IUpdatePetStatus {
   pet: IUserPet;
 }
 
-export const updateInstantBackPet = async ({pet, userId}: IUpdatePetStatus) => {
+const updateInstantBackPet = async ({pet, userId}: IUpdatePetStatus) => {
   pet.status = RPG_PET_STATUS.back;
   pet.readyAt = new Date();
   await updateUserPet({
@@ -295,10 +295,10 @@ const generateResult = (result: ISentResult[]) => {
  * ===================================================
  */
 
-export const hasPetsReturnedInstantly = (content: string) =>
+const hasPetsReturnedInstantly = (content: string) =>
   content.includes('the following pets are back instantly:');
 
-export const extractReturnedPetsId = ({message}: IMessageContentChecker) => {
+const extractReturnedPetsId = ({message}: IMessageContentChecker) => {
   if (!hasPetsReturnedInstantly(message.content)) return [];
   const targetRow = message.content.split('\n').find(hasPetsReturnedInstantly) ?? '';
   const petIds = targetRow.match(/`(\w+)`/g);
@@ -306,17 +306,8 @@ export const extractReturnedPetsId = ({message}: IMessageContentChecker) => {
   return petIds.map((p) => p.replace(/`/g, ''));
 };
 
-/**
- * ===================================================
- *     check whether the pets id is valid or not
- * ===================================================
- */
-
-export const isPetsIdValid = (ids: string[]) =>
-  ids
-    .filter((id) => id !== 'epic')
-    .every((id) => {
-      if (!/^[a-z]+$/.test(id)) return false;
-      const petId = convertPetIdToNum(id);
-      return petId > 0;
-    });
+export const rpgPetAdventureChecker = {
+  isSuccessfullySentPetsToAdventure,
+  isFailToSendPetsToAdventure,
+  amountOfPetsSentToAdventure,
+};

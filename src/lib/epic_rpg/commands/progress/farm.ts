@@ -61,7 +61,7 @@ interface IRpgFarmSuccess {
   content: Message['content'];
 }
 
-export default async function rpgFarmSuccess({content, author, channelId}: IRpgFarmSuccess) {
+const rpgFarmSuccess = async ({content, author, channelId}: IRpgFarmSuccess) => {
   const seedType = whatIsTheSeed(content);
   const cooldown = await calcCdReduction({
     userId: author.id,
@@ -82,14 +82,14 @@ export default async function rpgFarmSuccess({content, author, channelId}: IRpgF
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.farm,
   });
-}
+};
 
 interface IIsRpgFarmSuccess {
   content: string;
   author: User;
 }
 
-export const isRpgFarmSuccess = ({author, content}: IIsRpgFarmSuccess) =>
+const isRpgFarmSuccess = ({author, content}: IIsRpgFarmSuccess) =>
   content.includes(author.username) &&
   ['have grown from the seed', 'HITS THE FLOOR WITH THE FISTS', 'in the ground...'].some((msg) =>
     content.includes(msg)
@@ -104,7 +104,7 @@ interface IIsFarmingInSpace {
   author: User;
 }
 
-export const isFarmingInSpace = ({content}: IIsFarmingInSpace) =>
+const isFarmingInSpace = ({content}: IIsFarmingInSpace) =>
   ['no land to plant'].some((msg) => content.includes(msg));
 
 interface IHasNoSeedToPlant {
@@ -112,7 +112,7 @@ interface IHasNoSeedToPlant {
   author: User;
 }
 
-export const hasNoSeedToPlant = ({message, author}: IHasNoSeedToPlant) =>
+const hasNoSeedToPlant = ({message, author}: IHasNoSeedToPlant) =>
   message.mentions.has(author.id) &&
   (['you need a', 'seed'].every((msg) => message.content.includes(msg)) ||
     ['you do not have this type of seed'].some((msg) => message.content.includes(msg)));

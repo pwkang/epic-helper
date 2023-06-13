@@ -1,6 +1,6 @@
 import {
-  amountOfPetsSentToAdventure,
   rpgPetAdventure,
+  rpgPetAdventureChecker,
 } from '../../lib/epic_rpg/commands/pets/petAdventure.lib';
 import replyMessage from '../../lib/discord.js/message/replyMessage';
 import {PREFIX_COMMAND_TYPE} from '../../constants/bot';
@@ -19,7 +19,7 @@ export default <PrefixCommand>{
       message: msg,
       author: message.author,
       selectedPets: ['a', 'b', 'c', 'd', 'e'],
-      amountOfPetSent: amountOfPetsSentToAdventure({
+      amountOfPetSent: rpgPetAdventureChecker.amountOfPetsSentToAdventure({
         message: msg,
         author: message.author,
       }),

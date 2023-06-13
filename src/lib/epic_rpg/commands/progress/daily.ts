@@ -57,7 +57,7 @@ interface IRpgDailySuccess {
   embed: Embed;
 }
 
-export default async function rpgDailySuccess({author, channelId}: IRpgDailySuccess) {
+const rpgDailySuccess = async ({author, channelId}: IRpgDailySuccess) => {
   const cooldown = await calcCdReduction({
     userId: author.id,
     commandType: RPG_COMMAND_TYPE.daily,
@@ -71,12 +71,12 @@ export default async function rpgDailySuccess({author, channelId}: IRpgDailySucc
     userId: author.id,
     channelId,
   });
-}
+};
 
 interface IIsRpgDailySuccess {
   embed: Embed;
   author: User;
 }
 
-export const isRpgDailySuccess = ({embed, author}: IIsRpgDailySuccess) =>
+const isRpgDailySuccess = ({embed, author}: IIsRpgDailySuccess) =>
   embed.author?.name === `${author.username} — daily reward`;

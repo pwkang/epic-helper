@@ -76,3 +76,18 @@ export function convertNumToPetId(num: number) {
   }
   return str;
 }
+
+/**
+ * ===================================================
+ *     check whether the pets id is valid or not
+ * ===================================================
+ */
+
+export const isPetsIdValid = (ids: string[]) =>
+  ids
+    .filter((id) => id !== 'epic')
+    .every((id) => {
+      if (!/^[a-z]+$/.test(id)) return false;
+      const petId = convertPetIdToNum(id);
+      return petId > 0;
+    });

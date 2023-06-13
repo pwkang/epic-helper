@@ -88,7 +88,7 @@ interface IRpgHuntSuccess {
 
 const HUNT_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.hunt;
 
-async function rpgHuntSuccess({author, content, channelId}: IRpgHuntSuccess) {
+const rpgHuntSuccess = async ({author, content, channelId}: IRpgHuntSuccess) => {
   const hardMode = content.includes('(but stronger)');
   const together = content.includes('hunting together');
 
@@ -112,7 +112,7 @@ async function rpgHuntSuccess({author, content, channelId}: IRpgHuntSuccess) {
     userId: author.id,
     type: together ? USER_STATS_RPG_COMMAND_TYPE.huntTogether : USER_STATS_RPG_COMMAND_TYPE.hunt,
   });
-}
+};
 
 interface IHealReminder {
   client: Client;
@@ -121,7 +121,7 @@ interface IHealReminder {
   content: Message['content'];
 }
 
-async function healReminder({client, channelId, author, content}: IHealReminder) {
+const healReminder = async ({client, channelId, author, content}: IHealReminder) => {
   const together = content.includes('hunting together');
   const healReminder = await getUserHealReminder({
     userId: author.id,
@@ -141,7 +141,7 @@ async function healReminder({client, channelId, author, content}: IHealReminder)
     },
     client,
   });
-}
+};
 
 interface ISuccessChecker {
   content: string;
@@ -214,12 +214,12 @@ interface IGetHealReminderMsg {
   target: number | undefined;
 }
 
-export function getHealReminderMsg({
+const getHealReminderMsg = ({
   content,
   author,
   together,
   target,
-}: IGetHealReminderMsg): string | void {
+}: IGetHealReminderMsg): string | void => {
   let hp: string | undefined;
   let partnerSaved: boolean | undefined = false;
   let hpLost: string | undefined;
@@ -298,4 +298,4 @@ export function getHealReminderMsg({
       msg = `Your HP is getting low. Time to ${RPG_CLICKABLE_SLASH_COMMANDS.heal} now`;
   }
   return msg;
-}
+};

@@ -2,8 +2,8 @@ import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import {
   isNoPetsToClaim,
-  isSuccessfullyClaimedPet,
   rpgPetClaim,
+  rpgPetClaimChecker,
 } from '../../../../lib/epic_rpg/commands/pets/petClaim.lib';
 
 export default <PrefixCommand>{
@@ -29,7 +29,7 @@ export default <PrefixCommand>{
     });
     event.on('embed', async (embed) => {
       if (
-        isSuccessfullyClaimedPet({
+        rpgPetClaimChecker.isSuccessfullyClaimedPet({
           embed,
           author: message.author,
         })

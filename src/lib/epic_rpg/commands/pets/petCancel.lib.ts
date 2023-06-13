@@ -48,17 +48,14 @@ interface IIsPetSuccessfullyCancelled {
   author: User;
 }
 
-export const isPetSuccessfullyCancelled = ({
-  message,
-  author,
-}: IIsPetSuccessfullyCancelled): boolean =>
+const isPetSuccessfullyCancelled = ({message, author}: IIsPetSuccessfullyCancelled): boolean =>
   message.mentions.has(author.id) && message.content.includes('pet adventure(s) cancelled');
 
 interface IExtractCancelledPetAmount {
   message: Message;
 }
 
-export const extractCancelledPetAmount = ({message}: IExtractCancelledPetAmount) => {
+const extractCancelledPetAmount = ({message}: IExtractCancelledPetAmount) => {
   const amount = message.content.match(/\*\*(\d+)\*\* pet adventure\(s\) cancelled/)?.[1];
   return amount ? parseInt(amount) : 0;
 };
@@ -110,7 +107,7 @@ interface IChecker {
   author: User;
 }
 
-export const isFailToCancelPet = ({message, author}: IChecker): boolean =>
+const isFailToCancelPet = ({message, author}: IChecker): boolean =>
   isPetNotOnAdventure({message, author}) ||
   isNoPetMeetRequirement({message, author}) ||
   isInvalidCancelPetId({message, author}) ||
@@ -133,3 +130,9 @@ const isNoPetMeetRequirement = ({message, author}: IChecker): boolean =>
 const isSelectedPetHasTimeTraveller = ({message, author}: IChecker): boolean =>
   message.mentions.has(author.id) &&
   message.content.includes('you cannot cancel the adventure of your pet');
+
+export const rpgPetCancelChecker = {
+  isFailToCancelPet,
+  extractCancelledPetAmount,
+  isPetSuccessfullyCancelled,
+};

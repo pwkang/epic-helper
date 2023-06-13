@@ -14,10 +14,14 @@ export const rpgPetClaim = async ({author}: IRpgPetClaim) => {
   });
 };
 
-export const isSuccessfullyClaimedPet = ({embed, author}: IMessageEmbedChecker) =>
+const isSuccessfullyClaimedPet = ({embed, author}: IMessageEmbedChecker) =>
   ['Reward summary', 'Pet adventure rewards'].some((str) => embed.title?.includes(str)) &&
   embed.author?.name === `${author.username} — pets`;
 
 export const isNoPetsToClaim = ({message, author}: IMessageContentChecker) =>
   message.content.includes('there are no pet adventure rewards to claim') &&
   message.mentions.has(author.id);
+
+export const rpgPetClaimChecker = {
+  isSuccessfullyClaimedPet,
+};

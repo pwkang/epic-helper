@@ -1,5 +1,4 @@
 import {Client, Embed, Message, User} from 'discord.js';
-import lootboxReader from '../../embedReaders/lootbox.reader';
 import {updateUserRubyAmount} from '../../../../models/user/user.service';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import embedReaders from '../../embedReaders';
@@ -24,6 +23,14 @@ export function rpgOpenLootbox({client, message, author, isSlashCommand}: IRpgOp
       event.stop();
     }
   });
+  event.on('content', (content) => {
+    if (isOpenTooMany({content})) {
+      event.stop();
+    }
+    if (isNotEnoughLootbox({content})) {
+      event.stop();
+    }
+  });
   if (isSlashCommand) event.triggerCollect(message);
 }
 
@@ -43,14 +50,12 @@ const rpgOpenLootboxSuccess = async ({embed, author}: IRpgOpenLootboxSuccess) =>
   }
 };
 
-export default rpgOpenLootboxSuccess;
-
 interface IIsLootboxOpened {
   author: User;
   embed: Embed;
 }
 
-export const isLootboxOpen = ({embed, author}: IIsLootboxOpened) =>
+const isLootboxOpen = ({embed, author}: IIsLootboxOpened) =>
   embed.author?.name === `${author.username} — lootbox` &&
   embed.fields[0]?.name.includes('opened!');
 
@@ -58,12 +63,12 @@ interface IIsNotEnoughLootbox {
   content: Message['content'];
 }
 
-export const isOpenTooMany = ({content}: IIsNotEnoughLootbox) =>
+const isOpenTooMany = ({content}: IIsNotEnoughLootbox) =>
   content.includes('You cannot open more than 100 lootboxes');
 
 interface IIsNotEnoughLootbox {
   content: Message['content'];
 }
 
-export const isNotEnoughLootbox = ({content}: IIsNotEnoughLootbox) =>
+const isNotEnoughLootbox = ({content}: IIsNotEnoughLootbox) =>
   content.includes("you don't have that many of this lootbox type");

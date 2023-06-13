@@ -109,11 +109,7 @@ interface IRpgWorkingSuccess {
   workingType?: ValuesOf<typeof RPG_WORKING_TYPE>;
 }
 
-export default async function rpgWorkingSuccess({
-  author,
-  workingType,
-  channelId,
-}: IRpgWorkingSuccess) {
+const rpgWorkingSuccess = async ({author, workingType, channelId}: IRpgWorkingSuccess) => {
   const cooldown = await calcCdReduction({
     userId: author.id,
     commandType: RPG_COMMAND_TYPE.working,
@@ -133,14 +129,14 @@ export default async function rpgWorkingSuccess({
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.working,
   });
-}
+};
 
 interface IIsRpgWorkingSuccess {
   content: string;
   author: User;
 }
 
-export const isRpgWorkingSuccess = ({author, content}: IIsRpgWorkingSuccess) =>
+const isRpgWorkingSuccess = ({author, content}: IIsRpgWorkingSuccess) =>
   content.includes(author.username) &&
   WORKING_ITEMS.some((item) => content.toLowerCase().includes(item));
 
@@ -149,7 +145,7 @@ interface IIsWorkingInSpace {
   author: User;
 }
 
-export const isWorkingInSpace = ({content}: IIsWorkingInSpace) =>
+const isWorkingInSpace = ({content}: IIsWorkingInSpace) =>
   [
     'no trees to chop',
     'what are you going to mine?',
@@ -162,7 +158,7 @@ interface IIsRubyMined {
   author: User;
 }
 
-export const isRubyMined = ({content, author}: IIsRubyMined) =>
+const isRubyMined = ({content, author}: IIsRubyMined) =>
   [author.username, 'GOT', '<:ruby:603456286184701953>'].every((msg) => content.includes(msg));
 
 interface IRubyAmountMined {
@@ -170,7 +166,7 @@ interface IRubyAmountMined {
   author: User;
 }
 
-export const rubyAmountMined = ({content}: IRubyAmountMined) => {
+const rubyAmountMined = ({content}: IRubyAmountMined) => {
   const regex = new RegExp('GOT (\\d+) <:ruby:603456286184701953>');
   const match = content.match(regex);
   return match ? parseInt(match[1]) : 0;
@@ -181,7 +177,7 @@ interface IIsEncounteringRubyDragon {
   author: User;
 }
 
-export const isEncounteringRubyDragon = ({embed, author}: IIsEncounteringRubyDragon) =>
+const isEncounteringRubyDragon = ({embed, author}: IIsEncounteringRubyDragon) =>
   embed.description?.includes('No matter how much you look around') &&
   embed.author?.name.includes(author.username);
 
@@ -190,5 +186,5 @@ interface IIsFoughtRubyDragon {
   author: User;
 }
 
-export const isFoughtRubyDragon = ({content, author}: IIsFoughtRubyDragon) =>
+const isFoughtRubyDragon = ({content, author}: IIsFoughtRubyDragon) =>
   [author.username, 'fights', 'THE RUBY DRAGON'].every((msg) => content.includes(msg));

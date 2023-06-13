@@ -1,10 +1,8 @@
 import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import {
-  extractCancelledPetAmount,
-  isFailToCancelPet,
-  isPetSuccessfullyCancelled,
   rpgPetAdvCancel,
+  rpgPetCancelChecker,
 } from '../../../../lib/epic_rpg/commands/pets/petCancel.lib';
 import sendMessage from '../../../../lib/discord.js/message/sendMessage';
 
@@ -31,12 +29,12 @@ export default <PrefixCommand>{
     if (!event) return;
     event.on('content', async (content, collected) => {
       if (
-        isPetSuccessfullyCancelled({
+        rpgPetCancelChecker.isPetSuccessfullyCancelled({
           message: collected,
           author: message.author,
         })
       ) {
-        const cancelledPetAmount = extractCancelledPetAmount({
+        const cancelledPetAmount = rpgPetCancelChecker.extractCancelledPetAmount({
           message: collected,
         });
         const options = await rpgPetAdvCancel({
@@ -53,7 +51,7 @@ export default <PrefixCommand>{
         event.stop();
       }
       if (
-        isFailToCancelPet({
+        rpgPetCancelChecker.isFailToCancelPet({
           message: collected,
           author: message.author,
         })

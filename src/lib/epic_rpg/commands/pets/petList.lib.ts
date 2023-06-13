@@ -56,7 +56,7 @@ interface IIsRpgPet {
   author: User;
 }
 
-export const isRpgPet = ({author, embed}: IIsRpgPet) =>
+const isRpgPet = ({author, embed}: IIsRpgPet) =>
   embed.author?.name === `${author.username} — pets` &&
   embed.description?.includes('Pets can collect items and coins');
 
@@ -90,4 +90,8 @@ interface IGetMaxPetId {
 const getMaxPetId = ({embed}: IGetMaxPetId) => {
   const num = embed.description?.split('\n')?.[1]?.split(' ')?.pop()?.split('/')[0];
   return num ? parseInt(num) : 0;
+};
+
+export const rpgPetListChecker = {
+  isRpgPet,
 };

@@ -58,7 +58,7 @@ interface IRpgEnchantSuccess {
   channelId: string;
 }
 
-export const rpgEnchantSuccess = async ({embed, author, client, channelId}: IRpgEnchantSuccess) => {
+const rpgEnchantSuccess = async ({embed, author, client, channelId}: IRpgEnchantSuccess) => {
   const enchantTier = getEnchantType({embed});
   const equipmentType = Object.values(EQUIPMENT_TYPE).find((type) =>
     embed.description?.toLowerCase().includes(type)
@@ -103,7 +103,7 @@ interface IIsSuccessfullyEnchanted {
   author: User;
 }
 
-export const isSuccessfullyEnchanted = ({author, embed}: IIsSuccessfullyEnchanted) =>
+const isSuccessfullyEnchanted = ({author, embed}: IIsSuccessfullyEnchanted) =>
   Object.values(ENCHANT_CMD_TYPE).some(
     (type) => embed.author?.name === `${author.username} — ${type}`
   );
@@ -112,5 +112,5 @@ interface IIsEnchantEquipmentBroken {
   embed: Embed;
 }
 
-export const isEnchantEquipmentBroken = ({embed}: IIsEnchantEquipmentBroken) =>
+const isEnchantEquipmentBroken = ({embed}: IIsEnchantEquipmentBroken) =>
   embed.description?.includes('but accidentally broke it');

@@ -65,11 +65,7 @@ interface IRpgAdventureSuccess {
 
 const ADVENTURE_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.adventure;
 
-export default async function rpgAdventureSuccess({
-  author,
-  content,
-  channelId,
-}: IRpgAdventureSuccess) {
+const rpgAdventureSuccess = async ({author, content, channelId}: IRpgAdventureSuccess) => {
   const hardMode = content.includes('(but stronger)');
 
   const cooldown = await calcCdReduction({
@@ -92,7 +88,7 @@ export default async function rpgAdventureSuccess({
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.adventure,
   });
-}
+};
 
 interface IHealReminder {
   client: Client;
@@ -122,22 +118,19 @@ interface ISuccessChecker {
   author: User;
 }
 
-export function isRpgAdventureSuccess({author, content}: ISuccessChecker) {
+const isRpgAdventureSuccess = ({author, content}: ISuccessChecker) => {
   return (
     content.includes(author.username) &&
     ADVENTURE_MONSTER_LIST.some((monster) => content.includes(monster))
   );
-}
+};
 
 interface IGetHealReminderMsg {
   content: Message['content'];
   target: number | undefined;
 }
 
-export async function getHealReminderMsg({
-  content,
-  target,
-}: IGetHealReminderMsg): Promise<string | void> {
+const getHealReminderMsg = ({content, target}: IGetHealReminderMsg): string | void => {
   let hp: string | undefined;
   let hpLost: string | undefined;
   let horseSaved = false;
@@ -172,4 +165,4 @@ export async function getHealReminderMsg({
       msg = `Your HP is getting low. Time to ${RPG_CLICKABLE_SLASH_COMMANDS.heal} now`;
   }
   return msg;
-}
+};

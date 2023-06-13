@@ -58,7 +58,7 @@ interface IRpgTrainingSuccess {
 
 const TRAINING_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.training;
 
-export default async function rpgUlTrainingSuccess({author, channelId}: IRpgTrainingSuccess) {
+const rpgUlTrainingSuccess = async ({author, channelId}: IRpgTrainingSuccess) => {
   const cooldown = await calcCdReduction({
     userId: author.id,
     commandType: RPG_COMMAND_TYPE.training,
@@ -78,8 +78,8 @@ export default async function rpgUlTrainingSuccess({author, channelId}: IRpgTrai
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.ultraining,
   });
-}
+};
 
-export function isRpgUltrainingSuccess({author, embed}: IIsRpgUltrainingSuccess) {
+const isRpgUltrainingSuccess = ({author, embed}: IIsRpgUltrainingSuccess) => {
   return [author.username, 'Well done'].every((msg) => embed.description?.includes(msg));
-}
+};

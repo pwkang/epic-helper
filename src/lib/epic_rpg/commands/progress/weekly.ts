@@ -53,7 +53,7 @@ interface IRpgWeeklySuccess {
   embed: Embed;
 }
 
-export default async function rpgWeeklySuccess({author, channelId}: IRpgWeeklySuccess) {
+const rpgWeeklySuccess = async ({author, channelId}: IRpgWeeklySuccess) => {
   const cooldown = await calcCdReduction({
     userId: author.id,
     commandType: RPG_COMMAND_TYPE.weekly,
@@ -67,12 +67,12 @@ export default async function rpgWeeklySuccess({author, channelId}: IRpgWeeklySu
     userId: author.id,
     channelId,
   });
-}
+};
 
 interface IIsRpgWeeklySuccess {
   embed: Embed;
   author: User;
 }
 
-export const isRpgWeeklySuccess = ({embed, author}: IIsRpgWeeklySuccess) =>
+const isRpgWeeklySuccess = ({embed, author}: IIsRpgWeeklySuccess) =>
   embed.author?.name === `${author.username} — weekly reward`;

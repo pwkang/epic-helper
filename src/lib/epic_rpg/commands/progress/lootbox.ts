@@ -62,11 +62,7 @@ interface IRpgBuyLootboxSuccess {
   content: Message['content'];
 }
 
-export default async function rpgBuyLootboxSuccess({
-  author,
-  content,
-  channelId,
-}: IRpgBuyLootboxSuccess) {
+const rpgBuyLootboxSuccess = async ({author, content, channelId}: IRpgBuyLootboxSuccess) => {
   const lootboxType = Object.values(RPG_LOOTBOX_TYPE).find((type) =>
     content.toLowerCase().includes(type)
   );
@@ -89,13 +85,13 @@ export default async function rpgBuyLootboxSuccess({
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.lootbox,
   });
-}
+};
 
 interface IIsLootboxSuccessfullyBought {
   content: Message['content'];
 }
 
-export const isLootboxSuccessfullyBought = ({content}: IIsLootboxSuccessfullyBought) =>
+const isLootboxSuccessfullyBought = ({content}: IIsLootboxSuccessfullyBought) =>
   Object.values(RPG_LOOTBOX_TYPE).some((lb) => content.toLowerCase().includes(lb)) &&
   content.includes('successfully bought for');
 
@@ -104,7 +100,7 @@ interface IIsNotEligibleToBuyLootbox {
   author: User;
 }
 
-export const isNotEligibleToBuyLootbox = ({message, author}: IIsNotEligibleToBuyLootbox) =>
+const isNotEligibleToBuyLootbox = ({message, author}: IIsNotEligibleToBuyLootbox) =>
   message.mentions.has(author.id) && message.content.includes('to buy this lootbox');
 
 interface IIsNotEnoughMoneyToBuyLootbox {
@@ -112,5 +108,5 @@ interface IIsNotEnoughMoneyToBuyLootbox {
   author: User;
 }
 
-export const isNotEnoughMoneyToBuyLootbox = ({content}: IIsNotEnoughMoneyToBuyLootbox) =>
+const isNotEnoughMoneyToBuyLootbox = ({content}: IIsNotEnoughMoneyToBuyLootbox) =>
   content.includes("You don't have enough money");

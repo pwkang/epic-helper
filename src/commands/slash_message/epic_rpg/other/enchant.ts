@@ -1,5 +1,5 @@
 import {SLASH_MESSAGE_BOT_TYPE} from '../../../../constants/bot';
-import {rpgEnchant} from '../../../../lib/epic_rpg/commands/other/enchant.lib';
+import {rpgEnchant} from '../../../../lib/epic_rpg/commands/other/enchant';
 
 export default <SlashMessage>{
   name: 'rpgEnchant',

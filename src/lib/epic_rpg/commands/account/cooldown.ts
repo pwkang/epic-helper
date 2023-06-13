@@ -10,8 +10,6 @@ import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import {calcExtraHuntCdWithPartner} from '../../../epic_helper/reminders/commandsCooldown';
 
-const isReady = (str: string) => str.includes(':white_check_mark:');
-
 const RPG_COMMAND_CATEGORY = {
   daily: ['daily'],
   weekly: ['weekly'],
@@ -49,7 +47,7 @@ interface IRpgCooldown {
   isSlashCommand: boolean;
 }
 
-export function rpgCooldown({client, message, author, isSlashCommand}: IRpgCooldown) {
+export const rpgCooldown = ({client, message, author, isSlashCommand}: IRpgCooldown) => {
   const event = createRpgCommandListener({
     client,
     channelId: message.channel.id,
@@ -66,14 +64,14 @@ export function rpgCooldown({client, message, author, isSlashCommand}: IRpgCoold
     }
   });
   if (isSlashCommand) event.triggerCollect(message);
-}
+};
 
 interface IRpgCooldownSuccess {
   embed: Embed;
   author: User;
 }
 
-export default async function rpgCooldownSuccess({author, embed}: IRpgCooldownSuccess) {
+const rpgCooldownSuccess = async ({author, embed}: IRpgCooldownSuccess) => {
   const currentCooldowns = await getUserAllCooldowns(author.id);
   const userProfile = await getUserAccount(author.id);
   if (!userProfile) return;
@@ -118,14 +116,14 @@ export default async function rpgCooldownSuccess({author, embed}: IRpgCooldownSu
       }
     }
   }
-}
+};
 
 interface IIsRpgCooldownResponse {
   embed: Embed;
   author: User;
 }
 
-export const isRpgCooldownResponse = ({embed, author}: IIsRpgCooldownResponse) =>
+const isRpgCooldownResponse = ({embed, author}: IIsRpgCooldownResponse) =>
   embed.author?.name === `${author.username} — cooldowns`;
 
 const extractCommandsCooldown = (embedRow: EmbedField['value']) =>
@@ -150,3 +148,5 @@ const extractAndCalculateReadyAt = (fieldRow: string) => {
     return acc + ms(cur);
   }, 0);
 };
+
+const isReady = (str: string) => str.includes(':white_check_mark:');

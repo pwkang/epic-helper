@@ -10,7 +10,7 @@ interface IRpgSuccess {
   isSlashCommand: boolean;
 }
 
-export function rpgTrade({client, message, author, isSlashCommand}: IRpgSuccess) {
+export const rpgTrade = ({client, message, author, isSlashCommand}: IRpgSuccess) => {
   const event = createRpgCommandListener({
     author,
     channelId: message.channelId,
@@ -29,7 +29,7 @@ export function rpgTrade({client, message, author, isSlashCommand}: IRpgSuccess)
     }
   });
   if (isSlashCommand) event.triggerCollect(message);
-}
+};
 
 interface IRpgTradeSuccess {
   embed: Embed;
@@ -45,8 +45,6 @@ const rpgTradeSuccess = async ({embed, author}: IRpgTradeSuccess) => {
     type: traded.ruby > 0 ? 'inc' : 'dec',
   });
 };
-
-export default rpgTradeSuccess;
 
 interface IExtractTradedItems {
   embed: Embed;
@@ -83,7 +81,7 @@ interface IIsRpgTrade {
   embed: Embed;
 }
 
-export const isRpgTrade = ({embed, author}: IIsRpgTrade) =>
+const isRpgTrade = ({embed, author}: IIsRpgTrade) =>
   embed.description?.includes('Our trade is done then') &&
   embed.fields[0]?.value.includes(author.username);
 
@@ -92,5 +90,5 @@ interface IIsNotEnoughItems {
   author: User;
 }
 
-export const isNotEnoughItems = ({author, message}: IIsNotEnoughItems) =>
+const isNotEnoughItems = ({author, message}: IIsNotEnoughItems) =>
   message.content.includes("you don't have enough") && message.mentions.has(author.id);

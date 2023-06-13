@@ -62,13 +62,11 @@ const rpgCraftSuccess = async ({content, author}: IRpgCraftSuccess) => {
   }
 };
 
-export default rpgCraftSuccess;
-
 interface IIsSuccessfullyCrafted {
   content: Message['content'];
 }
 
-export const isSuccessfullyCrafted = ({content}: IIsSuccessfullyCrafted) =>
+const isSuccessfullyCrafted = ({content}: IIsSuccessfullyCrafted) =>
   content.includes('successfully crafted!');
 
 interface IIsReturnPortionRecipes {

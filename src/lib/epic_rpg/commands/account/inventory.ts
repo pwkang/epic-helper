@@ -65,19 +65,23 @@ interface IRpgInventorySuccess {
   embed: Embed;
 }
 
-export default async function rpgInventorySuccess({author, embed}: IRpgInventorySuccess) {
+const rpgInventorySuccess = async ({author, embed}: IRpgInventorySuccess) => {
   const inventory = embedReaders.inventory({embed});
   await updateUserRubyAmount({
     userId: author.id,
     type: 'set',
     ruby: inventory.ruby ?? 0,
   });
-}
+};
 
 interface IIsUserInventory {
   embed: Embed;
   author: User;
 }
 
-export const isUserInventory = ({embed, author}: IIsUserInventory) =>
+const isUserInventory = ({embed, author}: IIsUserInventory) =>
   embed.author?.name === `${author.username} — inventory`;
+
+export const rpgInventoryChecker = {
+  isUserInventory,
+};

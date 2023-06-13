@@ -71,7 +71,7 @@ interface IRpgTrainingSuccess {
 
 const TRAINING_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.training;
 
-export default async function rpgTrainingSuccess({author, channelId}: IRpgTrainingSuccess) {
+const rpgTrainingSuccess = async ({author, channelId}: IRpgTrainingSuccess) => {
   const cooldown = await calcCdReduction({
     userId: author.id,
     commandType: RPG_COMMAND_TYPE.training,
@@ -91,33 +91,33 @@ export default async function rpgTrainingSuccess({author, channelId}: IRpgTraini
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.training,
   });
-}
+};
 
 interface IIsRpgTrainingSuccess {
   content: Message['content'];
   author: User;
 }
 
-export function isRpgTrainingSuccess({author, content}: IIsRpgTrainingSuccess) {
+const isRpgTrainingSuccess = ({author, content}: IIsRpgTrainingSuccess) => {
   return (
     content.includes(author.username) &&
     ['Well done', 'Better luck next time'].some((msg) => content.includes(msg))
   );
-}
+};
 
 interface IIsRpgTrainingQuestion {
   content: Message['content'];
   author: User;
 }
 
-export function isRpgTrainingQuestion({author, content}: IIsRpgTrainingQuestion) {
+const isRpgTrainingQuestion = ({author, content}: IIsRpgTrainingQuestion) => {
   return content.includes(author.username) && content.includes('is training in');
-}
+};
 
 interface IIsEncounteringPet {
   embed: Embed;
   author: User;
 }
 
-export const isEncounteringPet = ({embed, author}: IIsEncounteringPet) =>
+const isEncounteringPet = ({embed, author}: IIsEncounteringPet) =>
   [author.username, 'IS APPROACHING'].every((msg) => embed.fields[0]?.name?.includes(msg));

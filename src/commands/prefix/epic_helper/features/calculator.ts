@@ -8,7 +8,7 @@ import {
 } from '../../../../lib/epic_helper/features/calculator/materialCalculator';
 import sendMessage from '../../../../lib/discord.js/message/sendMessage';
 import replyMessage from '../../../../lib/discord.js/message/replyMessage';
-import {isUserInventory} from '../../../../lib/epic_rpg/commands/account/inventory';
+import {rpgInventoryChecker} from '../../../../lib/epic_rpg/commands/account/inventory';
 import {
   getCalcInfo,
   getCalcSTTMessage,
@@ -42,7 +42,7 @@ export default <PrefixCommand>{
     });
     if (!event) return;
     event.on('embed', async (embed) => {
-      if (isUserInventory({author: message.author, embed})) {
+      if (rpgInventoryChecker.isUserInventory({author: message.author, embed})) {
         event.stop();
         await sendMessage({
           client,
