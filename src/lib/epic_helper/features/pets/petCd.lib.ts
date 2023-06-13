@@ -5,8 +5,8 @@ import {convertNumToPetId} from '../../../../utils/petIdConversion';
 import {BOT_EMOJI} from '../../../../constants/epic_helper/bot_emojis';
 import {convertNumberToRoman} from '../../../../utils/romanConversion';
 import {RPG_PET_STATUS, RPG_PET_TYPE} from '../../../../constants/epic_rpg/pet';
-import dynamicTimeStamp from '../../../discord.js/dynamicTimestamp';
 import {getUserPets} from '../../../../models/user-pet/user-pet.service';
+import timestampHelper from '../../../discord.js/timestamp';
 
 export const PET_CD_PET_PAGE = 21;
 
@@ -77,9 +77,10 @@ const getStatusText = (pet: IUserPet) => {
   if (pet.status === RPG_PET_STATUS.back || (readyAt && readyAt < Date.now())) {
     return '`BACK FROM ADVENTURE`';
   } else if (pet.status === RPG_PET_STATUS.adventure && readyAt && readyAt > Date.now()) {
-    return `**Claim ${dynamicTimeStamp({
+    const readyTime = timestampHelper.relative({
       time: readyAt,
-    })}**`;
+    });
+    return `**Claim ${readyTime}**`;
   }
   return '**Idle**';
 };

@@ -6,9 +6,8 @@ import {
   MessagePayload,
   StringSelectMenuInteraction,
 } from 'discord.js';
-import sendMessage from './sendMessage';
 import ms from 'ms';
-import editMessage from './editMessage';
+import {djsMessageHelper} from './index';
 
 interface SendInteractiveMessageProps {
   client: Client;
@@ -16,7 +15,7 @@ interface SendInteractiveMessageProps {
   options: string | MessagePayload | MessageCreateOptions;
 }
 
-export default async function sendInteractiveMessage<EventType extends string>({
+export default async function _sendInteractiveMessage<EventType extends string>({
   channelId,
   options,
   client,
@@ -24,7 +23,7 @@ export default async function sendInteractiveMessage<EventType extends string>({
   const channel = client.channels.cache.get(channelId);
   if (!channel) return;
 
-  const sentMessage = await sendMessage({
+  const sentMessage = await djsMessageHelper.send({
     channelId,
     client,
     options,
@@ -62,7 +61,7 @@ export default async function sendInteractiveMessage<EventType extends string>({
     if (!sentMessage) return;
 
     if (reason === 'idle')
-      editMessage({
+      djsMessageHelper.edit({
         client,
         message: sentMessage,
         options: {

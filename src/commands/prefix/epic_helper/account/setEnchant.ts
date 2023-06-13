@@ -1,8 +1,8 @@
 import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuInteraction} from 'discord.js';
 import {RPG_ENCHANT_LEVEL} from '../../../../constants/epic_rpg/enchant';
-import sendInteractiveMessage from '../../../../lib/discord.js/message/sendInteractiveMessage';
 import {removeUserEnchantTier, setUserEnchantTier} from '../../../../models/user/user.service';
+import {djsMessageHelper} from '../../../../lib/discord.js/message';
 
 type SelectOptionsValue = ValuesOf<typeof RPG_ENCHANT_LEVEL> | 'remove';
 
@@ -11,7 +11,7 @@ export default <PrefixCommand>{
   commands: ['set enchant', 'setEnchant', 'se'],
   type: PREFIX_COMMAND_TYPE.bot,
   execute: async (client, message) => {
-    const event = await sendInteractiveMessage({
+    const event = await djsMessageHelper.interactiveSend({
       options: {
         content: 'Select an enchant level',
         components: [enchantLevel],

@@ -10,8 +10,8 @@ import {
   getCalcSTTMessage,
   isCalcSTT,
 } from '../../../epic_helper/features/calculator/sttScoreCalculator';
-import sendMessage from '../../../discord.js/message/sendMessage';
 import embedReaders from '../../embedReaders';
+import {djsMessageHelper} from '../../../discord.js/message';
 
 interface IRpg {
   client: Client;
@@ -48,7 +48,7 @@ export function rpgInventory({client, message, author, isSlashCommand, args}: IR
                 level: calcInfo?.level ?? 0,
               });
 
-          sendMessage({
+          djsMessageHelper.send({
             client,
             channelId: message.channel.id,
             options,

@@ -5,7 +5,7 @@ interface DeleteMessageProps {
   message: Message;
 }
 
-export default function deleteMessage({client, message}: DeleteMessageProps) {
+export default function _deleteMessage({client, message}: DeleteMessageProps) {
   if (message.author.id !== client.user?.id) return;
   if (message.deletable) message.delete().catch(console.error);
 }

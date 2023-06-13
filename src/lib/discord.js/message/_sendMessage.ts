@@ -9,7 +9,7 @@ interface SendMessageProps {
   options: string | MessagePayload | MessageCreateOptions;
 }
 
-export default async function sendMessage({
+export default async function _sendMessage({
   channelId,
   options,
   client,

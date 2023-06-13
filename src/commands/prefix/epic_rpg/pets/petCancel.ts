@@ -4,7 +4,7 @@ import {
   rpgPetAdvCancel,
   rpgPetCancelChecker,
 } from '../../../../lib/epic_rpg/commands/pets/petCancel.lib';
-import sendMessage from '../../../../lib/discord.js/message/sendMessage';
+import {djsMessageHelper} from '../../../../lib/discord.js/message';
 
 const args1 = ['pets', 'pet'];
 const args2 = ['adventure', 'adv'];
@@ -43,7 +43,7 @@ export default <PrefixCommand>{
           selectedPets: args.slice(3),
           amountOfPetCancelled: cancelledPetAmount,
         });
-        sendMessage({
+        djsMessageHelper.send({
           client,
           channelId: message.channel.id,
           options,

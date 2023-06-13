@@ -6,14 +6,13 @@ import {
   getInvalidCalcArgsMessage,
   isCalcMaterial,
 } from '../../../../lib/epic_helper/features/calculator/materialCalculator';
-import sendMessage from '../../../../lib/discord.js/message/sendMessage';
-import replyMessage from '../../../../lib/discord.js/message/replyMessage';
 import {rpgInventoryChecker} from '../../../../lib/epic_rpg/commands/account/inventory';
 import {
   getCalcInfo,
   getCalcSTTMessage,
   isCalcSTT,
 } from '../../../../lib/epic_helper/features/calculator/sttScoreCalculator';
+import {djsMessageHelper} from '../../../../lib/discord.js/message';
 
 export default <PrefixCommand>{
   name: 'matsCalc',
@@ -21,13 +20,13 @@ export default <PrefixCommand>{
   type: PREFIX_COMMAND_TYPE.bot,
   execute: (client, message, args) => {
     if (!isCalcSTT(args) && !isCalcMaterial(args))
-      return replyMessage({
+      return djsMessageHelper.reply({
         client,
         message,
         options: getInvalidCalcArgsMessage(),
       });
 
-    replyMessage({
+    djsMessageHelper.reply({
       client,
       message,
       options: getCalcInstructionMessage(),
@@ -44,7 +43,7 @@ export default <PrefixCommand>{
     event.on('embed', async (embed) => {
       if (rpgInventoryChecker.isUserInventory({author: message.author, embed})) {
         event.stop();
-        await sendMessage({
+        await djsMessageHelper.send({
           client,
           channelId: message.channel.id,
           options: isCalcMaterial(args)

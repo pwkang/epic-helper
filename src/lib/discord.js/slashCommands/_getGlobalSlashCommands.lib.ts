@@ -5,7 +5,7 @@ interface IGetGlobalSlashCommands {
   client: Client;
 }
 
-export const getGlobalSlashCommands = async ({client}: IGetGlobalSlashCommands) => {
+export const _getGlobalSlashCommands = async ({client}: IGetGlobalSlashCommands) => {
   if (!client.user) return [];
   try {
     const data = await discordJsRest.get(Routes.applicationCommands(client.user.id));

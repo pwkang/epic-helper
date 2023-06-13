@@ -1,10 +1,8 @@
 import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {listSlashCommands} from '../../../../utils/listSlashCommands';
-import {createGuildSlashCommand} from '../../../../lib/discord.js/slashCommands/createGuildSlashCommand';
-import {createGlobalSlashCommand} from '../../../../lib/discord.js/slashCommands/createGlobalSlashCommand';
 import {sleep} from '../../../../utils/sleep';
-import sendMessage from '../../../../lib/discord.js/message/sendMessage';
-import editMessage from '../../../../lib/discord.js/message/editMessage';
+import {djsMessageHelper} from '../../../../lib/discord.js/message';
+import djsRestHelper from '../../../../lib/discord.js/slashCommands';
 
 export default <PrefixCommand>{
   name: 'registerSlash',
@@ -17,7 +15,7 @@ export default <PrefixCommand>{
     const isGlobal = message.content.includes('--global');
     const commandsToRegister = slashCommands.filter((sc) => args.includes(sc.name));
     if (!commandsToRegister.length)
-      return sendMessage({
+      return djsMessageHelper.send({
         client,
         channelId: message.channel.id,
         options: {
@@ -25,7 +23,7 @@ export default <PrefixCommand>{
         },
       });
     if (!isGuild && !isGlobal) {
-      return sendMessage({
+      return djsMessageHelper.send({
         client,
         channelId: message.channel.id,
         options: {
@@ -34,7 +32,7 @@ export default <PrefixCommand>{
       });
     }
     let registered = 0;
-    const sentMessage = await sendMessage({
+    const sentMessage = await djsMessageHelper.send({
       client,
       channelId: message.channel.id,
       options: {
@@ -46,14 +44,14 @@ export default <PrefixCommand>{
     if (isGuild) {
       for (const command of commandsToRegister) {
         // ==== Register guild slash command ====
-        await createGuildSlashCommand({
+        await djsRestHelper.slashCommand.guild.createOne({
           client,
           guild: message.guild!,
           commands: command.builder.toJSON(),
         });
         registered++;
         // ==== Update status message ====
-        await editMessage({
+        await djsMessageHelper.edit({
           client,
           message: sentMessage,
           options: {
@@ -66,13 +64,13 @@ export default <PrefixCommand>{
     } else if (isGlobal) {
       for (const command of commandsToRegister) {
         // ==== Register global slash command ====
-        await createGlobalSlashCommand({
+        await djsRestHelper.slashCommand.global.createOne({
           client,
           commands: command.builder.toJSON(),
         });
         registered++;
         // ==== Update status message ====
-        await editMessage({
+        await djsMessageHelper.edit({
           client,
 
           message: sentMessage,

@@ -4,8 +4,8 @@ import {
   statsActionRow,
   TEventTypes,
 } from '../../../../lib/epic_helper/features/stats.lib';
-import sendInteractiveMessage from '../../../../lib/discord.js/message/sendInteractiveMessage';
 import {ButtonStyle} from 'discord.js';
+import {djsMessageHelper} from '../../../../lib/discord.js/message';
 
 export default <PrefixCommand>{
   name: 'stats',
@@ -15,7 +15,7 @@ export default <PrefixCommand>{
     const embeds = await getStatsEmbeds({
       author: message.author,
     });
-    const event = await sendInteractiveMessage<TEventTypes>({
+    const event = await djsMessageHelper.interactiveSend<TEventTypes>({
       client,
       channelId: message.channel.id,
       options: {embeds: [embeds.donor], components: [statsActionRow]},

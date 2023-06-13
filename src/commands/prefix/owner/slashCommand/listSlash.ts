@@ -2,9 +2,8 @@ import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {BOT_COLOR} from '../../../../constants/epic_helper/general';
 import {listSlashCommands} from '../../../../utils/listSlashCommands';
 import {EmbedBuilder} from 'discord.js';
-import sendMessage from '../../../../lib/discord.js/message/sendMessage';
-import {getGuildSlashCommands} from '../../../../lib/discord.js/slashCommands/getGuildSlashCommands.lib';
-import {getGlobalSlashCommands} from '../../../../lib/discord.js/slashCommands/getGlobalSlashCommands.lib';
+import {djsMessageHelper} from '../../../../lib/discord.js/message';
+import djsRestHelper from '../../../../lib/discord.js/slashCommands';
 
 export default <PrefixCommand>{
   name: 'listSlash',
@@ -12,8 +11,11 @@ export default <PrefixCommand>{
   type: PREFIX_COMMAND_TYPE.dev,
   execute: async (client, message) => {
     const slashCommands = await listSlashCommands();
-    const guildSlashCommands = await getGuildSlashCommands({client, guild: message.guild!});
-    const globalSlashCommands = await getGlobalSlashCommands({client});
+    const guildSlashCommands = await djsRestHelper.slashCommand.guild.getAll({
+      client,
+      guild: message.guild!,
+    });
+    const globalSlashCommands = await djsRestHelper.slashCommand.global.getAll({client});
 
     const registeredGlobalSlashCommands: SlashCommand['name'][] = [];
     const registeredGuildSlashCommands: SlashCommand['name'][] = [];
@@ -64,7 +66,7 @@ ${slashCommands
         }
       );
 
-    await sendMessage({
+    await djsMessageHelper.send({
       client,
       options: {
         embeds: [embed],

@@ -1,10 +1,10 @@
 import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import {
-  rpgPetAdventureChecker,
   rpgPetAdventure,
+  rpgPetAdventureChecker,
 } from '../../../../lib/epic_rpg/commands/pets/petAdventure.lib';
-import sendMessage from '../../../../lib/discord.js/message/sendMessage';
+import {djsMessageHelper} from '../../../../lib/discord.js/message';
 
 const args1 = ['pets', 'pet'];
 const args2 = ['adventure', 'adv'];
@@ -53,7 +53,7 @@ export default <PrefixCommand>{
           amountOfPetSent,
           message: collected,
         });
-        sendMessage({
+        djsMessageHelper.send({
           client,
           channelId: message.channel.id,
           options,

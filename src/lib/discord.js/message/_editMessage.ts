@@ -6,7 +6,7 @@ interface EditMessageProps {
   options: string | MessagePayload | MessageEditOptions;
 }
 
-export default async function editMessage({client, message, options}: EditMessageProps) {
+export default async function _editMessage({client, message, options}: EditMessageProps) {
   if (message.author.id !== client.user?.id) return;
   if (message.editable) await message.edit(options);
 }

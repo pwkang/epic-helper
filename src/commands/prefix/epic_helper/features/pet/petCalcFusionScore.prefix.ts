@@ -1,6 +1,6 @@
 import {PREFIX_COMMAND_TYPE} from '../../../../../constants/bot';
 import generateFusionScoreEmbed from '../../../../../lib/epic_helper/features/pets/petCalcFusionScore.lib';
-import sendMessage from '../../../../../lib/discord.js/message/sendMessage';
+import {djsMessageHelper} from '../../../../../lib/discord.js/message';
 
 export default <PrefixCommand>{
   name: 'petCalcFusionScore',
@@ -11,7 +11,7 @@ export default <PrefixCommand>{
       author: message.author,
       petIds: args,
     });
-    sendMessage({
+    djsMessageHelper.send({
       client,
       options: {
         embeds,

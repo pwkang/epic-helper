@@ -8,10 +8,10 @@ import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic_helper/comm
 import {calcCdReduction} from '../../../epic_helper/reminders/commandsCooldown';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import {updateUserRubyAmount} from '../../../../models/user/user.service';
-import replyMessage from '../../../discord.js/message/replyMessage';
 import {updateReminderChannel} from '../../../epic_helper/reminders/reminderChannel';
 import {countUserStats} from '../../../../models/user-stats/user-stats.service';
 import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
+import {djsMessageHelper} from '../../../discord.js/message';
 
 const WORKING_ITEMS = [
   'normie fish',
@@ -77,7 +77,7 @@ export function rpgWorking({client, message, author, isSlashCommand, workingType
         ruby: 10,
       });
       event.stop();
-      replyMessage({
+      djsMessageHelper.reply({
         client,
         message,
         options: {

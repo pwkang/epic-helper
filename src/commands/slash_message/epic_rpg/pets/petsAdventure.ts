@@ -4,18 +4,16 @@ import {
   rpgPetAdventureChecker,
 } from '../../../../lib/epic_rpg/commands/pets/petAdventure.lib';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
-import sendInteractiveMessage from '../../../../lib/discord.js/message/sendInteractiveMessage';
-import dynamicTimeStamp from '../../../../lib/discord.js/dynamicTimestamp';
 import ms from 'ms';
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Message, User} from 'discord.js';
-import updateInteraction from '../../../../lib/discord.js/interaction/updateInteraction';
-import sendMessage from '../../../../lib/discord.js/message/sendMessage';
-import editMessage from '../../../../lib/discord.js/message/editMessage';
 import {
   rpgPetAdvCancel,
   rpgPetCancelChecker,
 } from '../../../../lib/epic_rpg/commands/pets/petCancel.lib';
 import {isPetsIdValid} from '../../../../utils/petIdConversion';
+import djsInteractionHelper from '../../../../lib/discord.js/interaction';
+import {djsMessageHelper} from '../../../../lib/discord.js/message';
+import timestampHelper from '../../../../lib/discord.js/timestamp';
 
 export default <SlashMessage>{
   name: 'petsAdventure',
@@ -53,7 +51,7 @@ export default <SlashMessage>{
           selectedPets: selectedPetsId,
           amountOfPetSent,
         });
-        sendMessage({channelId: message.channel.id, client, options});
+        djsMessageHelper.send({channelId: message.channel.id, client, options});
       }
       if (
         rpgPetCancelChecker.isPetSuccessfullyCancelled({
@@ -77,7 +75,7 @@ export default <SlashMessage>{
           selectedPets: selectedPetsId,
           amountOfPetCancelled,
         });
-        sendMessage({
+        djsMessageHelper.send({
           channelId: message.channel.id,
           client,
           options,
@@ -100,14 +98,15 @@ const collectSelectedPets = ({
   author,
 }: ICollectSelectedPets): Promise<string[]> => {
   return new Promise(async (resolve) => {
-    const event = await sendInteractiveMessage({
+    const readyIn = timestampHelper.relative({
+      time: new Date(Date.now() + ms('5s')),
+    });
+    const event = await djsMessageHelper.interactiveSend({
       client,
       channelId: message.channel.id,
       options: {
         content: `Select EPIC or insert IDs to select pets
-**EPIC** will be auto select if no response ${dynamicTimeStamp({
-          time: new Date(Date.now() + ms('5s')),
-        })}`,
+**EPIC** will be auto select if no response ${readyIn}`,
         components: [row],
       },
     });
@@ -122,7 +121,7 @@ const collectSelectedPets = ({
     });
     event.on('ids', async (interaction) => {
       if (!interaction.isButton()) return {};
-      updateInteraction({
+      djsInteractionHelper.updateInteraction({
         client,
         interaction,
         options: {
@@ -138,7 +137,7 @@ const collectSelectedPets = ({
       if (event.isEnded()) return;
       resolve(['epic']);
       event.stop();
-      editMessage({
+      djsMessageHelper.edit({
         client,
         message: event.message,
         options: {

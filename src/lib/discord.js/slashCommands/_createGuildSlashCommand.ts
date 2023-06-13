@@ -7,7 +7,7 @@ interface ICreateGuildSlashCommand {
   guild: Guild;
 }
 
-export const createGuildSlashCommand = async ({
+export const _createGuildSlashCommand = async ({
   commands,
   client,
   guild,

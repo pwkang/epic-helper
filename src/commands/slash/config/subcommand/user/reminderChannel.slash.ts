@@ -1,10 +1,10 @@
 import {IUserConfig} from '../config.type';
-import replyInteraction from '../../../../../lib/discord.js/interaction/replyInteraction';
 import {RPG_COMMAND_TYPE, RPG_WORKING_TYPE} from '../../../../../constants/epic_rpg/rpg';
 import {
   removeUserReminderChannel,
   setUserReminderChannel,
 } from '../../../../../models/user/user.service';
+import djsInteractionHelper from '../../../../../lib/discord.js/interaction';
 
 export const setReminderChannelSlash = async ({client, interaction}: IUserConfig) => {
   const optionReminderType = interaction.options.getString('reminder-type')!;
@@ -13,7 +13,7 @@ export const setReminderChannelSlash = async ({client, interaction}: IUserConfig
   const reminderType = matchReminderType(optionReminderType);
 
   if (!reminderType.length)
-    return replyInteraction({
+    return djsInteractionHelper.replyInteraction({
       client,
       interaction,
       options: {
@@ -47,7 +47,7 @@ export const setReminderChannelSlash = async ({client, interaction}: IUserConfig
       break;
   }
 
-  replyInteraction({
+  await djsInteractionHelper.replyInteraction({
     client,
     interaction,
     options: {

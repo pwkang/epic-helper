@@ -7,7 +7,11 @@ interface IGetGuildSlashCommands {
   commandId: string;
 }
 
-export const findGuildSlashCommand = async ({guild, client, commandId}: IGetGuildSlashCommands) => {
+export const _findGuildSlashCommand = async ({
+  guild,
+  client,
+  commandId,
+}: IGetGuildSlashCommands) => {
   if (!client.user) return [];
 
   try {

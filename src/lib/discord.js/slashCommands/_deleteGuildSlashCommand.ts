@@ -7,7 +7,7 @@ interface IDeleteGuildSlashCommand {
   commandId: string;
 }
 
-export const deleteGuildSlashCommand = async ({
+export const _deleteGuildSlashCommand = async ({
   client,
   guild,
   commandId,

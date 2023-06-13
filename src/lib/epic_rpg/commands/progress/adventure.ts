@@ -10,10 +10,10 @@ import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import {RPG_CLICKABLE_SLASH_COMMANDS} from '../../../../constants/epic_rpg/clickable_slash';
 import {getUserHealReminder} from '../../../../models/user/user.service';
-import sendMessage from '../../../discord.js/message/sendMessage';
 import {updateReminderChannel} from '../../../epic_helper/reminders/reminderChannel';
 import {countUserStats} from '../../../../models/user-stats/user-stats.service';
 import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
+import {djsMessageHelper} from '../../../discord.js/message';
 
 interface IRpgAdventure {
   client: Client;
@@ -104,7 +104,7 @@ async function healReminder({client, channelId, author, content}: IHealReminder)
   if (!healReminder) return;
   const healReminderMsg = await getHealReminderMsg({content, target: healReminder});
   if (!healReminderMsg) return;
-  sendMessage({
+  djsMessageHelper.send({
     channelId,
     options: {
       content: author + healReminderMsg,

@@ -6,7 +6,7 @@ interface IDeleteGuildSlashCommand {
   commandId: string;
 }
 
-export const deleteGlobalSlashCommand = async ({client, commandId}: IDeleteGuildSlashCommand) => {
+export const _deleteGlobalSlashCommand = async ({client, commandId}: IDeleteGuildSlashCommand) => {
   if (!client.user) return [];
   try {
     await discordJsRest.delete(Routes.applicationCommand(client.user.id!, commandId));

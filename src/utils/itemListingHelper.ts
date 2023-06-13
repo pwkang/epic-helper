@@ -6,10 +6,9 @@ import {
   Message,
 } from 'discord.js';
 import {generateNavigationRow} from './paginationRow';
-import sendInteractiveMessage from '../lib/discord.js/message/sendInteractiveMessage';
-import replyInteraction from '../lib/discord.js/interaction/replyInteraction';
-import sendMessage from '../lib/discord.js/message/sendMessage';
 import {sleep} from './sleep';
+import djsInteractionHelper from '../lib/discord.js/interaction';
+import {djsMessageHelper} from '../lib/discord.js/message';
 
 type TActionType =
   | {message: Message; interaction?: never}
@@ -99,7 +98,7 @@ const showAllItems = async ({
   const totalPage = Math.floor(totalItems / itemsPerPage);
   for (let i = 0; i <= totalPage; i++) {
     const embed = await embedFn(i);
-    await sendMessage({
+    await djsMessageHelper.send({
       client,
       channelId,
       options: {
@@ -120,13 +119,13 @@ interface IGenerateResponse {
 const generateResponse = async ({client, message, interaction, options}: IGenerateResponse) => {
   let event;
   if (message) {
-    event = await sendInteractiveMessage({
+    event = await djsMessageHelper.interactiveSend({
       client,
       channelId: message.channel.id,
       options,
     });
   } else if (interaction) {
-    event = await replyInteraction({
+    event = await djsInteractionHelper.replyInteraction({
       client,
       interaction,
       options,

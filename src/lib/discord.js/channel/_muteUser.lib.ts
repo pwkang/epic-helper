@@ -1,6 +1,6 @@
 import {Client, PermissionsBitField, TextChannel} from 'discord.js';
-import sendMessage from '../message/sendMessage';
-import {unMuteUser} from './unMuteUser.lib';
+import djsChannelHelper from './index';
+import {djsMessageHelper} from '../message';
 
 const requiredPermissions = [PermissionsBitField.Flags.ManageRoles];
 
@@ -11,13 +11,13 @@ interface IMuteUser {
   unMuteIn?: number;
 }
 
-export const muteUser = async ({userId, client, channelId, unMuteIn}: IMuteUser) => {
+export const _muteUser = async ({userId, client, channelId, unMuteIn}: IMuteUser) => {
   const channel = client.channels.cache.get(channelId);
   if (!channel) return;
   if (!(channel instanceof TextChannel)) return;
 
   if (!channel.permissionsFor(client.user?.id ?? '')?.has(requiredPermissions)) {
-    await sendMessage({
+    await djsMessageHelper.send({
       channelId,
       client,
       options: {
@@ -34,7 +34,7 @@ export const muteUser = async ({userId, client, channelId, unMuteIn}: IMuteUser)
 
   if (unMuteIn) {
     setTimeout(async () => {
-      await unMuteUser({
+      await djsChannelHelper.unMuteUser({
         client,
         channelId,
         userId,

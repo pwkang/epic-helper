@@ -14,7 +14,7 @@ interface IReplyInteraction {
   options: InteractionReplyOptions;
 }
 
-export default async function replyInteraction<T>({
+export default async function _replyInteraction<T>({
   interaction,
   interactive,
   options,

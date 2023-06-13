@@ -1,6 +1,6 @@
 import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {toggleHuntSwitch} from '../../../../models/user/user.service';
-import replyMessage from '../../../../lib/discord.js/message/replyMessage';
+import {djsMessageHelper} from '../../../../lib/discord.js/message';
 
 export default <PrefixCommand>{
   name: 'accountHuntSwitch',
@@ -12,7 +12,7 @@ export default <PrefixCommand>{
     const content = newStatus
       ? 'Switching hunt reminder message between **HUNT** and **HUNT TOGETHER**\nYou will now hunt with cooldown set in `donor`'
       : 'Stop switching reminder message between **HUNT** and **HUNT TOGETHER**\nYou will now hunt with cooldown set in `donorp`';
-    replyMessage({
+    djsMessageHelper.reply({
       client,
       message,
       options: {

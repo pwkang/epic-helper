@@ -10,8 +10,8 @@ import {
 } from '../../../models/user-reminder/user-reminder.type';
 import {EmbedBuilder, User} from 'discord.js';
 import {BOT_COLOR} from '../../../constants/epic_helper/general';
-import dynamicTimeStamp from '../../discord.js/dynamicTimestamp';
 import {BOT_EMOJI} from '../../../constants/epic_helper/bot_emojis';
+import timestampHelper from '../../discord.js/timestamp';
 
 interface ICooldownItem {
   type: ValuesOf<typeof RPG_COMMAND_TYPE>;
@@ -124,11 +124,10 @@ const getUserCooldownEmbed = ({userReminder, author}: IGetUserCooldownEmbedProps
     for (const item of field.value) {
       const cooldown = userReminder.find((c) => c.type === item.type);
       if (cooldown && cooldown.readyAt.getTime() > Date.now()) {
-        value.push(
-          `${BOT_EMOJI.utils.notReady} ~-~ \`${item.name(cooldown.props)}\` (${dynamicTimeStamp({
-            time: cooldown.readyAt,
-          })})`
-        );
+        const readyIn = timestampHelper.relative({
+          time: cooldown.readyAt,
+        });
+        value.push(`${BOT_EMOJI.utils.notReady} ~-~ \`${item.name(cooldown.props)}\` (${readyIn})`);
       } else if (!field.skipIfNone) {
         value.push(`${BOT_EMOJI.utils.ready} ~-~ \`${item.name({})}\``);
       }

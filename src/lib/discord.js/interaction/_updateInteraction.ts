@@ -6,6 +6,6 @@ interface IUpdateInteraction {
   options: InteractionUpdateOptions;
 }
 
-export default function updateInteraction({interaction, options}: IUpdateInteraction) {
+export default function _updateInteraction({interaction, options}: IUpdateInteraction) {
   interaction.update(options).catch(console.error);
 }

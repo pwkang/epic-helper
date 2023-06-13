@@ -8,10 +8,10 @@ import {calcCdReduction} from '../../../epic_helper/reminders/commandsCooldown';
 import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import getTrainingAnswer from '../../../epic_helper/features/trainingHelper';
-import sendMessage from '../../../discord.js/message/sendMessage';
 import {updateReminderChannel} from '../../../epic_helper/reminders/reminderChannel';
 import {countUserStats} from '../../../../models/user-stats/user-stats.service';
 import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
+import {djsMessageHelper} from '../../../discord.js/message';
 
 interface IRpgTraining {
   client: Client;
@@ -31,7 +31,7 @@ export function rpgTraining({client, message, author, isSlashCommand}: IRpgTrain
     if (isRpgTrainingQuestion({author, content})) {
       event.pendingAnswer();
       const answer = await getTrainingAnswer({author, content});
-      sendMessage({
+      djsMessageHelper.send({
         channelId: message.channel.id,
         client,
         options: {

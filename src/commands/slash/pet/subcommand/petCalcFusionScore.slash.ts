@@ -1,6 +1,6 @@
 import {IPetSubcommand} from '../pet.type';
-import replyInteraction from '../../../../lib/discord.js/interaction/replyInteraction';
 import generateFusionScoreEmbed from '../../../../lib/epic_helper/features/pets/petCalcFusionScore.lib';
+import djsInteractionHelper from '../../../../lib/discord.js/interaction';
 
 export default async function petCalcFusionScore({client, interaction}: IPetSubcommand) {
   const petIds = interaction.options.getString('pet-id')?.split(' ') ?? [];
@@ -10,7 +10,7 @@ export default async function petCalcFusionScore({client, interaction}: IPetSubc
     author: interaction.user,
   });
 
-  replyInteraction({
+  await djsInteractionHelper.replyInteraction({
     client,
     interaction,
     options: {

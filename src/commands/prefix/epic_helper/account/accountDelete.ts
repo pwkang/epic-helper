@@ -1,10 +1,9 @@
 import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {isUserAccountExist, userAccountDelete} from '../../../../models/user/user.service';
-import sendInteractiveMessage from '../../../../lib/discord.js/message/sendInteractiveMessage';
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle} from 'discord.js';
-import replyMessage from '../../../../lib/discord.js/message/replyMessage';
 import {clearUserCooldowns} from '../../../../models/user-reminder/user-reminder.service';
 import {clearUserPets} from '../../../../models/user-pet/user-pet.service';
+import {djsMessageHelper} from '../../../../lib/discord.js/message';
 
 export default <PrefixCommand>{
   name: 'accountDelete',
@@ -13,14 +12,14 @@ export default <PrefixCommand>{
   execute: async (client, message) => {
     const userExists = await isUserAccountExist(message.author.id);
     if (!userExists) {
-      return replyMessage({
+      return djsMessageHelper.reply({
         client,
         options: `You have not registered yet!`,
         message,
       });
     }
 
-    const event = await sendInteractiveMessage({
+    const event = await djsMessageHelper.interactiveSend({
       client,
       channelId: message.channel.id,
       options: {

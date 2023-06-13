@@ -1,8 +1,8 @@
 import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle} from 'discord.js';
-import sendInteractiveMessage from '../../../../lib/discord.js/message/sendInteractiveMessage';
 import {updateRpgDonorTier} from '../../../../models/user/user.service';
 import {RPG_DONOR_TIER} from '../../../../constants/epic_rpg/rpg';
+import {djsMessageHelper} from '../../../../lib/discord.js/message';
 
 export default <PrefixCommand>{
   name: 'rpgDonor',
@@ -33,7 +33,7 @@ export default <PrefixCommand>{
       donor3
     );
 
-    const event = await sendInteractiveMessage({
+    const event = await djsMessageHelper.interactiveSend({
       client,
       channelId: message.channel.id,
       options: {

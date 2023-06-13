@@ -6,7 +6,7 @@ interface ICreateGlobalSlashCommand {
   commands: ReturnType<SlashCommandBuilder['toJSON']>;
 }
 
-export const createGlobalSlashCommand = async ({commands, client}: ICreateGlobalSlashCommand) => {
+export const _createGlobalSlashCommand = async ({commands, client}: ICreateGlobalSlashCommand) => {
   try {
     const data = await discordJsRest.post(Routes.applicationCommands(client.user?.id!), {
       body: commands,

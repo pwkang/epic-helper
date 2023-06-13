@@ -1,13 +1,9 @@
 import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {listSlashCommands} from '../../../../utils/listSlashCommands';
-import {deleteGuildSlashCommand} from '../../../../lib/discord.js/slashCommands/deleteGuildSlashCommand';
-import {getGuildSlashCommands} from '../../../../lib/discord.js/slashCommands/getGuildSlashCommands.lib';
 import {ApplicationCommand, Message} from 'discord.js';
-import {getGlobalSlashCommands} from '../../../../lib/discord.js/slashCommands/getGlobalSlashCommands.lib';
-import {deleteGlobalSlashCommand} from '../../../../lib/discord.js/slashCommands/deleteGlobalSlashCommand';
-import sendMessage from '../../../../lib/discord.js/message/sendMessage';
-import editMessage from '../../../../lib/discord.js/message/editMessage';
 import {sleep} from '../../../../utils/sleep';
+import {djsMessageHelper} from '../../../../lib/discord.js/message';
+import djsRestHelper from '../../../../lib/discord.js/slashCommands';
 
 export default <PrefixCommand>{
   name: 'deleteSlash',
@@ -21,7 +17,7 @@ export default <PrefixCommand>{
 
     const commandsToDelete = slashCommands.filter((sc) => args.includes(sc.name));
     if (!commandsToDelete.length)
-      return sendMessage({
+      return djsMessageHelper.send({
         client,
         channelId: message.channel.id,
         options: {
@@ -29,7 +25,7 @@ export default <PrefixCommand>{
         },
       });
     if (!isGuild && !isGlobal) {
-      return sendMessage({
+      return djsMessageHelper.send({
         client,
         channelId: message.channel.id,
         options: {
@@ -38,7 +34,7 @@ export default <PrefixCommand>{
       });
     }
     let deleted = 0;
-    const sentMessage = await sendMessage({
+    const sentMessage = await djsMessageHelper.send({
       client,
       channelId: message.channel.id,
       options: {
@@ -52,7 +48,7 @@ export default <PrefixCommand>{
     let registeredGlobalSlashCommands: ApplicationCommand[] = [];
 
     if (isGuild) {
-      registeredGuildSlashCommands = await getGuildSlashCommands({
+      registeredGuildSlashCommands = await djsRestHelper.slashCommand.guild.getAll({
         guild: message.guild!,
         client,
       });
@@ -61,13 +57,13 @@ export default <PrefixCommand>{
           (gsc) => gsc.name === command.builder.name
         );
         if (guildCommand)
-          await deleteGuildSlashCommand({
+          await djsRestHelper.slashCommand.guild.deleteOne({
             client,
             commandId: guildCommand.id,
             guild: message.guild!,
           });
         deleted++;
-        await editMessage({
+        await djsMessageHelper.edit({
           client,
           message: sentMessage,
           options: {
@@ -77,18 +73,18 @@ export default <PrefixCommand>{
         await sleep(1000);
       }
     } else {
-      registeredGlobalSlashCommands = await getGlobalSlashCommands({client});
+      registeredGlobalSlashCommands = await djsRestHelper.slashCommand.global.getAll({client});
       for (let command of commandsToDelete) {
         const globalCommand = registeredGlobalSlashCommands.find(
           (gsc) => gsc.name === command.builder.name
         );
         if (globalCommand)
-          await deleteGlobalSlashCommand({
+          await djsRestHelper.slashCommand.global.deleteOne({
             client,
             commandId: globalCommand.id,
           });
         deleted++;
-        await editMessage({
+        await djsMessageHelper.edit({
           client,
           message: sentMessage,
           options: {

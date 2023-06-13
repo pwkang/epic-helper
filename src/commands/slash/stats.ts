@@ -4,7 +4,7 @@ import {
   statsActionRow,
   TEventTypes,
 } from '../../lib/epic_helper/features/stats.lib';
-import replyInteraction from '../../lib/discord.js/interaction/replyInteraction';
+import djsInteractionHelper from '../../lib/discord.js/interaction';
 
 export default <SlashCommand>{
   name: 'user-stats',
@@ -13,7 +13,7 @@ export default <SlashCommand>{
     const embeds = await getStatsEmbeds({
       author: interaction.user,
     });
-    const event = await replyInteraction<TEventTypes>({
+    const event = await djsInteractionHelper.replyInteraction<TEventTypes>({
       client,
       interaction,
       options: {embeds: [embeds.donor], components: [statsActionRow]},

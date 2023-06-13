@@ -6,7 +6,7 @@ interface IGetGuildSlashCommands {
   guild: Guild;
 }
 
-export const getGuildSlashCommands = async ({guild, client}: IGetGuildSlashCommands) => {
+export const _getGuildSlashCommands = async ({guild, client}: IGetGuildSlashCommands) => {
   if (!client.user) return [];
 
   try {

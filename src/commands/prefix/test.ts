@@ -2,8 +2,8 @@ import {
   rpgPetAdventure,
   rpgPetAdventureChecker,
 } from '../../lib/epic_rpg/commands/pets/petAdventure.lib';
-import replyMessage from '../../lib/discord.js/message/replyMessage';
 import {PREFIX_COMMAND_TYPE} from '../../constants/bot';
+import {djsMessageHelper} from '../../lib/discord.js/message';
 
 export default <PrefixCommand>{
   name: 'test',
@@ -24,7 +24,7 @@ export default <PrefixCommand>{
         author: message.author,
       }),
     });
-    replyMessage({
+    djsMessageHelper.reply({
       message,
       options,
       client,

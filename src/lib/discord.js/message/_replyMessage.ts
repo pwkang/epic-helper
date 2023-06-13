@@ -9,7 +9,7 @@ interface ReplyMessageProps {
   options: string | MessagePayload | MessageCreateOptions;
 }
 
-export default function replyMessage({message, options, client}: ReplyMessageProps) {
+export default function _replyMessage({message, options, client}: ReplyMessageProps) {
   const channel = client.channels.cache.get(message.channelId);
   if (!channel) return;
 

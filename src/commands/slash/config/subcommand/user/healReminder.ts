@@ -1,6 +1,6 @@
 import {IUserConfig} from '../config.type';
 import {removeUserHealReminder, setUserHealReminder} from '../../../../../models/user/user.service';
-import replyInteraction from '../../../../../lib/discord.js/interaction/replyInteraction';
+import djsInteractionHelper from '../../../../../lib/discord.js/interaction';
 
 export const setHealReminder = async ({client, interaction}: IUserConfig) => {
   const userId = interaction.user.id;
@@ -23,7 +23,7 @@ export const setHealReminder = async ({client, interaction}: IUserConfig) => {
     message = 'Please provide a valid HP target';
   }
 
-  await replyInteraction({
+  await djsInteractionHelper.replyInteraction({
     client,
     interaction,
     options: {

@@ -1,8 +1,8 @@
 import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {getUserAccount} from '../../../../models/user/user.service';
 import {ActionRowBuilder, StringSelectMenuBuilder} from 'discord.js';
-import sendInteractiveMessage from '../../../../lib/discord.js/message/sendInteractiveMessage';
 import embedsList from '../../../../lib/epic_helper/embeds';
+import {djsMessageHelper} from '../../../../lib/discord.js/message';
 
 export default <PrefixCommand>{
   name: 'settings',
@@ -20,7 +20,7 @@ export default <PrefixCommand>{
       userProfile,
       author: message.author,
     });
-    const event = await sendInteractiveMessage({
+    const event = await djsMessageHelper.interactiveSend({
       client,
       channelId: message.channel.id,
       options: {

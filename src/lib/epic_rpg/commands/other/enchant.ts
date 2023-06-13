@@ -1,12 +1,12 @@
 import {Client, Embed, Message, User} from 'discord.js';
 import {RPG_ENCHANT_LEVEL, RPG_ENCHANT_LEVEL_RANK} from '../../../../constants/epic_rpg/enchant';
 import {getUserEnchantTier} from '../../../../models/user/user.service';
-import {muteUser} from '../../../discord.js/channel/muteUser.lib';
 import ms from 'ms';
 import {EPIC_RPG_ID} from '../../../../constants/bot';
-import sendMessage from '../../../discord.js/message/sendMessage';
-import dynamicTimeStamp from '../../../discord.js/dynamicTimestamp';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
+import djsChannelHelper from '../../../discord.js/channel';
+import {djsMessageHelper} from '../../../discord.js/message';
+import timestampHelper from '../../../discord.js/timestamp';
 
 const ENCHANT_CMD_TYPE = {
   enchant: 'enchant',
@@ -67,20 +67,19 @@ const rpgEnchantSuccess = async ({embed, author, client, channelId}: IRpgEnchant
   if (!targetTier || !enchantTier || !equipmentType) return;
   if (RPG_ENCHANT_LEVEL_RANK[enchantTier] < RPG_ENCHANT_LEVEL_RANK[targetTier]) return;
 
-  await sendMessage({
+  const unmuteIn = timestampHelper.relative({
+    time: new Date(Date.now() + ms('5s')),
+  });
+  await djsMessageHelper.send({
     channelId,
     options: {
-      content: `You have successfully enchanted your **${equipmentType.toUpperCase()}** to **${enchantTier.toUpperCase()}**!, unmute ${dynamicTimeStamp(
-        {
-          time: new Date(Date.now() + ms('5s')),
-        }
-      )}`,
+      content: `You have successfully enchanted your **${equipmentType.toUpperCase()}** to **${enchantTier.toUpperCase()}**!, unmute ${unmuteIn}`,
     },
     client,
   });
 
   [author.id, EPIC_RPG_ID].map((userId) =>
-    muteUser({
+    djsChannelHelper.muteUser({
       userId,
       client,
       channelId,
