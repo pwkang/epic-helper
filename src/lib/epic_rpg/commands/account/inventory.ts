@@ -1,5 +1,5 @@
 import {Client, Embed, Message, User} from 'discord.js';
-import {updateUserRubyAmount} from '../../../../models/user/user.service';
+import {userService} from '../../../../models/user/user.service';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import {
   getCalcMaterialMessage,
@@ -67,7 +67,7 @@ interface IRpgInventorySuccess {
 
 const rpgInventorySuccess = async ({author, embed}: IRpgInventorySuccess) => {
   const inventory = embedReaders.inventory({embed});
-  await updateUserRubyAmount({
+  await userService.updateUserRubyAmount({
     userId: author.id,
     type: 'set',
     ruby: inventory.ruby ?? 0,

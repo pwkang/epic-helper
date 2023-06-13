@@ -1,14 +1,11 @@
 import {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
-import {
-  saveUserTrainingCooldown,
-  updateUserCooldown,
-} from '../../../../models/user-reminder/user-reminder.service';
+import {userReminderServices} from '../../../../models/user-reminder/user-reminder.service';
 import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
 import {calcCdReduction} from '../../../epic_helper/reminders/commandsCooldown';
 import {updateReminderChannel} from '../../../epic_helper/reminders/reminderChannel';
-import {countUserStats} from '../../../../models/user-stats/user-stats.service';
+import {userStatsService} from '../../../../models/user-stats/user-stats.service';
 import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
 
 interface IRpgUltraining {
@@ -36,7 +33,7 @@ export function rpgUltraining({client, message, author, isSlashCommand}: IRpgUlt
     }
   });
   event.on('cooldown', (cooldown) => {
-    updateUserCooldown({
+    userReminderServices.updateUserCooldown({
       userId: author.id,
       type: RPG_COMMAND_TYPE.training,
       readyAt: new Date(Date.now() + cooldown),
@@ -64,7 +61,7 @@ const rpgUlTrainingSuccess = async ({author, channelId}: IRpgTrainingSuccess) =>
     commandType: RPG_COMMAND_TYPE.training,
     cooldown: TRAINING_COOLDOWN,
   });
-  await saveUserTrainingCooldown({
+  await userReminderServices.saveUserTrainingCooldown({
     userId: author.id,
     ultraining: true,
     readyAt: new Date(Date.now() + cooldown),
@@ -74,7 +71,7 @@ const rpgUlTrainingSuccess = async ({author, channelId}: IRpgTrainingSuccess) =>
     channelId,
   });
 
-  countUserStats({
+  userStatsService.countUserStats({
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.ultraining,
   });

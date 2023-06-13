@@ -1,10 +1,6 @@
 import {IMessageContentChecker} from '../../../../types/utils';
 import {BaseMessageOptions, Message, User} from 'discord.js';
-import {
-  getAvailableEpicPets,
-  getUserPets,
-  updateUserPet,
-} from '../../../../models/user-pet/user-pet.service';
+import {userPetServices} from '../../../../models/user-pet/user-pet.service';
 import {convertNumToPetId, convertPetIdToNum} from '../../../../utils/petIdConversion';
 import {IUserPet} from '../../../../models/user-pet/user-pet.type';
 import {RPG_PET_STATUS, RPG_PET_TYPE} from '../../../../constants/epic_rpg/pet';
@@ -114,14 +110,14 @@ const fetchPetsToSend = async ({selectedPets, userId}: IFetchPetsToSend) => {
   const nonEpicPetsId = selectedPets.filter((p) => p !== 'epic');
   const petsToSend = [];
   if (!!nonEpicPetsId.length) {
-    const nonEpicPets = await getUserPets({
+    const nonEpicPets = await userPetServices.getUserPets({
       userId,
       petsId: nonEpicPetsId.map(convertPetIdToNum),
     });
     petsToSend.push(...nonEpicPets);
   }
   if (hasSentEpic(selectedPets)) {
-    const availableEpicPets = await getAvailableEpicPets({
+    const availableEpicPets = await userPetServices.getAvailableEpicPets({
       userId,
     });
     petsToSend.push(...availableEpicPets);
@@ -227,7 +223,7 @@ const sendPetToAdventure = async ({pet, userId}: ISendPetToAdventure) => {
   const adventureTime = calcAdventureTime({pet});
   pet.status = RPG_PET_STATUS.adventure;
   pet.readyAt = new Date(Date.now() + adventureTime);
-  await updateUserPet({
+  await userPetServices.updateUserPet({
     pet,
     userId,
   });
@@ -248,7 +244,7 @@ interface IUpdatePetStatus {
 const updateInstantBackPet = async ({pet, userId}: IUpdatePetStatus) => {
   pet.status = RPG_PET_STATUS.back;
   pet.readyAt = new Date();
-  await updateUserPet({
+  await userPetServices.updateUserPet({
     pet,
     userId,
   });

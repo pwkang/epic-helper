@@ -1,15 +1,12 @@
 import {RPG_COMMAND_TYPE, RPG_WORKING_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {Client, Embed, Message, User} from 'discord.js';
-import {
-  saveUserWorkingCooldown,
-  updateUserCooldown,
-} from '../../../../models/user-reminder/user-reminder.service';
+import {userReminderServices} from '../../../../models/user-reminder/user-reminder.service';
 import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
 import {calcCdReduction} from '../../../epic_helper/reminders/commandsCooldown';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
-import {updateUserRubyAmount} from '../../../../models/user/user.service';
+import {userService} from '../../../../models/user/user.service';
 import {updateReminderChannel} from '../../../epic_helper/reminders/reminderChannel';
-import {countUserStats} from '../../../../models/user-stats/user-stats.service';
+import {userStatsService} from '../../../../models/user-stats/user-stats.service';
 import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
 import {djsMessageHelper} from '../../../discord.js/message';
 
@@ -63,7 +60,7 @@ export function rpgWorking({client, message, author, isSlashCommand, workingType
     }
     if (isRubyMined({author, content})) {
       const mined = rubyAmountMined({author, content});
-      await updateUserRubyAmount({
+      await userService.updateUserRubyAmount({
         userId: author.id,
         type: 'inc',
         ruby: mined,
@@ -71,7 +68,7 @@ export function rpgWorking({client, message, author, isSlashCommand, workingType
       event.stop();
     }
     if (isFoughtRubyDragon({author, content})) {
-      await updateUserRubyAmount({
+      await userService.updateUserRubyAmount({
         userId: author.id,
         type: 'inc',
         ruby: 10,
@@ -87,7 +84,7 @@ export function rpgWorking({client, message, author, isSlashCommand, workingType
     }
   });
   event.on('cooldown', (cooldown) => {
-    updateUserCooldown({
+    userReminderServices.updateUserCooldown({
       userId: author.id,
       type: RPG_COMMAND_TYPE.working,
       readyAt: new Date(Date.now() + cooldown),
@@ -115,7 +112,7 @@ const rpgWorkingSuccess = async ({author, workingType, channelId}: IRpgWorkingSu
     commandType: RPG_COMMAND_TYPE.working,
     cooldown: WORKING_COOLDOWN,
   });
-  await saveUserWorkingCooldown({
+  await userReminderServices.saveUserWorkingCooldown({
     userId: author.id,
     workingType,
     readyAt: new Date(Date.now() + cooldown),
@@ -125,7 +122,7 @@ const rpgWorkingSuccess = async ({author, workingType, channelId}: IRpgWorkingSu
     channelId,
   });
 
-  countUserStats({
+  userStatsService.countUserStats({
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.working,
   });

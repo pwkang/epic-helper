@@ -1,14 +1,11 @@
 import {Client, Message, User} from 'discord.js';
-import {
-  saveUserFarmCooldown,
-  updateUserCooldown,
-} from '../../../../models/user-reminder/user-reminder.service';
+import {userReminderServices} from '../../../../models/user-reminder/user-reminder.service';
 import {RPG_COMMAND_TYPE, RPG_FARM_SEED} from '../../../../constants/epic_rpg/rpg';
 import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
 import {calcCdReduction} from '../../../epic_helper/reminders/commandsCooldown';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import {updateReminderChannel} from '../../../epic_helper/reminders/reminderChannel';
-import {countUserStats} from '../../../../models/user-stats/user-stats.service';
+import {userStatsService} from '../../../../models/user-stats/user-stats.service';
 import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
 
 const FARM_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.farm;
@@ -45,7 +42,7 @@ export function rpgFarm({client, message, author, isSlashCommand}: IRpgFarm) {
     }
   });
   event.on('cooldown', (cooldown) => {
-    updateUserCooldown({
+    userReminderServices.updateUserCooldown({
       userId: author.id,
       readyAt: new Date(Date.now() + cooldown),
       type: RPG_COMMAND_TYPE.farm,
@@ -68,7 +65,7 @@ const rpgFarmSuccess = async ({content, author, channelId}: IRpgFarmSuccess) => 
     commandType: RPG_COMMAND_TYPE.farm,
     cooldown: FARM_COOLDOWN,
   });
-  await saveUserFarmCooldown({
+  await userReminderServices.saveUserFarmCooldown({
     userId: author.id,
     readyAt: new Date(Date.now() + cooldown),
     seedType,
@@ -78,7 +75,7 @@ const rpgFarmSuccess = async ({content, author, channelId}: IRpgFarmSuccess) => 
     channelId,
   });
 
-  countUserStats({
+  userStatsService.countUserStats({
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.farm,
   });

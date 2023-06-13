@@ -1,5 +1,5 @@
 import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
-import {getUserAllCooldowns} from '../../../../models/user-reminder/user-reminder.service';
+import {userReminderServices} from '../../../../models/user-reminder/user-reminder.service';
 import embedsList from '../../../../lib/epic_helper/embeds';
 import {djsMessageHelper} from '../../../../lib/discord.js/message';
 
@@ -10,7 +10,7 @@ export default <PrefixCommand>{
   execute: async (client, message) => {
     const embed = embedsList.userCooldown({
       author: message.author,
-      userReminder: await getUserAllCooldowns(message.author.id),
+      userReminder: await userReminderServices.getUserAllCooldowns(message.author.id),
     });
     await djsMessageHelper.send({
       channelId: message.channel.id,

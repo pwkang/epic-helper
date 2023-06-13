@@ -1,9 +1,6 @@
 import {IUserConfig} from '../config.type';
 import {RPG_COMMAND_TYPE, RPG_WORKING_TYPE} from '../../../../../constants/epic_rpg/rpg';
-import {
-  removeUserReminderChannel,
-  setUserReminderChannel,
-} from '../../../../../models/user/user.service';
+import {userService} from '../../../../../models/user/user.service';
 import djsInteractionHelper from '../../../../../lib/discord.js/interaction';
 
 export const setReminderChannelSlash = async ({client, interaction}: IUserConfig) => {
@@ -27,7 +24,7 @@ export const setReminderChannelSlash = async ({client, interaction}: IUserConfig
 
   switch (optionAction) {
     case 'set':
-      await setUserReminderChannel({
+      await userService.setUserReminderChannel({
         channelId: interaction.channelId,
         userId: interaction.user.id,
         commandType: reminderType,
@@ -37,7 +34,7 @@ export const setReminderChannelSlash = async ({client, interaction}: IUserConfig
         .join(', ')} to this channel`;
       break;
     case 'remove':
-      await removeUserReminderChannel({
+      await userService.removeUserReminderChannel({
         userId: interaction.user.id,
         commandType: reminderType,
       });

@@ -1,5 +1,5 @@
 import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
-import {getUserAccount} from '../../../../models/user/user.service';
+import {userService} from '../../../../models/user/user.service';
 import {ActionRowBuilder, StringSelectMenuBuilder} from 'discord.js';
 import embedsList from '../../../../lib/epic_helper/embeds';
 import {djsMessageHelper} from '../../../../lib/discord.js/message';
@@ -9,7 +9,7 @@ export default <PrefixCommand>{
   commands: ['settings', 's'],
   type: PREFIX_COMMAND_TYPE.bot,
   execute: async (client, message) => {
-    const userProfile = await getUserAccount(message.author.id);
+    const userProfile = await userService.getUserAccount(message.author.id);
     if (!userProfile) return;
     const userSettingsEmbed = embedsList.userSettings({
       client,

@@ -4,7 +4,7 @@ import {
   RPG_DONOR_TIER,
 } from '../../../constants/epic_rpg/rpg';
 import {User} from 'discord.js';
-import {getUserAccount} from '../../../models/user/user.service';
+import {userService} from '../../../models/user/user.service';
 import {BOT_REMINDER_BASE_COOLDOWN} from '../../../constants/epic_helper/command_base_cd';
 
 interface IGetCdReduction {
@@ -39,7 +39,7 @@ const canReducedByDonor = {
 };
 
 export const calcCdReduction = async ({commandType, userId, cooldown}: IGetCdReduction) => {
-  const userAccount = await getUserAccount(userId);
+  const userAccount = await userService.getUserAccount(userId);
   if (!userAccount) return cooldown;
   const donor = userAccount.config.donor;
   const donorP = userAccount.config.donorP;

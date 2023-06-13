@@ -1,6 +1,6 @@
 import {Client, Message, User} from 'discord.js';
 import {RPG_EQUIPMENTS} from '../../../../constants/epic_rpg/equipments';
-import {updateUserRubyAmount} from '../../../../models/user/user.service';
+import {userService} from '../../../../models/user/user.service';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 
 const rubyConsumed = {
@@ -54,7 +54,7 @@ const rpgCraftSuccess = async ({content, author}: IRpgCraftSuccess) => {
         ruby -= Math.ceil(ruby * (Number(rate) / 100));
       }
     }
-    await updateUserRubyAmount({
+    await userService.updateUserRubyAmount({
       type: 'dec',
       userId: author.id,
       ruby,

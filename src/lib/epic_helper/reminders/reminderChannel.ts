@@ -1,6 +1,6 @@
 import {Channel, Client} from 'discord.js';
 import {RPG_COMMAND_TYPE} from '../../../constants/epic_rpg/rpg';
-import {getUserReminderChannel, setUserReminderChannel} from '../../../models/user/user.service';
+import {userService} from '../../../models/user/user.service';
 
 interface IUpdateReminderChannel {
   userId: string;
@@ -8,7 +8,7 @@ interface IUpdateReminderChannel {
 }
 
 export const updateReminderChannel = async ({channelId, userId}: IUpdateReminderChannel) => {
-  await setUserReminderChannel({
+  await userService.setUserReminderChannel({
     userId,
     channelId,
     commandType: ['all'],
@@ -22,7 +22,7 @@ interface IGetReminderChannel {
 }
 
 export const getReminderChannel = async ({commandType, userId}: IGetReminderChannel) => {
-  const settings = await getUserReminderChannel({
+  const settings = await userService.getUserReminderChannel({
     userId,
   });
   if (!settings) return null;

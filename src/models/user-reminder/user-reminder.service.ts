@@ -352,3 +352,19 @@ export const clearUserCooldowns = async (userId: string): Promise<void> => {
     userId,
   });
 };
+
+export const userReminderServices = {
+  saveUserTrainingCooldown,
+  saveUserQuestCooldown,
+  saveUserFarmCooldown,
+  saveUserDailyCooldown,
+  saveUserWeeklyCooldown,
+  saveUserWorkingCooldown,
+  saveUserLootboxCooldown,
+  saveUserPetCooldown,
+  updateUserCooldown,
+  deleteUserCooldowns,
+  findUserReadyCommands,
+  getUserAllCooldowns,
+  clearUserCooldowns,
+};

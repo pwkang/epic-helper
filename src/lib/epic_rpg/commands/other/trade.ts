@@ -1,6 +1,6 @@
 import {Client, Embed, Message, User} from 'discord.js';
 import {RPG_ITEMS} from '../../../../constants/epic_rpg/items';
-import {updateUserRubyAmount} from '../../../../models/user/user.service';
+import {userService} from '../../../../models/user/user.service';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 
 interface IRpgSuccess {
@@ -39,7 +39,7 @@ interface IRpgTradeSuccess {
 const rpgTradeSuccess = async ({embed, author}: IRpgTradeSuccess) => {
   const traded = extractTradedItems({embed, author});
   if (!traded.ruby) return;
-  await updateUserRubyAmount({
+  await userService.updateUserRubyAmount({
     userId: author.id,
     ruby: Math.abs(traded.ruby),
     type: traded.ruby > 0 ? 'inc' : 'dec',

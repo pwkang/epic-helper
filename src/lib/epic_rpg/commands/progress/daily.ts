@@ -1,8 +1,5 @@
 import {Client, Embed, Message, User} from 'discord.js';
-import {
-  saveUserDailyCooldown,
-  updateUserCooldown,
-} from '../../../../models/user-reminder/user-reminder.service';
+import {userReminderServices} from '../../../../models/user-reminder/user-reminder.service';
 import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
 import {calcCdReduction} from '../../../epic_helper/reminders/commandsCooldown';
 import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
@@ -41,7 +38,7 @@ export function rpgDaily({client, message, author, isSlashCommand}: IRpgDaily) {
     }
   });
   event.on('cooldown', (cooldown) => {
-    updateUserCooldown({
+    userReminderServices.updateUserCooldown({
       userId: author.id,
       readyAt: new Date(Date.now() + cooldown),
       type: RPG_COMMAND_TYPE.daily,
@@ -63,7 +60,7 @@ const rpgDailySuccess = async ({author, channelId}: IRpgDailySuccess) => {
     commandType: RPG_COMMAND_TYPE.daily,
     cooldown: DAILY_COOLDOWN,
   });
-  await saveUserDailyCooldown({
+  await userReminderServices.saveUserDailyCooldown({
     userId: author.id,
     readyAt: new Date(Date.now() + cooldown),
   });

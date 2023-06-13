@@ -1,10 +1,5 @@
 import {Embed, User} from 'discord.js';
-import {
-  createUserPet,
-  deleteExtraPets,
-  getUserPets,
-  updateUserPet,
-} from '../../../../models/user-pet/user-pet.service';
+import {userPetServices} from '../../../../models/user-pet/user-pet.service';
 import {IUserPet} from '../../../../models/user-pet/user-pet.type';
 import {RPG_PET_SKILL} from '../../../../constants/epic_rpg/pet';
 import ms from 'ms';
@@ -17,28 +12,28 @@ interface IRpgPet {
 
 export const rpgPetList = async ({author, embed}: IRpgPet) => {
   const pets = embedReaders.pets({embed, author});
-  const dbPetsList = await getUserPets({
+  const dbPetsList = await userPetServices.getUserPets({
     userId: author.id,
     petsId: pets.map((pet) => pet.petId),
   });
   for (let newPet of pets) {
     const oldPet = dbPetsList.find((dbPet) => dbPet.petId === newPet.petId);
     if (!oldPet) {
-      await createUserPet({
+      await userPetServices.createUserPet({
         pet: newPet,
         userId: author.id,
       });
       continue;
     }
     if (isPetUpdated({newPet, oldPet})) {
-      await updateUserPet({
+      await userPetServices.updateUserPet({
         pet: newPet,
         userId: author.id,
       });
     }
   }
   const maxPet = getMaxPetId({embed});
-  await deleteExtraPets({
+  await userPetServices.deleteExtraPets({
     userId: author.id,
     maxPetId: maxPet,
   });

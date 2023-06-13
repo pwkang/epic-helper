@@ -15,7 +15,7 @@ interface ICountUserStats {
   type: ValuesOf<typeof USER_STATS_RPG_COMMAND_TYPE>;
 }
 
-export const countUserStats = async ({userId, type}: ICountUserStats) => {
+const countUserStats = async ({userId, type}: ICountUserStats) => {
   await dbUserStats.findOneAndUpdate(
     {
       userId,
@@ -38,7 +38,7 @@ interface IGetUserStats {
   page: number;
 }
 
-export const getUserStats = ({userId, limit, page}: IGetUserStats) => {
+const getUserStats = ({userId, limit, page}: IGetUserStats) => {
   const query: FilterQuery<IUserStats> = {
     userId,
   };
@@ -57,7 +57,7 @@ interface IGetUserStatsOfLast2Weeks {
   userId: string;
 }
 
-export const getUserStatsOfLast2Weeks = ({userId}: IGetUserStatsOfLast2Weeks) => {
+const getUserStatsOfLast2Weeks = ({userId}: IGetUserStatsOfLast2Weeks) => {
   return dbUserStats.find({
     userId,
     statsAt: {
@@ -70,7 +70,7 @@ interface IGetUserBestStats {
   userId: string;
 }
 
-export const getUserBestStats = async ({
+const getUserBestStats = async ({
   userId,
 }: IGetUserBestStats): Promise<IUserStats['rpg'] | undefined> => {
   const stats = await dbUserStats.aggregate([
@@ -104,4 +104,11 @@ export const getUserBestStats = async ({
     },
   ]);
   return stats[0];
+};
+
+export const userStatsService = {
+  countUserStats,
+  getUserStats,
+  getUserStatsOfLast2Weeks,
+  getUserBestStats,
 };

@@ -1,5 +1,5 @@
 import {Client, Embed, Message, User} from 'discord.js';
-import {updateUserRubyAmount} from '../../../../models/user/user.service';
+import {userService} from '../../../../models/user/user.service';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import embedReaders from '../../embedReaders';
 
@@ -42,7 +42,7 @@ interface IRpgOpenLootboxSuccess {
 const rpgOpenLootboxSuccess = async ({embed, author}: IRpgOpenLootboxSuccess) => {
   const openedItems = embedReaders.lootbox({embed});
   if (openedItems.ruby) {
-    await updateUserRubyAmount({
+    await userService.updateUserRubyAmount({
       ruby: openedItems.ruby,
       type: 'inc',
       userId: author.id,

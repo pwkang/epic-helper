@@ -1,7 +1,7 @@
 import {Model, Schema} from 'mongoose';
 import {IUserPet} from './user-pet.type';
 import {RPG_PET_STATUS, RPG_PET_TYPE} from '../../constants/epic_rpg/pet';
-import {deleteUserCooldowns, saveUserPetCooldown} from '../user-reminder/user-reminder.service';
+import {userReminderServices} from '../user-reminder/user-reminder.service';
 
 const userPetSchema = new Schema<IUserPet>({
   userId: {
@@ -62,12 +62,12 @@ async function updateNextPetReminderTime(userId: string, model: Model<IUserPet>)
     .sort({readyAt: 1})
     .limit(1);
   if (!nextReminderTime.length)
-    await deleteUserCooldowns({
+    await userReminderServices.deleteUserCooldowns({
       userId,
       types: ['pet'],
     });
   else
-    await saveUserPetCooldown({
+    await userReminderServices.saveUserPetCooldown({
       userId,
       readyAt: nextReminderTime[0].readyAt,
     });

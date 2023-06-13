@@ -1,5 +1,5 @@
 import {EmbedBuilder, EmbedField, User} from 'discord.js';
-import {getUserPets} from '../../../../models/user-pet/user-pet.service';
+import {userPetServices} from '../../../../models/user-pet/user-pet.service';
 import {convertPetIdToNum} from '../../../../utils/petIdConversion';
 import {IUserPet} from '../../../../models/user-pet/user-pet.type';
 import {
@@ -20,7 +20,7 @@ export default async function generateFusionScoreEmbed({
   author,
   petIds,
 }: IGenerateFusionScoreEmbed) {
-  const pets = await getUserPets({
+  const pets = await userPetServices.getUserPets({
     petsId: petIds.map(convertPetIdToNum),
     userId: author.id,
     orderBy: 'petId',

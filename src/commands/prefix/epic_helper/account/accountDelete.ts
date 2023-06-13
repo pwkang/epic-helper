@@ -1,8 +1,8 @@
 import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
-import {isUserAccountExist, userAccountDelete} from '../../../../models/user/user.service';
+import {userService} from '../../../../models/user/user.service';
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle} from 'discord.js';
-import {clearUserCooldowns} from '../../../../models/user-reminder/user-reminder.service';
-import {clearUserPets} from '../../../../models/user-pet/user-pet.service';
+import {userReminderServices} from '../../../../models/user-reminder/user-reminder.service';
+import {userPetServices} from '../../../../models/user-pet/user-pet.service';
 import {djsMessageHelper} from '../../../../lib/discord.js/message';
 
 export default <PrefixCommand>{
@@ -10,7 +10,7 @@ export default <PrefixCommand>{
   commands: ['delete'],
   type: PREFIX_COMMAND_TYPE.bot,
   execute: async (client, message) => {
-    const userExists = await isUserAccountExist(message.author.id);
+    const userExists = await userService.isUserAccountExist(message.author.id);
     if (!userExists) {
       return djsMessageHelper.reply({
         client,
@@ -30,9 +30,9 @@ export default <PrefixCommand>{
     if (!event) return;
 
     event.on('confirm', async () => {
-      await userAccountDelete(message.author.id);
-      await clearUserCooldowns(message.author.id);
-      await clearUserPets(message.author.id);
+      await userService.userAccountDelete(message.author.id);
+      await userReminderServices.clearUserCooldowns(message.author.id);
+      await userPetServices.clearUserPets(message.author.id);
       event.stop();
       return {
         content: `Successfully deleted your account!`,

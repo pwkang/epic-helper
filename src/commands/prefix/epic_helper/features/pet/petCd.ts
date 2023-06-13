@@ -1,5 +1,5 @@
 import {PREFIX_COMMAND_TYPE} from '../../../../../constants/bot';
-import {calcTotalPets} from '../../../../../models/user-pet/user-pet.service';
+import {userPetServices} from '../../../../../models/user-pet/user-pet.service';
 import {
   paginatePetCd,
   PET_CD_PET_PAGE,
@@ -11,7 +11,7 @@ export default <PrefixCommand>{
   commands: ['petCd'],
   type: PREFIX_COMMAND_TYPE.bot,
   execute: async (client, message) => {
-    const totalPets = await calcTotalPets({
+    const totalPets = await userPetServices.calcTotalPets({
       userId: message.author.id,
       status: ['adventure', 'back'],
     });

@@ -2,16 +2,16 @@ import {Client, Embed, Message, User} from 'discord.js';
 import {HUNT_MONSTER_LIST} from '../../../../constants/epic_rpg/monster';
 import {
   saveUserHuntCooldown,
-  updateUserCooldown,
+  userReminderServices,
 } from '../../../../models/user-reminder/user-reminder.service';
 import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
 import {calcCdReduction} from '../../../epic_helper/reminders/commandsCooldown';
 import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
-import {getUserHealReminder} from '../../../../models/user/user.service';
+import {userService} from '../../../../models/user/user.service';
 import {RPG_CLICKABLE_SLASH_COMMANDS} from '../../../../constants/epic_rpg/clickable_slash';
 import {updateReminderChannel} from '../../../epic_helper/reminders/reminderChannel';
-import {countUserStats} from '../../../../models/user-stats/user-stats.service';
+import {userStatsService} from '../../../../models/user-stats/user-stats.service';
 import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
 import {djsMessageHelper} from '../../../discord.js/message';
 
@@ -68,7 +68,7 @@ export function rpgHunt({author, message, client, isSlashCommand}: IRpgHunt) {
     }
   });
   event.on('cooldown', (cooldown) => {
-    updateUserCooldown({
+    userReminderServices.updateUserCooldown({
       userId: author.id,
       type: RPG_COMMAND_TYPE.hunt,
       readyAt: new Date(Date.now() + cooldown),
@@ -107,7 +107,7 @@ const rpgHuntSuccess = async ({author, content, channelId}: IRpgHuntSuccess) => 
     channelId,
   });
 
-  countUserStats({
+  userStatsService.countUserStats({
     userId: author.id,
     type: together ? USER_STATS_RPG_COMMAND_TYPE.huntTogether : USER_STATS_RPG_COMMAND_TYPE.hunt,
   });
@@ -122,7 +122,7 @@ interface IHealReminder {
 
 const healReminder = async ({client, channelId, author, content}: IHealReminder) => {
   const together = content.includes('hunting together');
-  const healReminder = await getUserHealReminder({
+  const healReminder = await userService.getUserHealReminder({
     userId: author.id,
   });
   if (!healReminder) return;

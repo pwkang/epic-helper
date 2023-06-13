@@ -1,6 +1,6 @@
 import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle} from 'discord.js';
-import {removeRpgDonorPTier, updateRpgDonorPTier} from '../../../../models/user/user.service';
+import {userService} from '../../../../models/user/user.service';
 import {RPG_DONOR_TIER} from '../../../../constants/epic_rpg/rpg';
 import {djsMessageHelper} from '../../../../lib/discord.js/message';
 
@@ -49,7 +49,7 @@ export default <PrefixCommand>{
     if (!event) return;
 
     event.on('non-donor', async () => {
-      await updateRpgDonorPTier({
+      await userService.updateRpgDonorPTier({
         userId: message.author.id,
         tier: RPG_DONOR_TIER.nonDonor,
       });
@@ -60,7 +60,7 @@ export default <PrefixCommand>{
       };
     });
     event.on('0.9', async () => {
-      await updateRpgDonorPTier({
+      await userService.updateRpgDonorPTier({
         userId: message.author.id,
         tier: RPG_DONOR_TIER.donor10,
       });
@@ -71,7 +71,7 @@ export default <PrefixCommand>{
       };
     });
     event.on('0.8', async () => {
-      await updateRpgDonorPTier({
+      await userService.updateRpgDonorPTier({
         userId: message.author.id,
         tier: RPG_DONOR_TIER.donor20,
       });
@@ -82,7 +82,7 @@ export default <PrefixCommand>{
       };
     });
     event.on('0.65', async () => {
-      await updateRpgDonorPTier({
+      await userService.updateRpgDonorPTier({
         userId: message.author.id,
         tier: RPG_DONOR_TIER.donor35,
       });
@@ -93,7 +93,7 @@ export default <PrefixCommand>{
       };
     });
     event.on('remove', async () => {
-      await removeRpgDonorPTier(message.author.id);
+      await userService.removeRpgDonorPTier(message.author.id);
       event.stop();
       return {
         content: 'You have removed your partner donor tier',

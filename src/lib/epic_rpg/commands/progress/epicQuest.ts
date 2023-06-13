@@ -1,14 +1,11 @@
 import {Client, Embed, Message, User} from 'discord.js';
-import {
-  saveUserQuestCooldown,
-  updateUserCooldown,
-} from '../../../../models/user-reminder/user-reminder.service';
+import {userReminderServices} from '../../../../models/user-reminder/user-reminder.service';
 import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
 import {calcCdReduction} from '../../../epic_helper/reminders/commandsCooldown';
 import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import {updateReminderChannel} from '../../../epic_helper/reminders/reminderChannel';
-import {countUserStats} from '../../../../models/user-stats/user-stats.service';
+import {userStatsService} from '../../../../models/user-stats/user-stats.service';
 import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
 
 interface IRpgEpicQuest {
@@ -43,7 +40,7 @@ export function rpgEpicQuest({client, message, author, isSlashCommand}: IRpgEpic
     }
   });
   event.on('cooldown', async (cooldown) => {
-    await updateUserCooldown({
+    await userReminderServices.updateUserCooldown({
       userId: author.id,
       readyAt: new Date(Date.now() + cooldown),
       type: RPG_COMMAND_TYPE.quest,
@@ -66,7 +63,7 @@ const rpgEpicQuestSuccess = async ({author, channelId}: IRpgEpicQuestSuccess) =>
     commandType: RPG_COMMAND_TYPE.quest,
     cooldown: QUEST_COOLDOWN,
   });
-  await saveUserQuestCooldown({
+  await userReminderServices.saveUserQuestCooldown({
     epicQuest: true,
     userId: author.id,
     readyAt: new Date(Date.now() + cooldown),
@@ -76,7 +73,7 @@ const rpgEpicQuestSuccess = async ({author, channelId}: IRpgEpicQuestSuccess) =>
     channelId,
   });
 
-  countUserStats({
+  userStatsService.countUserStats({
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.epicQuest,
   });

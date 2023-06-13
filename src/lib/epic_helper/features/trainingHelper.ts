@@ -1,5 +1,5 @@
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle, User} from 'discord.js';
-import {getUserRubyAmount} from '../../../models/user/user.service';
+import {userService} from '../../../models/user/user.service';
 
 type TAnswerType = string | number | boolean;
 
@@ -87,7 +87,7 @@ export default async function getTrainingAnswer({
     components = generateRows(TRUE_FALSE, matched);
   } else if (content.includes('in the mine')) {
     const questionRuby = Number(content.match(/more than (\d+) </)?.[1] ?? 0);
-    const userRuby = await getUserRubyAmount(author.id);
+    const userRuby = await userService.getUserRubyAmount(author.id);
     components = generateRows(TRUE_FALSE, userRuby > questionRuby);
   }
   return components;

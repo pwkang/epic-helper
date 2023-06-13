@@ -9,7 +9,7 @@ import {
 import {BOT_EMOJI} from '../../../../constants/epic_helper/bot_emojis';
 import {convertNumToPetId} from '../../../../utils/petIdConversion';
 import {convertNumberToRoman} from '../../../../utils/romanConversion';
-import {getUserPets} from '../../../../models/user-pet/user-pet.service';
+import {userPetServices} from '../../../../models/user-pet/user-pet.service';
 
 export const PET_LIST_PET_PET_PAGE = 21;
 
@@ -19,7 +19,11 @@ interface IPaginatePetList {
 }
 
 export const paginatePetList = async ({author, page}: IPaginatePetList) => {
-  const pets = await getUserPets({page, limit: PET_LIST_PET_PET_PAGE, userId: author.id});
+  const pets = await userPetServices.getUserPets({
+    page,
+    limit: PET_LIST_PET_PET_PAGE,
+    userId: author.id,
+  });
 
   return generateEmbed({
     pets,

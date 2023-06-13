@@ -1,6 +1,6 @@
 import {IMessageContentChecker, IMessageEmbedChecker} from '../../../../types/utils';
 import {Client, Embed, User} from 'discord.js';
-import {claimAllPets} from '../../../../models/user-pet/user-pet.service';
+import {userPetServices} from '../../../../models/user-pet/user-pet.service';
 
 interface IRpgPetClaim {
   embed: Embed;
@@ -9,7 +9,7 @@ interface IRpgPetClaim {
 }
 
 export const rpgPetClaim = async ({author}: IRpgPetClaim) => {
-  await claimAllPets({
+  await userPetServices.claimAllPets({
     userId: author.id,
   });
 };

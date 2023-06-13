@@ -1,6 +1,6 @@
 import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle} from 'discord.js';
-import {updateRpgDonorTier} from '../../../../models/user/user.service';
+import {userService} from '../../../../models/user/user.service';
 import {RPG_DONOR_TIER} from '../../../../constants/epic_rpg/rpg';
 import {djsMessageHelper} from '../../../../lib/discord.js/message';
 
@@ -44,7 +44,7 @@ export default <PrefixCommand>{
     if (!event) return;
 
     event.on('non-donor', async () => {
-      await updateRpgDonorTier({
+      await userService.updateRpgDonorTier({
         userId: message.author.id,
         tier: RPG_DONOR_TIER.nonDonor,
       });
@@ -55,7 +55,7 @@ export default <PrefixCommand>{
       };
     });
     event.on('0.9', async () => {
-      await updateRpgDonorTier({
+      await userService.updateRpgDonorTier({
         userId: message.author.id,
         tier: RPG_DONOR_TIER.donor10,
       });
@@ -66,7 +66,7 @@ export default <PrefixCommand>{
       };
     });
     event.on('0.8', async () => {
-      await updateRpgDonorTier({
+      await userService.updateRpgDonorTier({
         userId: message.author.id,
         tier: RPG_DONOR_TIER.donor20,
       });
@@ -77,7 +77,7 @@ export default <PrefixCommand>{
       };
     });
     event.on('0.65', async () => {
-      await updateRpgDonorTier({
+      await userService.updateRpgDonorTier({
         userId: message.author.id,
         tier: RPG_DONOR_TIER.donor35,
       });

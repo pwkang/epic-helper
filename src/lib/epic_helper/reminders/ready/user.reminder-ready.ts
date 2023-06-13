@@ -1,9 +1,6 @@
 import {Client} from 'discord.js';
-import {
-  deleteUserCooldowns,
-  findUserReadyCommands,
-} from '../../../../models/user-reminder/user-reminder.service';
-import {getUserAccount} from '../../../../models/user/user.service';
+import {userReminderServices} from '../../../../models/user-reminder/user-reminder.service';
+import {userService} from '../../../../models/user/user.service';
 import {getCommandStr} from '../reminders-command-name';
 import ms from 'ms';
 import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
@@ -12,10 +9,10 @@ import {getReminderChannel} from '../reminderChannel';
 import {djsMessageHelper} from '../../../discord.js/message';
 
 export const userReminderTimesUp = async (client: Client, userId: string) => {
-  const user = await getUserAccount(userId);
+  const user = await userService.getUserAccount(userId);
   if (!user?.config?.onOff) return;
 
-  const readyCommands = await findUserReadyCommands(userId);
+  const readyCommands = await userReminderServices.findUserReadyCommands(userId);
 
   for (let command of readyCommands) {
     if (Date.now() - command.readyAt.getTime() > ms('5s')) return;
@@ -44,7 +41,7 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
       },
     });
   }
-  await deleteUserCooldowns({
+  await userReminderServices.deleteUserCooldowns({
     userId: user.userId,
     types: readyCommands.map((cmd) => cmd.type),
   });

@@ -1,8 +1,5 @@
 import {Client, Embed, Message, User} from 'discord.js';
-import {
-  saveUserWeeklyCooldown,
-  updateUserCooldown,
-} from '../../../../models/user-reminder/user-reminder.service';
+import {userReminderServices} from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
 import {calcCdReduction} from '../../../epic_helper/reminders/commandsCooldown';
 import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
@@ -37,7 +34,7 @@ export function rpgWeekly({client, message, author, isSlashCommand}: IRpgWeekly)
     }
   });
   event.on('cooldown', (cooldown) => {
-    updateUserCooldown({
+    userReminderServices.updateUserCooldown({
       userId: author.id,
       readyAt: new Date(Date.now() + cooldown),
       type: RPG_COMMAND_TYPE.weekly,
@@ -59,7 +56,7 @@ const rpgWeeklySuccess = async ({author, channelId}: IRpgWeeklySuccess) => {
     commandType: RPG_COMMAND_TYPE.weekly,
     cooldown: WEEKLY_COOLDOWN,
   });
-  await saveUserWeeklyCooldown({
+  await userReminderServices.saveUserWeeklyCooldown({
     userId: author.id,
     readyAt: new Date(Date.now() + cooldown),
   });

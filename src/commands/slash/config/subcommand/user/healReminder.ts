@@ -1,5 +1,5 @@
 import {IUserConfig} from '../config.type';
-import {removeUserHealReminder, setUserHealReminder} from '../../../../../models/user/user.service';
+import {userService} from '../../../../../models/user/user.service';
 import djsInteractionHelper from '../../../../../lib/discord.js/interaction';
 
 export const setHealReminder = async ({client, interaction}: IUserConfig) => {
@@ -9,12 +9,12 @@ export const setHealReminder = async ({client, interaction}: IUserConfig) => {
 
   let message;
   if (toRemove) {
-    await removeUserHealReminder({
+    await userService.removeUserHealReminder({
       userId,
     });
     message = 'Heal reminder removed';
   } else if (hp) {
-    await setUserHealReminder({
+    await userService.setUserHealReminder({
       userId,
       hp,
     });

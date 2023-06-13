@@ -1,15 +1,12 @@
 import {Client, Message, User} from 'discord.js';
-import {
-  saveUserLootboxCooldown,
-  updateUserCooldown,
-} from '../../../../models/user-reminder/user-reminder.service';
+import {userReminderServices} from '../../../../models/user-reminder/user-reminder.service';
 import {RPG_LOOTBOX_TYPE} from '../../../../constants/epic_rpg/lootbox';
 import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
 import {calcCdReduction} from '../../../epic_helper/reminders/commandsCooldown';
 import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import {updateReminderChannel} from '../../../epic_helper/reminders/reminderChannel';
-import {countUserStats} from '../../../../models/user-stats/user-stats.service';
+import {userStatsService} from '../../../../models/user-stats/user-stats.service';
 import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
 
 const LOOTBOX_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.lootbox;
@@ -46,7 +43,7 @@ export function rpgBuyLootbox({client, message, author, isSlashCommand}: IRpgLoo
     }
   });
   event.on('cooldown', (cooldown) => {
-    updateUserCooldown({
+    userReminderServices.updateUserCooldown({
       type: RPG_COMMAND_TYPE.lootbox,
       readyAt: new Date(Date.now() + cooldown),
       userId: author.id,
@@ -71,7 +68,7 @@ const rpgBuyLootboxSuccess = async ({author, content, channelId}: IRpgBuyLootbox
     commandType: RPG_COMMAND_TYPE.lootbox,
     cooldown: LOOTBOX_COOLDOWN,
   });
-  await saveUserLootboxCooldown({
+  await userReminderServices.saveUserLootboxCooldown({
     userId: author.id,
     readyAt: new Date(Date.now() + cooldown),
     lootboxType,
@@ -81,7 +78,7 @@ const rpgBuyLootboxSuccess = async ({author, content, channelId}: IRpgBuyLootbox
     channelId,
   });
 
-  countUserStats({
+  userStatsService.countUserStats({
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.lootbox,
   });

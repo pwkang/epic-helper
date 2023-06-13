@@ -1,6 +1,6 @@
 import {Client, Embed, Message, User} from 'discord.js';
 import {RPG_ENCHANT_LEVEL, RPG_ENCHANT_LEVEL_RANK} from '../../../../constants/epic_rpg/enchant';
-import {getUserEnchantTier} from '../../../../models/user/user.service';
+import {userService} from '../../../../models/user/user.service';
 import ms from 'ms';
 import {EPIC_RPG_ID} from '../../../../constants/bot';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
@@ -63,7 +63,7 @@ const rpgEnchantSuccess = async ({embed, author, client, channelId}: IRpgEnchant
   const equipmentType = Object.values(EQUIPMENT_TYPE).find((type) =>
     embed.description?.toLowerCase().includes(type)
   );
-  const targetTier = await getUserEnchantTier({userId: author.id});
+  const targetTier = await userService.getUserEnchantTier({userId: author.id});
   if (!targetTier || !enchantTier || !equipmentType) return;
   if (RPG_ENCHANT_LEVEL_RANK[enchantTier] < RPG_ENCHANT_LEVEL_RANK[targetTier]) return;
 

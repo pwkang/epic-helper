@@ -1,7 +1,7 @@
 import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuInteraction} from 'discord.js';
 import {RPG_ENCHANT_LEVEL} from '../../../../constants/epic_rpg/enchant';
-import {removeUserEnchantTier, setUserEnchantTier} from '../../../../models/user/user.service';
+import {userService} from '../../../../models/user/user.service';
 import {djsMessageHelper} from '../../../../lib/discord.js/message';
 
 type SelectOptionsValue = ValuesOf<typeof RPG_ENCHANT_LEVEL> | 'remove';
@@ -26,13 +26,13 @@ export default <PrefixCommand>{
         const selectedEnchantLevel = interaction.values[0] as SelectOptionsValue;
         switch (selectedEnchantLevel) {
           case 'remove':
-            await removeUserEnchantTier({userId: message.author.id});
+            await userService.removeUserEnchantTier({userId: message.author.id});
             return {
               content: `You have removed your enchant tier`,
               components: [],
             };
           default:
-            await setUserEnchantTier({
+            await userService.setUserEnchantTier({
               userId: message.author.id,
               tier: selectedEnchantLevel,
             });

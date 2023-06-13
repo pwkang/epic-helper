@@ -15,7 +15,7 @@ interface IGetUserPets {
   orderBy?: 'petId' | 'readyAt';
 }
 
-export const getUserPets = async ({
+const getUserPets = async ({
   userId,
   petsId,
   page,
@@ -54,7 +54,7 @@ interface ICalcTotalPets {
   status?: ValuesOf<typeof RPG_PET_STATUS>[];
 }
 
-export const calcTotalPets = async ({userId, status}: ICalcTotalPets) => {
+const calcTotalPets = async ({userId, status}: ICalcTotalPets) => {
   const query: FilterQuery<IUserPet> = {
     userId,
   };
@@ -71,7 +71,7 @@ interface ICreateUserPet {
   pet: IUserPet;
 }
 
-export const createUserPet = async ({userId, pet}: ICreateUserPet) => {
+const createUserPet = async ({userId, pet}: ICreateUserPet) => {
   return dbUserPet.findOneAndUpdate(
     {
       userId,
@@ -91,7 +91,7 @@ interface IUpdateUserPet {
   pet: IUserPet;
 }
 
-export const updateUserPet = async ({userId, pet}: IUpdateUserPet) => {
+const updateUserPet = async ({userId, pet}: IUpdateUserPet) => {
   return dbUserPet.findOneAndUpdate(
     {
       userId,
@@ -108,7 +108,7 @@ interface IDeleteExtraPets {
   maxPetId: number;
 }
 
-export const deleteExtraPets = async ({userId, maxPetId}: IDeleteExtraPets) => {
+const deleteExtraPets = async ({userId, maxPetId}: IDeleteExtraPets) => {
   return dbUserPet.deleteMany({
     userId,
     petId: {
@@ -121,7 +121,7 @@ interface IGetUserReadyPets {
   userId: string;
 }
 
-export const getUserReadyPets = async ({userId}: IGetUserReadyPets) => {
+const getUserReadyPets = async ({userId}: IGetUserReadyPets) => {
   return dbUserPet.find({
     userId,
     readyAt: {
@@ -135,7 +135,7 @@ interface IUpdateRemindedPets {
   petIds: number[];
 }
 
-export const updateRemindedPets = async ({userId, petIds}: IUpdateRemindedPets) => {
+const updateRemindedPets = async ({userId, petIds}: IUpdateRemindedPets) => {
   return dbUserPet.updateMany(
     {
       userId,
@@ -158,7 +158,7 @@ interface IGetAvailableEpicPets {
   userId: string;
 }
 
-export const getAvailableEpicPets = async ({userId}: IGetAvailableEpicPets) => {
+const getAvailableEpicPets = async ({userId}: IGetAvailableEpicPets) => {
   return dbUserPet.find({
     userId,
     status: RPG_PET_STATUS.idle,
@@ -172,7 +172,7 @@ interface IGetAdventureEpicPets {
   userId: string;
 }
 
-export const getAdventureEpicPets = async ({userId}: IGetAdventureEpicPets) => {
+const getAdventureEpicPets = async ({userId}: IGetAdventureEpicPets) => {
   return dbUserPet.find({
     userId,
     status: {
@@ -184,7 +184,7 @@ export const getAdventureEpicPets = async ({userId}: IGetAdventureEpicPets) => {
   });
 };
 
-export const claimAllPets = async ({userId}: {userId: string}) => {
+const claimAllPets = async ({userId}: {userId: string}) => {
   return dbUserPet.updateMany(
     {
       userId,
@@ -210,7 +210,7 @@ export const claimAllPets = async ({userId}: {userId: string}) => {
   );
 };
 
-export const resetUserPetsAdvStatus = async (userId: string) => {
+const resetUserPetsAdvStatus = async (userId: string) => {
   return dbUserPet.updateMany(
     {
       userId,
@@ -226,7 +226,7 @@ export const resetUserPetsAdvStatus = async (userId: string) => {
   );
 };
 
-export const clearUserPets = async (userId: string) => {
+const clearUserPets = async (userId: string) => {
   return dbUserPet.deleteMany({
     userId,
   });
@@ -237,7 +237,7 @@ interface ICancelAdventurePets {
   petIds: number[];
 }
 
-export const cancelAdventurePets = async ({userId, petIds}: ICancelAdventurePets) => {
+const cancelAdventurePets = async ({userId, petIds}: ICancelAdventurePets) => {
   return dbUserPet.updateMany(
     {
       userId,
@@ -254,4 +254,20 @@ export const cancelAdventurePets = async ({userId, petIds}: ICancelAdventurePets
       },
     }
   );
+};
+
+export const userPetServices = {
+  getUserPets,
+  calcTotalPets,
+  createUserPet,
+  updateUserPet,
+  deleteExtraPets,
+  getUserReadyPets,
+  updateRemindedPets,
+  getAvailableEpicPets,
+  getAdventureEpicPets,
+  claimAllPets,
+  resetUserPetsAdvStatus,
+  clearUserPets,
+  cancelAdventurePets,
 };

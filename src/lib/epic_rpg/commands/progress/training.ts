@@ -1,15 +1,12 @@
 import type {Client, Embed, Message, User} from 'discord.js';
-import {
-  saveUserTrainingCooldown,
-  updateUserCooldown,
-} from '../../../../models/user-reminder/user-reminder.service';
+import {userReminderServices} from '../../../../models/user-reminder/user-reminder.service';
 import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
 import {calcCdReduction} from '../../../epic_helper/reminders/commandsCooldown';
 import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import getTrainingAnswer from '../../../epic_helper/features/trainingHelper';
 import {updateReminderChannel} from '../../../epic_helper/reminders/reminderChannel';
-import {countUserStats} from '../../../../models/user-stats/user-stats.service';
+import {userStatsService} from '../../../../models/user-stats/user-stats.service';
 import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
 import {djsMessageHelper} from '../../../discord.js/message';
 
@@ -49,7 +46,7 @@ export function rpgTraining({client, message, author, isSlashCommand}: IRpgTrain
     }
   });
   event.on('cooldown', (cooldown) => {
-    updateUserCooldown({
+    userReminderServices.updateUserCooldown({
       userId: author.id,
       type: RPG_COMMAND_TYPE.training,
       readyAt: new Date(Date.now() + cooldown),
@@ -77,7 +74,7 @@ const rpgTrainingSuccess = async ({author, channelId}: IRpgTrainingSuccess) => {
     commandType: RPG_COMMAND_TYPE.training,
     cooldown: TRAINING_COOLDOWN,
   });
-  await saveUserTrainingCooldown({
+  await userReminderServices.saveUserTrainingCooldown({
     userId: author.id,
     ultraining: false,
     readyAt: new Date(Date.now() + cooldown),
@@ -87,7 +84,7 @@ const rpgTrainingSuccess = async ({author, channelId}: IRpgTrainingSuccess) => {
     channelId,
   });
 
-  countUserStats({
+  userStatsService.countUserStats({
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.training,
   });

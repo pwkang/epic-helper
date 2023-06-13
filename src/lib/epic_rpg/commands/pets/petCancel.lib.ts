@@ -1,9 +1,5 @@
 import {BaseMessageOptions, Message, User} from 'discord.js';
-import {
-  cancelAdventurePets,
-  getAdventureEpicPets,
-  getUserPets,
-} from '../../../../models/user-pet/user-pet.service';
+import {userPetServices} from '../../../../models/user-pet/user-pet.service';
 import {convertNumToPetId, convertPetIdToNum} from '../../../../utils/petIdConversion';
 import {RPG_PET_STATUS} from '../../../../constants/epic_rpg/pet';
 import {IUserPet} from '../../../../models/user-pet/user-pet.type';
@@ -31,7 +27,7 @@ export const rpgPetAdvCancel = async ({
     };
   }
 
-  await cancelAdventurePets({
+  await userPetServices.cancelAdventurePets({
     petIds: petsToCancel.map((p) => p.petId),
     userId: author.id,
   });
@@ -76,13 +72,13 @@ const fetchPetsToCancel = async ({selectedPets, userId}: IFetchPetsToCancel) => 
   const nonEpicPetsId = selectedPets.filter((p) => p !== 'epic');
   const petsToCancel: IUserPet[] = [];
   if (hasCancelEpic(selectedPets)) {
-    const availableEpicPets = await getAdventureEpicPets({
+    const availableEpicPets = await userPetServices.getAdventureEpicPets({
       userId,
     });
     petsToCancel.push(...availableEpicPets);
   }
   if (!!nonEpicPetsId.length) {
-    const nonEpicPets = await getUserPets({
+    const nonEpicPets = await userPetServices.getUserPets({
       userId,
       petsId: nonEpicPetsId
         .map(convertPetIdToNum)

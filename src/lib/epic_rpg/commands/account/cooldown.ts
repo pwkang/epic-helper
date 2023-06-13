@@ -1,11 +1,7 @@
 import {Client, Embed, EmbedField, Message, User} from 'discord.js';
-import {
-  deleteUserCooldowns,
-  getUserAllCooldowns,
-  updateUserCooldown,
-} from '../../../../models/user-reminder/user-reminder.service';
+import {userReminderServices} from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
-import {getUserAccount} from '../../../../models/user/user.service';
+import {userService} from '../../../../models/user/user.service';
 import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import {calcExtraHuntCdWithPartner} from '../../../epic_helper/reminders/commandsCooldown';
@@ -72,8 +68,8 @@ interface IRpgCooldownSuccess {
 }
 
 const rpgCooldownSuccess = async ({author, embed}: IRpgCooldownSuccess) => {
-  const currentCooldowns = await getUserAllCooldowns(author.id);
-  const userProfile = await getUserAccount(author.id);
+  const currentCooldowns = await userReminderServices.getUserAllCooldowns(author.id);
+  const userProfile = await userService.getUserAccount(author.id);
   if (!userProfile) return;
 
   const fields = embed.fields.flatMap((field) => field.value.split('\n'));
@@ -83,7 +79,7 @@ const rpgCooldownSuccess = async ({author, embed}: IRpgCooldownSuccess) => {
 
     if (isReady(row)) {
       if (currentCooldowns.some((cooldown) => cooldown.type === commandType)) {
-        await deleteUserCooldowns({
+        await userReminderServices.deleteUserCooldowns({
           types: [commandType],
           userId: author.id,
         });
@@ -101,14 +97,14 @@ const rpgCooldownSuccess = async ({author, embed}: IRpgCooldownSuccess) => {
       const currentCooldown = currentCooldowns.find((cooldown) => cooldown.type === commandType);
       if (currentCooldown) {
         if (Math.abs(currentCooldown.readyAt.getTime() - readyAt.getTime()) > 1000) {
-          await updateUserCooldown({
+          await userReminderServices.updateUserCooldown({
             userId: author.id,
             type: commandType,
             readyAt,
           });
         }
       } else {
-        await updateUserCooldown({
+        await userReminderServices.updateUserCooldown({
           userId: author.id,
           type: commandType,
           readyAt,

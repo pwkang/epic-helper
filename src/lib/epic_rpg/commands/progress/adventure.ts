@@ -2,16 +2,16 @@ import {Client, Message, User} from 'discord.js';
 import {ADVENTURE_MONSTER_LIST} from '../../../../constants/epic_rpg/monster';
 import {
   saveUserAdventureCooldown,
-  updateUserCooldown,
+  userReminderServices,
 } from '../../../../models/user-reminder/user-reminder.service';
 import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic_helper/command_base_cd';
 import {calcCdReduction} from '../../../epic_helper/reminders/commandsCooldown';
 import {RPG_COMMAND_TYPE} from '../../../../constants/epic_rpg/rpg';
 import {createRpgCommandListener} from '../../../../utils/createRpgCommandListener';
 import {RPG_CLICKABLE_SLASH_COMMANDS} from '../../../../constants/epic_rpg/clickable_slash';
-import {getUserHealReminder} from '../../../../models/user/user.service';
+import {userService} from '../../../../models/user/user.service';
 import {updateReminderChannel} from '../../../epic_helper/reminders/reminderChannel';
-import {countUserStats} from '../../../../models/user-stats/user-stats.service';
+import {userStatsService} from '../../../../models/user-stats/user-stats.service';
 import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
 import {djsMessageHelper} from '../../../discord.js/message';
 
@@ -47,7 +47,7 @@ export function rpgAdventure({client, message, author, isSlashCommand}: IRpgAdve
     }
   });
   event.on('cooldown', (cooldown) => {
-    updateUserCooldown({
+    userReminderServices.updateUserCooldown({
       userId: author.id,
       type: RPG_COMMAND_TYPE.adventure,
       readyAt: new Date(Date.now() + cooldown),
@@ -84,7 +84,7 @@ const rpgAdventureSuccess = async ({author, content, channelId}: IRpgAdventureSu
     channelId,
   });
 
-  countUserStats({
+  userStatsService.countUserStats({
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.adventure,
   });
@@ -98,7 +98,7 @@ interface IHealReminder {
 }
 
 async function healReminder({client, channelId, author, content}: IHealReminder) {
-  const healReminder = await getUserHealReminder({
+  const healReminder = await userService.getUserHealReminder({
     userId: author.id,
   });
   if (!healReminder) return;

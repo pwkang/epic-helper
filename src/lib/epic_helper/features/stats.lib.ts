@@ -1,7 +1,4 @@
-import {
-  getUserBestStats,
-  getUserStatsOfLast2Weeks,
-} from '../../../models/user-stats/user-stats.service';
+import {userStatsService} from '../../../models/user-stats/user-stats.service';
 import {
   ActionRowBuilder,
   ButtonBuilder,
@@ -25,8 +22,8 @@ interface IGetDonorStatsEmbed {
 }
 
 export const getStatsEmbeds = async ({author}: IGetDonorStatsEmbed) => {
-  const stats = await getUserStatsOfLast2Weeks({userId: author.id});
-  const bestStats = await getUserBestStats({
+  const stats = await userStatsService.getUserStatsOfLast2Weeks({userId: author.id});
+  const bestStats = await userStatsService.getUserBestStats({
     userId: author.id,
   });
 
