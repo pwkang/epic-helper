@@ -1,4 +1,4 @@
-import {RPG_COMMAND_TYPE} from '../../constants/epic_rpg/rpg';
+import {RPG_COMMAND_TYPE} from '../../constants/epic-rpg/rpg';
 
 export interface IEventCdReduction {
   commandType: ValuesOf<typeof RPG_COMMAND_TYPE>;

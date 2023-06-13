@@ -1,4 +1,4 @@
-import _relativeTime from './_relativeTime';
+import _relativeTime from './_relative-time';
 
 const timestampHelper = {
   relative: _relativeTime,

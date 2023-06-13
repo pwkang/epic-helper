@@ -1,7 +1,7 @@
 import {SlashCommandBuilder} from 'discord.js';
-import petList from './subcommand/petList';
-import petCd from './subcommand/petCd';
-import petCalcFusionScore from './subcommand/petCalcFusionScore.slash';
+import petList from './subcommand/pet-list';
+import petCd from './subcommand/pet-cd';
+import petCalcFusionScore from './subcommand/pet-calc-fusion-score';
 
 export default <SlashCommand>{
   name: 'pet',

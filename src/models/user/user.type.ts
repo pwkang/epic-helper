@@ -1,6 +1,6 @@
-import {RPG_COMMAND_TYPE, RPG_DONOR_TIER} from '../../constants/epic_rpg/rpg';
-import {BOT_TIMEZONE_LIST} from '../../constants/epic_helper/timezone';
-import {RPG_ENCHANT_LEVEL} from '../../constants/epic_rpg/enchant';
+import {RPG_COMMAND_TYPE, RPG_DONOR_TIER} from '../../constants/epic-rpg/rpg';
+import {BOT_TIMEZONE_LIST} from '../../constants/epic-helper/timezone';
+import {RPG_ENCHANT_LEVEL} from '../../constants/epic-rpg/enchant';
 
 type ToggleDmOptions = keyof typeof RPG_COMMAND_TYPE | 'all';
 type ToggleReminderOptions = keyof typeof RPG_COMMAND_TYPE | 'all';

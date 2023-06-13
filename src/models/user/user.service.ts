@@ -3,8 +3,8 @@ import userSchema from './user.schema';
 import {IUser} from './user.type';
 import userAccountRedis from '../../services/redis/user-account.redis';
 import {UpdateQuery} from 'mongoose';
-import {RPG_ENCHANT_LEVEL} from '../../constants/epic_rpg/enchant';
-import {RPG_DONOR_TIER} from '../../constants/epic_rpg/rpg';
+import {RPG_ENCHANT_LEVEL} from '../../constants/epic-rpg/enchant';
+import {RPG_DONOR_TIER} from '../../constants/epic-rpg/rpg';
 
 const dbUser = mongoClient.model<IUser>('user', userSchema);
 

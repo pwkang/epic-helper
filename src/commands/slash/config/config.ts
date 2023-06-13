@@ -1,6 +1,6 @@
 import {SlashCommandBuilder} from 'discord.js';
-import {setHealReminder} from './subcommand/user/healReminder';
-import {setReminderChannelSlash} from './subcommand/user/reminderChannel.slash';
+import {setHealReminder} from './subcommand/user/heal-reminder';
+import {setReminderChannelSlash} from './subcommand/user/reminder-channel';
 
 export default <SlashCommand>{
   name: 'config',

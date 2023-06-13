@@ -1,6 +1,6 @@
 import {Model, Schema} from 'mongoose';
 import {IUserPet} from './user-pet.type';
-import {RPG_PET_STATUS, RPG_PET_TYPE} from '../../constants/epic_rpg/pet';
+import {RPG_PET_STATUS, RPG_PET_TYPE} from '../../constants/epic-rpg/pet';
 import {userReminderServices} from '../user-reminder/user-reminder.service';
 
 const userPetSchema = new Schema<IUserPet>({

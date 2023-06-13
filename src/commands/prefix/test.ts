@@ -1,7 +1,7 @@
 import {
   rpgPetAdventure,
   rpgPetAdventureChecker,
-} from '../../lib/epic_rpg/commands/pets/petAdventure.lib';
+} from '../../lib/epic-rpg/commands/pets/pet-adventure';
 import {PREFIX_COMMAND_TYPE} from '../../constants/bot';
 import {djsMessageHelper} from '../../lib/discord.js/message';
 

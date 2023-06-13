@@ -1,5 +1,5 @@
-import {RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../constants/epic_rpg/rpg';
-import {RPG_LOOTBOX_TYPE} from '../../constants/epic_rpg/lootbox';
+import {RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../constants/epic-rpg/rpg';
+import {RPG_LOOTBOX_TYPE} from '../../constants/epic-rpg/lootbox';
 
 export interface IHuntReminderProps {
   together: boolean;

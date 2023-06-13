@@ -1,5 +1,5 @@
-import _replyInteraction from './_replyInteraction';
-import _updateInteraction from './_updateInteraction';
+import _replyInteraction from './_reply-interaction';
+import _updateInteraction from './_update-interaction';
 
 const djsInteractionHelper = {
   replyInteraction: _replyInteraction,

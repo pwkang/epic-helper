@@ -1,8 +1,8 @@
 import {mongoClient} from '../../services/mongoose/mongoose.service';
 import {IUserReminder} from './user-reminder.type';
 import userReminderSchema from './user-reminder.schema';
-import {RPG_COMMAND_TYPE, RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../constants/epic_rpg/rpg';
-import {RPG_LOOTBOX_TYPE} from '../../constants/epic_rpg/lootbox';
+import {RPG_COMMAND_TYPE, RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../constants/epic-rpg/rpg';
+import {RPG_LOOTBOX_TYPE} from '../../constants/epic-rpg/lootbox';
 import {IUserPet} from '../user-pet/user-pet.type';
 
 const dbUserReminder = mongoClient.model<IUserReminder>('user-reminder', userReminderSchema);
