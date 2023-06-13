@@ -1,7 +1,7 @@
 import {Schema} from 'mongoose';
 import {IUser} from './user.type';
-import {TIMEZONE_LIST} from '../../constants/timezone';
-import {RPG_DONOR_TIER} from '../../constants/rpg';
+import {BOT_TIMEZONE_LIST} from '../../constants/epic-helper/timezone';
+import {RPG_DONOR_TIER} from '../../constants/epic-rpg/rpg';
 
 const userSchema = new Schema<IUser>({
   userId: {
@@ -130,7 +130,7 @@ const userSchema = new Schema<IUser>({
     pet: String,
   },
   config: {
-    timezone: {type: String, donor: TIMEZONE_LIST.UTC, enum: Object.values(TIMEZONE_LIST)},
+    timezone: {type: String, donor: BOT_TIMEZONE_LIST.UTC, enum: Object.values(BOT_TIMEZONE_LIST)},
     heal: {type: Number, donor: 0},
     enchant: {type: String},
     donor: {type: String, donor: RPG_DONOR_TIER.nonDonor},

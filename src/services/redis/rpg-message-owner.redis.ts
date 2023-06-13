@@ -10,7 +10,7 @@ interface IRedisSetRpgMessageOwner {
   messageId: string;
 }
 
-export const redisSetRpgMessageOwner = async ({userId, messageId}: IRedisSetRpgMessageOwner) => {
+const setOwner = async ({userId, messageId}: IRedisSetRpgMessageOwner) => {
   await redisClient.set(`${prefix}${messageId}`, userId, {
     PX: ms('5m'),
   });
@@ -21,6 +21,13 @@ interface IRedisGetRpgMessageOwner {
   messageId: string;
 }
 
-export const redisGetRpgMessageOwner = async ({messageId}: IRedisGetRpgMessageOwner) => {
+const getOwner = async ({messageId}: IRedisGetRpgMessageOwner) => {
   return await redisClient.get(`${prefix}${messageId}`);
 };
+
+const redisRpgMessageOwner = {
+  setOwner,
+  getOwner,
+};
+
+export default redisRpgMessageOwner;

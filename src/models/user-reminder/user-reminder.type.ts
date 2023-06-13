@@ -1,5 +1,5 @@
-import {RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../constants/rpg';
-import {LOOTBOX_TYPE} from '../../constants/lootbox';
+import {RPG_FARM_SEED, RPG_WORKING_TYPE} from '../../constants/epic-rpg/rpg';
+import {RPG_LOOTBOX_TYPE} from '../../constants/epic-rpg/lootbox';
 
 export interface IHuntReminderProps {
   together: boolean;
@@ -31,7 +31,7 @@ export interface IPetReminderProps {
 }
 
 export interface ILootboxReminderProps {
-  lootboxType: ValuesOf<typeof LOOTBOX_TYPE>;
+  lootboxType: ValuesOf<typeof RPG_LOOTBOX_TYPE>;
 }
 
 type BaseUserReminder = {

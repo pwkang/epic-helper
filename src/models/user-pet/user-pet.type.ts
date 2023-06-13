@@ -1,4 +1,4 @@
-import {RPG_PET_SKILL, RPG_PET_STATUS, RPG_PET_TYPE} from '../../constants/pet';
+import {RPG_PET_SKILL, RPG_PET_STATUS, RPG_PET_TYPE} from '../../constants/epic-rpg/pet';
 
 export interface IUserPet {
   userId: string;

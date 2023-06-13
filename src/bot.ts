@@ -22,7 +22,7 @@ const client = new Client({
 
 client.prefixCommands = new Collection();
 client.slashCommands = new Collection();
-client.slashCommandsOtherBot = new Collection();
+client.slashMessages = new Collection();
 
 if (environment === 'production') {
   client.cluster = new ClusterClient(client); // initialize the Client, so we access the .broadcastEval()
@@ -35,5 +35,5 @@ Promise.all([
   redisClient.connect(),
   loadCronJob(client),
 ]).then(() => {
-  client.login(process.env.BOT_TOKEN).catch(console.error);
+  // client.login(process.env.BOT_TOKEN).catch(console.error);
 });

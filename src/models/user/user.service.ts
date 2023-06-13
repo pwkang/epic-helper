@@ -1,13 +1,10 @@
 import {mongoClient} from '../../services/mongoose/mongoose.service';
 import userSchema from './user.schema';
 import {IUser} from './user.type';
-import {
-  redisGetUserRubyAmount,
-  redisSetUserRubyAmount,
-} from '../../services/redis/user-account.redis';
+import userAccountRedis from '../../services/redis/user-account.redis';
 import {UpdateQuery} from 'mongoose';
-import {ENCHANT_LEVEL} from '../../constants/enchant';
-import {RPG_DONOR_TIER} from '../../constants/rpg';
+import {RPG_ENCHANT_LEVEL} from '../../constants/epic-rpg/enchant';
+import {RPG_DONOR_TIER} from '../../constants/epic-rpg/rpg';
 
 const dbUser = mongoClient.model<IUser>('user', userSchema);
 
@@ -17,7 +14,7 @@ interface RegisterUserProps {
   channelId: string;
 }
 
-export const registerUserAccount = async ({
+const registerUserAccount = async ({
   userId,
   username,
   channelId,
@@ -39,7 +36,7 @@ export const registerUserAccount = async ({
   return false;
 };
 
-export const userAccountOn = async (userId: string): Promise<void> => {
+const userAccountOn = async (userId: string): Promise<void> => {
   await dbUser.findOneAndUpdate(
     {
       userId,
@@ -52,7 +49,7 @@ export const userAccountOn = async (userId: string): Promise<void> => {
   );
 };
 
-export const userAccountOff = async (userId: string): Promise<void> => {
+const userAccountOff = async (userId: string): Promise<void> => {
   await dbUser.findOneAndUpdate(
     {
       userId,
@@ -65,12 +62,12 @@ export const userAccountOff = async (userId: string): Promise<void> => {
   );
 };
 
-export const userAccountDelete = async (userId: string): Promise<void> => {
+const userAccountDelete = async (userId: string): Promise<void> => {
   await dbUser.findOneAndDelete({
     userId,
   });
 };
-export const isUserAccountExist = async (userId: string): Promise<boolean> => {
+const isUserAccountExist = async (userId: string): Promise<boolean> => {
   const user = await dbUser.count({
     userId,
   });
@@ -82,7 +79,7 @@ interface IUpdateRpgDonorTier {
   tier: ValuesOf<typeof RPG_DONOR_TIER>;
 }
 
-export const updateRpgDonorTier = async ({userId, tier}: IUpdateRpgDonorTier): Promise<void> => {
+const updateRpgDonorTier = async ({userId, tier}: IUpdateRpgDonorTier): Promise<void> => {
   await dbUser.findOneAndUpdate(
     {
       userId,
@@ -100,7 +97,7 @@ interface IUpdateRpgDonorPTier {
   tier: ValuesOf<typeof RPG_DONOR_TIER> | null;
 }
 
-export const updateRpgDonorPTier = async ({userId, tier}: IUpdateRpgDonorPTier): Promise<void> => {
+const updateRpgDonorPTier = async ({userId, tier}: IUpdateRpgDonorPTier): Promise<void> => {
   await dbUser.findOneAndUpdate(
     {
       userId,
@@ -113,7 +110,7 @@ export const updateRpgDonorPTier = async ({userId, tier}: IUpdateRpgDonorPTier):
   );
 };
 
-export const removeRpgDonorPTier = async (userId: string): Promise<void> => {
+const removeRpgDonorPTier = async (userId: string): Promise<void> => {
   await dbUser.findOneAndUpdate(
     {
       userId,
@@ -126,7 +123,7 @@ export const removeRpgDonorPTier = async (userId: string): Promise<void> => {
   );
 };
 
-export const toggleHuntSwitch = async (userId: string): Promise<boolean> => {
+const toggleHuntSwitch = async (userId: string): Promise<boolean> => {
   let user = await dbUser.findOne({
     userId,
   });
@@ -136,7 +133,7 @@ export const toggleHuntSwitch = async (userId: string): Promise<boolean> => {
   return user.config.huntSwitch;
 };
 
-export const getUserAccount = async (userId: string): Promise<IUser | null> => {
+const getUserAccount = async (userId: string): Promise<IUser | null> => {
   return dbUser.findOne({
     userId,
   });
@@ -148,11 +145,7 @@ interface IUpdateUserRubyAmount {
   type: 'set' | 'inc' | 'dec';
 }
 
-export const updateUserRubyAmount = async ({
-  ruby,
-  userId,
-  type,
-}: IUpdateUserRubyAmount): Promise<void> => {
+const updateUserRubyAmount = async ({ruby, userId, type}: IUpdateUserRubyAmount): Promise<void> => {
   let query: UpdateQuery<IUser> = {};
   if (type === 'set') {
     query.$set = {
@@ -175,11 +168,11 @@ export const updateUserRubyAmount = async ({
       },
     }
   );
-  if (user) await redisSetUserRubyAmount(userId, user.items.ruby);
+  if (user) await userAccountRedis.setRuby(userId, user.items.ruby);
 };
 
-export const getUserRubyAmount = async (userId: string): Promise<number> => {
-  return redisGetUserRubyAmount(userId, async () => {
+const getUserRubyAmount = async (userId: string): Promise<number> => {
+  return userAccountRedis.getRuby(userId, async () => {
     const user = await dbUser.findOne(
       {
         userId,
@@ -194,10 +187,10 @@ export const getUserRubyAmount = async (userId: string): Promise<number> => {
 
 interface ISetUserEnchantTier {
   userId: string;
-  tier: ValuesOf<typeof ENCHANT_LEVEL>;
+  tier: ValuesOf<typeof RPG_ENCHANT_LEVEL>;
 }
 
-export const setUserEnchantTier = async ({userId, tier}: ISetUserEnchantTier): Promise<void> => {
+const setUserEnchantTier = async ({userId, tier}: ISetUserEnchantTier): Promise<void> => {
   await dbUser.findOneAndUpdate(
     {
       userId,
@@ -214,7 +207,7 @@ interface IRemoveUserEnchantTier {
   userId: string;
 }
 
-export const removeUserEnchantTier = async ({userId}: IRemoveUserEnchantTier): Promise<void> => {
+const removeUserEnchantTier = async ({userId}: IRemoveUserEnchantTier): Promise<void> => {
   await dbUser.findOneAndUpdate(
     {
       userId,
@@ -231,9 +224,9 @@ interface IGetUserEnchantTier {
   userId: string;
 }
 
-export const getUserEnchantTier = async ({
+const getUserEnchantTier = async ({
   userId,
-}: IGetUserEnchantTier): Promise<ValuesOf<typeof ENCHANT_LEVEL> | null> => {
+}: IGetUserEnchantTier): Promise<ValuesOf<typeof RPG_ENCHANT_LEVEL> | null> => {
   const user = await dbUser.findOne(
     {
       userId,
@@ -249,7 +242,7 @@ interface IRemoveUserHealReminder {
   userId: string;
 }
 
-export const removeUserHealReminder = async ({userId}: IRemoveUserHealReminder): Promise<void> => {
+const removeUserHealReminder = async ({userId}: IRemoveUserHealReminder): Promise<void> => {
   await dbUser.findOneAndUpdate(
     {
       userId,
@@ -266,9 +259,7 @@ interface IGetUserHealReminder {
   userId: string;
 }
 
-export const getUserHealReminder = async ({
-  userId,
-}: IGetUserHealReminder): Promise<number | null> => {
+const getUserHealReminder = async ({userId}: IGetUserHealReminder): Promise<number | null> => {
   const user = await dbUser.findOne(
     {
       userId,
@@ -285,7 +276,7 @@ interface ISetUserHealReminder {
   hp: number;
 }
 
-export const setUserHealReminder = async ({userId, hp}: ISetUserHealReminder): Promise<void> => {
+const setUserHealReminder = async ({userId, hp}: ISetUserHealReminder): Promise<void> => {
   await dbUser.findOneAndUpdate(
     {
       userId,
@@ -304,7 +295,7 @@ interface ISetUserReminderChannel {
   channelId: string;
 }
 
-export const setUserReminderChannel = async ({
+const setUserReminderChannel = async ({
   userId,
   commandType,
   channelId,
@@ -328,10 +319,7 @@ interface IRemoveUserReminderChannel {
   commandType: (keyof IUser['channel'])[];
 }
 
-export const removeUserReminderChannel = async ({
-  userId,
-  commandType,
-}: IRemoveUserReminderChannel) => {
+const removeUserReminderChannel = async ({userId, commandType}: IRemoveUserReminderChannel) => {
   const updateQuery: Record<string, string> = {};
   commandType.forEach((type) => {
     if (type === 'all') return;
@@ -351,7 +339,7 @@ interface IGetUserReminderChannel {
   userId: string;
 }
 
-export const getUserReminderChannel = async ({
+const getUserReminderChannel = async ({
   userId,
 }: IGetUserReminderChannel): Promise<IUser['channel'] | null> => {
   const user = await dbUser.findOne(
@@ -363,4 +351,28 @@ export const getUserReminderChannel = async ({
     }
   );
   return user?.channel ?? null;
+};
+
+export const userService = {
+  registerUserAccount,
+  userAccountOn,
+  userAccountOff,
+  userAccountDelete,
+  isUserAccountExist,
+  updateRpgDonorTier,
+  updateRpgDonorPTier,
+  removeRpgDonorPTier,
+  toggleHuntSwitch,
+  getUserAccount,
+  updateUserRubyAmount,
+  getUserRubyAmount,
+  setUserEnchantTier,
+  removeUserEnchantTier,
+  getUserEnchantTier,
+  removeUserHealReminder,
+  getUserHealReminder,
+  setUserHealReminder,
+  setUserReminderChannel,
+  removeUserReminderChannel,
+  getUserReminderChannel,
 };

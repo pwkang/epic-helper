@@ -1,0 +1,21 @@
+import type {Client, Message, MessageCreateOptions, MessagePayload} from 'discord.js';
+import {PermissionsBitField, TextChannel} from 'discord.js';
+
+const requiredPermissions = [PermissionsBitField.Flags.SendMessages];
+
+interface ReplyMessageProps {
+  client: Client;
+  message: Message;
+  options: string | MessagePayload | MessageCreateOptions;
+}
+
+export default function _replyMessage({message, options, client}: ReplyMessageProps) {
+  const channel = client.channels.cache.get(message.channelId);
+  if (!channel) return;
+
+  if (channel instanceof TextChannel) {
+    const textChannel = channel as TextChannel;
+    if (!textChannel.permissionsFor(client.user!)?.has(requiredPermissions)) return;
+    message.reply(options).catch(console.error);
+  }
+}

@@ -5,10 +5,11 @@ dotenv.config();
 
 const uri = process.env.MONGO_URI || 'mongodb://localhost:27017';
 
-export const mongoClient = mongoose.createConnection(uri, {
+const client = mongoose.createConnection(uri, {
   connectTimeoutMS: 10000,
 });
 
+export const mongoClient = client.useDb('epic-helper');
 mongoClient.on('connected', () => {
   console.log('Connected to MongoDB');
 });

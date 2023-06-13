@@ -1,6 +1,6 @@
-import {RPG_COMMAND_TYPE, RPG_DONOR_TIER} from '../../constants/rpg';
-import {TIMEZONE_LIST} from '../../constants/timezone';
-import {ENCHANT_LEVEL} from '../../constants/enchant';
+import {RPG_COMMAND_TYPE, RPG_DONOR_TIER} from '../../constants/epic-rpg/rpg';
+import {BOT_TIMEZONE_LIST} from '../../constants/epic-helper/timezone';
+import {RPG_ENCHANT_LEVEL} from '../../constants/epic-rpg/enchant';
 
 type ToggleDmOptions = keyof typeof RPG_COMMAND_TYPE | 'all';
 type ToggleReminderOptions = keyof typeof RPG_COMMAND_TYPE | 'all';
@@ -38,9 +38,9 @@ export interface IUser {
   customMessage: Record<CustomMessageOptions, string>;
   channel: Record<ReminderChannelOptions, string>;
   config: {
-    timezone: keyof typeof TIMEZONE_LIST;
+    timezone: keyof typeof BOT_TIMEZONE_LIST;
     heal: number;
-    enchant: keyof typeof ENCHANT_LEVEL;
+    enchant: keyof typeof RPG_ENCHANT_LEVEL;
     donor: ValuesOf<typeof RPG_DONOR_TIER>;
     donorP: ValuesOf<typeof RPG_DONOR_TIER> | null;
     huntSwitch: boolean;
