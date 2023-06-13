@@ -1,5 +1,5 @@
 import {Client, Guild, Routes} from 'discord.js';
-import {discordJsRest} from '../../../services/discord.js/discordjs.service.ts';
+import {djsRestClient} from '../../../services/discord.js/discordjs.service.ts';
 
 interface IDeleteGuildSlashCommand {
   client: Client;
@@ -14,7 +14,7 @@ export const _deleteGuildSlashCommand = async ({
 }: IDeleteGuildSlashCommand) => {
   if (!client.user) return [];
   try {
-    await discordJsRest.delete(
+    await djsRestClient.delete(
       Routes.applicationGuildCommand(client.user.id!, guild.id, commandId)
     );
   } catch (e) {

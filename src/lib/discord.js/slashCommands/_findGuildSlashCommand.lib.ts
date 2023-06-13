@@ -1,5 +1,5 @@
 import {ApplicationCommand, Client, Guild, Routes} from 'discord.js';
-import {discordJsRest} from '../../../services/discord.js/discordjs.service.ts';
+import {djsRestClient} from '../../../services/discord.js/discordjs.service.ts';
 
 interface IGetGuildSlashCommands {
   client: Client;
@@ -15,7 +15,7 @@ export const _findGuildSlashCommand = async ({
   if (!client.user) return [];
 
   try {
-    const data = await discordJsRest.get(
+    const data = await djsRestClient.get(
       Routes.applicationGuildCommand(client.user.id, guild.id, commandId)
     );
 
