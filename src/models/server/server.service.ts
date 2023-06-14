@@ -37,9 +37,20 @@ const getServer = async ({serverId}: IGetServerProps): Promise<IServer | null> =
   return server;
 };
 
+const listRegisteredServersId = async (): Promise<string[]> => {
+  const servers = await dbServer.find(
+    {},
+    {
+      serverId: 1,
+    }
+  );
+  return servers?.map((server) => server.serverId) ?? [];
+};
+
 const serverService = {
   registerServer,
   getServer,
+  listRegisteredServersId,
 };
 
 export default serverService;

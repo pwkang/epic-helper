@@ -8,7 +8,7 @@ export interface IEnchantChannel {
 }
 
 export interface IServer {
-  serverId: ObjectId;
+  serverId: string;
   name: string;
   settings: {
     admin: {

@@ -2,11 +2,11 @@ import {ClusterClient, getInfo} from 'discord-hybrid-sharding';
 import {Client, Collection, IntentsBitField} from 'discord.js';
 
 import * as dotenv from 'dotenv';
-import loadCommands from './handler/commands.handler';
-import loadBotEvents from './handler/bot-events.handler';
-import loadCronJob from './handler/cron.handler';
+import loadCommands from './handler/on-start/commands.handler';
+import loadBotEvents from './handler/on-start/bot-events.handler';
+import loadCronJob from './handler/on-start/cron.handler';
 import {redisClient} from './services/redis/redis.service';
-import {initSentry} from './handler/sentry.handler';
+import {initSentry} from './handler/on-start/sentry.handler';
 
 dotenv.config();
 const environment = process.env.NODE_ENV || 'development';

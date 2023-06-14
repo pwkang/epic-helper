@@ -8,6 +8,7 @@ const enchantChannelSchema = new Schema<IEnchantChannel>({
 });
 
 export const serverSchema = new Schema<IServer>({
+  serverId: {type: String, required: true},
   name: {type: String, required: true},
   settings: {
     admin: {
