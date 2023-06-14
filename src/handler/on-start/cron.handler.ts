@@ -1,7 +1,7 @@
 import {Client} from 'discord.js';
 import {schedule} from 'node-cron';
 import {handlerFileFilter, handlerRoot} from './constant';
-import {importFiles} from '../utils/filesImport';
+import {importFiles} from '../../utils/filesImport';
 
 export default async function loadCronJob(client: Client) {
   const commands = await importFiles<CronJob>({
