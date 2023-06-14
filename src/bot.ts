@@ -15,7 +15,11 @@ const shards = environment === 'development' ? 'auto' : getInfo().SHARD_LIST;
 const shardCount = environment === 'development' ? 1 : getInfo().TOTAL_SHARDS;
 
 const client = new Client({
-  intents: new IntentsBitField().add(['Guilds', 'GuildMessages', 'MessageContent']),
+  intents: new IntentsBitField().add([
+    IntentsBitField.Flags.Guilds,
+    IntentsBitField.Flags.GuildMessages,
+    IntentsBitField.Flags.MessageContent,
+  ]),
   shardCount,
   shards,
 });
