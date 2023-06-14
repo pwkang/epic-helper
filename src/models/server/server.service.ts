@@ -47,10 +47,20 @@ const listRegisteredServersId = async (): Promise<string[]> => {
   return servers?.map((server) => server.serverId) ?? [];
 };
 
+const findServerById = async (serverId: string): Promise<IServer | null> => {
+  const server = await dbServer.findOne({serverId});
+
+  if (!server) {
+    return null;
+  }
+  return server;
+};
+
 const serverService = {
   registerServer,
   getServer,
   listRegisteredServersId,
+  findServerById,
 };
 
 export default serverService;
