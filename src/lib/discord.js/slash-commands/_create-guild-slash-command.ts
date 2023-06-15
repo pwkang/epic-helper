@@ -32,7 +32,7 @@ export const _createGuildSlashCommand = async ({
   } catch (e: DiscordAPIError | any) {
     logger({
       client,
-      message: e.rawError.message,
+      message: e.rawError,
       variant: 'create-guild-slash-command',
       logLevel: 'error',
     });

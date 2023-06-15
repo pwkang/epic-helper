@@ -4,7 +4,6 @@ import {IEnchantChannel, IServer} from './server.type';
 const enchantChannelSchema = new Schema<IEnchantChannel>({
   channelId: {type: String, required: true},
   muteDuration: Number,
-  isDefault: {type: Boolean, default: false},
 });
 
 export const serverSchema = new Schema<IServer>({
