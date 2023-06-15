@@ -1,5 +1,13 @@
-import type {Channel, Client, Message, MessageCreateOptions, MessagePayload} from 'discord.js';
+import type {
+  Channel,
+  Client,
+  DiscordAPIError,
+  Message,
+  MessageCreateOptions,
+  MessagePayload,
+} from 'discord.js';
 import {PermissionsBitField, TextChannel} from 'discord.js';
+import {logger} from '../../../utils/logger';
 
 const requiredPermissions = [PermissionsBitField.Flags.SendMessages];
 
@@ -34,11 +42,15 @@ async function checkTypeAndSend({
   let sentMessage;
   if (channel instanceof TextChannel) {
     const textChannel = channel as TextChannel;
-    if (!textChannel.permissionsFor(client.user!)?.has(requiredPermissions)) return;
+    // if (!textChannel.permissionsFor(client.user!)?.has(requiredPermissions)) return;
     try {
       sentMessage = await textChannel.send(options);
-    } catch (error) {
-      console.log(error);
+    } catch (error: DiscordAPIError | any) {
+      logger({
+        message: error.rawError.message,
+        logLevel: 'warn',
+        variant: 'sendMessage',
+      });
       return;
     }
   }

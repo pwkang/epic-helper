@@ -58,7 +58,7 @@ export const createRpgCommandListener = ({channelId, client, author}: IRpgComman
   };
 
   event.triggerCollect = (message: Message) => {
-    messageCollected(message).catch(console.error);
+    messageCollected(message);
   };
 
   collector.on('collect', messageCollected);

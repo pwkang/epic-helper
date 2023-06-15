@@ -1,11 +1,14 @@
 import {
   BaseInteraction,
   Client,
+  DiscordAPIError,
   InteractionReplyOptions,
+  InteractionResponse,
   InteractionUpdateOptions,
   StringSelectMenuInteraction,
 } from 'discord.js';
 import ms from 'ms';
+import {logger} from '../../../utils/logger';
 
 interface IReplyInteraction {
   client: Client;
@@ -18,10 +21,22 @@ export default async function _replyInteraction<T>({
   interaction,
   interactive,
   options,
+  client,
 }: IReplyInteraction) {
   if (!interaction.isRepliable() || interaction.replied) return;
+  let interactionResponse: InteractionResponse | undefined;
 
-  const interactionResponse = await interaction.reply(options).catch(console.error);
+  try {
+    interactionResponse = await interaction.reply(options);
+  } catch (error: DiscordAPIError | any) {
+    logger({
+      client,
+      message: error.rawError,
+      variant: 'replyInteraction',
+      logLevel: 'warn',
+    });
+  }
+
   if (!interactive || !interactionResponse) return;
   const channel = interaction.channel;
   if (!channel) return;
@@ -48,13 +63,19 @@ export default async function _replyInteraction<T>({
     collector?.removeAllListeners();
   }
 
-  collector?.on('end', (collected, reason) => {
+  collector?.on('end', async (collected, reason) => {
     if (reason === 'idle') {
-      interactionResponse
-        .edit({
+      try {
+        await interactionResponse?.edit({
           components: [],
-        })
-        .catch(console.error);
+        });
+      } catch (error: DiscordAPIError | any) {
+        logger({
+          message: error.message,
+          logLevel: 'warn',
+          variant: 'replyInteraction',
+        });
+      }
     }
   });
 

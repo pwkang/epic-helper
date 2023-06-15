@@ -1,5 +1,6 @@
-import {ApplicationCommand, Client, Routes, SlashCommandBuilder} from 'discord.js';
+import {ApplicationCommand, Client, DiscordAPIError, Routes, SlashCommandBuilder} from 'discord.js';
 import {djsRestClient} from '../../../services/discord.js/discordjs.service.ts';
+import {logger} from '../../../utils/logger';
 
 interface ICreateGlobalSlashCommand {
   client: Client;
@@ -12,7 +13,13 @@ export const _createGlobalSlashCommand = async ({commands, client}: ICreateGloba
       body: commands,
     });
     return data as ApplicationCommand;
-  } catch (e) {
-    console.error(e);
+  } catch (e: DiscordAPIError | any) {
+    logger({
+      client,
+      message: e.rawError.message,
+      variant: 'create-global-slash-command',
+      logLevel: 'error',
+    });
+    return null;
   }
 };

@@ -1,5 +1,13 @@
-import {ApplicationCommand, Client, Guild, Routes, SlashCommandBuilder} from 'discord.js';
+import {
+  ApplicationCommand,
+  Client,
+  DiscordAPIError,
+  Guild,
+  Routes,
+  SlashCommandBuilder,
+} from 'discord.js';
 import {djsRestClient} from '../../../services/discord.js/discordjs.service.ts';
+import {logger} from '../../../utils/logger';
 
 interface ICreateGuildSlashCommand {
   client: Client;
@@ -21,7 +29,13 @@ export const _createGuildSlashCommand = async ({
       }
     );
     return data as ApplicationCommand;
-  } catch (e) {
-    console.error(e);
+  } catch (e: DiscordAPIError | any) {
+    logger({
+      client,
+      message: e.rawError.message,
+      variant: 'create-guild-slash-command',
+      logLevel: 'error',
+    });
+    return null;
   }
 };

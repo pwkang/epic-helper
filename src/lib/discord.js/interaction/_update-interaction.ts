@@ -1,4 +1,10 @@
-import {Client, InteractionUpdateOptions, MessageComponentInteraction} from 'discord.js';
+import {
+  Client,
+  DiscordAPIError,
+  InteractionUpdateOptions,
+  MessageComponentInteraction,
+} from 'discord.js';
+import {logger} from '../../../utils/logger';
 
 interface IUpdateInteraction {
   client: Client;
@@ -6,6 +12,19 @@ interface IUpdateInteraction {
   options: InteractionUpdateOptions;
 }
 
-export default function _updateInteraction({interaction, options}: IUpdateInteraction) {
-  interaction.update(options).catch(console.error);
+export default async function _updateInteraction({
+  interaction,
+  options,
+  client,
+}: IUpdateInteraction) {
+  try {
+    await interaction.update(options);
+  } catch (error: DiscordAPIError | any) {
+    logger({
+      client,
+      message: error.rawError,
+      variant: 'updateInteraction',
+      logLevel: 'warn',
+    });
+  }
 }

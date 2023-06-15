@@ -29,11 +29,6 @@ export default <PrefixCommand>{
       }
     }
 
-    console.log({
-      registeredGlobalSlashCommands,
-      registeredGuildSlashCommands,
-    });
-
     const embed = new EmbedBuilder()
       .setColor(BOT_COLOR.devEmbed)
       .setTitle('Slash Commands')

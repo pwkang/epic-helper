@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
+import {logger} from '../../utils/logger';
 
 dotenv.config();
 
@@ -11,17 +12,27 @@ const client = mongoose.createConnection(uri, {
 
 export const mongoClient = client.useDb('epic-helper');
 mongoClient.on('connected', () => {
-  console.log('Connected to MongoDB');
+  logger({
+    message: 'Connected to MongoDB',
+  });
 });
 
 mongoClient.on('error', (err) => {
-  console.error(err);
+  logger({
+    message: err.message,
+    logLevel: 'error',
+  });
 });
 
 mongoClient.on('disconnected', () => {
-  console.log('Disconnected from MongoDB');
+  logger({
+    message: 'Disconnected from MongoDB',
+    logLevel: 'warn',
+  });
 });
 
 mongoClient.on('reconnected', () => {
-  console.log('Reconnected to MongoDB');
+  logger({
+    message: 'Reconnected to MongoDB',
+  });
 });

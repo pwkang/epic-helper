@@ -1,11 +1,22 @@
-import {Client, Message} from 'discord.js';
+import {Client, DiscordAPIError, Message} from 'discord.js';
+import {logger} from '../../../utils/logger';
 
 interface DeleteMessageProps {
   client: Client;
   message: Message;
 }
 
-export default function _deleteMessage({client, message}: DeleteMessageProps) {
+export default async function _deleteMessage({client, message}: DeleteMessageProps) {
   if (message.author.id !== client.user?.id) return;
-  if (message.deletable) message.delete().catch(console.error);
+  if (!message.deletable) return;
+  try {
+    await message.delete();
+  } catch (e: DiscordAPIError | any) {
+    logger({
+      client,
+      message: e.rawError.message,
+      variant: 'delete-message',
+      logLevel: 'warn',
+    });
+  }
 }

@@ -1,6 +1,8 @@
 import {Client} from 'discord.js';
 import {handlerFileFilter, handlerRoot} from './constant';
 import {importFiles} from '../../utils/filesImport';
+import pino from 'pino';
+import {logger} from '../../utils/logger';
 
 export default async function loadBotEvents(client: Client) {
   const commands = await importFiles<BotEvent>({
@@ -9,7 +11,10 @@ export default async function loadBotEvents(client: Client) {
       fileFilter: [handlerFileFilter],
     },
   });
-  console.log(`Loaded ${commands.length} bot events`);
+  logger({
+    client,
+    message: `Loaded (${commands.length}) bot events`,
+  });
   commands.forEach((command) => {
     if (!command?.eventName) return;
     if (command.once) {

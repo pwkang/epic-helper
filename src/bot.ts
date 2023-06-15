@@ -7,6 +7,7 @@ import loadBotEvents from './handler/on-start/bot-events.handler';
 import loadCronJob from './handler/on-start/cron.handler';
 import {redisClient} from './services/redis/redis.service';
 import {initSentry} from './handler/on-start/sentry.handler';
+import {logger} from './utils/logger';
 
 dotenv.config();
 const environment = process.env.NODE_ENV || 'development';
@@ -39,6 +40,14 @@ Promise.all([
   redisClient.connect(),
   loadCronJob(client),
 ]).then(() => {
-  console.log('All handlers loaded, connecting to Discord...');
-  client.login(process.env.BOT_TOKEN).catch(console.error);
+  logger({
+    client,
+    message: 'All handlers loaded, connecting to Discord...',
+  });
+  client.login(process.env.BOT_TOKEN).catch((error) => {
+    logger({
+      client,
+      message: error.message,
+    });
+  });
 });
