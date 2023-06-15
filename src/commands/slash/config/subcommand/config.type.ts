@@ -4,3 +4,8 @@ export interface IUserConfig {
   client: Client;
   interaction: ChatInputCommandInteraction;
 }
+
+export interface IServerConfig {
+  client: Client;
+  interaction: ChatInputCommandInteraction;
+}

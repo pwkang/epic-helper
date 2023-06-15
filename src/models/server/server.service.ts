@@ -1,6 +1,8 @@
 import {mongoClient} from '../../services/mongoose/mongoose.service';
 import {serverSchema} from './server.schema';
 import {IEnchantChannel, IServer} from './server.type';
+import {Guild} from 'discord.js';
+import ms from 'ms';
 
 const dbServer = mongoClient.model('servers', serverSchema);
 
@@ -124,6 +126,43 @@ const updateEnchantChannel = async ({serverId, channelId, settings}: IUpdateEnch
   );
 };
 
+interface IResetEnchantChannels {
+  serverId: string;
+}
+
+const resetEnchantChannels = async ({serverId}: IResetEnchantChannels) => {
+  await dbServer.findOneAndUpdate(
+    {serverId},
+    {
+      $set: {
+        'settings.enchant.channels': [],
+      },
+    },
+    {
+      new: true,
+      projection: {
+        'settings.enchant.channels': 1,
+      },
+    }
+  );
+};
+
+interface IUpdateEnchantMuteDuration {
+  serverId: string;
+  duration: number;
+}
+
+const updateEnchantMuteDuration = async ({serverId, duration}: IUpdateEnchantMuteDuration) => {
+  await dbServer.findOneAndUpdate(
+    {serverId},
+    {
+      $set: {
+        'settings.enchant.muteDuration': duration,
+      },
+    }
+  );
+};
+
 const serverService = {
   registerServer,
   getServer,
@@ -133,6 +172,8 @@ const serverService = {
   addEnchantChannels,
   removeEnchantChannels,
   updateEnchantChannel,
+  resetEnchantChannels,
+  updateEnchantMuteDuration,
 };
 
 export default serverService;
