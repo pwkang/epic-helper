@@ -1,5 +1,6 @@
 import {ClusterManager} from 'discord-hybrid-sharding';
 import * as dotenv from 'dotenv';
+import {logger} from './utils/logger';
 
 dotenv.config();
 
@@ -10,5 +11,13 @@ const manager = new ClusterManager(`${__dirname}/bot.js`, {
   totalShards,
 });
 
-manager.on('clusterCreate', (cluster) => console.log(`Launched Cluster ${cluster.id}`));
-manager.spawn({timeout: -1}).catch(console.error);
+manager.on('clusterCreate', (cluster) => {
+  logger({
+    message: `Launched Cluster ${cluster.id}`,
+  });
+});
+manager.spawn({timeout: -1}).catch((error) => {
+  logger({
+    message: error.message,
+  });
+});

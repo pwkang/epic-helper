@@ -29,24 +29,5 @@ export default <PrefixCommand>{
       options,
       client,
     });
-
-    // console.log(
-    //   extractReturnedPetsId({
-    //     message: msg,
-    //     author: message.author,
-    //   })
-    // );
-
-    // console.log(
-    //   isSuccessfullyClaimedPet({
-    //     embed: msg.embeds[0],
-    //     author: message.author,
-    //   })
-    // );
-    // rpgPetClaim({
-    //   author: message.author,
-    //   embed: msg.embeds[0],
-    //   client,
-    // });
   },
 };

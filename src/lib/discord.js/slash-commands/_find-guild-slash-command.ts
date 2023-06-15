@@ -1,5 +1,6 @@
-import {ApplicationCommand, Client, Guild, Routes} from 'discord.js';
+import {ApplicationCommand, Client, DiscordAPIError, Guild, Routes} from 'discord.js';
 import {djsRestClient} from '../../../services/discord.js/discordjs.service.ts';
+import {logger} from '../../../utils/logger';
 
 interface IGetGuildSlashCommands {
   client: Client;
@@ -20,7 +21,13 @@ export const _findGuildSlashCommand = async ({
     );
 
     return data as ApplicationCommand;
-  } catch (e) {
-    console.error(e);
+  } catch (e: DiscordAPIError | any) {
+    logger({
+      client,
+      message: e.rawError.message,
+      variant: 'find-guild-slash-command',
+      logLevel: 'error',
+    });
+    return null;
   }
 };

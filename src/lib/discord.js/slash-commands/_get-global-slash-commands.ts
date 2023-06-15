@@ -1,5 +1,6 @@
-import {ApplicationCommand, Client, Routes} from 'discord.js';
+import {ApplicationCommand, Client, DiscordAPIError, Routes} from 'discord.js';
 import {djsRestClient} from '../../../services/discord.js/discordjs.service.ts';
+import {logger} from '../../../utils/logger';
 
 interface IGetGlobalSlashCommands {
   client: Client;
@@ -11,8 +12,13 @@ export const _getGlobalSlashCommands = async ({client}: IGetGlobalSlashCommands)
     const data = await djsRestClient.get(Routes.applicationCommands(client.user.id));
 
     return data as ApplicationCommand[];
-  } catch (e) {
-    console.error(e);
+  } catch (e: DiscordAPIError | any) {
+    logger({
+      client,
+      message: e.rawError.message,
+      variant: 'get-global-slash-commands',
+      logLevel: 'error',
+    });
     return [];
   }
 };

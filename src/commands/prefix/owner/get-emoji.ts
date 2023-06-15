@@ -1,4 +1,5 @@
 import {PREFIX_COMMAND_TYPE} from '../../../constants/bot';
+import {logger} from '../../../utils/logger';
 
 interface Type {
   [key: string]: string;
@@ -22,6 +23,10 @@ export default <PrefixCommand>{
       if (!emoji.name) continue;
       emojiMap[emoji.name] = emoji.emoji;
     }
-    console.log(emojiMap);
+    logger({
+      client,
+      message: `${JSON.stringify(emojiMap)}`,
+      variant: 'listEmoji',
+    });
   },
 };

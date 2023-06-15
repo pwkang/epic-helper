@@ -1,6 +1,7 @@
 import {Client} from 'discord.js';
 import {handlerFileFilter, handlerRoot} from './constant';
 import {importFiles} from '../../utils/filesImport';
+import {logger} from '../../utils/logger';
 
 async function loadPrefixCommands(client: Client) {
   const commands = await importFiles<PrefixCommand>({
@@ -9,7 +10,10 @@ async function loadPrefixCommands(client: Client) {
       fileFilter: [handlerFileFilter],
     },
   });
-  console.log(`Loaded ${commands.length} prefix commands`);
+  logger({
+    client,
+    message: `Loaded (${commands.length}) prefix commands`,
+  });
   commands.forEach((command) => {
     if (!command?.name) return;
     client.prefixCommands.set(`${command.type}:${command.name}`, command);
@@ -24,7 +28,10 @@ async function loadSlashCommands(client: Client) {
       directoryFilter: ['!subcommand'],
     },
   });
-  console.log(`Loaded ${commands.length} slash commands`);
+  logger({
+    client,
+    message: `Loaded (${commands.length}) slash commands`,
+  });
   commands.forEach((command) => {
     if (!command?.name) return;
     client.slashCommands.set(command.name, command);
@@ -38,7 +45,10 @@ async function loadSlashMessages(client: Client) {
       fileFilter: [handlerFileFilter],
     },
   });
-  console.log(`Loaded ${commands.length} slash messages`);
+  logger({
+    client,
+    message: `Loaded (${commands.length}) slash messages`,
+  });
   commands.forEach((command) => {
     if (!command?.name) return;
     client.slashMessages.set(command.name, command);

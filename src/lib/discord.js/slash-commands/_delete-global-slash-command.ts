@@ -1,5 +1,6 @@
-import {Client, Routes} from 'discord.js';
+import {Client, DiscordAPIError, Routes} from 'discord.js';
 import {djsRestClient} from '../../../services/discord.js/discordjs.service.ts';
+import {logger} from '../../../utils/logger';
 
 interface IDeleteGuildSlashCommand {
   client: Client;
@@ -10,7 +11,12 @@ export const _deleteGlobalSlashCommand = async ({client, commandId}: IDeleteGuil
   if (!client.user) return [];
   try {
     await djsRestClient.delete(Routes.applicationCommand(client.user.id!, commandId));
-  } catch (e) {
-    console.error(e);
+  } catch (e: DiscordAPIError | any) {
+    logger({
+      client,
+      message: e.rawError.message,
+      variant: 'delete-global-slash-command',
+      logLevel: 'error',
+    });
   }
 };
