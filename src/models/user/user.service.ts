@@ -1,6 +1,6 @@
 import {mongoClient} from '../../services/mongoose/mongoose.service';
 import userSchema from './user.schema';
-import {IUser} from './user.type';
+import {IUser, IUserToggle} from './user.type';
 import userAccountRedis from '../../services/redis/user-account.redis';
 import {UpdateQuery} from 'mongoose';
 import {RPG_ENCHANT_LEVEL} from '../../constants/epic-rpg/enchant';
@@ -353,6 +353,36 @@ const getUserReminderChannel = async ({
   return user?.channel ?? null;
 };
 
+const getUserToggle = async (userId: string): Promise<IUserToggle | null> => {
+  const user = await dbUser.findOne(
+    {
+      userId,
+    },
+    {
+      toggle: 1,
+    }
+  );
+  return user?.toggle ?? null;
+};
+
+interface IUpdateUserToggle {
+  userId: string;
+  toggle: IUserToggle;
+}
+
+const updateUserToggle = async ({userId, toggle}: IUpdateUserToggle): Promise<void> => {
+  await dbUser.findOneAndUpdate(
+    {
+      userId,
+    },
+    {
+      $set: {
+        toggle,
+      },
+    }
+  );
+};
+
 export const userService = {
   registerUserAccount,
   userAccountOn,
@@ -375,4 +405,6 @@ export const userService = {
   setUserReminderChannel,
   removeUserReminderChannel,
   getUserReminderChannel,
+  getUserToggle,
+  updateUserToggle,
 };

@@ -8,33 +8,35 @@ type ToggleMentionsOptions = keyof typeof RPG_COMMAND_TYPE | 'all' | 'trainingAn
 type CustomMessageOptions = keyof typeof RPG_COMMAND_TYPE;
 type ReminderChannelOptions = keyof typeof RPG_COMMAND_TYPE | 'all';
 
+export interface IUserToggle {
+  dm: Record<ToggleDmOptions, boolean>;
+  reminder: Record<ToggleReminderOptions, boolean>;
+  mentions: Record<ToggleMentionsOptions, boolean>;
+  training: {
+    all: boolean;
+    ruby: boolean;
+    basic: boolean;
+  };
+  petCatch: boolean;
+  emoji: boolean;
+  quest: {
+    all: boolean;
+    arena: boolean;
+    miniboss: boolean;
+  };
+  heal: boolean;
+  slash: boolean;
+  countdown: {
+    all: boolean;
+    reminder: boolean;
+    pet: boolean;
+  };
+}
+
 export interface IUser {
   userId: string;
   username: string;
-  toggle: {
-    dm: Record<ToggleDmOptions, boolean>;
-    reminder: Record<ToggleReminderOptions, boolean>;
-    mentions: Record<ToggleMentionsOptions, boolean>;
-    training: {
-      all: boolean;
-      ruby: boolean;
-      basic: boolean;
-    };
-    petCatch: boolean;
-    emoji: boolean;
-    quest: {
-      all: boolean;
-      arena: boolean;
-      miniboss: boolean;
-    };
-    heal: boolean;
-    slash: boolean;
-    countdown: {
-      all: boolean;
-      reminder: boolean;
-      pet: boolean;
-    };
-  };
+  toggle: IUserToggle;
   customMessage: Record<CustomMessageOptions, string>;
   channel: Record<ReminderChannelOptions, string>;
   config: {
