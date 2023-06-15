@@ -1,6 +1,6 @@
 import {mongoClient} from '../../services/mongoose/mongoose.service';
 import {serverSchema} from './server.schema';
-import {IServer} from './server.type';
+import {IEnchantChannel, IServer} from './server.type';
 
 const dbServer = mongoClient.model('servers', serverSchema);
 
@@ -56,11 +56,83 @@ const findServerById = async (serverId: string): Promise<IServer | null> => {
   return server;
 };
 
+interface IGetEnchantChannels {
+  serverId: string;
+}
+
+const getEnchantChannels = async ({serverId}: IGetEnchantChannels): Promise<IEnchantChannel[]> => {
+  const server = await dbServer.findOne({serverId});
+
+  if (!server) {
+    return [];
+  }
+  return server?.settings?.enchant?.channels ?? [];
+};
+
+interface IAddEnchantChannels {
+  serverId: string;
+  channels: IEnchantChannel[];
+}
+
+const addEnchantChannels = async ({serverId, channels}: IAddEnchantChannels) => {
+  await dbServer.updateOne(
+    {serverId},
+    {
+      $addToSet: {
+        'settings.enchant.channels': {
+          $each: channels,
+        },
+      },
+    }
+  );
+};
+
+interface IRemoveEnchantChannels {
+  serverId: string;
+  channelIds: string[];
+}
+
+const removeEnchantChannels = async ({serverId, channelIds}: IRemoveEnchantChannels) => {
+  await dbServer.updateOne(
+    {serverId},
+    {
+      $pull: {
+        'settings.enchant.channels': {
+          channelId: {
+            $in: channelIds,
+          },
+        },
+      },
+    }
+  );
+};
+
+interface IUpdateEnchantChannel {
+  serverId: string;
+  channelId: string;
+  settings: IEnchantChannel;
+}
+
+const updateEnchantChannel = async ({serverId, channelId, settings}: IUpdateEnchantChannel) => {
+  await dbServer.updateOne(
+    {serverId, 'settings.enchant.channels.channelId': channelId},
+    {
+      $set: {
+        'settings.enchant.channels.$': settings,
+      },
+    }
+  );
+};
+
 const serverService = {
   registerServer,
   getServer,
   listRegisteredServersId,
   findServerById,
+  getEnchantChannels,
+  addEnchantChannels,
+  removeEnchantChannels,
+  updateEnchantChannel,
 };
 
 export default serverService;

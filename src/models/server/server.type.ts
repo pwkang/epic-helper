@@ -3,7 +3,6 @@ import {RPG_RANDOM_EVENTS} from '../../constants/epic-rpg/random-events';
 
 export interface IEnchantChannel {
   channelId: string;
-  isDefault: boolean;
   muteDuration?: number;
 }
 
