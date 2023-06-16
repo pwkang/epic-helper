@@ -8,7 +8,7 @@ type ToggleMentionsOptions = keyof typeof RPG_COMMAND_TYPE | 'all' | 'trainingAn
 type CustomMessageOptions = keyof typeof RPG_COMMAND_TYPE;
 type ReminderChannelOptions = keyof typeof RPG_COMMAND_TYPE | 'all';
 
-export interface IUserToggle {
+export interface IUserToggle extends Record<string, boolean | Record<string, boolean>> {
   dm: Record<ToggleDmOptions, boolean>;
   reminder: Record<ToggleReminderOptions, boolean>;
   mentions: Record<ToggleMentionsOptions, boolean>;

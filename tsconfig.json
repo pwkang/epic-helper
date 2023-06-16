@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "NodeNext",
     "target": "ES2022",
-    "moduleResolution": "NodeNext",
+    "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "noImplicitAny": true,
@@ -11,6 +11,8 @@
     "outDir": "dist",
     "rootDir": "src",
     "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
     "typeRoots": [
       "./node_modules/@types",
       "./src/types"
