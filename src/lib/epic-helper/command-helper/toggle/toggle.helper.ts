@@ -1,6 +1,7 @@
-import {IUser, IUserToggle} from '../../../../models/user/user.type';
-import {IToggleEmbedsInfo, renderEmbed} from './toggle.embed';
-import {UpdateQuery} from 'mongoose';
+import type {IUser, IUserToggle} from '../../../../models/user/user.type';
+import type {IToggleEmbedsInfo} from './toggle.embed';
+import {renderEmbed} from './toggle.embed';
+import type {UpdateQuery} from 'mongoose';
 import {User} from 'discord.js';
 import {toggleDisplayList} from './toggle.list';
 

@@ -1,5 +1,5 @@
-import {IUserToggle} from '../../../../models/user/user.type';
-import {IToggleEmbedsInfo} from './toggle.embed';
+import type {IUserToggle} from '../../../../models/user/user.type';
+import type {IToggleEmbedsInfo} from './toggle.embed';
 
 export const donor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
   return [
