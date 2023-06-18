@@ -12,7 +12,7 @@ export const importFiles = <T>({options, path}: IImportFiles): Promise<T[]> => {
       .on('data', async (entry: EntryInfo) => {
         const {fullPath} = entry;
         const file = await import(fullPath);
-        files.push(file.default.default);
+        files.push(file.default);
       })
       .on('end', () => {
         resolve(files);

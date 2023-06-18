@@ -1,8 +1,8 @@
 import {mongoClient} from '../../services/mongoose/mongoose.service';
 import userSchema from './user.schema';
-import {IUser} from './user.type';
+import type {IUser, IUserToggle} from './user.type';
 import userAccountRedis from '../../services/redis/user-account.redis';
-import {UpdateQuery} from 'mongoose';
+import type {UpdateQuery} from 'mongoose';
 import {RPG_ENCHANT_LEVEL} from '../../constants/epic-rpg/enchant';
 import {RPG_DONOR_TIER} from '../../constants/epic-rpg/rpg';
 
@@ -353,6 +353,68 @@ const getUserReminderChannel = async ({
   return user?.channel ?? null;
 };
 
+const getUserToggle = async (userId: string): Promise<IUserToggle | null> => {
+  const user = await dbUser.findOne(
+    {
+      userId,
+    },
+    {
+      toggle: 1,
+    }
+  );
+  return user?.toggle ?? null;
+};
+
+interface IUpdateUserToggle {
+  userId: string;
+  query: UpdateQuery<IUser>;
+}
+
+const updateUserToggle = async ({
+  userId,
+  query,
+}: IUpdateUserToggle): Promise<null | IUserToggle> => {
+  const user = await dbUser.findOneAndUpdate(
+    {
+      userId,
+    },
+    query,
+    {
+      new: true,
+      projection: {
+        toggle: 1,
+      },
+    }
+  );
+  if (!user) return null;
+  return user.toggle;
+};
+
+interface IResetUserToggle {
+  userId: string;
+}
+
+const resetUserToggle = async ({userId}: IResetUserToggle): Promise<IUserToggle | null> => {
+  const user = await dbUser.findOneAndUpdate(
+    {
+      userId,
+    },
+    {
+      $unset: {
+        toggle: '',
+      },
+    },
+    {
+      new: true,
+      projection: {
+        toggle: 1,
+      },
+    }
+  );
+
+  return user?.toggle ?? null;
+};
+
 export const userService = {
   registerUserAccount,
   userAccountOn,
@@ -375,4 +437,7 @@ export const userService = {
   setUserReminderChannel,
   removeUserReminderChannel,
   getUserReminderChannel,
+  getUserToggle,
+  updateUserToggle,
+  resetUserToggle,
 };
