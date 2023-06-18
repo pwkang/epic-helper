@@ -1,15 +1,21 @@
 import type {EmbedAuthorOptions, EmbedField} from 'discord.js';
 import {EmbedBuilder} from 'discord.js';
-import {BOT_COLOR} from '../../../constants/epic-helper/general';
-import {BOT_EMOJI} from '../../../constants/epic-helper/bot-emojis';
+import {BOT_COLOR} from '../../../../constants/epic-helper/general';
+import {BOT_EMOJI} from '../../../../constants/epic-helper/bot-emojis';
+import {PREFIX} from '../../../../constants/bot';
 
-interface IToggleEmbedsInfo {
+export interface IToggleEmbedsInfo {
+  id: string;
   title: string;
   value?: boolean;
+  path?: string;
+  description?: string;
   children: {
     label: string;
     value: boolean;
+    path: string;
     children?: {
+      path: string;
       label: string;
       value: boolean;
     }[];
@@ -19,11 +25,18 @@ interface IToggleEmbedsInfo {
 interface IGetToggleEmbed {
   embedsInfo: IToggleEmbedsInfo[];
   embedAuthor: EmbedAuthorOptions | null;
+  displayItem: string;
 }
 
-export const getToggleEmbed = ({embedsInfo, embedAuthor}: IGetToggleEmbed): EmbedBuilder => {
-  const embed = new EmbedBuilder().setColor(BOT_COLOR.embed).setAuthor(embedAuthor);
-
+export const renderEmbed = ({embedsInfo, embedAuthor}: IGetToggleEmbed): EmbedBuilder => {
+  const embed = new EmbedBuilder()
+    .setColor(BOT_COLOR.embed)
+    .setAuthor(embedAuthor)
+    .setDescription(
+      `**Syntax 1:** \`${PREFIX.bot}t <on/off> <ID> [ID] [ID]\` - turn on/off any settings
+      > *\`${PREFIX.bot}t on a1 a5 b3a\`*
+      **Syntax 2:** \`${PREFIX.bot}t reset\` - reset all settings`
+    );
   const fields: EmbedField[] = embedsInfo.map((info, index) =>
     renderFieldValue({
       info,

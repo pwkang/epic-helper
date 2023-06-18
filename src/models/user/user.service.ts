@@ -367,20 +367,52 @@ const getUserToggle = async (userId: string): Promise<IUserToggle | null> => {
 
 interface IUpdateUserToggle {
   userId: string;
-  toggle: IUserToggle;
+  query: UpdateQuery<IUser>;
 }
 
-const updateUserToggle = async ({userId, toggle}: IUpdateUserToggle): Promise<void> => {
-  await dbUser.findOneAndUpdate(
+const updateUserToggle = async ({
+  userId,
+  query,
+}: IUpdateUserToggle): Promise<null | IUserToggle> => {
+  const user = await dbUser.findOneAndUpdate(
+    {
+      userId,
+    },
+    query,
+    {
+      new: true,
+      projection: {
+        toggle: 1,
+      },
+    }
+  );
+  if (!user) return null;
+  return user.toggle;
+};
+
+interface IResetUserToggle {
+  userId: string;
+}
+
+const resetUserToggle = async ({userId}: IResetUserToggle): Promise<IUserToggle | null> => {
+  const user = await dbUser.findOneAndUpdate(
     {
       userId,
     },
     {
-      $set: {
-        toggle,
+      $unset: {
+        toggle: '',
+      },
+    },
+    {
+      new: true,
+      projection: {
+        toggle: 1,
       },
     }
   );
+
+  return user?.toggle ?? null;
 };
 
 export const userService = {
@@ -407,4 +439,5 @@ export const userService = {
   getUserReminderChannel,
   getUserToggle,
   updateUserToggle,
+  resetUserToggle,
 };
