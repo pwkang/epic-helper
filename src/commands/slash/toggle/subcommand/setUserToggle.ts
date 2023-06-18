@@ -1,4 +1,4 @@
-import {IToggleSubcommand} from '../toggle.type';
+import type {IToggleSubcommand} from '../toggle.type';
 import commandHelper from '../../../../lib/epic-helper/command-helper';
 import {userService} from '../../../../models/user/user.service';
 import djsInteractionHelper from '../../../../lib/discord.js/interaction';
