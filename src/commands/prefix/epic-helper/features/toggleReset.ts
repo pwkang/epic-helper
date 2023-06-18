@@ -12,15 +12,11 @@ export default <PrefixCommand>{
       userId: message.author.id,
     });
     if (!userToggle) return;
-    const donorToggleList = commandHelper.toggle.getDonorToggle(userToggle);
-    const nonDonorToggleList = commandHelper.toggle.getNonDonorToggle(userToggle);
-    const embed = commandHelper.toggle.renderEmbed({
-      embedsInfo: donorToggleList,
-      displayItem: 'common',
-      embedAuthor: {
-        name: `${message.author.username}'s toggle`,
-        iconURL: message.author.avatarURL() ?? undefined,
-      },
+
+    const embed = commandHelper.toggle.getUserToggleEmbed({
+      isDonor: true,
+      author: message.author,
+      userToggle,
     });
     await djsMessageHelper.send({
       client,
