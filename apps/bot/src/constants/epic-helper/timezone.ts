@@ -39,3 +39,8 @@ export const BOT_TIMEZONE_LIST = {
   'UTC+13': 'UTC+13',
   'UTC+14': 'UTC+14',
 } as const;
+
+export const BOT_TIME_FORMAT = {
+  '12h': '12h',
+  '24h': '24h',
+} as const;

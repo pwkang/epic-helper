@@ -1,6 +1,6 @@
 import {Schema} from 'mongoose';
 import {IUser} from './user.type';
-import {BOT_TIMEZONE_LIST} from '../../constants/epic-helper/timezone';
+import {BOT_TIME_FORMAT, BOT_TIMEZONE_LIST} from '../../constants/epic-helper/timezone';
 import {RPG_DONOR_TIER} from '../../constants/epic-rpg/rpg';
 
 const userSchema = new Schema<IUser>({
@@ -141,7 +141,11 @@ const userSchema = new Schema<IUser>({
     donorP: {type: String},
     huntSwitch: {type: Boolean, default: false},
     onOff: {type: Boolean, default: true},
-    timeFormat: {type: String, default: '12h', enum: Object.values(['12h', '24h'])},
+    timeFormat: {
+      type: String,
+      default: BOT_TIME_FORMAT['12h'],
+      enum: Object.values(BOT_TIME_FORMAT),
+    },
   },
   items: {
     ruby: {type: Number, default: 0},

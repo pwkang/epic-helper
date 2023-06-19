@@ -1,5 +1,5 @@
 import {RPG_COMMAND_TYPE, RPG_DONOR_TIER} from '../../constants/epic-rpg/rpg';
-import {BOT_TIMEZONE_LIST} from '../../constants/epic-helper/timezone';
+import {BOT_TIME_FORMAT, BOT_TIMEZONE_LIST} from '../../constants/epic-helper/timezone';
 import {RPG_ENCHANT_LEVEL} from '../../constants/epic-rpg/enchant';
 
 type ToggleDmOptions = keyof typeof RPG_COMMAND_TYPE | 'all';
@@ -47,7 +47,7 @@ export interface IUser {
     donorP: ValuesOf<typeof RPG_DONOR_TIER> | null;
     huntSwitch: boolean;
     onOff: boolean;
-    timeFormat: '12h' | '24h';
+    timeFormat: ValuesOf<typeof BOT_TIME_FORMAT>;
   };
   items: {
     ruby: number;

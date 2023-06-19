@@ -1,5 +1,5 @@
 import {ApplicationCommand, Client, DiscordAPIError, Guild, Routes} from 'discord.js';
-import {djsRestClient} from '../../../services/discord.js/discordjs.service.ts.ts';
+import {djsRestClient} from '../../../services/discord.js/discordjs.service';
 import {logger} from '../../../utils/logger';
 
 interface IGetGuildSlashCommands {
