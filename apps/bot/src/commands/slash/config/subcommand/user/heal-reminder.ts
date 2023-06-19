@@ -1,6 +1,6 @@
 import {IUserConfig} from '../config.type';
-import {userService} from '../../../../../models/user/user.service';
 import djsInteractionHelper from '../../../../../lib/discord.js/interaction';
+import {userService} from '@epic-helper/models';
 
 export const setHealReminder = async ({client, interaction}: IUserConfig) => {
   const userId = interaction.user.id;

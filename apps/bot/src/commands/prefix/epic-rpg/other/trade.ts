@@ -1,5 +1,5 @@
-import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {rpgTrade} from '../../../../lib/epic-rpg/commands/other/trade';
+import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
 
 export default <PrefixCommand>{
   name: 'rpgTrade',

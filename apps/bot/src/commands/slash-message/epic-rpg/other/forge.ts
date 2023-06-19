@@ -1,5 +1,5 @@
-import {SLASH_MESSAGE_BOT_TYPE} from '../../../../constants/bot';
 import {rpgForge} from '../../../../lib/epic-rpg/commands/other/forge';
+import {SLASH_MESSAGE_BOT_TYPE} from '@epic-helper/constants';
 
 export default <SlashMessage>{
   name: 'rpgForge',

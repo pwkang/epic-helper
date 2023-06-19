@@ -1,6 +1,5 @@
-import {SLASH_MESSAGE_BOT_TYPE} from '../../../../constants/bot';
-import {RPG_WORKING_TYPE} from '../../../../constants/epic-rpg/rpg';
 import {rpgWorking} from '../../../../lib/epic-rpg/commands/progress/working';
+import {RPG_WORKING_TYPE, SLASH_MESSAGE_BOT_TYPE} from '@epic-helper/constants';
 
 export default <SlashMessage>{
   name: 'rpgWorking',

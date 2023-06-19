@@ -1,5 +1,5 @@
-import {SLASH_MESSAGE_BOT_TYPE} from '../../../../constants/bot';
 import {rpgCraft} from '../../../../lib/epic-rpg/commands/other/craft';
+import {SLASH_MESSAGE_BOT_TYPE} from '@epic-helper/constants';
 
 export default <SlashMessage>{
   name: 'rpgCraft',

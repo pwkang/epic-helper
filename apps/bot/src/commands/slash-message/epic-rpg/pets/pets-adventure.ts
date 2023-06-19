@@ -1,4 +1,3 @@
-import {SLASH_MESSAGE_BOT_TYPE} from '../../../../constants/bot';
 import {
   rpgPetAdventure,
   rpgPetAdventureChecker,
@@ -14,6 +13,7 @@ import {isPetsIdValid} from '@epic-helper/utils';
 import djsInteractionHelper from '../../../../lib/discord.js/interaction';
 import {djsMessageHelper} from '../../../../lib/discord.js/message';
 import timestampHelper from '../../../../lib/discord.js/timestamp';
+import {SLASH_MESSAGE_BOT_TYPE} from '@epic-helper/constants';
 
 export default <SlashMessage>{
   name: 'petsAdventure',

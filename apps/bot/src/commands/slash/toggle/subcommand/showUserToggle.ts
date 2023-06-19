@@ -1,7 +1,7 @@
 import type {IToggleSubcommand} from '../toggle.type';
-import {userService} from '../../../../models/user/user.service';
 import commandHelper from '../../../../lib/epic-helper/command-helper';
 import djsInteractionHelper from '../../../../lib/discord.js/interaction';
+import {userService} from '@epic-helper/models';
 
 export const showUserToggleSlash = async ({client, interaction}: IToggleSubcommand) => {
   const userToggle = await userService.getUserToggle(interaction.user.id);

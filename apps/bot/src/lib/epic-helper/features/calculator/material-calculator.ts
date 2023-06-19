@@ -1,11 +1,8 @@
 import {Embed, EmbedBuilder, MessageCreateOptions, User} from 'discord.js';
-import {BOT_COLOR} from '../../../../constants/epic-helper/general';
-import {RPG_CLICKABLE_SLASH_COMMANDS} from '../../../../constants/epic-rpg/clickable-slash';
 import {RpgArea} from '../../../../types/rpg.types';
-import {BOT_EMOJI} from '../../../../constants/epic-helper/bot-emojis';
 import tradeHelper from '../../../epic-rpg/inventory/trade-helper';
-import {PREFIX} from '../../../../constants/bot';
 import embedReaders from '../../../epic-rpg/embed-readers';
+import {BOT_COLOR, BOT_EMOJI, PREFIX, RPG_CLICKABLE_SLASH_COMMANDS} from '@epic-helper/constants';
 
 interface ICalcOptions {
   embed: Embed;

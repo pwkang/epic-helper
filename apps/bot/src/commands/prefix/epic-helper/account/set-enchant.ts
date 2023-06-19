@@ -1,8 +1,8 @@
-import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuInteraction} from 'discord.js';
-import {RPG_ENCHANT_LEVEL} from '../../../../constants/epic-rpg/enchant';
-import {userService} from '../../../../models/user/user.service';
 import {djsMessageHelper} from '../../../../lib/discord.js/message';
+import {ValuesOf} from '@epic-helper/ts-utils';
+import {PREFIX_COMMAND_TYPE, RPG_ENCHANT_LEVEL} from '@epic-helper/constants';
+import {userService} from '@epic-helper/models';
 
 type SelectOptionsValue = ValuesOf<typeof RPG_ENCHANT_LEVEL> | 'remove';
 

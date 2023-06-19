@@ -1,5 +1,5 @@
-import {SLASH_MESSAGE_BOT_TYPE} from '../../../../constants/bot';
 import {rpgUltraining} from '../../../../lib/epic-rpg/commands/progress/ultraining';
+import {SLASH_MESSAGE_BOT_TYPE} from '@epic-helper/constants';
 
 export default <SlashMessage>{
   name: 'rpgUltraining',

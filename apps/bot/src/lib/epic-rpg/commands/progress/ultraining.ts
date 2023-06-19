@@ -1,12 +1,13 @@
 import {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {userReminderServices} from '../../../../models/user-reminder/user-reminder.service';
-import {RPG_COMMAND_TYPE} from '../../../../constants/epic-rpg/rpg';
-import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic-helper/command-base-cd';
+import {
+  USER_STATS_RPG_COMMAND_TYPE,
+  userReminderServices,
+  userStatsService,
+} from '@epic-helper/models';
+import {BOT_REMINDER_BASE_COOLDOWN, RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
-import {userStatsService} from '../../../../models/user-stats/user-stats.service';
-import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
 
 interface IRpgUltraining {
   client: Client;

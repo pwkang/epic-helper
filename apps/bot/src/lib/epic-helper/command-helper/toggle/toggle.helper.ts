@@ -1,9 +1,9 @@
-import type {IUser, IUserToggle} from '../../../../models/user/user.type';
 import type {IToggleEmbedsInfo} from './toggle.embed';
 import {renderEmbed} from './toggle.embed';
 import type {UpdateQuery} from 'mongoose';
 import {User} from 'discord.js';
 import {toggleDisplayList} from './toggle.list';
+import {IUser, IUserToggle} from '@epic-helper/models';
 
 interface IGetUpdateQuery {
   userToggle: IUserToggle;

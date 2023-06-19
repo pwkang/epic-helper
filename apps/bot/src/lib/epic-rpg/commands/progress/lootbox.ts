@@ -1,13 +1,17 @@
+import {
+  BOT_REMINDER_BASE_COOLDOWN,
+  RPG_COMMAND_TYPE,
+  RPG_LOOTBOX_TYPE,
+} from '@epic-helper/constants';
 import {Client, Message, User} from 'discord.js';
-import {userReminderServices} from '../../../../models/user-reminder/user-reminder.service';
-import {RPG_LOOTBOX_TYPE} from '../../../../constants/epic-rpg/lootbox';
-import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic-helper/command-base-cd';
-import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
-import {RPG_COMMAND_TYPE} from '../../../../constants/epic-rpg/rpg';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
+import {
+  USER_STATS_RPG_COMMAND_TYPE,
+  userReminderServices,
+  userStatsService,
+} from '@epic-helper/models';
+import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
-import {userStatsService} from '../../../../models/user-stats/user-stats.service';
-import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
 
 const LOOTBOX_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.lootbox;
 

@@ -1,18 +1,20 @@
 import {Client, Message, User} from 'discord.js';
-import {ADVENTURE_MONSTER_LIST} from '../../../../constants/epic-rpg/monster';
+import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {
   saveUserAdventureCooldown,
+  USER_STATS_RPG_COMMAND_TYPE,
   userReminderServices,
-} from '../../../../models/user-reminder/user-reminder.service';
-import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic-helper/command-base-cd';
+  userService,
+  userStatsService,
+} from '@epic-helper/models';
+import {
+  ADVENTURE_MONSTER_LIST,
+  BOT_REMINDER_BASE_COOLDOWN,
+  RPG_CLICKABLE_SLASH_COMMANDS,
+  RPG_COMMAND_TYPE,
+} from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
-import {RPG_COMMAND_TYPE} from '../../../../constants/epic-rpg/rpg';
-import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {RPG_CLICKABLE_SLASH_COMMANDS} from '../../../../constants/epic-rpg/clickable-slash';
-import {userService} from '../../../../models/user/user.service';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
-import {userStatsService} from '../../../../models/user-stats/user-stats.service';
-import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
 import {djsMessageHelper} from '../../../discord.js/message';
 
 interface IRpgAdventure {

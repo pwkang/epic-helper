@@ -1,5 +1,5 @@
-import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {rpgEnchant} from '../../../../lib/epic-rpg/commands/other/enchant';
+import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
 
 export default <PrefixCommand>{
   name: 'rpgEnchant',

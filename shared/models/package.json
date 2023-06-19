@@ -1,0 +1,18 @@
+{
+  "name": "@epic-helper/models",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@epic-helper/constants": "workspace:*",
+    "@epic-helper/services": "workspace:*",
+    "@epic-helper/utils": "workspace:*"
+  },
+  "devDependencies": {
+    "@epic-helper/ts-utils": "workspace:*"
+  }
+}

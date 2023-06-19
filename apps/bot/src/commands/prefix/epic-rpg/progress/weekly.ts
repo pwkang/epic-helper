@@ -1,5 +1,5 @@
-import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {rpgWeekly} from '../../../../lib/epic-rpg/commands/progress/weekly';
+import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
 
 export default <PrefixCommand>{
   name: 'rpgWeekly',

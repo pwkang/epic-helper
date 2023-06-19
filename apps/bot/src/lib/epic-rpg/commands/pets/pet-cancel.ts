@@ -1,8 +1,7 @@
 import {BaseMessageOptions, Message, User} from 'discord.js';
-import {userPetServices} from '../../../../models/user-pet/user-pet.service';
 import {convertNumToPetId, convertPetIdToNum} from '@epic-helper/utils';
-import {RPG_PET_STATUS} from '../../../../constants/epic-rpg/pet';
-import {IUserPet} from '../../../../models/user-pet/user-pet.type';
+import {IUserPet, userPetServices} from '@epic-helper/models';
+import {RPG_PET_STATUS} from '@epic-helper/constants';
 
 interface IRpgPetAdvCancel {
   author: User;

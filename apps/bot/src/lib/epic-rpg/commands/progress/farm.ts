@@ -1,12 +1,13 @@
 import {Client, Message, User} from 'discord.js';
-import {userReminderServices} from '../../../../models/user-reminder/user-reminder.service';
-import {RPG_COMMAND_TYPE, RPG_FARM_SEED} from '../../../../constants/epic-rpg/rpg';
-import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic-helper/command-base-cd';
-import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
+import {BOT_REMINDER_BASE_COOLDOWN, RPG_COMMAND_TYPE, RPG_FARM_SEED} from '@epic-helper/constants';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
+import {
+  USER_STATS_RPG_COMMAND_TYPE,
+  userReminderServices,
+  userStatsService,
+} from '@epic-helper/models';
+import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
-import {userStatsService} from '../../../../models/user-stats/user-stats.service';
-import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
 
 const FARM_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.farm;
 

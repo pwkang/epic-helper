@@ -1,5 +1,5 @@
-import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {rpgEpicQuest} from '../../../../lib/epic-rpg/commands/progress/epic-quest';
+import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
 
 export default <PrefixCommand>{
   name: 'rpgEpicQuest',

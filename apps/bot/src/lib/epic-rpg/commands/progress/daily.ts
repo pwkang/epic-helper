@@ -1,10 +1,9 @@
+import {BOT_REMINDER_BASE_COOLDOWN, RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import {Client, Embed, Message, User} from 'discord.js';
-import {userReminderServices} from '../../../../models/user-reminder/user-reminder.service';
-import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic-helper/command-base-cd';
-import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
-import {RPG_COMMAND_TYPE} from '../../../../constants/epic-rpg/rpg';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
+import {userReminderServices} from '@epic-helper/models';
+import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 
 const DAILY_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.daily;
 

@@ -1,14 +1,20 @@
-import {RPG_COMMAND_TYPE, RPG_WORKING_TYPE} from '../../../../constants/epic-rpg/rpg';
+import {
+  BOT_REMINDER_BASE_COOLDOWN,
+  RPG_COMMAND_TYPE,
+  RPG_WORKING_TYPE,
+} from '@epic-helper/constants';
 import {Client, Embed, Message, User} from 'discord.js';
-import {userReminderServices} from '../../../../models/user-reminder/user-reminder.service';
-import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic-helper/command-base-cd';
-import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
+import {ValuesOf} from '@epic-helper/ts-utils';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {userService} from '../../../../models/user/user.service';
-import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
-import {userStatsService} from '../../../../models/user-stats/user-stats.service';
-import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
+import {
+  USER_STATS_RPG_COMMAND_TYPE,
+  userReminderServices,
+  userService,
+  userStatsService,
+} from '@epic-helper/models';
 import {djsMessageHelper} from '../../../discord.js/message';
+import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
+import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 
 const WORKING_ITEMS = [
   'normie fish',

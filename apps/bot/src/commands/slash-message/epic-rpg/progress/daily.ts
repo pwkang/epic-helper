@@ -1,5 +1,5 @@
-import {SLASH_MESSAGE_BOT_TYPE} from '../../../../constants/bot';
 import {rpgDaily} from '../../../../lib/epic-rpg/commands/progress/daily';
+import {SLASH_MESSAGE_BOT_TYPE} from '@epic-helper/constants';
 
 export default <SlashMessage>{
   name: 'rpgDaily',

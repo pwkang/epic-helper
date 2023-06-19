@@ -1,14 +1,15 @@
 import {Embed, User} from 'discord.js';
+import {convertRomanToNumber} from '../../../utils/roman-conversion';
+import ms from 'ms';
+import {convertPetIdToNum} from '@epic-helper/utils';
+import {ValuesOf} from '@epic-helper/ts-utils';
 import {
   RPG_PET_SKILL,
   RPG_PET_SKILL_TIER,
   RPG_PET_STATUS,
   RPG_PET_TYPE,
-} from '../../../constants/epic-rpg/pet';
-import {convertRomanToNumber} from '../../../utils/roman-conversion';
-import ms from 'ms';
-import {convertPetIdToNum} from '@epic-helper/utils';
-import {IUserPet} from '../../../models/user-pet/user-pet.type';
+} from '@epic-helper/constants';
+import {IUserPet} from '@epic-helper/models';
 
 interface IReadPets {
   embed: Embed;

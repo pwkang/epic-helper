@@ -1,6 +1,5 @@
-import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
-import {RPG_WORKING_TYPE} from '../../../../constants/epic-rpg/rpg';
 import {rpgWorking} from '../../../../lib/epic-rpg/commands/progress/working';
+import {PREFIX_COMMAND_TYPE, RPG_WORKING_TYPE} from '@epic-helper/constants';
 
 export default <PrefixCommand>{
   name: 'rpgWorking',

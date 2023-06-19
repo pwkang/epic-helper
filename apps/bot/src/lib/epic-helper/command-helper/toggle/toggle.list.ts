@@ -1,5 +1,5 @@
-import type {IUserToggle} from '../../../../models/user/user.type';
 import type {IToggleEmbedsInfo} from './toggle.embed';
+import {IUserToggle} from '@epic-helper/models';
 
 export const donor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
   return [

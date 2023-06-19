@@ -4,8 +4,8 @@ import {
   paginatePetList,
   PET_LIST_PET_PET_PAGE,
 } from '../../../../lib/epic-helper/features/pets/pet-list';
-import {userPetServices} from '../../../../models/user-pet/user-pet.service';
 import {itemListingHelper} from '../../../../utils/item-listing-helper';
+import {userPetServices} from '@epic-helper/models';
 
 export default async function petList({client, interaction}: IPetSubcommand) {
   const totalPets = await userPetServices.calcTotalPets({

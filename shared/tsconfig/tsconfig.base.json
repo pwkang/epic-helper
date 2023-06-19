@@ -10,7 +10,8 @@
     "noImplicitThis": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "preserveSymlinks": true
   },
   "ts-node": {
     "esm": true,

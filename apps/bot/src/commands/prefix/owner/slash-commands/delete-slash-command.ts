@@ -1,9 +1,9 @@
-import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {listSlashCommands} from '../../../../utils/slash-commands-listing';
 import {ApplicationCommand, Message} from 'discord.js';
 import {sleep} from '@epic-helper/utils';
 import {djsMessageHelper} from '../../../../lib/discord.js/message';
 import djsRestHelper from '../../../../lib/discord.js/slash-commands';
+import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
 
 export default <PrefixCommand>{
   name: 'deleteSlash',

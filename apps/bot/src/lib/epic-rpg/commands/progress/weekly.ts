@@ -1,9 +1,9 @@
 import {Client, Embed, Message, User} from 'discord.js';
-import {userReminderServices} from '../../../../models/user-reminder/user-reminder.service';
 import ms from 'ms';
-import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
-import {RPG_COMMAND_TYPE} from '../../../../constants/epic-rpg/rpg';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
+import {userReminderServices} from '@epic-helper/models';
+import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
+import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 
 const WEEKLY_COOLDOWN = ms('1w') - ms('10m');

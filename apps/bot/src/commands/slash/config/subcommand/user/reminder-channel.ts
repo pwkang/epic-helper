@@ -1,7 +1,7 @@
 import {IUserConfig} from '../config.type';
-import {RPG_COMMAND_TYPE, RPG_WORKING_TYPE} from '../../../../../constants/epic-rpg/rpg';
-import {userService} from '../../../../../models/user/user.service';
 import djsInteractionHelper from '../../../../../lib/discord.js/interaction';
+import {RPG_COMMAND_TYPE, RPG_WORKING_TYPE} from '@epic-helper/constants';
+import {userService} from '@epic-helper/models';
 
 export const setReminderChannelSlash = async ({client, interaction}: IUserConfig) => {
   const optionReminderType = interaction.options.getString('reminder-type')!;

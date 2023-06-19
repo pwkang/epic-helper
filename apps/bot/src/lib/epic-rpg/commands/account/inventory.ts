@@ -1,10 +1,10 @@
 import {Client, Embed, Message, User} from 'discord.js';
-import {userService} from '../../../../models/user/user.service';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import materialCalculator from '../../../epic-helper/features/calculator/material-calculator';
 import sttScoreCalculator from '../../../epic-helper/features/calculator/stt-score-calculator';
 import embedReaders from '../../embed-readers';
 import {djsMessageHelper} from '../../../discord.js/message';
+import {userService} from '@epic-helper/models';
 
 interface IRpg {
   client: Client;

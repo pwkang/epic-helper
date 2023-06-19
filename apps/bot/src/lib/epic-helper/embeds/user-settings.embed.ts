@@ -1,6 +1,6 @@
 import {Client, EmbedBuilder, User} from 'discord.js';
-import {IUser} from '../../../models/user/user.type';
-import {BOT_COLOR} from '../../../constants/epic-helper/general';
+import {BOT_COLOR} from '@epic-helper/constants';
+import {IUser} from '@epic-helper/models';
 
 interface IGetUserSettingsEmbed {
   client: Client;

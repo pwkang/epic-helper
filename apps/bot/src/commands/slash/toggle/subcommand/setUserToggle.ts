@@ -1,7 +1,7 @@
 import type {IToggleSubcommand} from '../toggle.type';
 import commandHelper from '../../../../lib/epic-helper/command-helper';
-import {userService} from '../../../../models/user/user.service';
 import djsInteractionHelper from '../../../../lib/discord.js/interaction';
+import {userService} from '@epic-helper/models';
 
 export const setUserToggleSlash = async ({client, interaction}: IToggleSubcommand) => {
   const onStr = interaction.options.getString('on');

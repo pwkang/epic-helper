@@ -1,5 +1,5 @@
 import {Events, Guild} from 'discord.js';
-import serverService from '../../models/server/server.service';
+import {serverService} from '@epic-helper/models';
 
 export default <BotEvent>{
   eventName: Events.GuildCreate,

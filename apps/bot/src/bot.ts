@@ -5,9 +5,9 @@ import * as dotenv from 'dotenv';
 import loadCommands from './handler/on-start/commands.handler';
 import loadBotEvents from './handler/on-start/bot-events.handler';
 import loadCronJob from './handler/on-start/cron.handler';
-import {redisClient} from './services/redis/redis.service';
 import {initSentry} from './handler/on-start/sentry.handler';
 import {logger} from '@epic-helper/utils';
+import {redisClient} from '@epic-helper/services/src';
 
 dotenv.config();
 const environment = process.env.NODE_ENV || 'development';

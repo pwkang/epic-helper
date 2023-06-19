@@ -1,6 +1,6 @@
 import {Client} from 'discord.js';
-import {redisClient} from './redis.service';
 import ms from 'ms';
+import {redisClient} from '@epic-helper/services';
 
 const prefix = 'epichelper:rpg-message-owner:';
 

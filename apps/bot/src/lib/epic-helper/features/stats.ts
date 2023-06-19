@@ -1,4 +1,3 @@
-import {userStatsService} from '../../../models/user-stats/user-stats.service';
 import {
   ActionRowBuilder,
   ButtonBuilder,
@@ -13,9 +12,9 @@ import {
   getStartOfThisWeek,
   getStartOfToday,
   getStartOfYesterday,
-} from '../../../utils/datetime';
-import {IUserStats, USER_STATS_RPG_COMMAND_TYPE} from '../../../models/user-stats/user-stats.types';
-import {BOT_COLOR} from '../../../constants/epic-helper/general';
+} from '@epic-helper/utils';
+import {BOT_COLOR} from '@epic-helper/constants';
+import {IUserStats, USER_STATS_RPG_COMMAND_TYPE, userStatsService} from '@epic-helper/models';
 
 interface IGetDonorStatsEmbed {
   author: User;

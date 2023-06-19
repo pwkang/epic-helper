@@ -1,7 +1,7 @@
 import {IInventoryItem} from '../embed-readers/inventory.reader';
 import {RpgArea} from '../../../types/rpg.types';
-import {RPG_TRADE_RATE} from '../../../constants/epic-rpg/rpg';
 import dismantleHelper from './dismantle-helper';
+import {RPG_TRADE_RATE} from '@epic-helper/constants';
 
 interface IStartTrading {
   inventory: IInventoryItem;

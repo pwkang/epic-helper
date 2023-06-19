@@ -1,4 +1,3 @@
-import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {
   getStatsEmbeds,
   statsActionRow,
@@ -6,6 +5,7 @@ import {
 } from '../../../../lib/epic-helper/features/stats';
 import {ButtonStyle} from 'discord.js';
 import {djsMessageHelper} from '../../../../lib/discord.js/message';
+import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
 
 export default <PrefixCommand>{
   name: 'stats',

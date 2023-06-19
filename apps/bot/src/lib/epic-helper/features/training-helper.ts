@@ -1,5 +1,5 @@
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle, User} from 'discord.js';
-import {userService} from '../../../models/user/user.service';
+import {userService} from '@epic-helper/models';
 
 type TAnswerType = string | number | boolean;
 

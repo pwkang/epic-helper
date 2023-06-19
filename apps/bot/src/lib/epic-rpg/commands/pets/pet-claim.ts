@@ -1,6 +1,6 @@
 import {IMessageContentChecker, IMessageEmbedChecker} from '../../../../types/utils';
 import {Client, Embed, User} from 'discord.js';
-import {userPetServices} from '../../../../models/user-pet/user-pet.service';
+import {userPetServices} from '@epic-helper/models';
 
 interface IRpgPetClaim {
   embed: Embed;

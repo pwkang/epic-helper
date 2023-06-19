@@ -1,7 +1,7 @@
 import {Client, Embed, Message, User} from 'discord.js';
-import {userService} from '../../../../models/user/user.service';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import embedReaders from '../../embed-readers';
+import {userService} from '@epic-helper/models';
 
 interface IRpgOpenLootbox {
   client: Client;

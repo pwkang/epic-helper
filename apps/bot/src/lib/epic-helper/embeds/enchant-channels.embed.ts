@@ -1,8 +1,7 @@
 import {EmbedBuilder, EmbedField, Guild} from 'discord.js';
-import {IServer} from '../../../models/server/server.type';
-import {BOT_COLOR} from '../../../constants/epic-helper/general';
+import {IServer} from '@epic-helper/models';
+import {BOT_COLOR} from '@epic-helper/constants';
 import convertMsToHumanReadableString from '../../../utils/convert-ms-to-human-readable-string';
-import {PREFIX} from '../../../constants/bot';
 
 interface IGetEnchantChannelsEmbed {
   guild: Guild;

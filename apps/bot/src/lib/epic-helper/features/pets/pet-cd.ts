@@ -1,12 +1,9 @@
-import {IUserPet} from '../../../../models/user-pet/user-pet.type';
 import {EmbedBuilder, EmbedField, User} from 'discord.js';
-import {BOT_COLOR} from '../../../../constants/epic-helper/general';
 import {convertNumToPetId} from '@epic-helper/utils';
-import {BOT_EMOJI} from '../../../../constants/epic-helper/bot-emojis';
 import {convertNumberToRoman} from '../../../../utils/roman-conversion';
-import {RPG_PET_STATUS, RPG_PET_TYPE} from '../../../../constants/epic-rpg/pet';
-import {userPetServices} from '../../../../models/user-pet/user-pet.service';
 import timestampHelper from '../../../discord.js/timestamp';
+import {IUserPet, userPetServices} from '@epic-helper/models';
+import {BOT_COLOR, BOT_EMOJI, RPG_PET_STATUS, RPG_PET_TYPE} from '@epic-helper/constants';
 
 export const PET_CD_PET_PAGE = 21;
 

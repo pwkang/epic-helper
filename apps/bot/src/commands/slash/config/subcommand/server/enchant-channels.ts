@@ -1,8 +1,7 @@
 import {IServerConfig} from '../config.type';
 import djsInteractionHelper from '../../../../../lib/discord.js/interaction';
-import serverService from '../../../../../models/server/server.service';
-import {IEnchantChannel} from '../../../../../models/server/server.type';
 import embedsList from '../../../../../lib/epic-helper/embeds';
+import {IEnchantChannel, serverService} from '@epic-helper/models';
 
 type TActionType = 'add' | 'remove' | 'reset';
 

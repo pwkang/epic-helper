@@ -1,14 +1,15 @@
-import type {Client, Embed, Message, User} from 'discord.js';
-import {userReminderServices} from '../../../../models/user-reminder/user-reminder.service';
-import {BOT_REMINDER_BASE_COOLDOWN} from '../../../../constants/epic-helper/command-base-cd';
-import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
-import {RPG_COMMAND_TYPE} from '../../../../constants/epic-rpg/rpg';
+import {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import getTrainingAnswer from '../../../epic-helper/features/training-helper';
-import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
-import {userStatsService} from '../../../../models/user-stats/user-stats.service';
-import {USER_STATS_RPG_COMMAND_TYPE} from '../../../../models/user-stats/user-stats.types';
 import {djsMessageHelper} from '../../../discord.js/message';
+import {
+  USER_STATS_RPG_COMMAND_TYPE,
+  userReminderServices,
+  userStatsService,
+} from '@epic-helper/models';
+import {BOT_REMINDER_BASE_COOLDOWN, RPG_COMMAND_TYPE} from '@epic-helper/constants';
+import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
+import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 
 interface IRpgTraining {
   client: Client;

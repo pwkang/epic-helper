@@ -1,15 +1,14 @@
 import {ButtonStyle, EmbedBuilder, EmbedField, User} from 'discord.js';
-import {BOT_COLOR} from '../../../../constants/epic-helper/general';
-import {IUserPet} from '../../../../models/user-pet/user-pet.type';
+import {convertNumToPetId} from '@epic-helper/utils';
+import {IUserPet, userPetServices} from '@epic-helper/models';
 import {
+  BOT_COLOR,
+  BOT_EMOJI,
   RPG_PET_SKILL,
   RPG_PET_SKILL_TIER_REVERSE,
   RPG_PET_TYPE,
-} from '../../../../constants/epic-rpg/pet';
-import {BOT_EMOJI} from '../../../../constants/epic-helper/bot-emojis';
+} from '@epic-helper/constants';
 import {convertNumberToRoman} from '../../../../utils/roman-conversion';
-import {userPetServices} from '../../../../models/user-pet/user-pet.service';
-import {convertNumToPetId} from '@epic-helper/utils';
 
 export const PET_LIST_PET_PET_PAGE = 21;
 

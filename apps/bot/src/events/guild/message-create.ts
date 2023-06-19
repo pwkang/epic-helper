@@ -1,5 +1,6 @@
 import {Client, Events, Message} from 'discord.js';
-import {DEVS_ID, EPIC_RPG_ID, PREFIX, PREFIX_COMMAND_TYPE} from '../../constants/bot';
+import {DEVS_ID, EPIC_RPG_ID, PREFIX, PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
+import {ValuesOf} from '@epic-helper/ts-utils';
 
 export default <BotEvent>{
   eventName: Events.MessageCreate,

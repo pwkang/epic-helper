@@ -1,7 +1,6 @@
-import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
-import {userService} from '../../../../models/user/user.service';
-import {RPG_CLICKABLE_SLASH_COMMANDS} from '../../../../constants/epic-rpg/clickable-slash';
 import {djsMessageHelper} from '../../../../lib/discord.js/message';
+import {PREFIX_COMMAND_TYPE, RPG_CLICKABLE_SLASH_COMMANDS} from '@epic-helper/constants';
+import {userService} from '@epic-helper/models';
 
 export default <PrefixCommand>{
   name: 'register',

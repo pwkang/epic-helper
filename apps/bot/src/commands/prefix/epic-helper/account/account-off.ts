@@ -1,8 +1,6 @@
-import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
-import {userService} from '../../../../models/user/user.service';
-import {userReminderServices} from '../../../../models/user-reminder/user-reminder.service';
-import {userPetServices} from '../../../../models/user-pet/user-pet.service';
 import {djsMessageHelper} from '../../../../lib/discord.js/message';
+import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
+import {userPetServices, userReminderServices, userService} from '@epic-helper/models';
 
 export default <PrefixCommand>{
   name: 'accountOff',

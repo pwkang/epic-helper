@@ -1,5 +1,5 @@
 import {Embed} from 'discord.js';
-import {RPG_ITEMS} from '../../../constants/epic-rpg/items';
+import {RPG_ITEMS} from '@epic-helper/constants';
 
 interface IScanLootbox {
   embed: Embed;

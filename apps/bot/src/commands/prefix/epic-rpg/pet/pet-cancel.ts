@@ -1,10 +1,10 @@
-import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {
   rpgPetAdvCancel,
   rpgPetCancelChecker,
 } from '../../../../lib/epic-rpg/commands/pets/pet-cancel';
 import {djsMessageHelper} from '../../../../lib/discord.js/message';
+import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
 
 const args1 = ['pets', 'pet'];
 const args2 = ['adventure', 'adv'];

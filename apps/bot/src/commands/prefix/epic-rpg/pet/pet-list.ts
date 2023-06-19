@@ -1,7 +1,7 @@
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {rpgPetList, rpgPetListChecker} from '../../../../lib/epic-rpg/commands/pets/pet-list';
 import redisRpgMessageOwner from '../../../../services/redis/rpg-message-owner.redis';
+import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
 
 export default <PrefixCommand>{
   name: 'petList',

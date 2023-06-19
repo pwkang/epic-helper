@@ -5,5 +5,11 @@
   "main": "dist/index.js",
   "scripts": {
     "build:shared": "tsc"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.8"
+  },
+  "devDependencies": {
+    "@epic-helper/tsconfig": "workspace:*"
   }
 }

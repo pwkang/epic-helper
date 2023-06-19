@@ -1,12 +1,11 @@
 import {Client, Embed, Message, User} from 'discord.js';
-import {RPG_ENCHANT_LEVEL, RPG_ENCHANT_LEVEL_RANK} from '../../../../constants/epic-rpg/enchant';
-import {userService} from '../../../../models/user/user.service';
 import ms from 'ms';
-import {EPIC_RPG_ID} from '../../../../constants/bot';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import djsChannelHelper from '../../../discord.js/channel';
 import {djsMessageHelper} from '../../../discord.js/message';
 import timestampHelper from '../../../discord.js/timestamp';
+import {userService} from '@epic-helper/models';
+import {EPIC_RPG_ID, RPG_ENCHANT_LEVEL, RPG_ENCHANT_LEVEL_RANK} from '@epic-helper/constants';
 
 const ENCHANT_CMD_TYPE = {
   enchant: 'enchant',

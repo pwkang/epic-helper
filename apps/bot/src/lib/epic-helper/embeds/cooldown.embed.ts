@@ -1,4 +1,6 @@
-import {RPG_COMMAND_TYPE} from '../../../constants/epic-rpg/rpg';
+import timestampHelper from '../../discord.js/timestamp';
+import {ValuesOf} from '@epic-helper/ts-utils';
+import {BOT_COLOR, BOT_EMOJI, RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import {
   IAdventureReminderProps,
   IFarmReminderProps,
@@ -7,11 +9,8 @@ import {
   ITrainingReminderProps,
   IUserReminder,
   IWorkingReminderProps,
-} from '../../../models/user-reminder/user-reminder.type';
+} from '@epic-helper/models';
 import {EmbedBuilder, User} from 'discord.js';
-import {BOT_COLOR} from '../../../constants/epic-helper/general';
-import {BOT_EMOJI} from '../../../constants/epic-helper/bot-emojis';
-import timestampHelper from '../../discord.js/timestamp';
 
 interface ICooldownItem {
   type: ValuesOf<typeof RPG_COMMAND_TYPE>;

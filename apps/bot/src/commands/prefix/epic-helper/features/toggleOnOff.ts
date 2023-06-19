@@ -1,7 +1,7 @@
-import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import commandHelper from '../../../../lib/epic-helper/command-helper';
-import {userService} from '../../../../models/user/user.service';
 import {djsMessageHelper} from '../../../../lib/discord.js/message';
+import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
+import {userService} from '@epic-helper/models';
 
 export default <PrefixCommand>{
   name: 'toggleOnOff',

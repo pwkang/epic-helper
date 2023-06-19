@@ -1,6 +1,6 @@
-import {redisClient} from '../services/redis/redis.service';
-import redisUserReminder from '../services/redis/user-reminder.redis';
 import {userReminderTimesUp} from '../lib/epic-helper/reminders/ready/user.reminder-ready';
+import {redisClient} from '@epic-helper/services';
+import {redisUserReminder} from '@epic-helper/models';
 
 export default <CronJob>{
   name: 'user-reminder',

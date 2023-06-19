@@ -11,10 +11,22 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@epic-helper/constants": "workspace:*",
+    "@epic-helper/models": "workspace:*",
+    "@epic-helper/services": "workspace:*",
+    "@epic-helper/utils": "workspace:*",
     "discord-hybrid-sharding": "^2.1.2",
-    "@epic-helper/utils": "workspace:*"
+    "@sentry/node": "^7.52.1",
+    "discord.js": "^14.11.0",
+    "axios": "^1.4.0",
+    "dotenv": "^16.0.3",
+    "mongoose": "^7.1.0",
+    "ms": "^2.1.3",
+    "node-cron": "^3.0.2",
+    "readdirp": "^3.6.0"
   },
   "devDependencies": {
+    "@epic-helper/ts-utils": "workspace:*",
     "@epic-helper/tsconfig": "workspace:*"
   }
 }

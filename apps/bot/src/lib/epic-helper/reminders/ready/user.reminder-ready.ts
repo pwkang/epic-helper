@@ -1,12 +1,11 @@
 import {Client} from 'discord.js';
-import {userReminderServices} from '../../../../models/user-reminder/user-reminder.service';
-import {userService} from '../../../../models/user/user.service';
 import {getCommandStr} from '../reminders-command-name';
 import ms from 'ms';
-import {RPG_COMMAND_TYPE} from '../../../../constants/epic-rpg/rpg';
 import {userPetReminderTimesUp} from './user-pet.reminder-ready';
 import {getReminderChannel} from '../reminder-channel';
 import {djsMessageHelper} from '../../../discord.js/message';
+import {userReminderServices, userService} from '@epic-helper/models';
+import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 
 export const userReminderTimesUp = async (client: Client, userId: string) => {
   const user = await userService.getUserAccount(userId);

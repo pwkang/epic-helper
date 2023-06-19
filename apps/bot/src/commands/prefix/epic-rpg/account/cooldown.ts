@@ -1,6 +1,6 @@
-import {PREFIX_COMMAND_TYPE} from '../../../../constants/bot';
 import {rpgCooldown} from '../../../../lib/epic-rpg/commands/account/cooldown';
 import {updateReminderChannel} from '../../../../lib/epic-helper/reminders/reminder-channel';
+import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
 
 export default <PrefixCommand>{
   name: 'rpgCooldown',
