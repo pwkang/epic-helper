@@ -1,7 +1,7 @@
 import {Client} from 'discord.js';
 import {handlerFileFilter, handlerRoot} from './constant';
 import {importFiles} from '../../utils/filesImport';
-import {logger} from '../../utils/logger';
+import {logger} from '@epic-helper/utils';
 
 async function loadPrefixCommands(client: Client) {
   const commands = await importFiles<PrefixCommand>({

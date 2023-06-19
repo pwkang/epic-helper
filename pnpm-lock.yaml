@@ -17,6 +17,9 @@ importers:
       dayjs:
         specifier: ^1.11.8
         version: 1.11.8
+      discord.js:
+        specifier: ^14.11.0
+        version: 14.11.0
       dotenv:
         specifier: ^16.0.3
         version: 16.0.3
@@ -72,9 +75,6 @@ importers:
       discord-hybrid-sharding:
         specifier: ^2.1.2
         version: 2.1.2
-      discord.js:
-        specifier: ^14.11.0
-        version: 14.11.0
     devDependencies:
       '@epic-helper/tsconfig':
         specifier: workspace:*

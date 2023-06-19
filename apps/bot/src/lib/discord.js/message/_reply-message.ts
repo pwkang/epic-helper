@@ -6,7 +6,7 @@ import type {
   MessagePayload,
 } from 'discord.js';
 import {PermissionsBitField, TextChannel} from 'discord.js';
-import {logger} from '../../../utils/logger';
+import {logger} from '@epic-helper/utils';
 
 const requiredPermissions = [PermissionsBitField.Flags.SendMessages];
 

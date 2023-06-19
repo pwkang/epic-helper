@@ -1,5 +1,5 @@
 import {PREFIX_COMMAND_TYPE} from '../../../constants/bot';
-import {logger} from '../../../utils/logger';
+import {logger} from '@epic-helper/utils';
 
 interface Type {
   [key: string]: string;

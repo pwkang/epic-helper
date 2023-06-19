@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
-import {logger} from '../../utils/logger';
+import {logger} from '@epic-helper/utils';
 
 dotenv.config();
 

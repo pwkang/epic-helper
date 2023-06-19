@@ -1,6 +1,6 @@
 import patreonUrlGenerator from './patreon-url-generator';
 import {IFetchPatreonCampaignMembersResponse, IFetchPatreonCampaignResponse} from '../type';
-import {logger} from '../../../utils/logger';
+import {logger} from '@epic-helper/utils';
 import {patreonAxiosClient} from '../../../services/patreon/patreon.service';
 import {sleep} from '@epic-helper/utils';
 

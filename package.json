@@ -25,6 +25,7 @@
   "homepage": "https://github.com/pwkang/epic-helper#readme",
   "dependencies": {
     "@sentry/node": "^7.52.1",
+    "discord.js": "^14.11.0",
     "axios": "^1.4.0",
     "dayjs": "^1.11.8",
     "dotenv": "^16.0.3",

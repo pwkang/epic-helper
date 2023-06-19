@@ -1,5 +1,5 @@
 import {Client, DiscordAPIError, Message} from 'discord.js';
-import {logger} from '../../../utils/logger';
+import {logger} from '@epic-helper/utils';
 
 interface DeleteMessageProps {
   client: Client;

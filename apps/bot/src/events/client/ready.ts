@@ -1,6 +1,6 @@
 import {Events} from 'discord.js';
 import loadServerOnReady from '../../handler/on-ready/server-startup.handler';
-import {logger} from '../../utils/logger';
+import {logger} from '@epic-helper/utils';
 
 export default <BotEvent>{
   eventName: Events.ClientReady,

@@ -8,30 +8,6 @@ dotenv.config();
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const isProduction = NODE_ENV === 'production';
 
-// const isProduction = true;
-
-interface IPinoLogger {
-  client?: Client;
-}
-
-function PinoLogger({client}: IPinoLogger) {
-  let _pinoLogger: Logger;
-  if (isProduction) {
-    _pinoLogger = pino({});
-    _pinoLogger.setBindings({
-      clusterId: client?.cluster?.id,
-    });
-  } else {
-    _pinoLogger = pino(
-      pretty({
-        translateTime: 'SYS:yyyy-mm-dd hh:MM:ss TT',
-      })
-    );
-  }
-
-  return _pinoLogger;
-}
-
 interface ILogger {
   client?: Client;
   variant?: string;

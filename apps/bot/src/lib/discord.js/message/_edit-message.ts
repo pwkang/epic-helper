@@ -1,5 +1,5 @@
 import {Client, DiscordAPIError, Message, MessageEditOptions, MessagePayload} from 'discord.js';
-import {logger} from '../../../utils/logger';
+import {logger} from '@epic-helper/utils';
 
 interface EditMessageProps {
   client: Client;

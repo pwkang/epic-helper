@@ -1,6 +1,6 @@
 import {Client, DiscordAPIError, Guild, Routes} from 'discord.js';
 import {djsRestClient} from '../../../services/discord.js/discordjs.service';
-import {logger} from '../../../utils/logger';
+import {logger} from '@epic-helper/utils';
 
 interface IDeleteGuildSlashCommand {
   client: Client;

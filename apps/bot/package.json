@@ -12,7 +12,6 @@
   "license": "ISC",
   "dependencies": {
     "discord-hybrid-sharding": "^2.1.2",
-    "discord.js": "^14.11.0",
     "@epic-helper/utils": "workspace:*"
   },
   "devDependencies": {

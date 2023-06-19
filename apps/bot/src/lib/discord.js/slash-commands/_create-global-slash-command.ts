@@ -1,6 +1,6 @@
 import {ApplicationCommand, Client, DiscordAPIError, Routes, SlashCommandBuilder} from 'discord.js';
 import {djsRestClient} from '../../../services/discord.js/discordjs.service';
-import {logger} from '../../../utils/logger';
+import {logger} from '@epic-helper/utils';
 
 interface ICreateGlobalSlashCommand {
   client: Client;

@@ -2,7 +2,7 @@ import {Client} from 'discord.js';
 import {handlerFileFilter, handlerRoot} from './constant';
 import {importFiles} from '../../utils/filesImport';
 import pino from 'pino';
-import {logger} from '../../utils/logger';
+import {logger} from '@epic-helper/utils';
 
 export default async function loadBotEvents(client: Client) {
   const commands = await importFiles<BotEvent>({

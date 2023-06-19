@@ -1,6 +1,6 @@
 import {ClusterManager} from 'discord-hybrid-sharding';
 import * as dotenv from 'dotenv';
-import {logger} from './utils/logger';
+import {logger} from '@epic-helper/utils';
 
 dotenv.config();
 

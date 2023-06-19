@@ -8,7 +8,7 @@ import {
   StringSelectMenuInteraction,
 } from 'discord.js';
 import ms from 'ms';
-import {logger} from '../../../utils/logger';
+import {logger} from '@epic-helper/utils';
 
 interface IReplyInteraction {
   client: Client;
