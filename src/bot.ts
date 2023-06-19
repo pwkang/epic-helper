@@ -39,7 +39,7 @@ Promise.all([
   loadBotEvents(client),
   redisClient.connect(),
   loadCronJob(client),
-]).then(() => {
+]).then(async () => {
   logger({
     client,
     message: 'All handlers loaded, connecting to Discord...',
