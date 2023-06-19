@@ -1,5 +1,5 @@
 import {Client, DiscordAPIError, Guild, Routes} from 'discord.js';
-import {djsRestClient} from '../../../services/discord.js/discordjs.service.ts';
+import {djsRestClient} from '../../../services/discord.js/discordjs.service.ts.ts';
 import {logger} from '../../../utils/logger';
 
 interface IDeleteGuildSlashCommand {

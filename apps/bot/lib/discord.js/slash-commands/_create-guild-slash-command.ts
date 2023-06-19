@@ -6,7 +6,7 @@ import {
   Routes,
   SlashCommandBuilder,
 } from 'discord.js';
-import {djsRestClient} from '../../../services/discord.js/discordjs.service.ts';
+import {djsRestClient} from '../../../services/discord.js/discordjs.service.ts.ts';
 import {logger} from '../../../utils/logger';
 
 interface ICreateGuildSlashCommand {

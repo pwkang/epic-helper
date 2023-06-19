@@ -15,7 +15,7 @@
     "esModuleInterop": true,
     "typeRoots": [
       "./node_modules/@types",
-      "./src/types"
+      "./apps/bot/types"
     ]
   },
   "ts-node": {

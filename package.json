@@ -4,7 +4,7 @@
   "description": "An unofficial Discord EPIC RPG helper bot",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "nodemon --exec ts-node --files src/bot.ts",
+    "dev": "nodemon --exec ts-node --files apps/bot/bot.ts",
     "build": "tsc",
     "start:built": "tsc && node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
