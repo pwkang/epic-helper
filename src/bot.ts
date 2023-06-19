@@ -8,7 +8,6 @@ import loadCronJob from './handler/on-start/cron.handler';
 import {redisClient} from './services/redis/redis.service';
 import {initSentry} from './handler/on-start/sentry.handler';
 import {logger} from './utils/logger';
-import patreonService from './services/patreon/patreon.service';
 
 dotenv.config();
 const environment = process.env.NODE_ENV || 'development';

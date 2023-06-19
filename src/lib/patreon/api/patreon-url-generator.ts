@@ -5,7 +5,7 @@ import {
   PATREON_MEMBER_ATTRIBUTES,
   PATREON_TIER_ATTRIBUTES,
   PATREON_USER_ATTRIBUTES,
-} from './patreon.constant';
+} from '../patreon.constant';
 
 interface IGenerateFetchPatreonApiUrl {
   campaignId: string;
@@ -50,13 +50,14 @@ interface IGenerateFetchCampaignUrl {
   include?: {
     tiers?: ValuesOf<typeof PATREON_TIER_ATTRIBUTES>[];
     campaign?: ValuesOf<typeof PATREON_CAMPAIGN_ATTRIBUTES>[];
+    user?: ValuesOf<typeof PATREON_USER_ATTRIBUTES>[];
   };
 }
 
 const generateFetchCampaignUrl = ({include = {}}: IGenerateFetchCampaignUrl) => {
   const baseUrl = 'https://www.patreon.com/api/oauth2/v2/campaigns';
   const params = new URLSearchParams({
-    include: 'tiers',
+    include: 'tiers,creator',
   });
   const {tiers, campaign} = include;
 
@@ -64,12 +65,14 @@ const generateFetchCampaignUrl = ({include = {}}: IGenerateFetchCampaignUrl) => 
 
   if (campaign?.length) params.append('fields[campaign]', campaign.join(','));
 
+  if (include.user?.length) params.append('fields[user]', include.user.join(','));
+
   return `${baseUrl}?${params.toString()}`;
 };
 
-const patreonLib = {
+const patreonUrlGenerator = {
   generateFetchPatreonApiUrl,
   generateFetchCampaignUrl,
 };
 
-export default patreonLib;
+export default patreonUrlGenerator;

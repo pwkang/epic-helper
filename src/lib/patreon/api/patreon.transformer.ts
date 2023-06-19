@@ -3,12 +3,12 @@ import {
   IFetchPatreonCampaignResponse,
   IIncludeItem,
   IUserAttributes,
-} from './type';
+} from '../type';
 import {
   PATREON_INCLUDE_TYPE,
   PATREON_PATRON_STATUS,
   PATREON_PAYMENT_STATUS,
-} from './patreon.constant';
+} from '../patreon.constant';
 
 interface ITier {
   id: string;

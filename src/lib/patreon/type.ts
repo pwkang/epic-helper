@@ -40,7 +40,7 @@ interface IPatreonResponseLinks {
   next: string;
 }
 
-interface IPatreonResponseMeta {
+export interface IPatreonResponseMeta {
   pagination: {
     cursors: {
       next: string | null;
