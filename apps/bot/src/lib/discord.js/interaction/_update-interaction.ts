@@ -21,7 +21,6 @@ export default async function _updateInteraction({
     await interaction.update(options);
   } catch (error: DiscordAPIError | any) {
     logger({
-      client,
       message: error.rawError,
       variant: 'updateInteraction',
       logLevel: 'warn',

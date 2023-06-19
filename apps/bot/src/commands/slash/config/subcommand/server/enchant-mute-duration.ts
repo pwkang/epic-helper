@@ -1,7 +1,7 @@
 import {IServerConfig} from '../config.type';
 import djsInteractionHelper from '../../../../../lib/discord.js/interaction';
 import embedsList from '../../../../../lib/epic-helper/embeds';
-import {serverService} from '@epic-helper/models';
+import {serverService} from '../../../../../services/database/server.service';
 
 export const setEnchantMuteDuration = async ({client, interaction}: IServerConfig) => {
   if (!interaction.inGuild()) return;

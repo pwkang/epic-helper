@@ -1,7 +1,7 @@
 import {EmbedBuilder, EmbedField, User} from 'discord.js';
 import {convertPetIdToNum} from '@epic-helper/utils';
 import {generateEmbedPetFields} from './pet-list';
-import {IUserPet, userPetServices} from '@epic-helper/models';
+import {IUserPet} from '@epic-helper/models';
 import {
   BOT_COLOR,
   BOT_EMOJI,
@@ -9,7 +9,7 @@ import {
   RPG_PET_SKILL_TIER,
   RPG_PET_SKILL_TIER_REVERSE,
 } from '@epic-helper/constants';
-import {ValuesOf} from '@epic-helper/ts-utils';
+import {userPetServices} from '../../../../services/database/user-pet.service';
 
 interface IGenerateFusionScoreEmbed {
   author: User;

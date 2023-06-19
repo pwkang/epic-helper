@@ -1,7 +1,7 @@
 import {djsMessageHelper} from '../../../../lib/discord.js/message';
 import {PREFIX_COMMAND_TYPE, RPG_DONOR_TIER} from '@epic-helper/constants';
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle} from 'discord.js';
-import {userService} from '@epic-helper/models';
+import {userService} from '../../../../services/database/user.service';
 
 export default <PrefixCommand>{
   name: 'rpgDonor',

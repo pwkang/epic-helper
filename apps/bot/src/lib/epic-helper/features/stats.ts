@@ -14,7 +14,8 @@ import {
   getStartOfYesterday,
 } from '@epic-helper/utils';
 import {BOT_COLOR} from '@epic-helper/constants';
-import {IUserStats, USER_STATS_RPG_COMMAND_TYPE, userStatsService} from '@epic-helper/models';
+import {IUserStats, USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
+import {userStatsService} from '../../../services/database/user-stats.service';
 
 interface IGetDonorStatsEmbed {
   author: User;

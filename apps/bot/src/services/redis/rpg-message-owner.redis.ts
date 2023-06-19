@@ -1,6 +1,6 @@
 import {Client} from 'discord.js';
 import ms from 'ms';
-import {redisClient} from '@epic-helper/services';
+import {redisService} from './redis.service';
 
 const prefix = 'epichelper:rpg-message-owner:';
 
@@ -11,7 +11,7 @@ interface IRedisSetRpgMessageOwner {
 }
 
 const setOwner = async ({userId, messageId}: IRedisSetRpgMessageOwner) => {
-  await redisClient.set(`${prefix}${messageId}`, userId, {
+  await redisService.set(`${prefix}${messageId}`, userId, {
     PX: ms('5m'),
   });
 };
@@ -22,12 +22,10 @@ interface IRedisGetRpgMessageOwner {
 }
 
 const getOwner = async ({messageId}: IRedisGetRpgMessageOwner) => {
-  return await redisClient.get(`${prefix}${messageId}`);
+  return await redisService.get(`${prefix}${messageId}`);
 };
 
-const redisRpgMessageOwner = {
+export const redisRpgMessageOwner = {
   setOwner,
   getOwner,
 };
-
-export default redisRpgMessageOwner;

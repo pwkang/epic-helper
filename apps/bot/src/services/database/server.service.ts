@@ -1,6 +1,5 @@
-import {serverSchema} from './server.schema';
-import {IEnchantChannel, IServer} from './server.type';
-import {mongoClient} from '@epic-helper/services/src';
+import {mongoClient} from '@epic-helper/services';
+import {IEnchantChannel, IServer, serverSchema} from '@epic-helper/models';
 
 const dbServer = mongoClient.model('servers', serverSchema);
 

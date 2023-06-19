@@ -9,7 +9,6 @@ import {
   PATREON_PATRON_STATUS,
   PATREON_PAYMENT_STATUS,
 } from '../patreon.constant';
-import {ValuesOf} from '@epic-helper/ts-utils';
 
 interface ITier {
   id: string;

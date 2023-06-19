@@ -1,7 +1,7 @@
 import {paginatePetCd, PET_CD_PET_PAGE} from '../../../../../lib/epic-helper/features/pets/pet-cd';
 import {itemListingHelper} from '../../../../../utils/item-listing-helper';
 import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
-import {userPetServices} from '@epic-helper/models';
+import {userPetServices} from '../../../../../services/database/user-pet.service';
 
 export default <PrefixCommand>{
   name: 'petCd',

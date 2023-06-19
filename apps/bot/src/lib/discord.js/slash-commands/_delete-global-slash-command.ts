@@ -13,7 +13,6 @@ export const _deleteGlobalSlashCommand = async ({client, commandId}: IDeleteGuil
     await djsRestClient.delete(Routes.applicationCommand(client.user.id!, commandId));
   } catch (e: DiscordAPIError | any) {
     logger({
-      client,
       message: e.rawError.message,
       variant: 'delete-global-slash-command',
       logLevel: 'error',

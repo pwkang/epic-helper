@@ -1,5 +1,4 @@
 import timestampHelper from '../../discord.js/timestamp';
-import {ValuesOf} from '@epic-helper/ts-utils';
 import {BOT_COLOR, BOT_EMOJI, RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import {
   IAdventureReminderProps,

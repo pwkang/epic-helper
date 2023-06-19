@@ -30,7 +30,6 @@ export default async function _replyInteraction<T>({
     interactionResponse = await interaction.reply(options);
   } catch (error: DiscordAPIError | any) {
     logger({
-      client,
       message: error.rawError,
       variant: 'replyInteraction',
       logLevel: 'warn',

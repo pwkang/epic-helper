@@ -7,7 +7,6 @@ export default <BotEvent>{
   once: true,
   execute: async (client) => {
     logger({
-      client,
       message: `Logged in as ${client.user?.tag}!`,
     });
 

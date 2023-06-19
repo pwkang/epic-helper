@@ -8,11 +8,6 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@epic-helper/constants": "workspace:*",
-    "@epic-helper/services": "workspace:*",
-    "@epic-helper/utils": "workspace:*"
-  },
-  "devDependencies": {
-    "@epic-helper/ts-utils": "workspace:*"
+    "@epic-helper/constants": "workspace:*"
   }
 }

@@ -1,7 +1,9 @@
 import {Embed, User} from 'discord.js';
 import ms from 'ms';
 import embedReaders from '../../embed-readers';
-import {userPetServices} from '@epic-helper/models';
+import {userPetServices} from '../../../../services/database/user-pet.service';
+import {RPG_PET_SKILL} from '@epic-helper/constants';
+import {IUserPet} from '@epic-helper/models';
 
 interface IRpgPet {
   embed: Embed;

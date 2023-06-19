@@ -1,6 +1,6 @@
 import {ButtonStyle, EmbedBuilder, EmbedField, User} from 'discord.js';
 import {convertNumToPetId} from '@epic-helper/utils';
-import {IUserPet, userPetServices} from '@epic-helper/models';
+import {IUserPet} from '@epic-helper/models';
 import {
   BOT_COLOR,
   BOT_EMOJI,
@@ -9,6 +9,7 @@ import {
   RPG_PET_TYPE,
 } from '@epic-helper/constants';
 import {convertNumberToRoman} from '../../../../utils/roman-conversion';
+import {userPetServices} from '../../../../services/database/user-pet.service';
 
 export const PET_LIST_PET_PET_PAGE = 21;
 

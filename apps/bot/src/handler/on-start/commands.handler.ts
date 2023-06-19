@@ -11,7 +11,6 @@ async function loadPrefixCommands(client: Client) {
     },
   });
   logger({
-    client,
     message: `Loaded (${commands.length}) prefix commands`,
   });
   commands.forEach((command) => {
@@ -29,7 +28,6 @@ async function loadSlashCommands(client: Client) {
     },
   });
   logger({
-    client,
     message: `Loaded (${commands.length}) slash commands`,
   });
   commands.forEach((command) => {
@@ -46,7 +44,6 @@ async function loadSlashMessages(client: Client) {
     },
   });
   logger({
-    client,
     message: `Loaded (${commands.length}) slash messages`,
   });
   commands.forEach((command) => {

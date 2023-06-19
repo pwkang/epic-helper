@@ -1,6 +1,6 @@
-import readdirp from 'readdirp';
 import {handlerRoot} from '../handler/on-start/constant';
 import {importFiles} from './filesImport';
+import {SlashCommandBuilder} from 'discord.js';
 
 interface ISlashCommand {
   name: string;

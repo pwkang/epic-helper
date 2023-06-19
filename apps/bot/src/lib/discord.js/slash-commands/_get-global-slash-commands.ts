@@ -14,7 +14,6 @@ export const _getGlobalSlashCommands = async ({client}: IGetGlobalSlashCommands)
     return data as ApplicationCommand[];
   } catch (e: DiscordAPIError | any) {
     logger({
-      client,
       message: e.rawError.message,
       variant: 'get-global-slash-commands',
       logLevel: 'error',

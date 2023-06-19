@@ -1,5 +1,5 @@
-import {ValuesOf} from '@epic-helper/ts-utils';
 import {RPG_FARM_SEED, RPG_LOOTBOX_TYPE, RPG_WORKING_TYPE} from '@epic-helper/constants';
+import {ValuesOf} from '../type';
 
 export interface IHuntReminderProps {
   together: boolean;

@@ -5,7 +5,6 @@ import {
   RPG_LOOTBOX_TYPE,
   RPG_WORKING_TYPE,
 } from '@epic-helper/constants';
-import {ValuesOf} from '@epic-helper/ts-utils';
 import {IUserReminder} from '@epic-helper/models';
 
 interface IGetDailyCommandStr {

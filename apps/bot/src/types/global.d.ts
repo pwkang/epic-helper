@@ -1,10 +1,11 @@
-import type {Client, ClientEvents, Message, User} from 'discord.js';
+import type {Client, ClientEvents, Message, SlashCommandBuilder, User} from 'discord.js';
 import {ChatInputCommandInteraction} from 'discord.js';
 import type {ScheduleOptions} from 'node-cron';
-import {ValuesOf} from '@epic-helper/ts-utils';
 import {PREFIX_COMMAND_TYPE, SLASH_MESSAGE_BOT_TYPE} from '@epic-helper/constants';
 
 declare global {
+  export type ValuesOf<T extends Record<string, unknown>> = T[keyof T];
+
   interface PrefixCommand {
     name: string;
     commands: string[];

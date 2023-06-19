@@ -4,17 +4,14 @@ import {
   RPG_WORKING_TYPE,
 } from '@epic-helper/constants';
 import {Client, Embed, Message, User} from 'discord.js';
-import {ValuesOf} from '@epic-helper/ts-utils';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {
-  USER_STATS_RPG_COMMAND_TYPE,
-  userReminderServices,
-  userService,
-  userStatsService,
-} from '@epic-helper/models';
+import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {djsMessageHelper} from '../../../discord.js/message';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
+import {userService} from '../../../../services/database/user.service';
+import {userReminderServices} from '../../../../services/database/user-reminder.service';
+import {userStatsService} from '../../../../services/database/user-stats.service';
 
 const WORKING_ITEMS = [
   'normie fish',

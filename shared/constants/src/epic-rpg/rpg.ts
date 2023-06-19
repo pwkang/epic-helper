@@ -1,4 +1,4 @@
-import {ValuesOf} from '@epic-helper/ts-utils';
+import {ValuesOf} from '../type';
 
 export const RPG_COMMAND_TYPE = {
   daily: 'daily',

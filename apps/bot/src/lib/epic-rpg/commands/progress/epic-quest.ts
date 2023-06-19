@@ -1,13 +1,11 @@
 import {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {
-  USER_STATS_RPG_COMMAND_TYPE,
-  userReminderServices,
-  userStatsService,
-} from '@epic-helper/models';
+import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {BOT_REMINDER_BASE_COOLDOWN, RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
+import {userStatsService} from '../../../../services/database/user-stats.service';
+import {userReminderServices} from '../../../../services/database/user-reminder.service';
 
 interface IRpgEpicQuest {
   client: Client;

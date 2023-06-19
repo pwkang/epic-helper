@@ -2,7 +2,7 @@ import {IPetSubcommand} from '../pet.type';
 import {ButtonStyle} from 'discord.js';
 import {itemListingHelper} from '../../../../utils/item-listing-helper';
 import {paginatePetCd, PET_CD_PET_PAGE} from '../../../../lib/epic-helper/features/pets/pet-cd';
-import {userPetServices} from '@epic-helper/models';
+import {userPetServices} from '../../../../services/database/user-pet.service';
 
 export default async function petCd({client, interaction}: IPetSubcommand) {
   const totalPets = await userPetServices.calcTotalPets({

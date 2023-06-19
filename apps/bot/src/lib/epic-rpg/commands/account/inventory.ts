@@ -4,7 +4,7 @@ import materialCalculator from '../../../epic-helper/features/calculator/materia
 import sttScoreCalculator from '../../../epic-helper/features/calculator/stt-score-calculator';
 import embedReaders from '../../embed-readers';
 import {djsMessageHelper} from '../../../discord.js/message';
-import {userService} from '@epic-helper/models';
+import {userService} from '../../../../services/database/user.service';
 
 interface IRpg {
   client: Client;

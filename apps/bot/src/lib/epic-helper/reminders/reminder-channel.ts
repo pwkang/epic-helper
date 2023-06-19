@@ -1,6 +1,6 @@
 import {Channel, Client} from 'discord.js';
-import {userService} from '@epic-helper/models';
 import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
+import {userService} from '../../../services/database/user.service';
 
 interface IUpdateReminderChannel {
   userId: string;

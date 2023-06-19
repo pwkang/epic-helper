@@ -1,5 +1,5 @@
 import {Client} from 'discord.js';
-import {serverService} from '@epic-helper/models';
+import {serverService} from '../../services/database/server.service';
 
 const loadServerOnReady = async (client: Client) => {
   await registerNewServers(client);

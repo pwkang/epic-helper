@@ -24,7 +24,6 @@ export default <PrefixCommand>{
       emojiMap[emoji.name] = emoji.emoji;
     }
     logger({
-      client,
       message: `${JSON.stringify(emojiMap)}`,
       variant: 'listEmoji',
     });

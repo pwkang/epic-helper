@@ -1,5 +1,5 @@
-import {ValuesOf} from '@epic-helper/ts-utils';
 import {RPG_PET_SKILL, RPG_PET_STATUS, RPG_PET_TYPE} from '@epic-helper/constants';
+import {ValuesOf} from '../type';
 
 export interface IUserPet {
   userId: string;

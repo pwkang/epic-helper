@@ -2,11 +2,8 @@ import {Client, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {
   saveUserAdventureCooldown,
-  USER_STATS_RPG_COMMAND_TYPE,
   userReminderServices,
-  userService,
-  userStatsService,
-} from '@epic-helper/models';
+} from '../../../../services/database/user-reminder.service';
 import {
   ADVENTURE_MONSTER_LIST,
   BOT_REMINDER_BASE_COOLDOWN,
@@ -15,6 +12,9 @@ import {
 } from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
+import {userStatsService} from '../../../../services/database/user-stats.service';
+import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
+import {userService} from '../../../../services/database/user.service';
 import {djsMessageHelper} from '../../../discord.js/message';
 
 interface IRpgAdventure {

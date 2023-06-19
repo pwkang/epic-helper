@@ -9,12 +9,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@epic-helper/ts-utils": "workspace:*",
-    "ms": "^2.1.3"
-  },
   "devDependencies": {
-    "@types/ms": "^0.7.31",
     "@epic-helper/tsconfig": "workspace:*"
   }
 }

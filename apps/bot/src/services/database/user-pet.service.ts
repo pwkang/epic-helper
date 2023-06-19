@@ -1,9 +1,39 @@
-import {IUserPet} from './user-pet.type';
-import userPetSchema from './user-pet.schema';
-import {FilterQuery, QueryOptions} from 'mongoose';
-import {mongoClient} from '@epic-helper/services/src';
-import {ValuesOf} from '@epic-helper/ts-utils';
+import {FilterQuery, Model, QueryOptions} from 'mongoose';
+import {mongoClient} from '@epic-helper/services';
 import {RPG_PET_STATUS} from '@epic-helper/constants';
+import {IUserPet} from '@epic-helper/models';
+import userPetSchema from '@epic-helper/models/dist/user-pet/user-pet.schema';
+import {userReminderServices} from './user-reminder.service';
+
+userPetSchema.post('findOneAndUpdate', async function () {
+  const updatedUserId = this.getQuery().userId;
+  await updateNextPetReminderTime(updatedUserId, this.model);
+});
+
+userPetSchema.post('updateMany', async function () {
+  const updatedUserId = this.getQuery().userId;
+  await updateNextPetReminderTime(updatedUserId, this.model);
+});
+
+async function updateNextPetReminderTime(userId: string, model: Model<IUserPet>) {
+  const nextReminderTime = await model
+    .find({
+      userId,
+      readyAt: {$gt: new Date()},
+    })
+    .sort({readyAt: 1})
+    .limit(1);
+  if (!nextReminderTime.length)
+    await userReminderServices.deleteUserCooldowns({
+      userId,
+      types: ['pet'],
+    });
+  else
+    await userReminderServices.saveUserPetCooldown({
+      userId,
+      readyAt: nextReminderTime[0].readyAt,
+    });
+}
 
 const dbUserPet = mongoClient.model<IUserPet>('user-pet', userPetSchema);
 

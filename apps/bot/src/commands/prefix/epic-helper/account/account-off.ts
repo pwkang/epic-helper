@@ -1,6 +1,8 @@
 import {djsMessageHelper} from '../../../../lib/discord.js/message';
 import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
-import {userPetServices, userReminderServices, userService} from '@epic-helper/models';
+import {userService} from '../../../../services/database/user.service';
+import {userReminderServices} from '../../../../services/database/user-reminder.service';
+import {userPetServices} from '../../../../services/database/user-pet.service';
 
 export default <PrefixCommand>{
   name: 'accountOff',

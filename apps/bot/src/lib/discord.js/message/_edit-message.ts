@@ -14,7 +14,6 @@ export default async function _editMessage({client, message, options}: EditMessa
     await message.edit(options);
   } catch (e: DiscordAPIError | any) {
     logger({
-      client,
       message: e.rawError.message,
       variant: 'edit-message',
       logLevel: 'warn',

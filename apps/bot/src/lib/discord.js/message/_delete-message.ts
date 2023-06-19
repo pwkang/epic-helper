@@ -13,7 +13,6 @@ export default async function _deleteMessage({client, message}: DeleteMessagePro
     await message.delete();
   } catch (e: DiscordAPIError | any) {
     logger({
-      client,
       message: e.rawError.message,
       variant: 'delete-message',
       logLevel: 'warn',

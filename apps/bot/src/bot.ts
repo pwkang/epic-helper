@@ -7,7 +7,7 @@ import loadBotEvents from './handler/on-start/bot-events.handler';
 import loadCronJob from './handler/on-start/cron.handler';
 import {initSentry} from './handler/on-start/sentry.handler';
 import {logger} from '@epic-helper/utils';
-import {redisClient} from '@epic-helper/services/src';
+import {loadRedis} from './handler/on-start/redis.handler';
 
 dotenv.config();
 const environment = process.env.NODE_ENV || 'development';
@@ -34,20 +34,15 @@ if (environment === 'production') {
   initSentry();
 }
 
-Promise.all([
-  loadCommands(client),
-  loadBotEvents(client),
-  redisClient.connect(),
-  loadCronJob(client),
-]).then(async () => {
-  logger({
-    client,
-    message: 'All handlers loaded, connecting to Discord...',
-  });
-  client.login(process.env.BOT_TOKEN).catch((error) => {
+Promise.all([loadCommands(client), loadBotEvents(client), loadRedis(), loadCronJob(client)]).then(
+  async () => {
     logger({
-      client,
-      message: error.message,
+      message: 'All handlers loaded, connecting to Discord...',
     });
-  });
-});
+    client.login(process.env.BOT_TOKEN).catch((error) => {
+      logger({
+        message: error.message,
+      });
+    });
+  }
+);

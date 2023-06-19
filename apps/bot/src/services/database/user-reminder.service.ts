@@ -1,14 +1,36 @@
-import {IUserReminder} from './user-reminder.type';
-import userReminderSchema from './user-reminder.schema';
-import {IUserPet} from '../user-pet/user-pet.type';
-import {mongoClient} from '@epic-helper/services/src';
+import {mongoClient} from '@epic-helper/services';
 import {
   RPG_COMMAND_TYPE,
   RPG_FARM_SEED,
   RPG_LOOTBOX_TYPE,
   RPG_WORKING_TYPE,
 } from '@epic-helper/constants';
-import {ValuesOf} from '@epic-helper/ts-utils';
+import {IUserPet, IUserReminder} from '@epic-helper/models';
+import userReminderSchema from '@epic-helper/models/dist/user-reminder/user-reminder.schema';
+import {redisUserReminder} from '../redis/user-reminder.redis';
+import {Model} from 'mongoose';
+
+userReminderSchema.post('findOneAndUpdate', async function () {
+  const updatedUserId = this.getQuery().userId;
+  await updateNextReminderTime(updatedUserId, this.model);
+});
+
+userReminderSchema.post('deleteMany', async function () {
+  const deletedUserId = this.getQuery().userId;
+  await updateNextReminderTime(deletedUserId, this.model);
+});
+
+async function updateNextReminderTime(userId: string, model: Model<IUserReminder>) {
+  const nextReminderTime = await model
+    .find({
+      userId,
+    })
+    .sort({readyAt: 1})
+    .limit(1);
+  if (nextReminderTime.length)
+    await redisUserReminder.setReminderTime(userId, nextReminderTime[0].readyAt);
+  else await redisUserReminder.deleteReminderTime(userId);
+}
 
 const dbUserReminder = mongoClient.model<IUserReminder>('user-reminder', userReminderSchema);
 

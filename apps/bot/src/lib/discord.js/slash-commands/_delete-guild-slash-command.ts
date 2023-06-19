@@ -20,7 +20,6 @@ export const _deleteGuildSlashCommand = async ({
     );
   } catch (e: DiscordAPIError | any) {
     logger({
-      client,
       message: e.rawError.message,
       variant: 'delete-guild-slash-command',
       logLevel: 'error',

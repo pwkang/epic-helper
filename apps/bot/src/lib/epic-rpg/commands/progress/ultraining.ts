@@ -1,13 +1,11 @@
 import {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {
-  USER_STATS_RPG_COMMAND_TYPE,
-  userReminderServices,
-  userStatsService,
-} from '@epic-helper/models';
+import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {BOT_REMINDER_BASE_COOLDOWN, RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
+import {userReminderServices} from '../../../../services/database/user-reminder.service';
+import {userStatsService} from '../../../../services/database/user-stats.service';
 
 interface IRpgUltraining {
   client: Client;
@@ -72,7 +70,7 @@ const rpgUlTrainingSuccess = async ({author, channelId}: IRpgTrainingSuccess) =>
     channelId,
   });
 
-  userStatsService.countUserStats({
+  await userStatsService.countUserStats({
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.ultraining,
   });

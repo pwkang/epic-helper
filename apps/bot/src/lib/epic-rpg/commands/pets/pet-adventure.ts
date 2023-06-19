@@ -4,7 +4,8 @@ import ms from 'ms';
 import convertMsToHumanReadableString from '../../../../utils/convert-ms-to-human-readable-string';
 import {convertNumToPetId, convertPetIdToNum} from '@epic-helper/utils';
 import {RPG_PET_TYPE, RPG_PET_STATUS} from '@epic-helper/constants';
-import {IUserPet, userPetServices} from '@epic-helper/models';
+import {IUserPet} from '@epic-helper/models';
+import {userPetServices} from '../../../../services/database/user-pet.service';
 
 /*
  *  ===================================================

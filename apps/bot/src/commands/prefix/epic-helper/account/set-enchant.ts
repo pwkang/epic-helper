@@ -1,8 +1,7 @@
 import {ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuInteraction} from 'discord.js';
 import {djsMessageHelper} from '../../../../lib/discord.js/message';
-import {ValuesOf} from '@epic-helper/ts-utils';
 import {PREFIX_COMMAND_TYPE, RPG_ENCHANT_LEVEL} from '@epic-helper/constants';
-import {userService} from '@epic-helper/models';
+import {userService} from '../../../../services/database/user.service';
 
 type SelectOptionsValue = ValuesOf<typeof RPG_ENCHANT_LEVEL> | 'remove';
 

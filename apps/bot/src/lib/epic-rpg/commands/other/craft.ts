@@ -1,7 +1,7 @@
 import {Client, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {RPG_EQUIPMENTS} from '@epic-helper/constants';
-import {userService} from '@epic-helper/models';
+import {userService} from '../../../../services/database/user.service';
 
 const rubyConsumed = {
   [RPG_EQUIPMENTS.rubySword]: 4,

@@ -5,7 +5,7 @@ import {
   PET_LIST_PET_PET_PAGE,
 } from '../../../../lib/epic-helper/features/pets/pet-list';
 import {itemListingHelper} from '../../../../utils/item-listing-helper';
-import {userPetServices} from '@epic-helper/models';
+import {userPetServices} from '../../../../services/database/user-pet.service';
 
 export default async function petList({client, interaction}: IPetSubcommand) {
   const totalPets = await userPetServices.calcTotalPets({

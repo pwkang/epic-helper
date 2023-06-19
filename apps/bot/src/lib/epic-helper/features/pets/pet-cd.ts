@@ -2,8 +2,9 @@ import {EmbedBuilder, EmbedField, User} from 'discord.js';
 import {convertNumToPetId} from '@epic-helper/utils';
 import {convertNumberToRoman} from '../../../../utils/roman-conversion';
 import timestampHelper from '../../../discord.js/timestamp';
-import {IUserPet, userPetServices} from '@epic-helper/models';
+import {IUserPet} from '@epic-helper/models';
 import {BOT_COLOR, BOT_EMOJI, RPG_PET_STATUS, RPG_PET_TYPE} from '@epic-helper/constants';
+import {userPetServices} from '../../../../services/database/user-pet.service';
 
 export const PET_CD_PET_PAGE = 21;
 

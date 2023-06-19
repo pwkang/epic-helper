@@ -1,13 +1,11 @@
 import {Client, Message, User} from 'discord.js';
 import {BOT_REMINDER_BASE_COOLDOWN, RPG_COMMAND_TYPE, RPG_FARM_SEED} from '@epic-helper/constants';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {
-  USER_STATS_RPG_COMMAND_TYPE,
-  userReminderServices,
-  userStatsService,
-} from '@epic-helper/models';
+import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
+import {userReminderServices} from '../../../../services/database/user-reminder.service';
+import {userStatsService} from '../../../../services/database/user-stats.service';
 
 const FARM_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.farm;
 
@@ -76,7 +74,7 @@ const rpgFarmSuccess = async ({content, author, channelId}: IRpgFarmSuccess) => 
     channelId,
   });
 
-  userStatsService.countUserStats({
+  await userStatsService.countUserStats({
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.farm,
   });

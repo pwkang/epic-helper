@@ -1,13 +1,13 @@
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import updateLocale from 'dayjs/plugin/updateLocale';
 
-// dayjs.extend(utc);
-// dayjs.extend(updateLocale);
+dayjs.extend(utc);
+dayjs.extend(updateLocale);
 
-// dayjs.updateLocale('en', {
-//   weekStart: 1,
-// });
+dayjs.updateLocale('en', {
+  weekStart: 1,
+});
 
 export const getStartOfToday = () => dayjs.utc().startOf('day').toDate();
 

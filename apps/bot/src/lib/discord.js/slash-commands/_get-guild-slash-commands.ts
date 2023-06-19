@@ -16,7 +16,6 @@ export const _getGuildSlashCommands = async ({guild, client}: IGetGuildSlashComm
     return data as ApplicationCommand[];
   } catch (e: DiscordAPIError | any) {
     logger({
-      client,
       message: e.rawError.message,
       variant: 'get-guild-slash-commands',
       logLevel: 'error',

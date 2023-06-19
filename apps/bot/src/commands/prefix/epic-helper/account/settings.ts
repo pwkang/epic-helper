@@ -1,8 +1,8 @@
 import embedsList from '../../../../lib/epic-helper/embeds';
 import {djsMessageHelper} from '../../../../lib/discord.js/message';
 import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
-import {userService} from '@epic-helper/models';
 import {ActionRowBuilder, StringSelectMenuBuilder} from 'discord.js';
+import {userService} from '../../../../services/database/user.service';
 
 export default <PrefixCommand>{
   name: 'settings',

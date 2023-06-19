@@ -5,7 +5,6 @@ import {
   PATREON_PLEDGE_TYPE,
   PATREON_SOCIAL_CONNECTIONS_TYPE,
 } from './patreon.constant';
-import {ValuesOf} from '@epic-helper/ts-utils';
 
 export interface IFetchPatreonCampaignMembersResponse {
   data: IPatreonMember[];

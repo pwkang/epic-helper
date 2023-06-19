@@ -2,8 +2,9 @@ import {Client, Embed, EmbedField, Message, User} from 'discord.js';
 import ms from 'ms';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {calcExtraHuntCdWithPartner} from '../../../epic-helper/reminders/commands-cooldown';
-import {userReminderServices, userService} from '@epic-helper/models';
 import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
+import {userReminderServices} from '../../../../services/database/user-reminder.service';
+import {userService} from '../../../../services/database/user.service';
 
 const RPG_COMMAND_CATEGORY = {
   daily: ['daily'],

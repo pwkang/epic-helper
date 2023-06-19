@@ -1,13 +1,7 @@
 import {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {djsMessageHelper} from '../../../discord.js/message';
-import {
-  saveUserHuntCooldown,
-  USER_STATS_RPG_COMMAND_TYPE,
-  userReminderServices,
-  userService,
-  userStatsService,
-} from '@epic-helper/models';
+import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {
   BOT_REMINDER_BASE_COOLDOWN,
   HUNT_MONSTER_LIST,
@@ -16,6 +10,12 @@ import {
 } from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
+import {
+  saveUserHuntCooldown,
+  userReminderServices,
+} from '../../../../services/database/user-reminder.service';
+import {userStatsService} from '../../../../services/database/user-stats.service';
+import {userService} from '../../../../services/database/user.service';
 
 interface IRpgHunt {
   client: Client;
@@ -109,7 +109,7 @@ const rpgHuntSuccess = async ({author, content, channelId}: IRpgHuntSuccess) => 
     channelId,
   });
 
-  userStatsService.countUserStats({
+  await userStatsService.countUserStats({
     userId: author.id,
     type: together ? USER_STATS_RPG_COMMAND_TYPE.huntTogether : USER_STATS_RPG_COMMAND_TYPE.hunt,
   });

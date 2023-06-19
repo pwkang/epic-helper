@@ -31,7 +31,6 @@ export const _createGuildSlashCommand = async ({
     return data as ApplicationCommand;
   } catch (e: DiscordAPIError | any) {
     logger({
-      client,
       message: e.rawError,
       variant: 'create-guild-slash-command',
       logLevel: 'error',

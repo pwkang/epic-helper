@@ -15,7 +15,6 @@ export const _createGlobalSlashCommand = async ({commands, client}: ICreateGloba
     return data as ApplicationCommand;
   } catch (e: DiscordAPIError | any) {
     logger({
-      client,
       message: e.rawError.message,
       variant: 'create-global-slash-command',
       logLevel: 'error',

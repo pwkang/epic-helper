@@ -1,6 +1,5 @@
-import {Model, Schema} from 'mongoose';
+import {Schema} from 'mongoose';
 import {IUserPet} from './user-pet.type';
-import {userReminderServices} from '../user-reminder/user-reminder.service';
 import {RPG_PET_STATUS, RPG_PET_TYPE} from '@epic-helper/constants';
 
 const userPetSchema = new Schema<IUserPet>({
@@ -42,35 +41,5 @@ const userPetSchema = new Schema<IUserPet>({
   },
   readyAt: Date,
 });
-
-userPetSchema.post('findOneAndUpdate', async function () {
-  const updatedUserId = this.getQuery().userId;
-  await updateNextPetReminderTime(updatedUserId, this.model);
-});
-
-userPetSchema.post('updateMany', async function () {
-  const updatedUserId = this.getQuery().userId;
-  await updateNextPetReminderTime(updatedUserId, this.model);
-});
-
-async function updateNextPetReminderTime(userId: string, model: Model<IUserPet>) {
-  const nextReminderTime = await model
-    .find({
-      userId,
-      readyAt: {$gt: new Date()},
-    })
-    .sort({readyAt: 1})
-    .limit(1);
-  if (!nextReminderTime.length)
-    await userReminderServices.deleteUserCooldowns({
-      userId,
-      types: ['pet'],
-    });
-  else
-    await userReminderServices.saveUserPetCooldown({
-      userId,
-      readyAt: nextReminderTime[0].readyAt,
-    });
-}
 
 export default userPetSchema;

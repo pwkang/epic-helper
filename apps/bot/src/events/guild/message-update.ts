@@ -1,6 +1,6 @@
 import {Client, Events, Message} from 'discord.js';
 import {rpgPetList, rpgPetListChecker} from '../../lib/epic-rpg/commands/pets/pet-list';
-import redisRpgMessageOwner from '../../services/redis/rpg-message-owner.redis';
+import {redisRpgMessageOwner} from '../../services/redis/rpg-message-owner.redis';
 
 export default <BotEvent>{
   eventName: Events.MessageUpdate,

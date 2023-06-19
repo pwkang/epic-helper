@@ -1,7 +1,6 @@
 import {Client} from 'discord.js';
 import {handlerFileFilter, handlerRoot} from './constant';
 import {importFiles} from '../../utils/filesImport';
-import pino from 'pino';
 import {logger} from '@epic-helper/utils';
 
 export default async function loadBotEvents(client: Client) {
@@ -12,7 +11,6 @@ export default async function loadBotEvents(client: Client) {
     },
   });
   logger({
-    client,
     message: `Loaded (${commands.length}) bot events`,
   });
   commands.forEach((command) => {

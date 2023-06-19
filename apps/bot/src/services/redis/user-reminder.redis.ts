@@ -1,4 +1,4 @@
-import {redisClient} from '@epic-helper/services/src';
+import {redisService} from './redis.service';
 
 const prefix = 'epic-helper:user-reminder:';
 
@@ -15,18 +15,18 @@ const setReminderTime: (userId: string, readyAt: Date) => Promise<void> = async 
     readyAt,
     userId,
   };
-  await redisClient.set(`${prefix}${userId}`, JSON.stringify(data));
+  await redisService.set(`${prefix}${userId}`, JSON.stringify(data));
 };
 
 const getReminderTime: () => Promise<string[]> = async () => {
-  const keys = await redisClient.keys(`${prefix}*`);
+  const keys = await redisService.keys(`${prefix}*`);
   const usersId = await Promise.all(
     keys.map(async (key) => {
-      const data = await redisClient.get(key);
+      const data = await redisService.get(key);
       if (!data) return '';
       const {readyAt, userId} = JSON.parse(data) as IRedisUserReminder;
       if (new Date(readyAt) > new Date()) return '';
-      await redisClient.del(key);
+      await redisService.del(key);
       return userId;
     })
   );
@@ -34,7 +34,7 @@ const getReminderTime: () => Promise<string[]> = async () => {
 };
 
 const deleteReminderTime: (userId: string) => Promise<void> = async (userId) => {
-  await redisClient.del(`${prefix}${userId}`);
+  await redisService.del(`${prefix}${userId}`);
 };
 
 export const redisUserReminder = {

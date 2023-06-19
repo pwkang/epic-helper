@@ -1,7 +1,7 @@
 import embedsList from '../../../../lib/epic-helper/embeds';
 import {djsMessageHelper} from '../../../../lib/discord.js/message';
 import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
-import {userReminderServices} from '@epic-helper/models';
+import {userReminderServices} from '../../../../services/database/user-reminder.service';
 
 export default <PrefixCommand>{
   name: 'ehCooldown',

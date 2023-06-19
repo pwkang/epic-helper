@@ -12,7 +12,6 @@ export default async function loadCronJob(client: Client) {
     },
   });
   logger({
-    client,
     message: `Loaded (${commands.length}) cron jobs`,
   });
   commands.forEach((command) => {

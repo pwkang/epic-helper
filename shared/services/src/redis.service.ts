@@ -10,7 +10,25 @@ export const redisClient = createClient({
 
 redisClient.on('connect', () => {
   logger({
-    message: 'Connected to Redis',
+    message: 'Connecting to Redis',
+  });
+});
+
+redisClient.on('ready', () => {
+  logger({
+    message: 'Redis is ready',
+  });
+});
+
+redisClient.on('reconnecting', () => {
+  logger({
+    message: 'Redis is reconnecting',
+  });
+});
+
+redisClient.on('end', () => {
+  logger({
+    message: 'Redis connection ended',
   });
 });
 

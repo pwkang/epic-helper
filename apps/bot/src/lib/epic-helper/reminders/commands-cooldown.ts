@@ -1,12 +1,11 @@
 import {User} from 'discord.js';
-import {ValuesOf} from '@epic-helper/ts-utils';
 import {
   BOT_REMINDER_BASE_COOLDOWN,
   RPG_COMMAND_TYPE,
   RPG_DONOR_CD_REDUCTION,
   RPG_DONOR_TIER,
 } from '@epic-helper/constants';
-import {userService} from '@epic-helper/models';
+import {userService} from '../../../services/database/user.service';
 
 interface IGetCdReduction {
   commandType: ValuesOf<Omit<typeof RPG_COMMAND_TYPE, 'pet'>>;

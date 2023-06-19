@@ -3,11 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build:shared": "tsc"
-  },
-  "dependencies": {
-    "dayjs": "^1.11.8"
   },
   "devDependencies": {
     "@epic-helper/tsconfig": "workspace:*"

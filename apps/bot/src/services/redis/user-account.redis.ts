@@ -1,5 +1,5 @@
-import {redisClient} from '@epic-helper/services/src';
-import {IUser} from './user.type';
+import {IUser} from '@epic-helper/models';
+import {redisService} from './redis.service';
 
 const userRubyPrefix = 'epic-helper:user-ruby:';
 
@@ -13,11 +13,11 @@ const setRuby = async (userId: string, ruby: number) => {
     userId,
     ruby,
   };
-  await redisClient.set(`${userRubyPrefix}:${userId}`, JSON.stringify(data));
+  await redisService.set(`${userRubyPrefix}:${userId}`, JSON.stringify(data));
 };
 
 const getRuby = async (userId: string, cb: () => Promise<IUser>) => {
-  const data = await redisClient.get(`${userRubyPrefix}:${userId}`);
+  const data = await redisService.get(`${userRubyPrefix}:${userId}`);
   if (!data) {
     const user = await cb();
     await setRuby(userId, user.items.ruby);
