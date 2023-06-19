@@ -7,7 +7,7 @@ import {
 } from '../../../constants/epic-rpg/pet';
 import {convertRomanToNumber} from '../../../utils/roman-conversion';
 import ms from 'ms';
-import {convertPetIdToNum} from '../../../utils/pet-id';
+import {convertPetIdToNum} from '@epic-helper/utils';
 import {IUserPet} from '../../../models/user-pet/user-pet.type';
 
 interface IReadPets {

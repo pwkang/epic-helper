@@ -10,7 +10,7 @@ import {
   rpgPetAdvCancel,
   rpgPetCancelChecker,
 } from '../../../../lib/epic-rpg/commands/pets/pet-cancel';
-import {isPetsIdValid} from '../../../../utils/pet-id';
+import {isPetsIdValid} from '@epic-helper/utils';
 import djsInteractionHelper from '../../../../lib/discord.js/interaction';
 import {djsMessageHelper} from '../../../../lib/discord.js/message';
 import timestampHelper from '../../../../lib/discord.js/timestamp';

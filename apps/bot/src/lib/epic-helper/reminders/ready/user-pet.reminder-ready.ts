@@ -1,10 +1,10 @@
 import {Client} from 'discord.js';
 import {userPetServices} from '../../../../models/user-pet/user-pet.service';
-import {convertNumToPetId} from '../../../../utils/pet-id';
 import {IUser} from '../../../../models/user/user.type';
 import {getReminderChannel} from '../reminder-channel';
 import {RPG_COMMAND_TYPE} from '../../../../constants/epic-rpg/rpg';
 import {djsMessageHelper} from '../../../discord.js/message';
+import {convertNumToPetId} from '@epic-helper/utils';
 
 export const userPetReminderTimesUp = async (client: Client, user: IUser) => {
   const channelId = await getReminderChannel({

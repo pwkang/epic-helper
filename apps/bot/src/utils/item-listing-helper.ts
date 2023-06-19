@@ -6,7 +6,7 @@ import {
   Message,
 } from 'discord.js';
 import {generateNavigationRow} from './pagination-row';
-import {sleep} from './sleep';
+import {sleep} from '@epic-helper/utils';
 import djsInteractionHelper from '../lib/discord.js/interaction';
 import {djsMessageHelper} from '../lib/discord.js/message';
 

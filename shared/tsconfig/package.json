@@ -1,6 +1,5 @@
 {
   "name": "@epic-helper/tsconfig",
-  "version": "0.0.0",
-  "private": true,
-  "license": "ISC"
+  "version": "1.0.0",
+  "private": true
 }

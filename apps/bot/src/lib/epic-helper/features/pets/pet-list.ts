@@ -7,9 +7,9 @@ import {
   RPG_PET_TYPE,
 } from '../../../../constants/epic-rpg/pet';
 import {BOT_EMOJI} from '../../../../constants/epic-helper/bot-emojis';
-import {convertNumToPetId} from '../../../../utils/pet-id';
 import {convertNumberToRoman} from '../../../../utils/roman-conversion';
 import {userPetServices} from '../../../../models/user-pet/user-pet.service';
+import {convertNumToPetId} from '@epic-helper/utils';
 
 export const PET_LIST_PET_PET_PAGE = 21;
 

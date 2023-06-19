@@ -1,6 +1,6 @@
 import {PREFIX_COMMAND_TYPE} from '../../../constants/bot';
 import patreonApi from '../../../lib/patreon/api/patreon';
-import createJsonBin from '../../../utils/json-bin';
+import {createJsonBin} from '@epic-helper/utils';
 import {djsMessageHelper} from '../../../lib/discord.js/message';
 
 export default <PrefixCommand>{

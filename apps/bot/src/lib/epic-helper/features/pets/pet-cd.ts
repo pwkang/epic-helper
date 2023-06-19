@@ -1,7 +1,7 @@
 import {IUserPet} from '../../../../models/user-pet/user-pet.type';
 import {EmbedBuilder, EmbedField, User} from 'discord.js';
 import {BOT_COLOR} from '../../../../constants/epic-helper/general';
-import {convertNumToPetId} from '../../../../utils/pet-id';
+import {convertNumToPetId} from '@epic-helper/utils';
 import {BOT_EMOJI} from '../../../../constants/epic-helper/bot-emojis';
 import {convertNumberToRoman} from '../../../../utils/roman-conversion';
 import {RPG_PET_STATUS, RPG_PET_TYPE} from '../../../../constants/epic-rpg/pet';

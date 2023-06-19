@@ -66,6 +66,9 @@ importers:
 
   apps/bot:
     dependencies:
+      '@epic-helper/utils':
+        specifier: workspace:*
+        version: link:../../shared/utils
       discord-hybrid-sharding:
         specifier: ^2.1.2
         version: 2.1.2
@@ -78,6 +81,8 @@ importers:
         version: link:../../shared/tsconfig
 
   shared/tsconfig: {}
+
+  shared/utils: {}
 
 packages:
 

@@ -1,11 +1,11 @@
 import {IMessageContentChecker} from '../../../../types/utils';
 import {BaseMessageOptions, Message, User} from 'discord.js';
 import {userPetServices} from '../../../../models/user-pet/user-pet.service';
-import {convertNumToPetId, convertPetIdToNum} from '../../../../utils/pet-id';
 import {IUserPet} from '../../../../models/user-pet/user-pet.type';
 import {RPG_PET_STATUS, RPG_PET_TYPE} from '../../../../constants/epic-rpg/pet';
 import ms from 'ms';
 import convertMsToHumanReadableString from '../../../../utils/convert-ms-to-human-readable-string';
+import {convertNumToPetId, convertPetIdToNum} from '@epic-helper/utils';
 
 /*
  *  ===================================================

@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "src",
-    "types": [
-      "./node_modules/@types",
-      "./types"
-    ]
+    "rootDir": "src"
   },
   "extends": "@epic-helper/tsconfig/tsconfig.base.json"
 }

@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "private": true,
   "workspaces": [
-    "apps/*"
+    "apps/*",
+    "shared/*"
   ],
   "scripts": {
     "dev": "nodemon --exec ts-node --files apps/bot/src/bot.ts",
