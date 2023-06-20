@@ -13,7 +13,6 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
   if (!user?.config?.onOff) return;
 
   const readyCommands = await userReminderServices.findUserReadyCommands(userId);
-
   for (let command of readyCommands) {
     if (Date.now() - command.readyAt.getTime() > ms('5s')) return;
 

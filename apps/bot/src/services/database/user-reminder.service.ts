@@ -1,6 +1,7 @@
 import {mongoClient} from '@epic-helper/services';
 import {
   RPG_COMMAND_TYPE,
+  RPG_EPIC_ITEM_TYPES,
   RPG_FARM_SEED,
   RPG_LOOTBOX_TYPE,
   RPG_WORKING_TYPE,
@@ -293,6 +294,36 @@ const saveUserLootboxCooldown = async ({
   );
 };
 
+interface ISaveUserEpicItemCooldown {
+  userId: string;
+  readyAt?: Date;
+  epicItemType?: ValuesOf<typeof RPG_EPIC_ITEM_TYPES>;
+}
+
+const saveUserEpicItemCooldown = async ({
+  userId,
+  readyAt,
+  epicItemType,
+}: ISaveUserEpicItemCooldown): Promise<void> => {
+  await dbUserReminder.findOneAndUpdate(
+    {
+      userId,
+      type: RPG_COMMAND_TYPE.epicItem,
+    },
+    {
+      $set: {
+        readyAt,
+        props: {
+          epicItemType,
+        },
+      },
+    },
+    {
+      upsert: true,
+    }
+  );
+};
+
 interface ISaveUserPetCooldown {
   userId: string;
   readyAt: IUserPet['readyAt'];
@@ -378,6 +409,7 @@ export const userReminderServices = {
   saveUserHuntCooldown,
   saveUserTrainingCooldown,
   saveUserQuestCooldown,
+  saveUserEpicItemCooldown,
   saveUserFarmCooldown,
   saveUserDailyCooldown,
   saveUserWeeklyCooldown,

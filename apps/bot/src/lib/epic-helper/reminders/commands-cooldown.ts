@@ -35,7 +35,7 @@ const canReducedByDonor = {
   horse: true,
   arena: true,
   dungeon: true,
-  use: false,
+  epicItem: false,
 };
 
 export const calcCdReduction = async ({commandType, userId, cooldown}: IGetCdReduction) => {

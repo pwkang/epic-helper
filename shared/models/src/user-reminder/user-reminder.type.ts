@@ -1,4 +1,10 @@
-import {RPG_FARM_SEED, RPG_LOOTBOX_TYPE, RPG_WORKING_TYPE} from '@epic-helper/constants';
+import {
+  RPG_EPIC_ITEM_TYPES,
+  RPG_FARM_SEED,
+  RPG_LOOTBOX_TYPE,
+  RPG_WORKING_TYPE,
+  RPG_COMMAND_TYPE,
+} from '@epic-helper/constants';
 import {ValuesOf} from '../type';
 
 export interface IHuntReminderProps {
@@ -34,6 +40,10 @@ export interface ILootboxReminderProps {
   lootboxType: ValuesOf<typeof RPG_LOOTBOX_TYPE>;
 }
 
+export interface IEpicItemReminderProps {
+  epicItemType: ValuesOf<typeof RPG_EPIC_ITEM_TYPES>;
+}
+
 type BaseUserReminder = {
   userId: string;
   readyAt: Date;
@@ -41,35 +51,48 @@ type BaseUserReminder = {
 
 type Conditional =
   | {
-      type: 'hunt';
+      type: typeof RPG_COMMAND_TYPE.hunt;
       props: IHuntReminderProps;
     }
   | {
-      type: 'adventure';
+      type: typeof RPG_COMMAND_TYPE.adventure;
       props: IAdventureReminderProps;
     }
   | {
-      type: 'training';
+      type: typeof RPG_COMMAND_TYPE.training;
       props: ITrainingReminderProps;
     }
   | {
-      type: 'quest';
+      type: typeof RPG_COMMAND_TYPE.quest;
       props: IQuestReminderProps;
     }
   | {
-      type: 'working';
+      type: typeof RPG_COMMAND_TYPE.working;
       props: IWorkingReminderProps;
     }
   | {
-      type: 'farm';
+      type: typeof RPG_COMMAND_TYPE.farm;
       props: IFarmReminderProps;
     }
   | {
-      type: 'lootbox';
+      type: typeof RPG_COMMAND_TYPE.pet;
       props: ILootboxReminderProps;
     }
   | {
-      type: 'daily' | 'weekly' | 'vote' | 'duel' | 'horse' | 'arena' | 'dungeon' | 'pet';
+      type: typeof RPG_COMMAND_TYPE.epicItem;
+      props: IEpicItemReminderProps;
+    }
+  | {
+      type:
+        | typeof RPG_COMMAND_TYPE.daily
+        | typeof RPG_COMMAND_TYPE.weekly
+        | typeof RPG_COMMAND_TYPE.vote
+        | typeof RPG_COMMAND_TYPE.duel
+        | typeof RPG_COMMAND_TYPE.horse
+        | typeof RPG_COMMAND_TYPE.arena
+        | typeof RPG_COMMAND_TYPE.dungeon
+        | typeof RPG_COMMAND_TYPE.pet;
+
       props?: never;
     };
 

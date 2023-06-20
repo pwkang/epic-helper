@@ -98,7 +98,7 @@ const cmd: ICooldown[] = [
         name: 'Pet',
       },
       {
-        type: RPG_COMMAND_TYPE.use,
+        type: RPG_COMMAND_TYPE.epicItem,
         name: 'Epic Items',
       },
     ],

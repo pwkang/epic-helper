@@ -53,3 +53,9 @@ export const RPG_ITEMS = {
   sleepetPotion: 'sleepet potion',
   partyPopper: 'party popper',
 } as const;
+
+export const RPG_EPIC_ITEM_TYPES = {
+  coinTrumpet: 'coin trumpet',
+  epicSeed: 'epic seed',
+  ultraBait: 'ultra bait',
+} as const;

@@ -34,7 +34,7 @@ export const RPG_CLICKABLE_SLASH_COMMANDS = {
   arena: '</arena:960740633302138920>',
   miniboss: '</miniboss:960740632400388146>',
   dungeon: '</dungeon:966956823032791090>',
-  use: '</use:959916181073068143>',
+  epicItem: '</use:959916181073068143>',
   petSummary: '</pets summary:961046238613090385>',
   petClaim: '</pets claim:961046238613090385>',
   petAdventure: '</pets adventure:961046238613090385>',
