@@ -8,9 +8,7 @@
     "build:shared": "tsc"
   },
   "dependencies": {
-    "@epic-helper/utils": "workspace:*",
-    "discord.js": "^14.11.0",
-    "redis": "^4.6.7"
+    "@epic-helper/utils": "workspace:*"
   },
   "devDependencies": {
     "@epic-helper/tsconfig": "workspace:*"

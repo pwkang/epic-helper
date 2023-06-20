@@ -119,12 +119,6 @@ importers:
       '@epic-helper/utils':
         specifier: workspace:*
         version: link:../utils
-      discord.js:
-        specifier: ^14.11.0
-        version: 14.11.0
-      redis:
-        specifier: ^4.6.7
-        version: 4.6.7
     devDependencies:
       '@epic-helper/tsconfig':
         specifier: workspace:*
