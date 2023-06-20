@@ -10,9 +10,9 @@ import {
   rpgPetCancelChecker,
 } from '../../../../lib/epic-rpg/commands/pets/pet-cancel';
 import {isPetsIdValid} from '@epic-helper/utils';
-import djsInteractionHelper from '../../../../lib/discord.js/interaction';
-import {djsMessageHelper} from '../../../../lib/discord.js/message';
-import timestampHelper from '../../../../lib/discord.js/timestamp';
+import djsInteractionHelper from '../../../../lib/discordjs/interaction';
+import {djsMessageHelper} from '../../../../lib/discordjs/message';
+import timestampHelper from '../../../../lib/discordjs/timestamp';
 import {SLASH_MESSAGE_BOT_TYPE} from '@epic-helper/constants';
 
 export default <SlashMessage>{

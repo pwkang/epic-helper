@@ -9,7 +9,7 @@ import {
 import {logger} from '@epic-helper/utils';
 import {djsRestClient} from '@epic-helper/services';
 
-interface ICreateGuildSlashCommand {
+export interface ICreateGuildSlashCommand {
   client: Client;
   commands: ReturnType<SlashCommandBuilder['toJSON']>;
   guild: Guild;

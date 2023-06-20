@@ -6,7 +6,7 @@ import {
 } from 'discord.js';
 import {logger} from '@epic-helper/utils';
 
-interface IUpdateInteraction {
+export interface IUpdateInteraction {
   client: Client;
   interaction: MessageComponentInteraction;
   options: InteractionUpdateOptions;

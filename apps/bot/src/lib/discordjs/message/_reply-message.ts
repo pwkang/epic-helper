@@ -10,7 +10,7 @@ import {logger} from '@epic-helper/utils';
 
 const requiredPermissions = [PermissionsBitField.Flags.SendMessages];
 
-interface ReplyMessageProps {
+export interface ReplyMessageProps {
   client: Client;
   message: Message;
   options: string | MessagePayload | MessageCreateOptions;

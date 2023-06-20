@@ -1,6 +1,6 @@
 import {SlashCommandBuilder} from 'discord.js';
 import {getStatsEmbeds, statsActionRow, TEventTypes} from '../../lib/epic-helper/features/stats';
-import djsInteractionHelper from '../../lib/discord.js/interaction';
+import djsInteractionHelper from '../../lib/discordjs/interaction';
 
 export default <SlashCommand>{
   name: 'user-stats',

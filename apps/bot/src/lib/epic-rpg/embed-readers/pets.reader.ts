@@ -10,7 +10,7 @@ import {
 } from '@epic-helper/constants';
 import {IUserPet} from '@epic-helper/models';
 
-interface IReadPets {
+export interface IReadPets {
   embed: Embed;
   author: User;
 }

@@ -5,9 +5,12 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc"
+    "build:shared": "tsc"
   },
   "dependencies": {
     "@epic-helper/constants": "workspace:*"
+  },
+  "devDependencies": {
+    "@epic-helper/tsconfig": "workspace:*"
   }
 }

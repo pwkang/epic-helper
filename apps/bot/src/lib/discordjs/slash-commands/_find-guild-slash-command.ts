@@ -2,7 +2,7 @@ import {ApplicationCommand, Client, DiscordAPIError, Guild, Routes} from 'discor
 import {djsRestClient} from '@epic-helper/services';
 import {logger} from '@epic-helper/utils';
 
-interface IGetGuildSlashCommands {
+export interface IGetGuildSlashCommands {
   client: Client;
   guild: Guild;
   commandId: string;

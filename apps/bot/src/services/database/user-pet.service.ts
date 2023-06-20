@@ -1,9 +1,9 @@
-import {FilterQuery, Model, QueryOptions} from 'mongoose';
+import {type FilterQuery, Model, type QueryOptions} from 'mongoose';
 import {mongoClient} from '@epic-helper/services';
 import {RPG_PET_STATUS} from '@epic-helper/constants';
-import {IUserPet} from '@epic-helper/models';
-import userPetSchema from '@epic-helper/models/dist/user-pet/user-pet.schema';
+import {type IUserPet, userPetSchema} from '@epic-helper/models';
 import {userReminderServices} from './user-reminder.service';
+import 'mongodb';
 
 userPetSchema.post('findOneAndUpdate', async function () {
   const updatedUserId = this.getQuery().userId;
@@ -257,7 +257,11 @@ const resetUserPetsAdvStatus = async (userId: string) => {
   );
 };
 
-const clearUserPets = async (userId: string) => {
+interface IClearUserPets {
+  userId: string;
+}
+
+const clearUserPets = async ({userId}: IClearUserPets) => {
   return dbUserPet.deleteMany({
     userId,
   });

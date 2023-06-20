@@ -6,7 +6,7 @@ import {
 import {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
-import {djsMessageHelper} from '../../../discord.js/message';
+import {djsMessageHelper} from '../../../discordjs/message';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {userService} from '../../../../services/database/user.service';

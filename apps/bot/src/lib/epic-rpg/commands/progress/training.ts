@@ -1,7 +1,7 @@
 import {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import getTrainingAnswer from '../../../epic-helper/features/training-helper';
-import {djsMessageHelper} from '../../../discord.js/message';
+import {djsMessageHelper} from '../../../discordjs/message';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {BOT_REMINDER_BASE_COOLDOWN, RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';

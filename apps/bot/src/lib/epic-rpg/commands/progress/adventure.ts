@@ -1,9 +1,6 @@
 import {Client, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {
-  saveUserAdventureCooldown,
-  userReminderServices,
-} from '../../../../services/database/user-reminder.service';
+import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {
   ADVENTURE_MONSTER_LIST,
   BOT_REMINDER_BASE_COOLDOWN,
@@ -15,7 +12,7 @@ import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-cha
 import {userStatsService} from '../../../../services/database/user-stats.service';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {userService} from '../../../../services/database/user.service';
-import {djsMessageHelper} from '../../../discord.js/message';
+import {djsMessageHelper} from '../../../discordjs/message';
 
 interface IRpgAdventure {
   client: Client;
@@ -75,7 +72,7 @@ const rpgAdventureSuccess = async ({author, content, channelId}: IRpgAdventureSu
     commandType: RPG_COMMAND_TYPE.adventure,
     cooldown: ADVENTURE_COOLDOWN,
   });
-  await saveUserAdventureCooldown({
+  await userReminderServices.saveUserAdventureCooldown({
     userId: author.id,
     hardMode,
     readyAt: new Date(Date.now() + cooldown),

@@ -1,5 +1,5 @@
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle} from 'discord.js';
-import {djsMessageHelper} from '../../../../lib/discord.js/message';
+import {djsMessageHelper} from '../../../../lib/discordjs/message';
 import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
 import {userService} from '../../../../services/database/user.service';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
@@ -32,7 +32,9 @@ export default <PrefixCommand>{
     event.on('confirm', async () => {
       await userService.userAccountDelete(message.author.id);
       await userReminderServices.clearUserCooldowns(message.author.id);
-      await userPetServices.clearUserPets(message.author.id);
+      await userPetServices.clearUserPets({
+        userId: message.author.id,
+      });
       event.stop();
       return {
         content: `Successfully deleted your account!`,

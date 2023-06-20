@@ -1,4 +1,4 @@
-interface IDynamicTimeStamp {
+export interface IDynamicTimeStamp {
   time: number | Date;
 }
 

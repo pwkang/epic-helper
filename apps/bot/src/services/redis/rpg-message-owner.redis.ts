@@ -2,7 +2,7 @@ import {Client} from 'discord.js';
 import ms from 'ms';
 import {redisService} from './redis.service';
 
-const prefix = 'epichelper:rpg-message-owner:';
+const prefix = 'epic-helper:rpg-message-owner:';
 
 interface IRedisSetRpgMessageOwner {
   client: Client;

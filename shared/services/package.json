@@ -5,10 +5,12 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc"
+    "build:shared": "tsc"
   },
   "dependencies": {
-    "@epic-helper/utils": "workspace:*"
+    "@epic-helper/utils": "workspace:*",
+    "discord.js": "^14.11.0",
+    "redis": "^4.6.7"
   },
   "devDependencies": {
     "@epic-helper/tsconfig": "workspace:*"

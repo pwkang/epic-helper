@@ -3,14 +3,14 @@ import {djsMessageHelper} from '../message';
 
 const requiredPermissions = [PermissionsBitField.Flags.ManageRoles];
 
-interface IUnMuteUser {
+export interface IUnMuteUser {
   userId: string;
   channelId: string;
   client: Client;
   removeUser?: boolean;
 }
 
-export const _unMuteUser = async ({userId, client, channelId, removeUser}: IUnMuteUser) => {
+const _unMuteUser = async ({userId, client, channelId, removeUser}: IUnMuteUser) => {
   const channel = client.channels.cache.get(channelId);
   if (!channel) return;
   if (!(channel instanceof TextChannel)) return;
@@ -33,3 +33,5 @@ export const _unMuteUser = async ({userId, client, channelId, removeUser}: IUnMu
       SendMessages: null,
     });
 };
+
+export default _unMuteUser;

@@ -1,7 +1,7 @@
 import {Embed} from 'discord.js';
 import {RPG_ITEMS} from '@epic-helper/constants';
 
-interface IScanInventory {
+export interface IScanInventory {
   embed: Embed;
 }
 

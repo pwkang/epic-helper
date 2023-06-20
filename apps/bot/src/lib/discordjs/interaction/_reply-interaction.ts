@@ -10,7 +10,7 @@ import {
 import ms from 'ms';
 import {logger} from '@epic-helper/utils';
 
-interface IReplyInteraction {
+export interface IReplyInteraction {
   client: Client;
   interaction: BaseInteraction;
   interactive?: boolean;

@@ -2,7 +2,7 @@ import {ApplicationCommand, Client, DiscordAPIError, Routes, SlashCommandBuilder
 import {logger} from '@epic-helper/utils';
 import {djsRestClient} from '@epic-helper/services';
 
-interface ICreateGlobalSlashCommand {
+export interface ICreateGlobalSlashCommand {
   client: Client;
   commands: ReturnType<SlashCommandBuilder['toJSON']>;
 }

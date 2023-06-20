@@ -32,7 +32,7 @@ redisClient.on('end', () => {
   });
 });
 
-redisClient.on('error', (err) => {
+redisClient.on('error', (err: any) => {
   logger({
     message: err.message,
     logLevel: 'error',

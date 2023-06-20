@@ -2,7 +2,7 @@ import {Schema} from 'mongoose';
 import {IUser} from './user.type';
 import {BOT_TIME_FORMAT, BOT_TIMEZONE_LIST, RPG_DONOR_TIER} from '@epic-helper/constants';
 
-const userSchema = new Schema<IUser>({
+export const userSchema = new Schema<IUser>({
   userId: {
     type: String,
     required: true,
@@ -150,5 +150,3 @@ const userSchema = new Schema<IUser>({
     ruby: {type: Number, default: 0},
   },
 });
-
-export default userSchema;

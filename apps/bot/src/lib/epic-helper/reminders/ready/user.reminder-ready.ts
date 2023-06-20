@@ -3,7 +3,7 @@ import {getCommandStr} from '../reminders-command-name';
 import ms from 'ms';
 import {userPetReminderTimesUp} from './user-pet.reminder-ready';
 import {getReminderChannel} from '../reminder-channel';
-import {djsMessageHelper} from '../../../discord.js/message';
+import {djsMessageHelper} from '../../../discordjs/message';
 import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import {userService} from '../../../../services/database/user.service';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';

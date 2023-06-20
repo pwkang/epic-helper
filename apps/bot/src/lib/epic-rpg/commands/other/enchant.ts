@@ -1,9 +1,9 @@
 import {Client, Embed, Message, User} from 'discord.js';
 import ms from 'ms';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import djsChannelHelper from '../../../discord.js/channel';
-import {djsMessageHelper} from '../../../discord.js/message';
-import timestampHelper from '../../../discord.js/timestamp';
+import djsChannelHelper from '../../../discordjs/channel';
+import {djsMessageHelper} from '../../../discordjs/message';
+import timestampHelper from '../../../discordjs/timestamp';
 import {EPIC_RPG_ID, RPG_ENCHANT_LEVEL, RPG_ENCHANT_LEVEL_RANK} from '@epic-helper/constants';
 import {userService} from '../../../../services/database/user.service';
 

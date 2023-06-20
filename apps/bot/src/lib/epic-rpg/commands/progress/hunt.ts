@@ -1,6 +1,6 @@
 import {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {djsMessageHelper} from '../../../discord.js/message';
+import {djsMessageHelper} from '../../../discordjs/message';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {
   BOT_REMINDER_BASE_COOLDOWN,
@@ -10,10 +10,7 @@ import {
 } from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
-import {
-  saveUserHuntCooldown,
-  userReminderServices,
-} from '../../../../services/database/user-reminder.service';
+import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {userStatsService} from '../../../../services/database/user-stats.service';
 import {userService} from '../../../../services/database/user.service';
 
@@ -98,7 +95,7 @@ const rpgHuntSuccess = async ({author, content, channelId}: IRpgHuntSuccess) => 
     commandType: RPG_COMMAND_TYPE.hunt,
     cooldown: HUNT_COOLDOWN,
   });
-  await saveUserHuntCooldown({
+  await userReminderServices.saveUserHuntCooldown({
     userId: author.id,
     hardMode,
     together,

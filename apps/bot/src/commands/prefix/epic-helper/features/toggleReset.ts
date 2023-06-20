@@ -1,5 +1,5 @@
 import commandHelper from '../../../../lib/epic-helper/command-helper';
-import {djsMessageHelper} from '../../../../lib/discord.js/message';
+import {djsMessageHelper} from '../../../../lib/discordjs/message';
 import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
 import {userService} from '../../../../services/database/user.service';
 

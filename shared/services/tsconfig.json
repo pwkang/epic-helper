@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": "dist",
     "rootDir": "src",
-    "declaration": true
+    "declaration": true,
   },
   "extends": "@epic-helper/tsconfig/tsconfig.base.json"
 }

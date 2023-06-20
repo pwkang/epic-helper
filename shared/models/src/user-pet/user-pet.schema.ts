@@ -2,7 +2,7 @@ import {Schema} from 'mongoose';
 import {IUserPet} from './user-pet.type';
 import {RPG_PET_STATUS, RPG_PET_TYPE} from '@epic-helper/constants';
 
-const userPetSchema = new Schema<IUserPet>({
+export const userPetSchema = new Schema<IUserPet>({
   userId: {
     type: String,
     required: true,

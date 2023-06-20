@@ -1,4 +1,4 @@
-import timestampHelper from '../../discord.js/timestamp';
+import timestampHelper from '../../discordjs/timestamp';
 import {BOT_COLOR, BOT_EMOJI, RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import {
   IAdventureReminderProps,
@@ -103,7 +103,7 @@ const cmd: ICooldown[] = [
   },
 ];
 
-interface IGetUserCooldownEmbedProps {
+export interface IGetUserCooldownEmbedProps {
   author: User;
   userReminder: IUserReminder[];
 }

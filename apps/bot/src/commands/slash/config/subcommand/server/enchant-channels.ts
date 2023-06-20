@@ -1,5 +1,5 @@
 import {IServerConfig} from '../config.type';
-import djsInteractionHelper from '../../../../../lib/discord.js/interaction';
+import djsInteractionHelper from '../../../../../lib/discordjs/interaction';
 import embedsList from '../../../../../lib/epic-helper/embeds';
 import {IEnchantChannel} from '@epic-helper/models';
 import {serverService} from '../../../../../services/database/server.service';

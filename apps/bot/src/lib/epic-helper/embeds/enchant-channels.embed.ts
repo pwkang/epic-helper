@@ -3,7 +3,7 @@ import {IServer} from '@epic-helper/models';
 import {BOT_COLOR} from '@epic-helper/constants';
 import convertMsToHumanReadableString from '../../../utils/convert-ms-to-human-readable-string';
 
-interface IGetEnchantChannelsEmbed {
+export interface IGetEnchantChannelsEmbed {
   guild: Guild;
   enchantSettings: IServer['settings']['enchant'];
 }

@@ -5,8 +5,7 @@ import {
   RPG_LOOTBOX_TYPE,
   RPG_WORKING_TYPE,
 } from '@epic-helper/constants';
-import {IUserPet, IUserReminder} from '@epic-helper/models';
-import userReminderSchema from '@epic-helper/models/dist/user-reminder/user-reminder.schema';
+import {IUserPet, IUserReminder, userReminderSchema} from '@epic-helper/models';
 import {redisUserReminder} from '../redis/user-reminder.redis';
 import {Model} from 'mongoose';
 
@@ -41,7 +40,7 @@ interface ISaveUserHuntCooldown {
   together?: boolean;
 }
 
-export const saveUserHuntCooldown = async ({
+const saveUserHuntCooldown = async ({
   userId,
   together,
   readyAt,
@@ -73,7 +72,7 @@ interface ISaveUserAdventureCooldown {
   hardMode?: boolean;
 }
 
-export const saveUserAdventureCooldown = async ({
+const saveUserAdventureCooldown = async ({
   userId,
   hardMode,
   readyAt,
@@ -103,7 +102,7 @@ interface ISaveUserTrainingCooldown {
   ultraining?: boolean;
 }
 
-export const saveUserTrainingCooldown = async ({
+const saveUserTrainingCooldown = async ({
   userId,
   readyAt,
   ultraining,
@@ -133,7 +132,7 @@ interface ISaveUserQuestCooldown {
   epicQuest?: boolean;
 }
 
-export const saveUserQuestCooldown = async ({
+const saveUserQuestCooldown = async ({
   userId,
   readyAt,
   epicQuest,
@@ -169,7 +168,7 @@ interface ISaveUserFarmCooldown {
   seedType?: ValuesOf<typeof RPG_FARM_SEED>;
 }
 
-export const saveUserFarmCooldown = async ({
+const saveUserFarmCooldown = async ({
   userId,
   readyAt,
   seedType,
@@ -198,10 +197,7 @@ interface ISaveUserDailyCooldown {
   readyAt?: Date;
 }
 
-export const saveUserDailyCooldown = async ({
-  userId,
-  readyAt,
-}: ISaveUserDailyCooldown): Promise<void> => {
+const saveUserDailyCooldown = async ({userId, readyAt}: ISaveUserDailyCooldown): Promise<void> => {
   await dbUserReminder.findOneAndUpdate(
     {
       userId,
@@ -223,7 +219,7 @@ interface ISaveUserWeeklyCooldown {
   readyAt?: Date;
 }
 
-export const saveUserWeeklyCooldown = async ({
+const saveUserWeeklyCooldown = async ({
   userId,
   readyAt,
 }: ISaveUserWeeklyCooldown): Promise<void> => {
@@ -243,7 +239,7 @@ export const saveUserWeeklyCooldown = async ({
   );
 };
 
-export const saveUserWorkingCooldown = async ({
+const saveUserWorkingCooldown = async ({
   userId,
   readyAt,
   workingType,
@@ -273,7 +269,7 @@ interface ISaveUserLootboxCooldown {
   lootboxType?: ValuesOf<typeof RPG_LOOTBOX_TYPE>;
 }
 
-export const saveUserLootboxCooldown = async ({
+const saveUserLootboxCooldown = async ({
   userId,
   readyAt,
   lootboxType,
@@ -302,10 +298,7 @@ interface ISaveUserPetCooldown {
   readyAt: IUserPet['readyAt'];
 }
 
-export const saveUserPetCooldown = async ({
-  userId,
-  readyAt,
-}: ISaveUserPetCooldown): Promise<void> => {
+const saveUserPetCooldown = async ({userId, readyAt}: ISaveUserPetCooldown): Promise<void> => {
   await dbUserReminder.findOneAndUpdate(
     {
       userId,
@@ -328,7 +321,7 @@ interface IUpdateUserCooldown {
   readyAt?: Date;
 }
 
-export const updateUserCooldown = async ({userId, readyAt, type}: IUpdateUserCooldown) => {
+const updateUserCooldown = async ({userId, readyAt, type}: IUpdateUserCooldown) => {
   await dbUserReminder.findOneAndUpdate(
     {
       userId,
@@ -350,14 +343,14 @@ interface IDeleteUserCooldown {
   types: ValuesOf<typeof RPG_COMMAND_TYPE>[];
 }
 
-export const deleteUserCooldowns = async ({userId, types}: IDeleteUserCooldown) => {
+const deleteUserCooldowns = async ({userId, types}: IDeleteUserCooldown) => {
   await dbUserReminder.deleteMany({
     userId,
     type: {$in: types},
   });
 };
 
-export const findUserReadyCommands = async (userId: string): Promise<IUserReminder[]> => {
+const findUserReadyCommands = async (userId: string): Promise<IUserReminder[]> => {
   const reminderList = await dbUserReminder.find({
     userId,
     readyAt: {$lte: new Date()},
@@ -366,7 +359,7 @@ export const findUserReadyCommands = async (userId: string): Promise<IUserRemind
   return reminderList ? reminderList.map((reminder) => reminder.toObject()) : [];
 };
 
-export const getUserAllCooldowns = async (userId: string): Promise<IUserReminder[]> => {
+const getUserAllCooldowns = async (userId: string): Promise<IUserReminder[]> => {
   const reminderList = await dbUserReminder.find({
     userId,
   });
@@ -374,13 +367,15 @@ export const getUserAllCooldowns = async (userId: string): Promise<IUserReminder
   return reminderList ? reminderList.map((reminder) => reminder.toObject()) : [];
 };
 
-export const clearUserCooldowns = async (userId: string): Promise<void> => {
+const clearUserCooldowns = async (userId: string): Promise<void> => {
   await dbUserReminder.deleteMany({
     userId,
   });
 };
 
 export const userReminderServices = {
+  saveUserAdventureCooldown,
+  saveUserHuntCooldown,
   saveUserTrainingCooldown,
   saveUserQuestCooldown,
   saveUserFarmCooldown,

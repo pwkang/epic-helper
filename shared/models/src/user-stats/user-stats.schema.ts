@@ -1,7 +1,7 @@
 import {Schema} from 'mongoose';
 import {IUserStats} from './user-stats.type';
 
-const userStatsSchema = new Schema<IUserStats>({
+export const userStatsSchema = new Schema<IUserStats>({
   userId: {type: String, required: true, index: true},
   statsAt: {type: Date, required: true},
   rpg: {
@@ -17,5 +17,3 @@ const userStatsSchema = new Schema<IUserStats>({
     farm: {type: Number, donor: 0},
   },
 });
-
-export default userStatsSchema;

@@ -2,7 +2,7 @@ import {ApplicationCommand, Client, DiscordAPIError, Routes} from 'discord.js';
 import {djsRestClient} from '@epic-helper/services';
 import {logger} from '@epic-helper/utils';
 
-interface IGetGlobalSlashCommands {
+export interface IGetGlobalSlashCommands {
   client: Client;
 }
 

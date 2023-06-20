@@ -1,7 +1,7 @@
 import {listSlashCommands} from '../../../../utils/slash-commands-listing';
 import {EmbedBuilder} from 'discord.js';
-import {djsMessageHelper} from '../../../../lib/discord.js/message';
-import djsRestHelper from '../../../../lib/discord.js/slash-commands';
+import {djsMessageHelper} from '../../../../lib/discordjs/message';
+import djsRestHelper from '../../../../lib/discordjs/slash-commands';
 import {BOT_COLOR, PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
 
 export default <PrefixCommand>{

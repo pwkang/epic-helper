@@ -1,5 +1,5 @@
-import {_muteUser} from './_mute-user.lib';
-import {_unMuteUser} from './_unmute-ser.lib';
+import _muteUser from './_mute-user';
+import _unMuteUser from './_unmute-ser';
 
 const djsChannelHelper = {
   muteUser: _muteUser,

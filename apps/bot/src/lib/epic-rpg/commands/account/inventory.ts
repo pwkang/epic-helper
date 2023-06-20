@@ -3,7 +3,7 @@ import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import materialCalculator from '../../../epic-helper/features/calculator/material-calculator';
 import sttScoreCalculator from '../../../epic-helper/features/calculator/stt-score-calculator';
 import embedReaders from '../../embed-readers';
-import {djsMessageHelper} from '../../../discord.js/message';
+import {djsMessageHelper} from '../../../discordjs/message';
 import {userService} from '../../../../services/database/user.service';
 
 interface IRpg {

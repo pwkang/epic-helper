@@ -1,7 +1,7 @@
 import {EmbedBuilder, EmbedField, User} from 'discord.js';
 import {convertNumToPetId} from '@epic-helper/utils';
 import {convertNumberToRoman} from '../../../../utils/roman-conversion';
-import timestampHelper from '../../../discord.js/timestamp';
+import timestampHelper from '../../../discordjs/timestamp';
 import {IUserPet} from '@epic-helper/models';
 import {BOT_COLOR, BOT_EMOJI, RPG_PET_STATUS, RPG_PET_TYPE} from '@epic-helper/constants';
 import {userPetServices} from '../../../../services/database/user-pet.service';

@@ -2,7 +2,7 @@ import {IUser} from '@epic-helper/models';
 import {EmbedBuilder, User} from 'discord.js';
 import {BOT_COLOR, RPG_COMMAND_TYPE} from '@epic-helper/constants';
 
-interface IGetUserReminderChannelEmbed {
+export interface IGetUserReminderChannelEmbed {
   userProfile: IUser;
   author: User;
 }

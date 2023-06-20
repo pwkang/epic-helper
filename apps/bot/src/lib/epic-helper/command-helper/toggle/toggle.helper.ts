@@ -5,7 +5,7 @@ import {User} from 'discord.js';
 import {toggleDisplayList} from './toggle.list';
 import {IUser, IUserToggle} from '@epic-helper/models';
 
-interface IGetUpdateQuery {
+export interface IGetUpdateQuery {
   userToggle: IUserToggle;
   on?: string;
   off?: string;
@@ -68,7 +68,7 @@ const findPath = (key: string, toggleInfo: IToggleEmbedsInfo[]): string | null =
   }
 };
 
-interface IGetUserToggleEmbed {
+export interface IGetUserToggleEmbed {
   userToggle: IUserToggle;
   isDonor: boolean;
   author: User;

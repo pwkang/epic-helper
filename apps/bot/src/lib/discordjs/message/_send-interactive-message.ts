@@ -9,7 +9,7 @@ import {
 import ms from 'ms';
 import {djsMessageHelper} from './index';
 
-interface SendInteractiveMessageProps {
+export interface SendInteractiveMessageProps {
   client: Client;
   channelId: string;
   options: string | MessagePayload | MessageCreateOptions;

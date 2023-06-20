@@ -11,7 +11,7 @@ import {logger} from '@epic-helper/utils';
 
 const requiredPermissions = [PermissionsBitField.Flags.SendMessages];
 
-interface SendMessageProps {
+export interface SendMessageProps {
   client: Client;
   channelId: string;
   options: string | MessagePayload | MessageCreateOptions;

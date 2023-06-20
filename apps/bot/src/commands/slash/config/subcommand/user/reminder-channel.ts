@@ -1,5 +1,5 @@
 import {IUserConfig} from '../config.type';
-import djsInteractionHelper from '../../../../../lib/discord.js/interaction';
+import djsInteractionHelper from '../../../../../lib/discordjs/interaction';
 import {RPG_COMMAND_TYPE, RPG_WORKING_TYPE} from '@epic-helper/constants';
 import {userService} from '../../../../../services/database/user.service';
 

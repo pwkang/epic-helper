@@ -2,7 +2,7 @@ import {Schema} from 'mongoose';
 import {IEventCdReduction} from './cd-reduction.type';
 import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 
-const eventCdReductionSchema = new Schema<IEventCdReduction>({
+export const eventCdReductionSchema = new Schema<IEventCdReduction>({
   commandType: {
     type: String,
     enum: Object.values(RPG_COMMAND_TYPE),
@@ -19,5 +19,3 @@ const eventCdReductionSchema = new Schema<IEventCdReduction>({
     max: 100,
   },
 });
-
-export default eventCdReductionSchema;

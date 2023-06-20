@@ -2,7 +2,7 @@ import {
   rpgPetAdventure,
   rpgPetAdventureChecker,
 } from '../../lib/epic-rpg/commands/pets/pet-adventure';
-import {djsMessageHelper} from '../../lib/discord.js/message';
+import {djsMessageHelper} from '../../lib/discordjs/message';
 import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
 
 export default <PrefixCommand>{

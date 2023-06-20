@@ -7,8 +7,8 @@ import {
 } from 'discord.js';
 import {generateNavigationRow} from './pagination-row';
 import {sleep} from '@epic-helper/utils';
-import djsInteractionHelper from '../lib/discord.js/interaction';
-import {djsMessageHelper} from '../lib/discord.js/message';
+import djsInteractionHelper from '../lib/discordjs/interaction';
+import {djsMessageHelper} from '../lib/discordjs/message';
 
 type TActionType =
   | {message: Message; interaction?: never}

@@ -2,8 +2,7 @@ import type {UpdateQuery} from 'mongoose';
 import {mongoClient} from '@epic-helper/services';
 import {RPG_DONOR_TIER, RPG_ENCHANT_LEVEL} from '@epic-helper/constants';
 import userAccountRedis from '../redis/user-account.redis';
-import {IUser, IUserToggle} from '@epic-helper/models';
-import userSchema from '@epic-helper/models/dist/user/user.schema';
+import {IUser, IUserToggle, userSchema} from '@epic-helper/models';
 
 const dbUser = mongoClient.model<IUser>('user', userSchema);
 

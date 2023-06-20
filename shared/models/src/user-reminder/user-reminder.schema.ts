@@ -2,7 +2,7 @@ import {Model, Schema} from 'mongoose';
 import {IUserReminder} from './user-reminder.type';
 import {RPG_FARM_SEED, RPG_WORKING_TYPE} from '@epic-helper/constants';
 
-const userReminderSchema = new Schema<IUserReminder>(
+export const userReminderSchema = new Schema<IUserReminder>(
   {
     userId: {
       type: String,
@@ -37,5 +37,3 @@ const userReminderSchema = new Schema<IUserReminder>(
     },
   }
 );
-
-export default userReminderSchema;

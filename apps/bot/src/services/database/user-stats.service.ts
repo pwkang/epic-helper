@@ -1,8 +1,7 @@
 import {FilterQuery, QueryOptions} from 'mongoose';
 import {mongoClient} from '@epic-helper/services';
 import {getStartOfLastWeek, getStartOfToday} from '@epic-helper/utils';
-import {IUserStats, USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
-import userStatsSchema from '@epic-helper/models/dist/user-stats/user-stats.schema';
+import {IUserStats, USER_STATS_RPG_COMMAND_TYPE, userStatsSchema} from '@epic-helper/models';
 
 const dbUserStats = mongoClient.model<IUserStats>('user-stats', userStatsSchema);
 
