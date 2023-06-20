@@ -1,6 +1,7 @@
 import {
   RPG_CLICKABLE_SLASH_COMMANDS,
   RPG_COMMAND_TYPE,
+  RPG_EPIC_ITEM_TYPES,
   RPG_FARM_SEED,
   RPG_LOOTBOX_TYPE,
   RPG_WORKING_TYPE,
@@ -155,6 +156,17 @@ const GetVoteCommandStr = ({slash}: IGetVoteCommandStr) => {
   return slash ? RPG_CLICKABLE_SLASH_COMMANDS.vote : `RPG VOTE`;
 };
 
+interface IGetEpicItemCommandStr {
+  slash?: boolean;
+  epicItemType?: ValuesOf<typeof RPG_EPIC_ITEM_TYPES>;
+}
+
+const getEpicItemCommandStr = ({slash, epicItemType}: IGetEpicItemCommandStr) => {
+  return slash
+    ? RPG_CLICKABLE_SLASH_COMMANDS.epicItem
+    : `RPG USE ${epicItemType ? epicItemType.toUpperCase() : 'EPIC ITEM'}`;
+};
+
 interface IGetCommandStr {
   type: ValuesOf<typeof RPG_COMMAND_TYPE>;
   props?: IUserReminder['props'];
@@ -191,6 +203,8 @@ export const getCommandStr = ({slash, type, props}: IGetCommandStr) => {
       return GetArenaCommandStr({slash});
     case RPG_COMMAND_TYPE.dungeon:
       return GetDungeonCommandStr({slash});
+    case RPG_COMMAND_TYPE.epicItem:
+      return getEpicItemCommandStr({...props, slash});
     default:
       return '';
   }

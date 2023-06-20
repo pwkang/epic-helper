@@ -67,7 +67,7 @@ const keyWords: IKeyword = {
   lootbox: ['lootbox', 'buy'],
   pet: ['pet', 'pets'],
   quest: ['quest', 'epic quest'],
-  use: ['use', 'epic items', 'epic item'],
+  epicItem: ['use', 'epic items', 'epic item'],
   training: ['training', 'tr'],
   vote: ['vote'],
   weekly: ['weekly'],
