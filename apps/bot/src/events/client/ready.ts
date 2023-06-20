@@ -1,0 +1,15 @@
+import {Events} from 'discord.js';
+import loadServerOnReady from '../../handler/on-ready/server-startup.handler';
+import {logger} from '@epic-helper/utils';
+
+export default <BotEvent>{
+  eventName: Events.ClientReady,
+  once: true,
+  execute: async (client) => {
+    logger({
+      message: `Logged in as ${client.user?.tag}!`,
+    });
+
+    loadServerOnReady(client);
+  },
+};

@@ -3,11 +3,17 @@
   "version": "1.0.0",
   "description": "An unofficial Discord EPIC RPG helper bot",
   "main": "dist/index.js",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "shared/*"
+  ],
   "scripts": {
-    "dev": "nodemon --exec ts-node --files src/bot.ts",
-    "build": "tsc",
-    "start:built": "tsc && node dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon --exec ts-node --files apps/bot/src/bot.ts",
+    "clean:node_modules": "find . -name \"node_modules\" -type d -prune -exec rm -rf '{}' +",
+    "clean:build": "find . -name \"dist\" -type d -prune -exec rm -rf '{}' +",
+    "build:shared": "turbo run build:shared",
+    "build:bot": "turbo run build:bot"
   },
   "repository": {
     "type": "git",
@@ -19,26 +25,28 @@
   },
   "homepage": "https://github.com/pwkang/epic-helper#readme",
   "dependencies": {
-    "@sentry/node": "^7.52.1",
     "axios": "^1.4.0",
     "dayjs": "^1.11.8",
-    "discord-hybrid-sharding": "^2.1.2",
+    "discord-hybrid-sharding": "^2.1.3",
     "discord.js": "^14.11.0",
-    "dotenv": "^16.0.3",
-    "mongoose": "^7.1.0",
+    "dotenv": "^16.3.1",
+    "mongodb": "^5.6.0",
+    "mongoose": "^7.3.0",
     "ms": "^2.1.3",
     "node-cron": "^3.0.2",
     "pino": "^8.14.1",
     "pino-pretty": "^10.0.0",
-    "readdirp": "^3.6.0",
-    "redis": "^4.6.6"
+    "redis": "^4.6.7"
   },
   "devDependencies": {
+    "@epic-helper/tsconfig": "workspace:*",
     "@types/ms": "^0.7.31",
-    "@types/node": "^20.0.0",
+    "@types/node": "^20.3.1",
     "@types/node-cron": "^3.0.7",
     "nodemon": "^2.0.22",
+    "prettier": "^2.8.8",
     "ts-node": "^10.9.1",
-    "typescript": "^5.0.4"
+    "turbo": "^1.10.3",
+    "typescript": "^5.1.3"
   }
 }
