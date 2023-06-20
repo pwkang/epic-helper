@@ -1,7 +1,6 @@
 import patreonUrlGenerator from './patreon-url-generator';
 import {IFetchPatreonCampaignMembersResponse, IFetchPatreonCampaignResponse} from '../type';
-import {logger} from '@epic-helper/utils';
-import {sleep} from '@epic-helper/utils';
+import {logger, sleep} from '@epic-helper/utils';
 import {patreonAxiosClient} from '@epic-helper/services';
 
 const PATREON_CAMPAIGN_ID = process.env.PATREON_CAMPAIGN_ID!;
