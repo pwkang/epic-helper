@@ -1,5 +1,4 @@
 import {Client} from 'discord.js';
-import {getCommandStr} from '../reminders-command-name';
 import ms from 'ms';
 import {userPetReminderTimesUp} from './user-pet.reminder-ready';
 import {getReminderChannel} from '../reminder-channel';
@@ -7,6 +6,7 @@ import {djsMessageHelper} from '../../../discordjs/message';
 import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import {userService} from '../../../../services/database/user.service';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
+import {generateUserReminderMessage} from '../message-generator/custom-message-generator';
 
 export const userReminderTimesUp = async (client: Client, userId: string) => {
   const user = await userService.getUserAccount(userId);
@@ -14,7 +14,13 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
 
   const readyCommands = await userReminderServices.findUserReadyCommands(userId);
   for (let command of readyCommands) {
-    if (Date.now() - command.readyAt.getTime() > ms('5s')) return;
+    if (Date.now() - command.readyAt.getTime() > ms('5s')) {
+      await userReminderServices.deleteUserCooldowns({
+        userId: user.userId,
+        types: [command.type],
+      });
+      continue;
+    }
 
     if (command.type === RPG_COMMAND_TYPE.pet) {
       return userPetReminderTimesUp(client, user);
@@ -27,16 +33,18 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
     });
     if (!channelId || !client.channels.cache.has(channelId)) return;
 
-    const commandName = getCommandStr({
+    const reminderMessage = await generateUserReminderMessage({
+      client,
+      userId,
+      userAccount: user,
       props: command.props,
-      slash: false,
       type: command.type,
     });
     djsMessageHelper.send({
       client,
       channelId,
       options: {
-        content: `<@${userId}> **__${commandName}__** is ready!`,
+        content: reminderMessage,
       },
     });
   }

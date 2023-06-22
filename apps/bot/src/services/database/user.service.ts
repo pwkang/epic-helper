@@ -413,6 +413,24 @@ const resetUserToggle = async ({userId}: IResetUserToggle): Promise<IUserToggle 
   return user?.toggle ?? null;
 };
 
+interface IGetUserCustomMessage {
+  userId: string;
+}
+
+const getUserCustomMessage = async ({
+  userId,
+}: IGetUserCustomMessage): Promise<IUser['customMessage'] | null> => {
+  const user = await dbUser.findOne(
+    {
+      userId,
+    },
+    {
+      customMessage: 1,
+    }
+  );
+  return user?.customMessage ?? null;
+};
+
 export const userService = {
   registerUserAccount,
   userAccountOn,
@@ -438,4 +456,5 @@ export const userService = {
   getUserToggle,
   updateUserToggle,
   resetUserToggle,
+  getUserReminderMessage: getUserCustomMessage,
 };

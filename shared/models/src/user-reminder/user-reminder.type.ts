@@ -49,7 +49,7 @@ type BaseUserReminder = {
   readyAt: Date;
 };
 
-type Conditional =
+export type IUserReminderPropsCondition =
   | {
       type: typeof RPG_COMMAND_TYPE.hunt;
       props: IHuntReminderProps;
@@ -75,7 +75,7 @@ type Conditional =
       props: IFarmReminderProps;
     }
   | {
-      type: typeof RPG_COMMAND_TYPE.pet;
+      type: typeof RPG_COMMAND_TYPE.lootbox;
       props: ILootboxReminderProps;
     }
   | {
@@ -96,4 +96,4 @@ type Conditional =
       props?: never;
     };
 
-export type IUserReminder = BaseUserReminder & Conditional;
+export type IUserReminder = BaseUserReminder & IUserReminderPropsCondition;
