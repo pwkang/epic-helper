@@ -12,11 +12,11 @@ export const _parseSlash = (data: IUserReminderPropsCondition) => {
     case RPG_COMMAND_TYPE.adventure:
       return RPG_CLICKABLE_SLASH_COMMANDS.adventure;
     case RPG_COMMAND_TYPE.training:
-      return data.props.ultraining
+      return data.props?.ultraining
         ? RPG_CLICKABLE_SLASH_COMMANDS.ultraining
         : RPG_CLICKABLE_SLASH_COMMANDS.training;
     case RPG_COMMAND_TYPE.quest:
-      return data.props.epicQuest
+      return data.props?.epicQuest
         ? RPG_CLICKABLE_SLASH_COMMANDS.epicQuest
         : RPG_CLICKABLE_SLASH_COMMANDS.quest;
     case RPG_COMMAND_TYPE.daily:
@@ -36,8 +36,8 @@ export const _parseSlash = (data: IUserReminderPropsCondition) => {
     case RPG_COMMAND_TYPE.pet:
       return `${RPG_CLICKABLE_SLASH_COMMANDS.petClaim} ${RPG_CLICKABLE_SLASH_COMMANDS.petAdventure}`;
     case RPG_COMMAND_TYPE.working:
-      return data.props.workingType
-        ? RPG_CLICKABLE_SLASH_COMMANDS[data.props.workingType]
+      return data.props?.workingType
+        ? RPG_CLICKABLE_SLASH_COMMANDS[data.props?.workingType]
         : RPG_CLICKABLE_SLASH_COMMANDS.chop;
     case RPG_COMMAND_TYPE.farm:
       return RPG_CLICKABLE_SLASH_COMMANDS.farm;

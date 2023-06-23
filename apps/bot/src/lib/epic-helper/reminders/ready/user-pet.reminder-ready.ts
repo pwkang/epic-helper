@@ -17,7 +17,7 @@ export const userPetReminderTimesUp = async (client: Client, user: IUser) => {
   const userId = user.userId;
   const pets = await userPetServices.getUserReadyPets({userId});
   const petIds = pets.map((pet) => pet.petId);
-  const petIdsStr = petIds.map(convertNumToPetId).map((i) => i.toUpperCase());
+  const petIdsStr = petIds.map(convertNumToPetId);
   await djsMessageHelper.send({
     client,
     channelId,

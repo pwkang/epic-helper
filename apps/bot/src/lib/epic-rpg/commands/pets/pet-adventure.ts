@@ -278,7 +278,7 @@ const calcAdventureTime = ({pet}: ICalcAdventureTime) => {
 const generateResult = (result: ISentResult[]) => {
   const results: string[] = ['Reminding the following pets:'];
   for (let r of result) {
-    const petId = convertNumToPetId(r.petId).toUpperCase();
+    const petId = convertNumToPetId(r.petId);
     const duration = r.duration ? convertMsToHumanReadableString(r.duration) : '**Ready To Claim**';
     results.push(`\`ID: ${petId}\` - ${duration}`);
   }

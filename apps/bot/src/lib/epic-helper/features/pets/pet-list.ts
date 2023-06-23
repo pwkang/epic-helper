@@ -56,7 +56,7 @@ export const generateEmbedPetFields = (pets: IUserPet[]) => {
     const petEmoji = petNameKey ? BOT_EMOJI.pet[petNameKey] : '';
     fields.push({
       name:
-        `\`ID: ${convertNumToPetId(pet.petId).toUpperCase()}\`\n` +
+        `\`ID: ${convertNumToPetId(pet.petId)}\`\n` +
         `${petEmoji} ${pet.name} — ${convertNumberToRoman(pet.tier)}`,
       value: generatePetSkillsRows(pet),
       inline: true,
