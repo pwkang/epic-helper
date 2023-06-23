@@ -12,7 +12,7 @@
     "dev:bot": "nodemon --exec ts-node --files apps/bot/src/bot.ts --watch apps/bot",
     "dev:api": "nodemon --exec ts-node --files apps/api/src/index.ts --watch apps/api",
     "clean:node_modules": "find . -name \"node_modules\" -type d -prune -exec rm -rf '{}' +",
-    "clean:build": "find . -name \"dist\" -type d -prune -exec rm -rf '{}' +",
+    "clean:dist": "find . -name \"dist\" -type d -prune -exec rm -rf '{}' +",
     "build:shared": "turbo run build:shared",
     "build:bot": "turbo run build:bot",
     "dev-shard:bot": "npm run build:bot && USE_PINO_PRETTY=true node apps/bot/dist/index.js",
