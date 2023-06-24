@@ -114,6 +114,12 @@ const getEpicItemCommandStr = ({epicItemType}: IGetEpicItemCommandStr) => {
   return `RPG USE ${epicItemType ? epicItemType.toUpperCase() : 'EPIC ITEM'}`;
 };
 
+interface IGetPetCommandStr {}
+
+const getPetCommandStr = ({}: IGetPetCommandStr) => {
+  return `RPG PET CLAIM`;
+};
+
 export const _parseCommandString = (data: IUserReminderPropsCondition) => {
   switch (data.type) {
     case RPG_COMMAND_TYPE.daily:
@@ -163,6 +169,8 @@ export const _parseCommandString = (data: IUserReminderPropsCondition) => {
       return getEpicItemCommandStr({
         epicItemType: data?.props?.epicItemType,
       });
+    case RPG_COMMAND_TYPE.pet:
+      return getPetCommandStr({});
     default:
       return '';
   }

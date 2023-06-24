@@ -1,5 +1,8 @@
 import {mongoClient} from '@epic-helper/services';
 import {IEnchantChannel, IServer, serverSchema} from '@epic-helper/models';
+import {RPG_COMMAND_TYPE, RPG_RANDOM_EVENTS} from '@epic-helper/constants';
+import {UpdateQuery} from 'mongoose';
+import {typedObjectEntries} from '../../utils/typed-object-entries';
 
 const dbServer = mongoClient.model('servers', serverSchema);
 
@@ -160,6 +163,29 @@ const updateEnchantMuteDuration = async ({serverId, duration}: IUpdateEnchantMut
   );
 };
 
+interface IUpdateRandomEvents {
+  serverId: string;
+  randomEvents: Partial<Record<ValuesOf<typeof RPG_RANDOM_EVENTS>, string | null>>;
+}
+
+const updateRandomEvents = async ({
+  serverId,
+  randomEvents,
+}: IUpdateRandomEvents): Promise<IServer | null> => {
+  const query: UpdateQuery<IServer> = {
+    $set: {},
+    $unset: {},
+  };
+  for (const [key, value] of typedObjectEntries(randomEvents)) {
+    if (value === null) {
+      query.$unset![`settings.randomEvent.${key}`] = '';
+    } else {
+      query.$set![`settings.randomEvent.${key}`] = value;
+    }
+  }
+  return dbServer.findOneAndUpdate({serverId}, query, {new: true});
+};
+
 export const serverService = {
   registerServer,
   getServer,
@@ -171,4 +197,5 @@ export const serverService = {
   updateEnchantChannel,
   resetEnchantChannels,
   updateEnchantMuteDuration,
+  updateRandomEvents,
 };

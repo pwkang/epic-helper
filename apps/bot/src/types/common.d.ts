@@ -7,5 +7,6 @@ declare module 'discord.js' {
     prefixCommands: Collection<string, PrefixCommand>;
     slashCommands: Collection<string, SlashCommand>;
     slashMessages: Collection<string, SlashMessage>;
+    botMessages: Collection<string, BotMessage>;
   }
 }

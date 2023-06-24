@@ -27,6 +27,13 @@ declare global {
     execute: (client: Client, message: Message, author: User) => Promise<void>;
   }
 
+  interface BotMessage {
+    name: string;
+    match: (message: Message) => boolean;
+    bot: string;
+    execute: (client: Client, message: Message) => Promise<void>;
+  }
+
   interface BotEvent {
     once: boolean;
     eventName: keyof ClientEvents;

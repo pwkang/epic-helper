@@ -3,6 +3,7 @@ import djsInteractionHelper from '../../../../../lib/discordjs/interaction';
 import embedsList from '../../../../../lib/epic-helper/embeds';
 import {IEnchantChannel} from '@epic-helper/models';
 import {serverService} from '../../../../../services/database/server.service';
+import commandHelper from '../../../../../lib/epic-helper/command-helper';
 
 type TActionType = 'add' | 'remove' | 'reset';
 
@@ -43,7 +44,7 @@ export const setEnchantChannels = async ({client, interaction}: IServerConfig) =
   });
   if (!serverProfile) return;
 
-  const embed = embedsList.enchantChannels({
+  const embed = commandHelper.serverSettings.renderEnchantMuteEmbed({
     enchantSettings: serverProfile.settings.enchant,
     guild: interaction.guild!,
   });
