@@ -8,7 +8,7 @@ export interface IGetEnchantChannelsEmbed {
   enchantSettings: IServer['settings']['enchant'];
 }
 
-const getEnchantChannelsEmbed = ({guild, enchantSettings}: IGetEnchantChannelsEmbed) => {
+const _getEnchantChannelsEmbed = ({guild, enchantSettings}: IGetEnchantChannelsEmbed) => {
   const embed = new EmbedBuilder()
     .setAuthor({
       name: `${guild.name}'s enchant channels`,
@@ -46,7 +46,7 @@ const getEnchantChannelsEmbed = ({guild, enchantSettings}: IGetEnchantChannelsEm
   return embed;
 };
 
-export default getEnchantChannelsEmbed;
+export default _getEnchantChannelsEmbed;
 
 const settings: string[] = [
   `\`/config server enchant-channels\` - Configure enchant channels`,

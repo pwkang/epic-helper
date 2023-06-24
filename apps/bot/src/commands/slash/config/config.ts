@@ -5,6 +5,12 @@ import {setEnchantChannels} from './subcommand/server/enchant-channels';
 import {setEnchantMuteDuration} from './subcommand/server/enchant-mute-duration';
 import {setCustomMessages} from './subcommand/user/custom-messages';
 import {viewServerSettings} from './subcommand/server/view-server-settings';
+import {
+  RPG_RANDOM_EVENTS,
+  RPG_RANDOM_EVENTS_COMMAND,
+  RPG_RANDOM_EVENTS_NAME,
+} from '@epic-helper/constants';
+import {setRandomEventMessages} from './subcommand/server/set-random-event-messages';
 
 export default <SlashCommand>{
   name: 'config',
@@ -112,6 +118,46 @@ export default <SlashCommand>{
                 .setMaxValue(60)
             )
         )
+        .addSubcommand((subcommand) =>
+          subcommand
+            .setName('random-events')
+            .setDescription('set message to send when random events occur (type "clear" to remove)')
+            .addStringOption((option) =>
+              option
+                .setName(RPG_RANDOM_EVENTS_COMMAND.log.replaceAll(' ', '-').toLowerCase())
+                .setDescription(RPG_RANDOM_EVENTS_NAME.log)
+            )
+            .addStringOption((option) =>
+              option
+                .setName(RPG_RANDOM_EVENTS_COMMAND.fish.replaceAll(' ', '-').toLowerCase())
+                .setDescription(RPG_RANDOM_EVENTS_NAME.fish)
+            )
+            .addStringOption((option) =>
+              option
+                .setName(RPG_RANDOM_EVENTS_COMMAND.coin.replaceAll(' ', '-').toLowerCase())
+                .setDescription(RPG_RANDOM_EVENTS_NAME.coin)
+            )
+            .addStringOption((option) =>
+              option
+                .setName(RPG_RANDOM_EVENTS_COMMAND.lootbox.replaceAll(' ', '-').toLowerCase())
+                .setDescription(RPG_RANDOM_EVENTS_NAME.lootbox)
+            )
+            .addStringOption((option) =>
+              option
+                .setName(RPG_RANDOM_EVENTS_COMMAND.boss.replaceAll(' ', '-').toLowerCase())
+                .setDescription(RPG_RANDOM_EVENTS_NAME.boss)
+            )
+            .addStringOption((option) =>
+              option
+                .setName(RPG_RANDOM_EVENTS_COMMAND.arena.replaceAll(' ', '-').toLowerCase())
+                .setDescription(RPG_RANDOM_EVENTS_NAME.arena)
+            )
+            .addStringOption((option) =>
+              option
+                .setName(RPG_RANDOM_EVENTS_COMMAND.miniboss.replaceAll(' ', '-').toLowerCase())
+                .setDescription(RPG_RANDOM_EVENTS_NAME.miniboss)
+            )
+        )
     ),
   execute: async (client, interaction) => {
     switch (interaction.options.getSubcommandGroup()) {
@@ -138,6 +184,9 @@ export default <SlashCommand>{
             break;
           case 'settings':
             viewServerSettings({client, interaction});
+            break;
+          case 'random-events':
+            setRandomEventMessages({client, interaction});
             break;
         }
     }
