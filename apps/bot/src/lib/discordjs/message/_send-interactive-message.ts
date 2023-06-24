@@ -1,6 +1,7 @@
 import {
   BaseInteraction,
   Client,
+  Collection,
   InteractionUpdateOptions,
   MessageCreateOptions,
   MessagePayload,
@@ -8,6 +9,7 @@ import {
 } from 'discord.js';
 import ms from 'ms';
 import {djsMessageHelper} from './index';
+import djsInteractionHelper from '../interaction';
 
 export interface SendInteractiveMessageProps {
   client: Client;
@@ -30,6 +32,7 @@ export default async function _sendInteractiveMessage<EventType extends string>(
   });
   if (!sentMessage) return;
 
+  const registeredEvents = new Collection<string | EventType, Function>();
   const collector = sentMessage.createMessageComponentCollector({
     idle: ms('1m'),
   });
@@ -40,13 +43,21 @@ export default async function _sendInteractiveMessage<EventType extends string>(
       collected: BaseInteraction | StringSelectMenuInteraction
     ) => Promise<InteractionUpdateOptions | null> | InteractionUpdateOptions | null
   ) {
-    collector.on('collect', async (collected) => {
-      if (collected.customId !== customId) return;
-      const replyMsg = await callback(collected);
-      if (!replyMsg) return;
-      await collected.update(replyMsg);
-    });
+    registeredEvents.set(customId, callback);
   }
+
+  collector.on('collect', async (collected) => {
+    if (collected.message.id !== sentMessage.id) return;
+    const callback = registeredEvents.get(collected.customId as string);
+    if (!callback) return;
+    const replyMsg = await callback(collected);
+    if (!replyMsg) return;
+    await djsInteractionHelper.updateInteraction({
+      interaction: collected,
+      options: replyMsg,
+      client,
+    });
+  });
 
   function stop() {
     collector.stop();
