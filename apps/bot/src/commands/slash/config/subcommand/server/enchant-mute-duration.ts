@@ -2,6 +2,7 @@ import {IServerConfig} from '../config.type';
 import djsInteractionHelper from '../../../../../lib/discordjs/interaction';
 import embedsList from '../../../../../lib/epic-helper/embeds';
 import {serverService} from '../../../../../services/database/server.service';
+import commandHelper from '../../../../../lib/epic-helper/command-helper';
 
 export const setEnchantMuteDuration = async ({client, interaction}: IServerConfig) => {
   if (!interaction.inGuild()) return;
@@ -14,7 +15,7 @@ export const setEnchantMuteDuration = async ({client, interaction}: IServerConfi
   const serverProfile = await serverService.getServer({
     serverId: interaction.guildId!,
   });
-  const embed = embedsList.enchantChannels({
+  const embed = commandHelper.serverSettings.renderEnchantMuteEmbed({
     enchantSettings: serverProfile!.settings.enchant,
     guild: interaction.guild!,
   });

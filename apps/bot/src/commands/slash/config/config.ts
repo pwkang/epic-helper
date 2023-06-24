@@ -4,6 +4,7 @@ import {setReminderChannelSlash} from './subcommand/user/reminder-channel';
 import {setEnchantChannels} from './subcommand/server/enchant-channels';
 import {setEnchantMuteDuration} from './subcommand/server/enchant-mute-duration';
 import {setCustomMessages} from './subcommand/user/custom-messages';
+import {viewServerSettings} from './subcommand/server/view-server-settings';
 
 export default <SlashCommand>{
   name: 'config',
@@ -64,6 +65,9 @@ export default <SlashCommand>{
       subcommandGroup
         .setName('server')
         .setDescription('Server configuration')
+        .addSubcommand((subcommand) =>
+          subcommand.setName('settings').setDescription('View the server settings')
+        )
         .addSubcommand((subcommand) =>
           subcommand
             .setName('enchant-channels')
@@ -131,6 +135,9 @@ export default <SlashCommand>{
             break;
           case 'enchant-mute-duration':
             setEnchantMuteDuration({client, interaction});
+            break;
+          case 'settings':
+            viewServerSettings({client, interaction});
             break;
         }
     }
