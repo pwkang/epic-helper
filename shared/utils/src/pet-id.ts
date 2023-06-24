@@ -74,7 +74,7 @@ export function convertNumToPetId(num: number) {
   ) {
     str = str.slice(0, -4);
   }
-  return str;
+  return str.toUpperCase();
 }
 
 /**

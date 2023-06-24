@@ -1,4 +1,4 @@
-import {Client, Message, User} from 'discord.js';
+import {Client, Embed, Message, User} from 'discord.js';
 import {BOT_REMINDER_BASE_COOLDOWN, RPG_COMMAND_TYPE, RPG_FARM_SEED} from '@epic-helper/constants';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
@@ -24,7 +24,7 @@ export function rpgFarm({client, message, author, isSlashCommand}: IRpgFarm) {
   });
   if (!event) return;
   event.on('content', (content, collected) => {
-    if (isRpgFarmSuccess({content, author})) {
+    if (isRpgFarmSuccess({content, author}) || isSeedNotGrowingUpEnded({content, author})) {
       rpgFarmSuccess({
         author,
         client,
@@ -38,6 +38,11 @@ export function rpgFarm({client, message, author, isSlashCommand}: IRpgFarm) {
     }
     if (hasNoSeedToPlant({message: collected, author})) {
       event.stop();
+    }
+  });
+  event.on('embed', (embed) => {
+    if (isSeedNotGrowingUp({embed, author})) {
+      // event.stop();
     }
   });
   event.on('cooldown', (cooldown) => {
@@ -112,3 +117,23 @@ const hasNoSeedToPlant = ({message, author}: IHasNoSeedToPlant) =>
   message.mentions.has(author.id) &&
   (['you need a', 'seed'].every((msg) => message.content.includes(msg)) ||
     ['you do not have this type of seed'].some((msg) => message.content.includes(msg)));
+
+interface IIsSeedNotGrowingUp {
+  embed: Embed;
+  author: User;
+}
+
+const isSeedNotGrowingUp = ({embed, author}: IIsSeedNotGrowingUp) =>
+  embed.description?.includes("You planted a seed, but for some reason it's not growing up") &&
+  embed.author?.name === `${author.username} — farm`;
+
+interface IIsFailToPlantAnotherSeed {
+  content: string;
+  author: User;
+}
+
+const isSeedNotGrowingUpEnded = ({content, author}: IIsFailToPlantAnotherSeed) =>
+  content.includes(author.username) &&
+  ['is about to plant another seed', 'HITS THE FLOOR WITH THEIR FISTS', 'cried'].some((msg) =>
+    content.includes(msg)
+  );

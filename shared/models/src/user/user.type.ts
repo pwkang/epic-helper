@@ -10,7 +10,7 @@ import {ValuesOf} from '../type';
 type ToggleDmOptions = keyof typeof RPG_COMMAND_TYPE | 'all';
 type ToggleReminderOptions = keyof typeof RPG_COMMAND_TYPE | 'all';
 type ToggleMentionsOptions = keyof typeof RPG_COMMAND_TYPE | 'all' | 'trainingAnswer' | 'petCatch';
-type CustomMessageOptions = keyof typeof RPG_COMMAND_TYPE;
+type CustomMessageOptions = keyof typeof RPG_COMMAND_TYPE | 'all';
 type ReminderChannelOptions = keyof typeof RPG_COMMAND_TYPE | 'all';
 
 export interface IUserToggle extends Record<string, boolean | Record<string, boolean>> {

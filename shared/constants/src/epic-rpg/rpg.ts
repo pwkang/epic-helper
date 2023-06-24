@@ -38,6 +38,7 @@ export const RPG_FARM_SEED = {
   seed: null,
   carrot: 'carrot',
   potato: 'potato',
+  bread: 'bread',
 } as const;
 
 export const RPG_AREA = {

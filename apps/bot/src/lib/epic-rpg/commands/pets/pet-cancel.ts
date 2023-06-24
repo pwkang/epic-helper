@@ -34,7 +34,7 @@ export const rpgPetAdvCancel = async ({
 
   return {
     content: `**${petsToCancel.length}** adventure(s) cancelled (\`${petsToCancel
-      .map((p) => convertNumToPetId(p.petId).toUpperCase())
+      .map((p) => convertNumToPetId(p.petId))
       .join(' ')}\`)`,
   };
 };

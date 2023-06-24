@@ -10,23 +10,26 @@ export default <PrefixCommand>{
   commands: ['test'],
   type: PREFIX_COMMAND_TYPE.dev,
   execute: async (client, message) => {
-    const args = message.content.split(' ');
-    if (!args[2]) return;
-    const msg = await message.channel.messages.fetch(args[2]);
-    if (!msg) return;
-    //
-    const options = await rpgPetAdventure({
-      message: msg,
-      author: message.author,
-      selectedPets: ['a', 'b', 'c', 'd', 'e'],
-      amountOfPetSent: rpgPetAdventureChecker.amountOfPetsSentToAdventure({
-        message: msg,
-        author: message.author,
-      }),
-    });
     djsMessageHelper.reply({
       message,
-      options,
+      options: {
+        content: `
+    daily: '<a:daily:1121345868692463676>',
+    weekly: '<a:weekly:1121479834686722088>',
+    lootboxes: '<a:lootboxes:1121345889357811792>',
+    vote: '<a:vote:1108797552289140861>',
+    hunt: '<a:hunt:1108797566033862737>',
+    adventure: '<a:adventure:1121345862510051358>',
+    training: '<a:training:1121345896236453909>',
+    quest: '<a:quest:1108797545787969546>',
+    duel: '<a:duel:1121345871947243651>',
+    working: '<a:working:1121345902188179516>',
+    farm: '<a:farm:1108797664889413652>',
+    arena: '<a:arena:1121345865240555611>',
+    horse: '<a:horse:1108797695545589822>',
+    dungeon: '<a:dungeon:1108797699228192859>',
+    epicitems: '<a:epicitems:1108797549118247012>',`,
+      },
       client,
     });
   },

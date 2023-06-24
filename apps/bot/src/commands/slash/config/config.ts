@@ -3,6 +3,7 @@ import {setHealReminder} from './subcommand/user/heal-reminder';
 import {setReminderChannelSlash} from './subcommand/user/reminder-channel';
 import {setEnchantChannels} from './subcommand/server/enchant-channels';
 import {setEnchantMuteDuration} from './subcommand/server/enchant-mute-duration';
+import {setCustomMessages} from './subcommand/user/custom-messages';
 
 export default <SlashCommand>{
   name: 'config',
@@ -52,6 +53,11 @@ export default <SlashCommand>{
                   }
                 )
             )
+        )
+        .addSubcommand((subcommand) =>
+          subcommand
+            .setName('custom-messages')
+            .setDescription('Customize the reminder messages for different reminders')
         )
     )
     .addSubcommandGroup((subcommandGroup) =>
@@ -112,6 +118,9 @@ export default <SlashCommand>{
             break;
           case 'reminder-channel':
             setReminderChannelSlash({client, interaction});
+            break;
+          case 'custom-messages':
+            setCustomMessages({client, interaction});
             break;
         }
         break;

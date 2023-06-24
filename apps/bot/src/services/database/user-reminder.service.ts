@@ -404,6 +404,29 @@ const clearUserCooldowns = async (userId: string): Promise<void> => {
   });
 };
 
+interface IGetNextReadyCommand {
+  userId: string;
+}
+
+const getNextReadyCommand = async ({
+  userId,
+}: IGetNextReadyCommand): Promise<IUserReminder | null> => {
+  const reminder = await dbUserReminder.find(
+    {
+      userId,
+      readyAt: {$gte: new Date()},
+    },
+    null,
+    {
+      sort: {
+        readyAt: 1,
+      },
+      limit: 1,
+    }
+  );
+  return reminder ? reminder[0].toObject() : null;
+};
+
 export const userReminderServices = {
   saveUserAdventureCooldown,
   saveUserHuntCooldown,
@@ -421,4 +444,5 @@ export const userReminderServices = {
   findUserReadyCommands,
   getUserAllCooldowns,
   clearUserCooldowns,
+  getNextReadyCommand,
 };

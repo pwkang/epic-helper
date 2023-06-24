@@ -53,7 +53,7 @@ const generateEmbedFields = (pets: IUserPet[]) => {
   for (let pet of pets) {
     const epic = !!pet.skills.epic ? BOT_EMOJI.petSkill.epic : '';
     const timeTraveler = !!pet.skills.timeTraveler ? BOT_EMOJI.petSkill.timeTraveler : '';
-    const petId = convertNumToPetId(pet.petId).toUpperCase();
+    const petId = convertNumToPetId(pet.petId);
     const petTier = convertNumberToRoman(pet.tier);
     const petNameKey = Object.entries(RPG_PET_TYPE).find(
       ([_, value]) => value === pet.name

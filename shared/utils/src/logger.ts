@@ -9,11 +9,17 @@ const isProduction = NODE_ENV === 'production';
 
 interface ILogger {
   variant?: string;
-  message: string;
+  message: any;
   logLevel?: Level;
 }
 
-export const logger = ({message, variant, logLevel}: ILogger) => {
+export const logger = (props: ILogger | string) => {
+  const isString = typeof props === 'string';
+  if (isString && isProduction) return;
+  const message = isString ? props : props.message;
+  const variant = isString ? undefined : props.variant;
+  const logLevel: Level = isString ? 'info' : props.logLevel ?? 'info';
+
   let loggerChild: Logger;
   if (isProduction) {
     loggerChild = pino({});
