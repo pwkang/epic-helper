@@ -18,23 +18,17 @@ export const setCustomMessages = async ({client, interaction}: IUserConfig) => {
     }),
   });
   if (!event) return;
-  for (let pageType of Object.values(CUSTOM_MESSAGE_PAGE_TYPE)) {
+  for (const pageType of Object.values(CUSTOM_MESSAGE_PAGE_TYPE)) {
     event.on(pageType, async (interaction) => {
       if (!interaction.isButton()) return null;
       const customId = interaction.customId;
 
-      await djsInteractionHelper.replyInteraction({
+      return await commandHelper.customMessage.getMessageOptions({
+        author: interaction.user,
+        pageType: customId as ValuesOf<typeof CUSTOM_MESSAGE_PAGE_TYPE>,
+        userAccount,
         client,
-        interaction,
-        options: await commandHelper.customMessage.getMessageOptions({
-          author: interaction.user,
-          pageType: customId as ValuesOf<typeof CUSTOM_MESSAGE_PAGE_TYPE>,
-          userAccount,
-          client,
-        }),
       });
-
-      return null;
     });
   }
 };

@@ -1,8 +1,9 @@
-import {BOT_EMOJI, BOT_REMINDER_DEFAULT_MESSAGES, RPG_COMMAND_TYPE} from '@epic-helper/constants';
+import {BOT_CUSTOM_MESSAGE_VARIABLES, RPG_COMMAND_TYPE} from '@epic-helper/constants';
 
 export const CUSTOM_MESSAGE_PAGE_TYPE = {
   general: 'general',
   other: 'other',
+  guide: 'guide',
 } as const;
 
 interface IPage {
@@ -44,3 +45,13 @@ export const CUSTOM_MESSAGE_PAGES: IPage[] = [
     ],
   },
 ];
+
+export const CUSTOM_MESSAGE_VARIABLES_DESCRIPTION = {
+  [BOT_CUSTOM_MESSAGE_VARIABLES.user]: 'Mentions / Username',
+  [BOT_CUSTOM_MESSAGE_VARIABLES.cmdLower]: 'Command name (lower case)',
+  [BOT_CUSTOM_MESSAGE_VARIABLES.cmdUpper]: 'Command name (upper case)',
+  [BOT_CUSTOM_MESSAGE_VARIABLES.emoji]: 'Default animated emoji',
+  [BOT_CUSTOM_MESSAGE_VARIABLES.slash]: 'Clickable slash command',
+  [BOT_CUSTOM_MESSAGE_VARIABLES.petId]: 'Ready pets ID',
+  [BOT_CUSTOM_MESSAGE_VARIABLES.nextReminder]: 'Next reminder countdown',
+} as const;

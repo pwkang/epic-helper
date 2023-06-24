@@ -15,5 +15,10 @@ export const _customMessagePageSelector = ({
         .setLabel(page.label)
         .setStyle(ButtonStyle.Primary)
         .setDisabled(page.id === pageType)
-    )
+    ),
+    new ButtonBuilder()
+      .setCustomId('guide')
+      .setLabel('Guide')
+      .setStyle(ButtonStyle.Secondary)
+      .setDisabled(pageType === CUSTOM_MESSAGE_PAGE_TYPE.guide)
   );

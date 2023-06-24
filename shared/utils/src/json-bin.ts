@@ -1,4 +1,6 @@
 import axios from 'axios';
+import {logger} from './logger';
+import {stringify} from 'json-bigint';
 
 interface ICreateJsonBinResponse {
   url: string;
@@ -9,14 +11,14 @@ const url = 'https://json-bin.pwkang.me/api/create';
 export const createJsonBin = async (json: Record<any, any>) => {
   try {
     const response = await axios.post(url, {
-      json: JSON.stringify(json),
+      json: stringify(json),
     });
     return response.data as ICreateJsonBinResponse;
   } catch (e: any) {
-    // logger({
-    //   logLevel: 'error',
-    //   message: e,
-    //   variant: 'create-json-bin',
-    // });
+    logger({
+      logLevel: 'error',
+      message: e,
+      variant: 'create-json-bin',
+    });
   }
 };
