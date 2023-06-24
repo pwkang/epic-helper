@@ -16,6 +16,12 @@ export default <BotEvent>{
       if (!result) return;
       await result.command.execute(client, message, result.args);
     }
+
+    if (isSentByBot(message)) {
+      const commands = searchBotMatchedCommands(client, message);
+      if (!commands.size) return;
+      commands.forEach((cmd) => cmd.execute(client, message));
+    }
   },
 };
 
@@ -102,4 +108,9 @@ function searchCommand(
 const isBotSlashCommand = (message: Message) => message.interaction && message.author.bot;
 const isSentByUser = (message: Message) => !message.author.bot;
 
+const isSentByBot = (message: Message) => message.author.bot;
+
 const isNotDeferred = (message: Message) => !(message.content === '' && !message.embeds.length);
+
+const searchBotMatchedCommands = (client: Client, message: Message) =>
+  client.botMessages.filter((cmd) => message.author.id === cmd.bot && cmd.match(message));

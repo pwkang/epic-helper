@@ -52,10 +52,27 @@ async function loadSlashMessages(client: Client) {
   });
 }
 
+async function loadBotMessages(client: Client) {
+  const commands = await importFiles<BotMessage>({
+    path: `./${handlerRoot}/commands/bot-message`,
+    options: {
+      fileFilter: [handlerFileFilter],
+    },
+  });
+  logger({
+    message: `Loaded (${commands.length}) bot messages`,
+  });
+  commands.forEach((command) => {
+    if (!command?.name) return;
+    client.botMessages.set(command.name, command);
+  });
+}
+
 export default function loadCommands(client: Client) {
   return Promise.all([
     loadPrefixCommands(client),
     loadSlashCommands(client),
     loadSlashMessages(client),
+    loadBotMessages(client),
   ]);
 }
