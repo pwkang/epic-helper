@@ -18,7 +18,7 @@ interface IGenerateCustomMessage {
   props?: IUserReminder['props'];
   type: IUserReminder['type'];
   nextReminder?: IUserReminder;
-  nextPetIds?: number[];
+  readyPetsId?: number[];
 }
 
 export const generateUserReminderMessage = async ({
@@ -28,7 +28,7 @@ export const generateUserReminderMessage = async ({
   props,
   type,
   nextReminder,
-  nextPetIds,
+  readyPetsId,
 }: IGenerateCustomMessage) => {
   const cmdName = _parseCommandString({
     type,
@@ -51,7 +51,7 @@ export const generateUserReminderMessage = async ({
   const nextReminderString = nextReminder
     ? `\`${nextReminderType}\` ready **${nextReminderTime}**`
     : '';
-  const nextPetIdsString = nextPetIds?.map(convertNumToPetId).join(', ') ?? '';
+  const readyPetIdsString = readyPetsId?.map(convertNumToPetId).join(', ') ?? '';
 
   const variables: Partial<Record<ValuesOf<typeof BOT_CUSTOM_MESSAGE_VARIABLES>, string>> = {
     user: _parseUser({
@@ -69,7 +69,7 @@ export const generateUserReminderMessage = async ({
       : '',
     emoji: hasEmoji ? _parseEmoji({type}) : '',
     next_reminder: nextReminderString,
-    pet_id: nextPetIdsString,
+    pet_id: readyPetIdsString,
   };
 
   const messageTemplate = await getReminderMessageTemplate({

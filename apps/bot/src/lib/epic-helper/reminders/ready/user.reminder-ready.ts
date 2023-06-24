@@ -33,14 +33,19 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
     });
     if (!channelId || !client.channels.cache.has(channelId)) return;
 
+    const nextReminder = await userReminderServices.getNextReadyCommand({
+      userId,
+    });
+
     const reminderMessage = await generateUserReminderMessage({
       client,
       userId,
       userAccount: user,
       props: command.props,
       type: command.type,
+      nextReminder: nextReminder ?? undefined,
     });
-    djsMessageHelper.send({
+    await djsMessageHelper.send({
       client,
       channelId,
       options: {

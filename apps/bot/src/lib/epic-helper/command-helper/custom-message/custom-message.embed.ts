@@ -49,7 +49,7 @@ export const _getCustomMessageEmbed = async ({
           client,
           type,
           userAccount,
-          nextPetIds: [1, 27, 55],
+          readyPetsId: [1, 27, 55],
           nextReminder: {
             type: 'hunt',
             readyAt: new Date(Date.now() + ms('1h')),
@@ -73,7 +73,7 @@ export const _getCustomMessageEmbed = async ({
         embedValue.push(`${currentMessage}`);
 
         embed.addFields({
-          name: label.toUpperCase(),
+          name: '▶ ' + label.toUpperCase(),
           value: embedValue.join('\n\n'),
         });
       }

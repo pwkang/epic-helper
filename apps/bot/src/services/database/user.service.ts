@@ -474,6 +474,9 @@ const resetUserCustomMessage = async ({userId}: IResetUserCustomMessage): Promis
       $unset: {
         customMessage: '',
       },
+    },
+    {
+      new: true,
     }
   );
   return user ?? null;
