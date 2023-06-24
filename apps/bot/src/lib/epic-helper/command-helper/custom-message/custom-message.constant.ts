@@ -1,4 +1,8 @@
-import {BOT_CUSTOM_MESSAGE_VARIABLES, RPG_COMMAND_TYPE} from '@epic-helper/constants';
+import {
+  BOT_CUSTOM_MESSAGE_TYPES,
+  BOT_CUSTOM_MESSAGE_VARIABLES,
+  RPG_COMMAND_TYPE,
+} from '@epic-helper/constants';
 
 export const CUSTOM_MESSAGE_PAGE_TYPE = {
   general: 'general',
@@ -54,4 +58,12 @@ export const CUSTOM_MESSAGE_VARIABLES_DESCRIPTION = {
   [BOT_CUSTOM_MESSAGE_VARIABLES.slash]: 'Clickable slash command',
   [BOT_CUSTOM_MESSAGE_VARIABLES.petId]: 'Ready pets ID',
   [BOT_CUSTOM_MESSAGE_VARIABLES.nextReminder]: 'Next reminder countdown',
+} as const;
+
+export const CUSTOM_MESSAGE_TYPES_DISPLAY_NAME: Record<
+  keyof typeof BOT_CUSTOM_MESSAGE_TYPES,
+  string
+> = {
+  ...BOT_CUSTOM_MESSAGE_TYPES,
+  [BOT_CUSTOM_MESSAGE_TYPES.all]: 'default',
 } as const;

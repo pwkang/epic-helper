@@ -17,3 +17,8 @@ export const BOT_CUSTOM_MESSAGE_VARIABLES = {
   petId: 'pet_id',
   nextReminder: 'next_reminder',
 } as const;
+
+export const BOT_CUSTOM_MESSAGE_TYPES = {
+  ...RPG_COMMAND_TYPE,
+  all: 'all',
+} as const;

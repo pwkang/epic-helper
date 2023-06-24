@@ -431,6 +431,54 @@ const getUserCustomMessage = async ({
   return user?.customMessage ?? null;
 };
 
+interface IUpdateUserCustomMessage {
+  userId: string;
+  type: keyof IUser['customMessage'];
+  message: string;
+}
+
+const updateUserCustomMessage = async ({
+  userId,
+  type,
+  message,
+}: IUpdateUserCustomMessage): Promise<IUser | null> => {
+  const user = await dbUser.findOneAndUpdate(
+    {
+      userId,
+    },
+    {
+      $set: {
+        [`customMessage.${type}`]: message,
+      },
+    },
+    {
+      new: true,
+      projection: {
+        customMessage: 1,
+      },
+    }
+  );
+  return user ?? null;
+};
+
+interface IResetUserCustomMessage {
+  userId: string;
+}
+
+const resetUserCustomMessage = async ({userId}: IResetUserCustomMessage): Promise<IUser | null> => {
+  const user = await dbUser.findOneAndUpdate(
+    {
+      userId,
+    },
+    {
+      $unset: {
+        customMessage: '',
+      },
+    }
+  );
+  return user ?? null;
+};
+
 export const userService = {
   registerUserAccount,
   userAccountOn,
@@ -456,5 +504,7 @@ export const userService = {
   getUserToggle,
   updateUserToggle,
   resetUserToggle,
-  getUserReminderMessage: getUserCustomMessage,
+  getUserCustomMessage,
+  resetUserCustomMessage,
+  updateUserCustomMessage,
 };

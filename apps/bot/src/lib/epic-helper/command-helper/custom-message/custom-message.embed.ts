@@ -9,6 +9,7 @@ import {
 import {
   CUSTOM_MESSAGE_PAGE_TYPE,
   CUSTOM_MESSAGE_PAGES,
+  CUSTOM_MESSAGE_TYPES_DISPLAY_NAME,
   CUSTOM_MESSAGE_VARIABLES_DESCRIPTION,
 } from './custom-message.constant';
 import {generateUserReminderMessage} from '../../reminders/message-generator/custom-message-generator';
@@ -91,11 +92,9 @@ export const _getCustomMessageEmbed = async ({
         },
         {
           name: 'Message type',
-          value:
-            '`default` ' +
-            Object.values(RPG_COMMAND_TYPE)
-              .map((type) => `\`${type}\``)
-              .join(' '),
+          value: Object.values(CUSTOM_MESSAGE_TYPES_DISPLAY_NAME)
+            .map((type) => `\`${type}\``)
+            .join(' '),
         }
       );
       break;
