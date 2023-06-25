@@ -1,6 +1,9 @@
 export * from './cd-reduction/cd-reduction.schema';
 export * from './cd-reduction/cd-reduction.type';
 
+export * from './guild/guild.schema';
+export * from './guild/guild.type';
+
 export * from './server/server.schema';
 export * from './server/server.type';
 
