@@ -42,7 +42,11 @@ export const _getMessagePayload = async ({
     total: Math.ceil(guilds.length / ITEMS_PER_PAGE) - 1,
   });
 
-  const components: BaseMessageOptions['components'] = [guildSelector];
+  const components: BaseMessageOptions['components'] = [];
+
+  if (guilds.length > 1) {
+    components.push(guildSelector);
+  }
 
   if (guilds.length > ITEMS_PER_PAGE) {
     components.push(paginator);
