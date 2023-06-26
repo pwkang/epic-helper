@@ -1,4 +1,10 @@
-import {BaseMessageOptions, EmbedBuilder, Guild} from 'discord.js';
+import {
+  BaseMessageOptions,
+  EmbedBuilder,
+  Guild,
+  InteractionReplyOptions,
+  InteractionUpdateOptions,
+} from 'discord.js';
 import {_getGuildSettingsEmbed} from './embed/guild-settings.embed';
 import {_getPageSelector} from './page-selector';
 import {IGuild} from '@epic-helper/models';
@@ -13,12 +19,12 @@ export interface IGetMessagePayload {
 
 export const ITEMS_PER_PAGE = 25;
 
-export const _getMessagePayload = async ({
+export const _getMessagePayload = ({
   server,
   guildRoleId,
   guilds,
   page = 0,
-}: IGetMessagePayload): Promise<BaseMessageOptions> => {
+}: IGetMessagePayload): BaseMessageOptions => {
   if (!guilds.length)
     return {
       content: 'There is no guild setup in this server',

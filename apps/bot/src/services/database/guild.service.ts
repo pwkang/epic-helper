@@ -30,11 +30,11 @@ const isRoleUsed = async ({serverId, roleId}: IIsRoleUsed): Promise<boolean> => 
 
 interface IFindGuild {
   serverId: string;
-  guildId: string;
+  roleId: string;
 }
 
-const findGuild = async ({serverId, guildId}: IFindGuild) => {
-  return dbGuild.findOne({serverId, guildId});
+const findGuild = async ({serverId, roleId}: IFindGuild) => {
+  return dbGuild.findOne({serverId, roleId});
 };
 
 interface IFindFirstGuild {
@@ -78,7 +78,7 @@ const updateGuildReminder = async ({
     updateQuery.$set!['upgraid.channelId'] = channelId;
   }
 
-  if (targetStealth) {
+  if (targetStealth !== undefined) {
     updateQuery.$set!['upgraid.targetStealth'] = targetStealth;
   }
 
@@ -103,6 +103,25 @@ const calcTotalGuild = async ({serverId}: ICalcTotalGuild) => {
   return dbGuild.countDocuments({serverId});
 };
 
+interface IDeleteGuild {
+  serverId: string;
+  roleId: string;
+}
+
+const deleteGuild = async ({serverId, roleId}: IDeleteGuild) => {
+  return dbGuild.findOneAndDelete({serverId, roleId});
+};
+
+interface IUpdateLeader {
+  serverId: string;
+  roleId: string;
+  leaderId: string;
+}
+
+const updateLeader = async ({serverId, roleId, leaderId}: IUpdateLeader) => {
+  return dbGuild.findOneAndUpdate({serverId, roleId}, {$set: {leaderId}}, {new: true});
+};
+
 export const guildService = {
   registerGuild,
   isRoleUsed,
@@ -111,4 +130,6 @@ export const guildService = {
   updateGuildReminder,
   calcTotalGuild,
   getAllGuilds,
+  deleteGuild,
+  updateLeader,
 };

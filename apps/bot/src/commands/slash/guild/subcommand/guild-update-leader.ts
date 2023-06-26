@@ -3,12 +3,9 @@ import {guildService} from '../../../../services/database/guild.service';
 import djsInteractionHelper from '../../../../lib/discordjs/interaction';
 import commandHelper from '../../../../lib/epic-helper/command-helper';
 
-export const updateGuildReminder = async ({client, interaction}: IGuildSubCommand) => {
-  const role = interaction.options.getRole('role')!;
-  const channel = interaction.options.getChannel('channel');
-  const targetStealth = interaction.options.getNumber('target-stealth') ?? undefined;
-  const upgradeMessage = interaction.options.getString('upgrade-message') ?? undefined;
-  const raidMessage = interaction.options.getString('raid-message') ?? undefined;
+export const guildUpdateLeader = async ({client, interaction}: IGuildSubCommand) => {
+  const role = interaction.options.getRole('role', true);
+  const leader = interaction.options.getUser('leader', true);
 
   const isRoleUsed = await guildService.isRoleUsed({
     serverId: interaction.guildId!,
@@ -25,16 +22,13 @@ export const updateGuildReminder = async ({client, interaction}: IGuildSubComman
     });
   }
 
-  const updatedGuild = await guildService.updateGuildReminder({
-    channelId: channel?.id,
-    targetStealth,
-    upgradeMessage,
-    raidMessage,
+  const updatedGuild = await guildService.updateLeader({
     serverId: interaction.guildId!,
     roleId: role.id,
+    leaderId: leader?.id,
   });
   if (!updatedGuild) return;
-  djsInteractionHelper.replyInteraction({
+  await djsInteractionHelper.replyInteraction({
     client,
     interaction,
     options: {

@@ -1,8 +1,10 @@
 import {SlashCommandBuilder} from 'discord.js';
 import {guildSetup} from './subcommand/guild-setup';
 import {viewGuildSettings} from './subcommand/guild-settings';
-import {updateGuildReminder} from './subcommand/update-guild-reminder';
+import {guildUpdateReminder} from './subcommand/guild-update-reminder';
 import {IGuild} from '@epic-helper/models';
+import {deleteGuild} from './subcommand/guild-delete';
+import {guildUpdateLeader} from './subcommand/guild-update-leader';
 
 export default <SlashCommand>{
   name: 'guild',
@@ -73,6 +75,12 @@ export default <SlashCommand>{
                 .setDescription('Select the role of the guild to update')
                 .setRequired(true)
             )
+            .addUserOption((option) =>
+              option
+                .setName('leader')
+                .setDescription('User that can modify the guild settings without admin permission')
+                .setRequired(true)
+            )
         )
     )
     .addSubcommand((subcommand) =>
@@ -94,9 +102,10 @@ export default <SlashCommand>{
         case 'set':
           switch (subcommand) {
             case 'reminder':
-              updateGuildReminder({client, interaction});
+              guildUpdateReminder({client, interaction});
               break;
             case 'leader':
+              guildUpdateLeader({client, interaction});
               break;
           }
       }
@@ -109,6 +118,7 @@ export default <SlashCommand>{
           guildSetup({client, interaction});
           break;
         case 'delete':
+          deleteGuild({client, interaction});
           break;
       }
     }
