@@ -9,13 +9,14 @@ interface IGenerateNavigationRow {
 
 export const generateNavigationRow = ({page, total, itemsPerPage, all}: IGenerateNavigationRow) => {
   const row = new ActionRowBuilder<ButtonBuilder>();
-  row.addComponents(
-    new ButtonBuilder()
-      .setCustomId('first')
-      .setStyle(ButtonStyle.Primary)
-      .setEmoji('⏪')
-      .setDisabled(page === 0)
-  );
+  if (total > 2)
+    row.addComponents(
+      new ButtonBuilder()
+        .setCustomId('first')
+        .setStyle(ButtonStyle.Primary)
+        .setEmoji('⏪')
+        .setDisabled(page === 0)
+    );
   row.addComponents(
     new ButtonBuilder()
       .setCustomId('prev')
@@ -30,13 +31,14 @@ export const generateNavigationRow = ({page, total, itemsPerPage, all}: IGenerat
       .setEmoji('➡️')
       .setDisabled(page === Math.floor(total / itemsPerPage))
   );
-  row.addComponents(
-    new ButtonBuilder()
-      .setCustomId('last')
-      .setStyle(ButtonStyle.Primary)
-      .setEmoji('⏩')
-      .setDisabled(page === Math.floor(total / itemsPerPage))
-  );
+  if (total > 2)
+    row.addComponents(
+      new ButtonBuilder()
+        .setCustomId('last')
+        .setStyle(ButtonStyle.Primary)
+        .setEmoji('⏩')
+        .setDisabled(page === Math.floor(total / itemsPerPage))
+    );
   if (all)
     row.addComponents(
       new ButtonBuilder().setCustomId('all').setStyle(ButtonStyle.Primary).setLabel('All')
