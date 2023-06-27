@@ -1,6 +1,6 @@
 import {handlerRoot} from '../handler/on-start/constant';
-import {importFiles} from './filesImport';
 import {SlashCommandBuilder} from 'discord.js';
+import {importFiles} from '@epic-helper/utils';
 
 interface ISlashCommand {
   name: string;
@@ -13,11 +13,11 @@ export const listSlashCommands = async (): Promise<ISlashCommand[]> => {
     options: {fileFilter: '*.ts'},
     path: `./${handlerRoot}/commands/slash`,
   });
-  commands.forEach((command) => {
-    if (!command?.builder) return;
+  commands.forEach(({data}) => {
+    if (!data?.builder) return;
     slashCommands.push({
-      name: command.name,
-      builder: command.builder,
+      name: data.name,
+      builder: data.builder,
     });
   });
   return slashCommands;

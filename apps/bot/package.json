@@ -1,22 +1,17 @@
 {
   "name": "@epic-helper/bot",
   "version": "1.0.0",
-  "description": "",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:bot": "tsc"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@epic-helper/constants": "workspace:*",
     "@epic-helper/models": "workspace:*",
     "@epic-helper/services": "workspace:*",
     "@epic-helper/utils": "workspace:*",
-    "@sentry/node": "^7.52.1",
-    "readdirp": "^3.6.0"
+    "@sentry/node": "^7.52.1"
   },
   "devDependencies": {
     "@epic-helper/tsconfig": "workspace:*"

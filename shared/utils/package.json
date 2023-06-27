@@ -7,6 +7,9 @@
   "scripts": {
     "build:shared": "tsc"
   },
+  "dependencies": {
+    "readdirp": "^3.6.0"
+  },
   "devDependencies": {
     "@epic-helper/tsconfig": "workspace:*"
   }

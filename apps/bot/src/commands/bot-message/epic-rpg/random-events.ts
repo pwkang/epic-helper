@@ -1,7 +1,7 @@
 import {EPIC_RPG_ID, RPG_RANDOM_EVENTS} from '@epic-helper/constants';
-import {typedObjectEntries} from '../../../utils/typed-object-entries';
 import {serverService} from '../../../services/database/server.service';
 import {djsMessageHelper} from '../../../lib/discordjs/message';
+import {typedObjectEntries} from '@epic-helper/utils';
 
 export default <BotMessage>{
   name: 'random-events',
