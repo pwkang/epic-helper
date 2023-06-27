@@ -8,14 +8,14 @@ dotenv.config();
 
 const API_PORT = process.env.API_PORT || 3000;
 
-const app = express();
-app.use(bodyParser.json());
+export const startServer = async () => {
+  const app = express();
+  app.use(bodyParser.json());
+  app.use('/', await loadRoutes());
 
-loadRoutes().then((router) => {
-  app.use('/', router);
   app.listen(API_PORT, () => {
     logger({
       message: `Server is listening on port ${API_PORT}`,
     });
   });
-});
+};
