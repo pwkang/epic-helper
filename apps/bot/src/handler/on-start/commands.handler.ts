@@ -1,7 +1,6 @@
 import {Client} from 'discord.js';
 import {handlerFileFilter, handlerRoot} from './constant';
-import {importFiles} from '../../utils/filesImport';
-import {logger} from '@epic-helper/utils';
+import {importFiles, logger} from '@epic-helper/utils';
 
 async function loadPrefixCommands(client: Client) {
   const commands = await importFiles<PrefixCommand>({
@@ -13,9 +12,9 @@ async function loadPrefixCommands(client: Client) {
   logger({
     message: `Loaded (${commands.length}) prefix commands`,
   });
-  commands.forEach((command) => {
-    if (!command?.name) return;
-    client.prefixCommands.set(`${command.type}:${command.name}`, command);
+  commands.forEach(({data}) => {
+    if (!data?.name) return;
+    client.prefixCommands.set(`${data.type}:${data.name}`, data);
   });
 }
 
@@ -30,9 +29,9 @@ async function loadSlashCommands(client: Client) {
   logger({
     message: `Loaded (${commands.length}) slash commands`,
   });
-  commands.forEach((command) => {
-    if (!command?.name) return;
-    client.slashCommands.set(command.name, command);
+  commands.forEach(({data}) => {
+    if (!data?.name) return;
+    client.slashCommands.set(data.name, data);
   });
 }
 
@@ -46,9 +45,9 @@ async function loadSlashMessages(client: Client) {
   logger({
     message: `Loaded (${commands.length}) slash messages`,
   });
-  commands.forEach((command) => {
-    if (!command?.name) return;
-    client.slashMessages.set(command.name, command);
+  commands.forEach(({data}) => {
+    if (!data?.name) return;
+    client.slashMessages.set(data.name, data);
   });
 }
 
@@ -62,9 +61,9 @@ async function loadBotMessages(client: Client) {
   logger({
     message: `Loaded (${commands.length}) bot messages`,
   });
-  commands.forEach((command) => {
-    if (!command?.name) return;
-    client.botMessages.set(command.name, command);
+  commands.forEach(({data}) => {
+    if (!data?.name) return;
+    client.botMessages.set(data.name, data);
   });
 }
 

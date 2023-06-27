@@ -5,14 +5,22 @@ interface IImportFiles {
   options: ReaddirpOptions;
 }
 
-export const importFiles = <T>({options, path}: IImportFiles): Promise<T[]> => {
+interface IReturn<T> {
+  data: T;
+  path: string;
+}
+
+export const importFiles = <T>({options, path}: IImportFiles): Promise<IReturn<T>[]> => {
   return new Promise((resolve) => {
-    const files: any[] = [];
+    const files: IReturn<T>[] = [];
     readdirp(path, options)
       .on('data', async (entry: EntryInfo) => {
-        const {fullPath} = entry;
+        const {fullPath, path} = entry;
         const file = await import(fullPath);
-        files.push(file.default);
+        files.push({
+          data: file.default,
+          path,
+        });
       })
       .on('end', () => {
         resolve(files);

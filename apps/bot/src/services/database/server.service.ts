@@ -2,7 +2,7 @@ import {mongoClient} from '@epic-helper/services';
 import {IEnchantChannel, IServer, serverSchema} from '@epic-helper/models';
 import {RPG_COMMAND_TYPE, RPG_RANDOM_EVENTS} from '@epic-helper/constants';
 import {UpdateQuery} from 'mongoose';
-import {typedObjectEntries} from '../../utils/typed-object-entries';
+import {typedObjectEntries} from '@epic-helper/utils';
 
 const dbServer = mongoClient.model('servers', serverSchema);
 

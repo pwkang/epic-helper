@@ -1,7 +1,6 @@
 import {Client} from 'discord.js';
 import {handlerFileFilter, handlerRoot} from './constant';
-import {importFiles} from '../../utils/filesImport';
-import {logger} from '@epic-helper/utils';
+import {importFiles, logger} from '@epic-helper/utils';
 
 export default async function loadBotEvents(client: Client) {
   const commands = await importFiles<BotEvent>({
@@ -13,12 +12,12 @@ export default async function loadBotEvents(client: Client) {
   logger({
     message: `Loaded (${commands.length}) bot events`,
   });
-  commands.forEach((command) => {
-    if (!command?.eventName) return;
-    if (command.once) {
-      client.once(command.eventName, (...args) => command.execute(client, ...args));
+  commands.forEach(({data}) => {
+    if (!data?.eventName) return;
+    if (data.once) {
+      client.once(data.eventName, (...args) => data.execute(client, ...args));
     } else {
-      client.on(command.eventName, (...args) => command.execute(client, ...args));
+      client.on(data.eventName, (...args) => data.execute(client, ...args));
     }
   });
 }
