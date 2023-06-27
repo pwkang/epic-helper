@@ -1,15 +1,11 @@
 {
   "name": "@epic-helper/bot",
   "version": "1.0.0",
-  "description": "",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:bot": "tsc"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@epic-helper/constants": "workspace:*",
     "@epic-helper/models": "workspace:*",
