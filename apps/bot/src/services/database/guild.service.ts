@@ -167,6 +167,7 @@ const updateGuildInfo = async ({serverId, name, stealth, level, energy}: IUpdate
   if (stealth !== undefined) query.$set!['info.stealth'] = stealth;
   if (level !== undefined) query.$set!['info.level'] = level;
   if (energy !== undefined) query.$set!['info.energy'] = energy;
+  if (Object.keys(query.$set!).length === 0) return Promise.resolve(null);
   return dbGuild.findOneAndUpdate({serverId}, query, {new: true});
 };
 

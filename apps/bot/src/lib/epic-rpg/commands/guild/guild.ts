@@ -16,7 +16,7 @@ export interface IRpgGuild {
 }
 
 export const rpgGuild = ({author, client, message, isSlashCommand}: IRpgGuild) => {
-  if (!message.inGuild()) return;
+  if (!message.inGuild() || !!message.mentions.users.size) return;
   const event = createRpgCommandListener({
     channelId: message.channel.id,
     client,
@@ -44,8 +44,8 @@ export const rpgGuild = ({author, client, message, isSlashCommand}: IRpgGuild) =
         author,
         embed,
         server: message.guild,
-        userId: author.id,
         guildRoleId: roles.first()?.id!,
+        isSlashCommand,
       });
     }
   });
@@ -56,14 +56,28 @@ interface IRpgGuildSuccess {
   author: User;
   embed: Embed;
   server: Guild;
-  userId: string;
   guildRoleId: string;
+  isSlashCommand?: boolean;
 }
 
-const rpgGuildSuccess = async ({author, embed, server, userId, guildRoleId}: IRpgGuildSuccess) => {
+const rpgGuildSuccess = async ({
+  author,
+  embed,
+  server,
+  guildRoleId,
+  isSlashCommand,
+}: IRpgGuildSuccess) => {
   const guildInfo = embedReaders.guild({
     embed,
   });
+  if (isSlashCommand) {
+    // return if guild name is not matched in slash command
+    const currentGuild = await guildService.findGuild({
+      serverId: server.id,
+      roleId: guildRoleId,
+    });
+    if (currentGuild && currentGuild.info.name !== guildInfo.name) return;
+  }
   const guild = await guildService.registerReminder({
     readyIn: guildInfo.readyIn,
     roleId: guildRoleId,
