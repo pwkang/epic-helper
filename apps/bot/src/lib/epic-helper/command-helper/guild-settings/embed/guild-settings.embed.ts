@@ -35,9 +35,9 @@ export const _getGuildSettingsEmbed = ({guildAccount}: IGetGuildReminderEmbed): 
           `**Raid Message:** ${guildAccount.upgraid.message.raid ?? '-'}`,
           `**Target Stealth:** ${guildAccount.upgraid.targetStealth ?? '-'}`,
           `**Status:** ${
-            guildAccount.upgraid.readyAt
+            guildAccount.upgraid.readyAt && guildAccount.upgraid.readyAt.getTime() > Date.now()
               ? timestampHelper.relative({time: guildAccount.upgraid.readyAt})
-              : 'ready'
+              : 'Ready'
           }`,
         ].join('\n'),
         inline: false,

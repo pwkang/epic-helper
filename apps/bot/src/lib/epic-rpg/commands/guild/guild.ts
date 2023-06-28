@@ -7,6 +7,7 @@ import {djsMemberHelper} from '../../../discordjs/member';
 import {djsMessageHelper} from '../../../discordjs/message';
 import register from '../../../../commands/prefix/epic-helper/account/register';
 import {guildService} from '../../../../services/database/guild.service';
+import ms from 'ms';
 
 export interface IRpgGuild {
   client: Client;

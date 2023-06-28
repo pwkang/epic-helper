@@ -1,6 +1,22 @@
 import {mongoClient} from '@epic-helper/services';
 import {guildSchema, type IGuild} from '@epic-helper/models';
 import {UpdateQuery} from 'mongoose';
+import {redisGuildReminder} from '../redis/guild-reminder.redis';
+
+guildSchema.post('findOneAndUpdate', async (doc: IGuild) => {
+  if (doc.upgraid.readyAt && doc.upgraid.readyAt > new Date()) {
+    await redisGuildReminder.setReminderTime({
+      serverId: doc.serverId,
+      readyAt: doc.upgraid.readyAt,
+      guildRoleId: doc.roleId,
+    });
+  } else {
+    await redisGuildReminder.deleteReminderTime({
+      serverId: doc.serverId,
+      guildRoleId: doc.roleId,
+    });
+  }
+});
 
 const dbGuild = mongoClient.model('guilds', guildSchema);
 
