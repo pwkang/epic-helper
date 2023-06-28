@@ -17,6 +17,7 @@ export const _getGlobalSlashCommands = async ({client}: IGetGlobalSlashCommands)
       message: e.rawError.message,
       variant: 'get-global-slash-commands',
       logLevel: 'error',
+      clusterId: client.cluster?.id,
     });
     return [];
   }

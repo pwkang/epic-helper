@@ -23,6 +23,7 @@ export const _deleteGuildSlashCommand = async ({
       message: e.rawError.message,
       variant: 'delete-guild-slash-command',
       logLevel: 'error',
+      clusterId: client.cluster?.id,
     });
   }
 };

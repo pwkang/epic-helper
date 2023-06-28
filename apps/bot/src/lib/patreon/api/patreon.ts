@@ -2,12 +2,13 @@ import patreonUrlGenerator from './patreon-url-generator';
 import {IFetchPatreonCampaignMembersResponse, IFetchPatreonCampaignResponse} from '../type';
 import {logger, sleep} from '@epic-helper/utils';
 import {patreonAxiosClient} from '@epic-helper/services';
+import {Client} from 'discord.js';
 
 const PATREON_CAMPAIGN_ID = process.env.PATREON_CAMPAIGN_ID!;
 
-export const getPatrons = async (): Promise<
-  Pick<Awaited<IFetchPatreonCampaignMembersResponse>, 'data' | 'included'>
-> => {
+export const getPatrons = async (
+  client: Client
+): Promise<Pick<Awaited<IFetchPatreonCampaignMembersResponse>, 'data' | 'included'>> => {
   const data: IFetchPatreonCampaignMembersResponse['data'] = [];
   const included: IFetchPatreonCampaignMembersResponse['included'] = [];
   let nextCursor: string | undefined = undefined;
@@ -51,6 +52,7 @@ export const getPatrons = async (): Promise<
         logLevel: 'error',
         message: e,
         variant: 'PATREON_SERVICE',
+        clusterId: client.cluster?.id,
       });
     }
   }
@@ -61,7 +63,7 @@ export const getPatrons = async (): Promise<
   };
 };
 
-const getCampaignInfo = async () => {
+const getCampaignInfo = async (client: Client) => {
   const url = patreonUrlGenerator.generateFetchCampaignUrl({
     include: {
       tiers: ['amount_cents', 'patron_count', 'discord_role_ids', 'title'],
@@ -83,6 +85,7 @@ const getCampaignInfo = async () => {
       logLevel: 'error',
       message: e,
       variant: 'PATREON_SERVICE',
+      clusterId: client.cluster?.id,
     });
     return null;
   }

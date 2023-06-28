@@ -5,12 +5,14 @@ import pretty from 'pino-pretty';
 dotenv.config();
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
+const USE_PINO_PRETTY = process.env.USE_PINO_PRETTY === 'true';
 const isProduction = NODE_ENV === 'production';
 
 interface ILogger {
   variant?: string;
   message: any;
   logLevel?: Level;
+  clusterId?: number;
 }
 
 export const logger = (props: ILogger | string) => {
@@ -21,17 +23,20 @@ export const logger = (props: ILogger | string) => {
   const logLevel: Level = isString ? 'info' : props.logLevel ?? 'info';
 
   let loggerChild: Logger;
-  if (isProduction) {
+  if (isProduction && !isString && !USE_PINO_PRETTY) {
     loggerChild = pino({});
     loggerChild.setBindings({
       variant,
+      clusterId: props?.clusterId !== undefined ? String(props.clusterId) : undefined,
     });
   } else {
     const variantMsg = variant ? `${variant}: ` : '';
+    const clusterIdMsg =
+      !isString && props?.clusterId !== undefined ? `[Cluster ${props.clusterId}] ` : '';
     loggerChild = pino(
       pretty({
         translateTime: 'SYS:yyyy-mm-dd hh:MM:ss TT',
-        messageFormat: `${variantMsg}{msg}`,
+        messageFormat: `${clusterIdMsg}${variantMsg}{msg}`,
       })
     );
   }

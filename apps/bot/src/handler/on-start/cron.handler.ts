@@ -12,6 +12,7 @@ export default async function loadCronJob(client: Client) {
   });
   logger({
     message: `Loaded (${commands.length}) cron jobs`,
+    clusterId: client.cluster?.id,
   });
   commands.forEach(({data}) => {
     if (!data?.name || data.disabled) return;

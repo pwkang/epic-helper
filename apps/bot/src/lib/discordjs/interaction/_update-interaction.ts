@@ -24,6 +24,7 @@ export default async function _updateInteraction({
       message: error.rawError,
       variant: 'updateInteraction',
       logLevel: 'warn',
+      clusterId: client.cluster?.id,
     });
   }
 }

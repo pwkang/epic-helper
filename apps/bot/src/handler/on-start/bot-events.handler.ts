@@ -11,6 +11,7 @@ export default async function loadBotEvents(client: Client) {
   });
   logger({
     message: `Loaded (${commands.length}) bot events`,
+    clusterId: client.cluster?.id,
   });
   commands.forEach(({data}) => {
     if (!data?.eventName) return;

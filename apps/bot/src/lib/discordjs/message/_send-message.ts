@@ -50,6 +50,7 @@ async function checkTypeAndSend({
         message: error.rawError.message,
         logLevel: 'warn',
         variant: 'sendMessage',
+        clusterId: client.cluster?.id,
       });
       return;
     }

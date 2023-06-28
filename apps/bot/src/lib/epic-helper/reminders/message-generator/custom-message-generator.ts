@@ -80,6 +80,7 @@ export const generateUserReminderMessage = async ({
   logger({
     message: `messageTemplate: ${messageTemplate}`,
     logLevel: 'debug',
+    clusterId: client.cluster?.id,
   });
   return interpolateMessage({
     message: messageTemplate,

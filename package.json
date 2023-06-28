@@ -14,7 +14,9 @@
     "clean:node_modules": "find . -name \"node_modules\" -type d -prune -exec rm -rf '{}' +",
     "clean:build": "find . -name \"dist\" -type d -prune -exec rm -rf '{}' +",
     "build:shared": "turbo run build:shared",
-    "build:bot": "turbo run build:bot"
+    "build:bot": "turbo run build:bot",
+    "dev-shard:bot": "npm run build:bot && USE_PINO_PRETTY=true node apps/bot/dist/index.js",
+    "start:bot": "node apps/bot/dist/index.js"
   },
   "repository": {
     "type": "git",
