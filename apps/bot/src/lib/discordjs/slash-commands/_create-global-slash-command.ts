@@ -18,6 +18,7 @@ export const _createGlobalSlashCommand = async ({commands, client}: ICreateGloba
       message: e.rawError.message,
       variant: 'create-global-slash-command',
       logLevel: 'error',
+      clusterId: client.cluster?.id,
     });
     return null;
   }

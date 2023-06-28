@@ -34,6 +34,7 @@ export const _createGuildSlashCommand = async ({
       message: e.rawError,
       variant: 'create-guild-slash-command',
       logLevel: 'error',
+      clusterId: client.cluster?.id,
     });
     return null;
   }

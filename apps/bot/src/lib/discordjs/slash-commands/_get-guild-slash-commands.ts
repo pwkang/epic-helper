@@ -19,6 +19,7 @@ export const _getGuildSlashCommands = async ({guild, client}: IGetGuildSlashComm
       message: e.rawError.message,
       variant: 'get-guild-slash-commands',
       logLevel: 'error',
+      clusterId: client.cluster?.id,
     });
     return [];
   }

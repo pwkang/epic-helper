@@ -16,6 +16,7 @@ export default async function _deleteMessage({client, message}: DeleteMessagePro
       message: e.rawError.message,
       variant: 'delete-message',
       logLevel: 'warn',
+      clusterId: client.cluster?.id,
     });
   }
 }

@@ -35,6 +35,7 @@ export default async function _replyInteraction<T>({
       message: error.rawError,
       variant: 'replyInteraction',
       logLevel: 'warn',
+      clusterId: client.cluster?.id,
     });
   }
   if (!interactive || !interactionResponse) return;
@@ -84,6 +85,7 @@ export default async function _replyInteraction<T>({
           message: error.message,
           logLevel: 'warn',
           variant: 'replyInteraction',
+          clusterId: client.cluster?.id,
         });
       }
     }

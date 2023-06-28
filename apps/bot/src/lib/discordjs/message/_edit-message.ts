@@ -17,6 +17,7 @@ export default async function _editMessage({client, message, options}: EditMessa
       message: e.rawError.message,
       variant: 'edit-message',
       logLevel: 'warn',
+      clusterId: client.cluster?.id,
     });
   }
 }

@@ -30,6 +30,7 @@ export default async function _replyMessage({message, options, client}: ReplyMes
         message: error.rawError.message,
         logLevel: 'warn',
         variant: 'replyMessage',
+        clusterId: client.cluster?.id,
       });
       return;
     }

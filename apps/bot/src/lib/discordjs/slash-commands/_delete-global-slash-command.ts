@@ -16,6 +16,7 @@ export const _deleteGlobalSlashCommand = async ({client, commandId}: IDeleteGuil
       message: e.rawError.message,
       variant: 'delete-global-slash-command',
       logLevel: 'error',
+      clusterId: client.cluster?.id,
     });
   }
 };

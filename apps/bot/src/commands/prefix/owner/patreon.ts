@@ -8,7 +8,7 @@ export default <PrefixCommand>{
   commands: ['p'],
   type: PREFIX_COMMAND_TYPE.dev,
   execute: async (client, message) => {
-    const data = await patreonApi.getPatrons();
+    const data = await patreonApi.getPatrons(client);
     if (!data) return;
     const response = await createJsonBin(data);
     djsMessageHelper.send({

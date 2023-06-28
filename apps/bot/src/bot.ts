@@ -39,10 +39,12 @@ Promise.all([loadCommands(client), loadBotEvents(client), loadRedis(), loadCronJ
   async () => {
     logger({
       message: 'All handlers loaded, connecting to Discord...',
+      clusterId: client.cluster?.id,
     });
     client.login(process.env.BOT_TOKEN).catch((error) => {
       logger({
         message: error.message,
+        clusterId: client.cluster?.id,
       });
     });
   }

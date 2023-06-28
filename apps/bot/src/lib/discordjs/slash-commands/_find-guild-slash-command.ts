@@ -26,6 +26,7 @@ export const _findGuildSlashCommand = async ({
       message: e.rawError.message,
       variant: 'find-guild-slash-command',
       logLevel: 'error',
+      clusterId: client.cluster?.id,
     });
     return null;
   }

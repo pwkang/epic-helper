@@ -26,6 +26,7 @@ export default <PrefixCommand>{
     logger({
       message: `${JSON.stringify(emojiMap)}`,
       variant: 'listEmoji',
+      clusterId: client.cluster?.id,
     });
   },
 };

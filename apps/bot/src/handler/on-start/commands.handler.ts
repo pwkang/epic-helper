@@ -11,6 +11,7 @@ async function loadPrefixCommands(client: Client) {
   });
   logger({
     message: `Loaded (${commands.length}) prefix commands`,
+    clusterId: client.cluster?.id,
   });
   commands.forEach(({data}) => {
     if (!data?.name) return;
@@ -28,6 +29,7 @@ async function loadSlashCommands(client: Client) {
   });
   logger({
     message: `Loaded (${commands.length}) slash commands`,
+    clusterId: client.cluster?.id,
   });
   commands.forEach(({data}) => {
     if (!data?.name) return;
@@ -44,6 +46,7 @@ async function loadSlashMessages(client: Client) {
   });
   logger({
     message: `Loaded (${commands.length}) slash messages`,
+    clusterId: client.cluster?.id,
   });
   commands.forEach(({data}) => {
     if (!data?.name) return;
@@ -60,6 +63,7 @@ async function loadBotMessages(client: Client) {
   });
   logger({
     message: `Loaded (${commands.length}) bot messages`,
+    clusterId: client.cluster?.id,
   });
   commands.forEach(({data}) => {
     if (!data?.name) return;
