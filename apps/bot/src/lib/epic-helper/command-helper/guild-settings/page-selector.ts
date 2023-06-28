@@ -28,7 +28,7 @@ export const _getPageSelector = ({
   guildsOnPage.forEach((guild) => {
     const roleName = server.roles.cache.get(guild.roleId)?.name;
     menu.addOptions({
-      label: guild.info.name ? '-' : `Role: ${roleName ?? 'Not found'}`,
+      label: guild.info.name ? guild.info.name : `Role: ${roleName ?? 'Not found'}`,
       description: guild.info.name ? `Role: ${roleName ?? 'Not found'}` : undefined,
       value: guild.roleId,
       default: guild.roleId === selectedGuildRoleId,
