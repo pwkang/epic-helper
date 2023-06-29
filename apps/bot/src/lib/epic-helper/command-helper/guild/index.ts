@@ -1,27 +1,7 @@
-import {Client, Collection, EmbedBuilder, Guild, GuildMember, Role} from 'discord.js';
-import {guildService} from '../../../../services/database/guild.service';
-import {djsMemberHelper} from '../../../discordjs/member';
+import {Collection, EmbedBuilder, Role} from 'discord.js';
 import {BOT_COLOR} from '@epic-helper/constants';
 import messageFormatter from '../../../discordjs/message-formatter';
-
-export interface IGetUserGuildRoles {
-  client: Client;
-  server: Guild;
-  userId: string;
-}
-
-const getUserGuildRoles = async ({server, userId, client}: IGetUserGuildRoles) => {
-  const serverMember = await djsMemberHelper.getMember({
-    serverId: server.id,
-    client,
-    userId,
-  });
-  if (!serverMember) return null;
-  const guilds = await guildService.getAllGuildRoles({serverId: server.id});
-  return serverMember.roles.cache.filter((userRole) =>
-    guilds.some((guildRole) => userRole.id === guildRole.roleId)
-  );
-};
+import {_getUserGuildRoles} from './_get-user-guild-roles';
 
 const renderMultipleGuildEmbed = (roles: Collection<string, Role>) =>
   new EmbedBuilder().setColor(BOT_COLOR.embed)
@@ -32,6 +12,6 @@ ${roles.map((role) => messageFormatter.role(role.id)).join(' ')}
     `);
 
 export const _guildHelper = {
-  getUserGuildRoles,
+  getUserGuildRoles: _getUserGuildRoles,
   renderMultipleGuildEmbed,
 };

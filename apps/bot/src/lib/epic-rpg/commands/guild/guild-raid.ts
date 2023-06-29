@@ -6,6 +6,7 @@ import commandHelper from '../../../epic-helper/command-helper';
 import ms from 'ms';
 import {djsMessageHelper} from '../../../discordjs/message';
 import {logger} from '@epic-helper/utils';
+import {upgraidService} from '../../../../services/database/upgraid.service';
 
 interface IRpgGuildRaid {
   client: Client;
@@ -44,6 +45,7 @@ export const rpgGuildRaid = async ({author, message, isSlashCommand, client}: IR
         embed,
         server: message.guild,
         guildRoleId: roles.first()?.id!,
+        message,
       });
     }
   });
@@ -55,6 +57,7 @@ interface IRpgGuildRaidSuccess {
   embed: Embed;
   server: Guild;
   guildRoleId: string;
+  message: Message;
 }
 
 const rpgGuildRaidSuccess = async ({
@@ -62,12 +65,23 @@ const rpgGuildRaidSuccess = async ({
   server,
   embed,
   author,
+  message,
 }: IRpgGuildRaidSuccess): Promise<void> => {
   logger('raid');
   await guildService.registerReminder({
     readyIn: ms('2h'),
     roleId: guildRoleId,
     serverId: server.id,
+  });
+  upgraidService.addRecord({
+    guildRoleId,
+    commandType: 'raid',
+    userId: author.id,
+    actionMessageId: message.id,
+    actionServerId: message.guildId!,
+    actionChannelId: message.channel.id,
+    serverId: server.id,
+    upgraidAt: new Date(),
   });
 };
 
