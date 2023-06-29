@@ -1,12 +1,12 @@
 import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
-import {rpgGuild} from '../../../../lib/epic-rpg/commands/guild/guild';
+import {rpgGuildUpgrade} from '../../../../lib/epic-rpg/commands/guild/guild-upgrade';
 
 export default <PrefixCommand>{
-  name: 'guild',
-  commands: ['guild'],
+  name: 'guildUpgrade',
+  commands: ['guild upgrade'],
   type: PREFIX_COMMAND_TYPE.rpg,
   execute: (client, message) => {
-    rpgGuild({
+    rpgGuildUpgrade({
       author: message.author,
       message,
       isSlashCommand: false,
