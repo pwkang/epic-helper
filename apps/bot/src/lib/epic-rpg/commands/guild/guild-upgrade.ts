@@ -45,12 +45,17 @@ export const rpgGuildUpgrade = async ({
           },
         });
       }
-      rpgGuildUpgradeSuccess({
+      await rpgGuildUpgradeSuccess({
         author,
         embed,
         server: message.guild,
         guildRoleId: roles.first()?.id!,
         message,
+      });
+      await commandHelper.guild.sendRecordsToGuildChannel({
+        guildRoleId: roles.first()?.id!,
+        client,
+        serverId: message.guildId!,
       });
     }
   });
@@ -77,7 +82,6 @@ const rpgGuildUpgradeSuccess = async ({
   author,
   message,
 }: IRpgGuildUpgradeSuccess): Promise<void> => {
-  logger('upgrade');
   await guildService.registerReminder({
     readyIn: ms('2h'),
     roleId: guildRoleId,

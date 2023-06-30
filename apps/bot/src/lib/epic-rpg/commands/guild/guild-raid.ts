@@ -40,12 +40,17 @@ export const rpgGuildRaid = async ({author, message, isSlashCommand, client}: IR
           },
         });
       }
-      rpgGuildRaidSuccess({
+      await rpgGuildRaidSuccess({
         author,
         embed,
         server: message.guild,
         guildRoleId: roles.first()?.id!,
         message,
+      });
+      await commandHelper.guild.sendRecordsToGuildChannel({
+        guildRoleId: roles.first()?.id!,
+        client,
+        serverId: message.guildId!,
       });
     }
   });
@@ -60,20 +65,19 @@ interface IRpgGuildRaidSuccess {
   message: Message;
 }
 
-const rpgGuildRaidSuccess = async ({
+export const rpgGuildRaidSuccess = async ({
   guildRoleId,
   server,
   embed,
   author,
   message,
 }: IRpgGuildRaidSuccess): Promise<void> => {
-  logger('raid');
   await guildService.registerReminder({
     readyIn: ms('2h'),
     roleId: guildRoleId,
     serverId: server.id,
   });
-  upgraidService.addRecord({
+  await upgraidService.addRecord({
     guildRoleId,
     commandType: 'raid',
     userId: author.id,

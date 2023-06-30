@@ -87,6 +87,20 @@ const addRecord = async ({
   );
 };
 
+interface IFindCurrentUpgraid {
+  serverId: string;
+  guildRoleId: string;
+}
+
+const findCurrentUpgraid = async ({serverId, guildRoleId}: IFindCurrentUpgraid) => {
+  return dbUpgraid.findOne({
+    serverId,
+    roleId: guildRoleId,
+    weekAt: getGuildWeek(),
+  });
+};
+
 export const upgraidService = {
   addRecord,
+  findCurrentUpgraid,
 };
