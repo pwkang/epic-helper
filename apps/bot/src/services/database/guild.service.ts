@@ -1,6 +1,23 @@
 import {mongoClient} from '@epic-helper/services';
-import {guildSchema, IGuild} from '@epic-helper/models';
+import {guildSchema, type IGuild} from '@epic-helper/models';
 import {UpdateQuery} from 'mongoose';
+import {redisGuildReminder} from '../redis/guild-reminder.redis';
+import {Client} from 'discord.js';
+
+guildSchema.post('findOneAndUpdate', async (doc: IGuild) => {
+  if (doc.upgraid.readyAt && doc.upgraid.readyAt > new Date()) {
+    await redisGuildReminder.setReminderTime({
+      serverId: doc.serverId,
+      readyAt: doc.upgraid.readyAt,
+      guildRoleId: doc.roleId,
+    });
+  } else {
+    await redisGuildReminder.deleteReminderTime({
+      serverId: doc.serverId,
+      guildRoleId: doc.roleId,
+    });
+  }
+});
 
 const dbGuild = mongoClient.model('guilds', guildSchema);
 
@@ -122,6 +139,73 @@ const updateLeader = async ({serverId, roleId, leaderId}: IUpdateLeader) => {
   return dbGuild.findOneAndUpdate({serverId, roleId}, {$set: {leaderId}}, {new: true});
 };
 
+interface IGetAllGuildRoles {
+  serverId: string;
+}
+
+const getAllGuildRoles = async ({serverId}: IGetAllGuildRoles) => {
+  return dbGuild.find({serverId}).select('roleId');
+};
+
+interface IRegisterReminder {
+  serverId: string;
+  roleId: string;
+  readyIn: number;
+}
+
+const registerReminder = async ({serverId, roleId, readyIn}: IRegisterReminder) => {
+  const query: UpdateQuery<IGuild> = {};
+  if (readyIn) {
+    query.$set = {
+      'upgraid.readyAt': new Date(Date.now() + readyIn),
+    };
+  } else {
+    query.$unset = {
+      'upgraid.readyAt': 1,
+    };
+  }
+
+  return dbGuild.findOneAndUpdate({serverId, roleId}, query, {new: true});
+};
+
+interface IUpdateGuildInfo {
+  serverId: string;
+  name?: string;
+  stealth?: number;
+  level?: number;
+  energy?: number;
+}
+
+const updateGuildInfo = async ({serverId, name, stealth, level, energy}: IUpdateGuildInfo) => {
+  const query: UpdateQuery<IGuild> = {
+    $set: {},
+  };
+  if (name !== undefined) query.$set!['info.name'] = name;
+  if (stealth !== undefined) query.$set!['info.stealth'] = stealth;
+  if (level !== undefined) query.$set!['info.level'] = level;
+  if (energy !== undefined) query.$set!['info.energy'] = energy;
+  if (Object.keys(query.$set!).length === 0) return Promise.resolve(null);
+  return dbGuild.findOneAndUpdate({serverId}, query, {new: true});
+};
+
+interface IWeeklyReset {
+  client: Client;
+}
+
+const weeklyReset = async ({client}: IWeeklyReset) => {
+  await dbGuild.updateMany(
+    {
+      serverId: {$in: client.guilds.cache.map((guild) => guild.id)},
+    },
+    {
+      $unset: {'upgraid.readyAt': 1},
+      $set: {
+        'info.stealth': 0,
+      },
+    }
+  );
+};
+
 export const guildService = {
   registerGuild,
   isRoleUsed,
@@ -132,4 +216,8 @@ export const guildService = {
   getAllGuilds,
   deleteGuild,
   updateLeader,
+  getAllGuildRoles,
+  registerReminder,
+  updateGuildInfo,
+  weeklyReset,
 };

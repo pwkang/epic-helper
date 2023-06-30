@@ -33,5 +33,6 @@ export const guildSchema = new Schema<IGuild>({
       upgrade: String,
       raid: String,
     },
+    readyAt: Date,
   },
 });

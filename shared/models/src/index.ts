@@ -7,6 +7,9 @@ export * from './guild/guild.type';
 export * from './server/server.schema';
 export * from './server/server.type';
 
+export * from './upgraid/upgraid.schema';
+export * from './upgraid/upgraid.type';
+
 export * from './user/user.schema';
 export * from './user/user.type';
 
