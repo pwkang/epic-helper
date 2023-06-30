@@ -1,13 +1,10 @@
-import {Client, Embed, Guild, GuildMember, Message, User} from 'discord.js';
+import {Client, Embed, Guild, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {IMessageEmbedChecker} from '../../../../types/utils';
 import embedReaders from '../../embed-readers';
 import commandHelper from '../../../epic-helper/command-helper';
-import {djsMemberHelper} from '../../../discordjs/member';
 import {djsMessageHelper} from '../../../discordjs/message';
-import register from '../../../../commands/prefix/epic-helper/account/register';
 import {guildService} from '../../../../services/database/guild.service';
-import ms from 'ms';
 
 export interface IRpgGuild {
   client: Client;

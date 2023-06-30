@@ -1,12 +1,10 @@
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {Client, Embed, Guild, Message, User} from 'discord.js';
+import {Client, Guild, Message, User} from 'discord.js';
 import {IMessageContentChecker, IMessageEmbedChecker} from '../../../../types/utils';
 import {guildService} from '../../../../services/database/guild.service';
-import commandHelper from '../../../epic-helper/command-helper';
 import ms from 'ms';
-import {djsMessageHelper} from '../../../discordjs/message';
-import {logger} from '@epic-helper/utils';
 import {upgraidService} from '../../../../services/database/upgraid.service';
+import {_checkUserGuildRoles, _sendUpgraidResultToGuildChannel} from './_shared';
 
 interface IRpgGuildRaid {
   client: Client;
@@ -25,32 +23,25 @@ export const rpgGuildRaid = async ({author, message, isSlashCommand, client}: IR
   if (!event) return;
   event.on('embed', async (embed) => {
     if (isGuildRaidSuccess({author, embed})) {
-      const roles = await commandHelper.guild.getUserGuildRoles({
-        client: author.client,
-        userId: author.id,
+      const roleId = await _checkUserGuildRoles({
+        channelId: message.channel.id,
         server: message.guild,
+        client,
+        author,
       });
-      if (!roles || !roles.size) return;
-      if (roles.size > 1) {
-        return djsMessageHelper.send({
-          channelId: message.channel.id,
-          client,
-          options: {
-            embeds: [commandHelper.guild.renderMultipleGuildEmbed(roles)],
-          },
-        });
-      }
+      if (!roleId) return;
       await rpgGuildRaidSuccess({
         author,
-        embed,
         server: message.guild,
-        guildRoleId: roles.first()?.id!,
+        guildRoleId: roleId,
         message,
       });
-      await commandHelper.guild.sendRecordsToGuildChannel({
-        guildRoleId: roles.first()?.id!,
+      await _sendUpgraidResultToGuildChannel({
+        guildRoleId: roleId,
         client,
         serverId: message.guildId!,
+        rpgEmbed: embed,
+        actionChannelId: message.channel.id,
       });
     }
   });
@@ -59,7 +50,6 @@ export const rpgGuildRaid = async ({author, message, isSlashCommand, client}: IR
 
 interface IRpgGuildRaidSuccess {
   author: User;
-  embed: Embed;
   server: Guild;
   guildRoleId: string;
   message: Message;
@@ -68,7 +58,6 @@ interface IRpgGuildRaidSuccess {
 export const rpgGuildRaidSuccess = async ({
   guildRoleId,
   server,
-  embed,
   author,
   message,
 }: IRpgGuildRaidSuccess): Promise<void> => {
