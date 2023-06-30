@@ -23,7 +23,7 @@ const setReminderTime = async ({serverId, guildRoleId, readyAt}: ISetReminderTim
   await redisService.set(`${prefix}${serverId}:${guildRoleId}`, JSON.stringify(data));
 };
 
-const getReminderTime = async (): Promise<Pick<ISetReminderTime, 'serverId' | 'guildRoleId'>[]> => {
+const getReadyGuild = async (): Promise<Pick<ISetReminderTime, 'serverId' | 'guildRoleId'>[]> => {
   const keys = await redisService.keys(`${prefix}*`);
   const reminderList = await Promise.all(
     keys.map(async (key) => {
@@ -55,8 +55,29 @@ const deleteReminderTime = async ({guildRoleId, serverId}: IDeleteReminderTime) 
   await redisService.del(`${prefix}${serverId}:${guildRoleId}`);
 };
 
+const getAllGuildReminder = async () => {
+  const keys = await redisService.keys(`${prefix}*`);
+  const reminderList = await Promise.all(
+    keys.map(async (key) => {
+      const data = await redisService.get(key);
+      if (!data) return null;
+      const {readyAt, guildRoleId, serverId} = JSON.parse(data) as Record<
+        keyof IRedisGuildReminder,
+        string
+      >;
+      return {
+        guildRoleId,
+        serverId,
+        readyAt: new Date(readyAt),
+      };
+    })
+  );
+  return reminderList.filter((item) => item !== null) as IRedisGuildReminder[];
+};
+
 export const redisGuildReminder = {
   setReminderTime,
-  getReminderTime,
+  getReadyGuild,
   deleteReminderTime,
+  getAllGuildReminder,
 };

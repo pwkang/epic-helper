@@ -2,6 +2,7 @@ import {mongoClient} from '@epic-helper/services';
 import {guildSchema, type IGuild} from '@epic-helper/models';
 import {UpdateQuery} from 'mongoose';
 import {redisGuildReminder} from '../redis/guild-reminder.redis';
+import {Client} from 'discord.js';
 
 guildSchema.post('findOneAndUpdate', async (doc: IGuild) => {
   if (doc.upgraid.readyAt && doc.upgraid.readyAt > new Date()) {
@@ -187,6 +188,24 @@ const updateGuildInfo = async ({serverId, name, stealth, level, energy}: IUpdate
   return dbGuild.findOneAndUpdate({serverId}, query, {new: true});
 };
 
+interface IWeeklyReset {
+  client: Client;
+}
+
+const weeklyReset = async ({client}: IWeeklyReset) => {
+  await dbGuild.updateMany(
+    {
+      serverId: {$in: client.guilds.cache.map((guild) => guild.id)},
+    },
+    {
+      $unset: {'upgraid.readyAt': 1},
+      $set: {
+        'info.stealth': 0,
+      },
+    }
+  );
+};
+
 export const guildService = {
   registerGuild,
   isRoleUsed,
@@ -200,4 +219,5 @@ export const guildService = {
   getAllGuildRoles,
   registerReminder,
   updateGuildInfo,
+  weeklyReset,
 };
