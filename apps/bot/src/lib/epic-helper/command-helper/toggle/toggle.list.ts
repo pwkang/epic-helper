@@ -1,11 +1,12 @@
 import type {IToggleEmbedsInfo} from './toggle.embed';
-import {IUserToggle} from '@epic-helper/models';
+import {IGuild, IUserToggle} from '@epic-helper/models';
 
 export const donor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
   return [
     {
       id: 'common',
       title: 'Common Features',
+      inline: true,
       children: [
         {
           value: userToggle.reminder.pet,
@@ -96,6 +97,7 @@ export const donor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
       title: 'Custom Reminder',
       value: userToggle.reminder.all,
       path: 'toggle.reminder.all',
+      inline: true,
       children: [
         {
           value: userToggle.reminder.all,
@@ -184,6 +186,7 @@ export const donor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
       title: 'Custom DMs',
       value: userToggle.dm.all,
       path: 'toggle.dm.all',
+      inline: true,
       children: [
         {
           value: userToggle.dm.all,
@@ -281,6 +284,7 @@ export const donor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
       title: 'Custom Mentions',
       value: userToggle.mentions.all,
       path: 'toggle.mentions.all',
+      inline: true,
       children: [
         {
           value: userToggle.mentions.all,
@@ -387,6 +391,7 @@ export const nonDonor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
     {
       id: 'common',
       title: 'Common Features',
+      inline: true,
       children: [
         {
           value: userToggle.reminder.all,
@@ -448,7 +453,91 @@ export const nonDonor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
   ];
 };
 
+const guild = (guildToggle: IGuild['toggle']): IToggleEmbedsInfo[] => {
+  return [
+    {
+      id: 'common',
+      title: 'COMMON',
+      inline: false,
+      children: [
+        {
+          label: 'Enable / Disable Guild',
+          value: guildToggle.active,
+          path: 'toggle.active',
+        },
+      ],
+    },
+    {
+      id: 'upgraid',
+      title: 'UPGRADE/RAID REMINDER',
+      inline: false,
+      children: [
+        {
+          label: 'Enable / Disable',
+          value: guildToggle.upgraid.reminder,
+          path: 'toggle.upgraid.reminder',
+        },
+        {
+          label: 'Send weekly count after upgrade / raid',
+          value: guildToggle.upgraid.sendUpgraidList,
+          path: 'toggle.upgraid.sendUpgraidList',
+        },
+        {
+          label: 'Allow reserved',
+          value: guildToggle.upgraid.allowReserved,
+          path: 'toggle.upgraid.allowReserved',
+        },
+      ],
+    },
+    {
+      id: 'duel',
+      title: 'DUEL LOGGER',
+      inline: false,
+      children: [
+        {
+          label: 'Log the following commands',
+          value: guildToggle.duel.log.active,
+          path: 'toggle.duel.log.active',
+          children: [
+            {
+              label: '`duel add`',
+              value: guildToggle.duel.log.duelAdd,
+              path: 'toggle.duel.log.add',
+            },
+            {
+              label: '`duel undo`',
+              value: guildToggle.duel.log.duelUndo,
+              path: 'toggle.duel.log.undo',
+            },
+            {
+              label: '`duel reset`',
+              value: guildToggle.duel.log.duelReset,
+              path: 'toggle.duel.log.reset',
+            },
+            {
+              label: '`duel modify`',
+              value: guildToggle.duel.log.duelModify,
+              path: 'toggle.duel.log.modify',
+            },
+          ],
+        },
+        {
+          label: 'Duel result message link is required',
+          value: guildToggle.duel.linkRequired,
+          path: 'toggle.duel.linkRequired',
+        },
+        {
+          label: 'Auto reset on every cycle',
+          value: guildToggle.duel.autoReset,
+          path: 'toggle.duel.autoReset',
+        },
+      ],
+    },
+  ];
+};
+
 export const toggleDisplayList = {
   donor,
   nonDonor,
+  guild,
 };

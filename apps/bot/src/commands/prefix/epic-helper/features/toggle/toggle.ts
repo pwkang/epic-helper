@@ -8,13 +8,12 @@ export default <PrefixCommand>{
   commands: ['toggle', 't'],
   type: PREFIX_COMMAND_TYPE.bot,
   execute: async (client, message) => {
-    const userToggle = await userService.getUserToggle(message.author.id);
-    if (!userToggle) return;
+    const userAccount = await userService.getUserAccount(message.author.id);
+    if (!userAccount) return;
 
-    const embed = commandHelper.toggle.getUserToggleEmbed({
-      isDonor: true,
+    const embed = commandHelper.toggle.getDonorToggleEmbed({
       author: message.author,
-      userToggle,
+      userAccount,
     });
     await djsMessageHelper.send({
       client,

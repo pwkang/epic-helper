@@ -2,6 +2,8 @@ import commandHelper from '../../../../../lib/epic-helper/command-helper';
 import {djsMessageHelper} from '../../../../../lib/discordjs/message';
 import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
 import {userService} from '../../../../../services/database/user.service';
+import {toggleDisplayList} from '../../../../../lib/epic-helper/command-helper/toggle/toggle.list';
+import {IUser} from '@epic-helper/models';
 
 export default <PrefixCommand>{
   name: 'toggleOnOff',
@@ -9,24 +11,22 @@ export default <PrefixCommand>{
   type: PREFIX_COMMAND_TYPE.bot,
   execute: async (client, message, args) => {
     const status = args[1] === 'on';
-    let userToggle = await userService.getUserToggle(message.author.id);
-    if (!userToggle) return;
+    let userAccount = await userService.getUserAccount(message.author.id);
+    if (!userAccount) return;
 
-    const query = commandHelper.toggle.getUpdateQuery({
-      userToggle,
+    const query = commandHelper.toggle.getUpdateQuery<IUser>({
       on: status ? message.content : undefined,
       off: status ? undefined : message.content,
-      isDonor: true,
+      toggleInfo: toggleDisplayList.donor(userAccount.toggle),
     });
-    userToggle = await userService.updateUserToggle({
+    userAccount = await userService.updateUserToggle({
       query,
       userId: message.author.id,
     });
-    if (!userToggle) return;
-    const embed = commandHelper.toggle.getUserToggleEmbed({
-      isDonor: true,
+    if (!userAccount) return;
+    const embed = commandHelper.toggle.getDonorToggleEmbed({
       author: message.author,
-      userToggle,
+      userAccount,
     });
     await djsMessageHelper.send({
       client,

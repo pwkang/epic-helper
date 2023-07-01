@@ -368,10 +368,7 @@ interface IUpdateUserToggle {
   query: UpdateQuery<IUser>;
 }
 
-const updateUserToggle = async ({
-  userId,
-  query,
-}: IUpdateUserToggle): Promise<null | IUserToggle> => {
+const updateUserToggle = async ({userId, query}: IUpdateUserToggle): Promise<null | IUser> => {
   const user = await dbUser.findOneAndUpdate(
     {
       userId,
@@ -379,20 +376,16 @@ const updateUserToggle = async ({
     query,
     {
       new: true,
-      projection: {
-        toggle: 1,
-      },
     }
   );
-  if (!user) return null;
-  return user.toggle;
+  return user ?? null;
 };
 
 interface IResetUserToggle {
   userId: string;
 }
 
-const resetUserToggle = async ({userId}: IResetUserToggle): Promise<IUserToggle | null> => {
+const resetUserToggle = async ({userId}: IResetUserToggle): Promise<IUser | null> => {
   const user = await dbUser.findOneAndUpdate(
     {
       userId,
@@ -410,7 +403,7 @@ const resetUserToggle = async ({userId}: IResetUserToggle): Promise<IUserToggle 
     }
   );
 
-  return user?.toggle ?? null;
+  return user ?? null;
 };
 
 interface IGetUserCustomMessage {

@@ -8,6 +8,7 @@ export interface IToggleEmbedsInfo {
   value?: boolean;
   path?: string;
   description?: string;
+  inline: boolean;
   children: {
     label: string;
     value: boolean;
@@ -22,19 +23,11 @@ export interface IToggleEmbedsInfo {
 
 interface IGetToggleEmbed {
   embedsInfo: IToggleEmbedsInfo[];
-  embedAuthor: EmbedAuthorOptions | null;
   displayItem: string;
 }
 
-export const renderEmbed = ({embedsInfo, embedAuthor}: IGetToggleEmbed): EmbedBuilder => {
-  const embed = new EmbedBuilder()
-    .setColor(BOT_COLOR.embed)
-    .setAuthor(embedAuthor)
-    .setDescription(
-      `**Syntax 1:** \`${PREFIX.bot}t <on/off> <ID> [ID] [ID]\` - turn on/off any settings
-      > *\`${PREFIX.bot}t on a1 a5 b3a\`*
-      **Syntax 2:** \`${PREFIX.bot}t reset\` - reset all settings`
-    );
+export const renderEmbed = ({embedsInfo}: IGetToggleEmbed): EmbedBuilder => {
+  const embed = new EmbedBuilder().setColor(BOT_COLOR.embed);
   const fields: EmbedField[] = embedsInfo.map((info, index) =>
     renderFieldValue({
       info,
@@ -52,7 +45,7 @@ interface IRenderFieldValue {
 
 const renderFieldValue = ({info, index}: IRenderFieldValue): EmbedField => {
   const embedValue: string[] = [];
-  const {value, children: parent, title} = info;
+  const {value, children: parent, title, inline} = info;
   const groupId = String.fromCharCode(65 + index);
   const toGrey = value === false;
 
@@ -77,7 +70,7 @@ const renderFieldValue = ({info, index}: IRenderFieldValue): EmbedField => {
 
   return {
     value: embedValue.join('\n'),
-    inline: true,
+    inline,
     name: info.title,
   };
 };

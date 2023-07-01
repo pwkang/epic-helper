@@ -1,24 +1,21 @@
 import type {IToggleEmbedsInfo} from './toggle.embed';
 import {renderEmbed} from './toggle.embed';
 import type {UpdateQuery} from 'mongoose';
-import {User} from 'discord.js';
+import {Guild, User} from 'discord.js';
 import {toggleDisplayList} from './toggle.list';
-import {IUser, IUserToggle} from '@epic-helper/models';
+import {IGuild, IUser, IUserToggle} from '@epic-helper/models';
+import {PREFIX} from '@epic-helper/constants';
 
 export interface IGetUpdateQuery {
-  userToggle: IUserToggle;
   on?: string;
   off?: string;
-  isDonor: boolean;
+  toggleInfo: IToggleEmbedsInfo[];
 }
 
 const regex1 = /^([a-z])([0-9]+)$/;
 const regex2 = /^([a-z])([0-9]+)([a-z])$/;
 
-const getUpdateQuery = ({userToggle, on, off, isDonor}: IGetUpdateQuery): UpdateQuery<IUser> => {
-  const toggleInfo = isDonor
-    ? toggleDisplayList.donor(userToggle)
-    : toggleDisplayList.nonDonor(userToggle);
+const getUpdateQuery = <T>({on, off, toggleInfo}: IGetUpdateQuery): UpdateQuery<T> => {
   const itemOn =
     on
       ?.toLowerCase()
@@ -32,20 +29,20 @@ const getUpdateQuery = ({userToggle, on, off, isDonor}: IGetUpdateQuery): Update
       .filter((item) => regex1.test(item) || regex2.test(item))
       .map((item) => findPath(item, toggleInfo)) ?? [];
 
-  const query: UpdateQuery<IUser> = {
-    $set: {},
-  };
+  const query: Record<string, boolean> = {};
 
   for (const item of itemOn) {
     if (!item) continue;
-    query.$set![item] = true;
+    query[item] = true;
   }
 
   for (const item of itemOff) {
     if (!item) continue;
-    query.$set![item] = false;
+    query[item] = false;
   }
-  return query;
+  return {
+    $set: query,
+  };
 };
 
 const findPath = (key: string, toggleInfo: IToggleEmbedsInfo[]): string | null => {
@@ -68,29 +65,61 @@ const findPath = (key: string, toggleInfo: IToggleEmbedsInfo[]): string | null =
   }
 };
 
-export interface IGetUserToggleEmbed {
-  userToggle: IUserToggle;
-  isDonor: boolean;
+interface IGetDonorToggleEmbed {
+  userAccount: IUser;
   author: User;
 }
 
-const getUserToggleEmbed = ({userToggle, isDonor, author}: IGetUserToggleEmbed) => {
-  const toggleList = isDonor
-    ? toggleDisplayList.donor(userToggle)
-    : toggleDisplayList.nonDonor(userToggle);
+const getDonorToggleEmbed = ({userAccount, author}: IGetDonorToggleEmbed) => {
+  const userToggle = userAccount.toggle;
   return renderEmbed({
-    embedsInfo: toggleList,
+    embedsInfo: toggleDisplayList.donor(userToggle),
     displayItem: 'common',
-    embedAuthor: {
+  })
+    .setAuthor({
       name: `${author.username}'s toggle`,
       iconURL: author.avatarURL() ?? undefined,
-    },
+    })
+    .setDescription(
+      `**Syntax 1:** \`${PREFIX.bot}t <on/off> <ID> [ID] [ID]\` - turn on/off any settings
+      > *\`${PREFIX.bot}t on a1 a5 b3a\`*
+      **Syntax 2:** \`${PREFIX.bot}t reset\` - reset all settings`
+    );
+};
+
+interface IGetNonDonorToggleEmbed {
+  userToggle: IUserToggle;
+  author: User;
+}
+
+const getNonDonorToggleEmbed = ({userToggle, author}: IGetNonDonorToggleEmbed) => {
+  return renderEmbed({
+    embedsInfo: toggleDisplayList.nonDonor(userToggle),
+    displayItem: 'common',
+  }).setAuthor({
+    name: `${author.username}'s toggle`,
+    iconURL: author.avatarURL() ?? undefined,
+  });
+};
+
+interface IGetGuildToggleEmbed {
+  guildAccount: IGuild;
+}
+
+const getGuildToggleEmbed = ({guildAccount}: IGetGuildToggleEmbed) => {
+  return renderEmbed({
+    embedsInfo: toggleDisplayList.guild(guildAccount.toggle),
+    displayItem: 'common',
+  }).setAuthor({
+    name: `${guildAccount.info.name ?? ''} Toggle Settings`,
   });
 };
 
 const _toggleHelper = {
-  getUserToggleEmbed,
+  getDonorToggleEmbed,
+  getNonDonorToggleEmbed,
   getUpdateQuery,
+  getGuildToggleEmbed,
 };
 
 export default _toggleHelper;

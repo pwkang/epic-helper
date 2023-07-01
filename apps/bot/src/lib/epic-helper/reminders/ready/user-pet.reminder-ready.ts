@@ -20,6 +20,11 @@ export const userPetReminderTimesUp = async (client: Client, user: IUser) => {
   const pets = await userPetServices.getUserReadyPets({userId});
   const petIds = pets.map((pet) => pet.petId);
 
+  await userPetServices.updateRemindedPets({
+    petIds,
+    userId,
+  });
+
   const nextReminder = await userReminderServices.getNextReadyCommand({
     userId,
   });
@@ -39,9 +44,5 @@ export const userPetReminderTimesUp = async (client: Client, user: IUser) => {
     options: {
       content: reminderMessage,
     },
-  });
-  await userPetServices.updateRemindedPets({
-    petIds,
-    userId,
   });
 };

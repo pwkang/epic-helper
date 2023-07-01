@@ -8,15 +8,14 @@ export default <PrefixCommand>{
   commands: ['toggle reset', 't reset'],
   type: PREFIX_COMMAND_TYPE.bot,
   execute: async (client, message) => {
-    const userToggle = await userService.resetUserToggle({
+    const userAccount = await userService.resetUserToggle({
       userId: message.author.id,
     });
-    if (!userToggle) return;
+    if (!userAccount) return;
 
-    const embed = commandHelper.toggle.getUserToggleEmbed({
-      isDonor: true,
+    const embed = commandHelper.toggle.getDonorToggleEmbed({
       author: message.author,
-      userToggle,
+      userAccount,
     });
     await djsMessageHelper.send({
       client,

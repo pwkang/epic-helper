@@ -4,15 +4,14 @@ import djsInteractionHelper from '../../../../lib/discordjs/interaction';
 import {userService} from '../../../../services/database/user.service';
 
 export const resetUserToggleSlash = async ({client, interaction}: IToggleSubcommand) => {
-  const userToggle = await userService.resetUserToggle({
+  const userAccount = await userService.resetUserToggle({
     userId: interaction.user.id,
   });
-  if (!userToggle) return;
+  if (!userAccount) return;
 
-  const embed = commandHelper.toggle.getUserToggleEmbed({
-    isDonor: true,
+  const embed = commandHelper.toggle.getDonorToggleEmbed({
     author: interaction.user,
-    userToggle,
+    userAccount,
   });
   await djsInteractionHelper.replyInteraction({
     client,

@@ -5,6 +5,9 @@ import {guildUpdateReminder} from './subcommand/guild-update-reminder';
 import {IGuild} from '@epic-helper/models';
 import {deleteGuild} from './subcommand/guild-delete';
 import {guildUpdateLeader} from './subcommand/guild-update-leader';
+import {showGuildToggle} from './subcommand/toggle/show-guild-toggle';
+import {setGuildToggle} from './subcommand/toggle/set-guild-toggle';
+import {resetGuildToggle} from './subcommand/toggle/reset-guild-toggle';
 
 export default <SlashCommand>{
   name: 'guild',
@@ -83,6 +86,48 @@ export default <SlashCommand>{
             )
         )
     )
+    .addSubcommandGroup((subcommandGroup) =>
+      subcommandGroup
+        .setName('toggle')
+        .setDescription('Toggle guild features')
+        .addSubcommand((subcommand) =>
+          subcommand
+            .setName('show')
+            .setDescription('Show guild features')
+            .addRoleOption((option) =>
+              option
+                .setName('role')
+                .setDescription('Select the role of the guild to show')
+                .setRequired(true)
+            )
+        )
+        .addSubcommand((subcommand) =>
+          subcommand
+            .setName('set')
+            .setDescription('Update guild features')
+            .addRoleOption((option) =>
+              option
+                .setName('role')
+                .setDescription('Select the role of the guild to update')
+                .setRequired(true)
+            )
+            .addStringOption((option) => option.setName('on').setDescription('Features to turn on'))
+            .addStringOption((option) =>
+              option.setName('off').setDescription('Features to turn off')
+            )
+        )
+        .addSubcommand((subcommand) =>
+          subcommand
+            .setName('reset')
+            .setDescription('Reset guild features')
+            .addRoleOption((option) =>
+              option
+                .setName('role')
+                .setDescription('Select the role of the guild to reset')
+                .setRequired(true)
+            )
+        )
+    )
     .addSubcommand((subcommand) =>
       subcommand
         .setName('delete')
@@ -108,6 +153,20 @@ export default <SlashCommand>{
               guildUpdateLeader({client, interaction});
               break;
           }
+          break;
+        case 'toggle':
+          switch (subcommand) {
+            case 'show':
+              showGuildToggle({client, interaction});
+              break;
+            case 'set':
+              setGuildToggle({client, interaction});
+              break;
+            case 'reset':
+              resetGuildToggle({client, interaction});
+              break;
+          }
+          break;
       }
     } else {
       switch (subcommand) {
