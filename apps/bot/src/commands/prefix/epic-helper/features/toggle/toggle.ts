@@ -1,7 +1,7 @@
-import {djsMessageHelper} from '../../../../lib/discordjs/message';
-import commandHelper from '../../../../lib/epic-helper/command-helper';
+import {djsMessageHelper} from '../../../../../lib/discordjs/message';
+import commandHelper from '../../../../../lib/epic-helper/command-helper';
 import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
-import {userService} from '../../../../services/database/user.service';
+import {userService} from '../../../../../services/database/user.service';
 
 export default <PrefixCommand>{
   name: 'toggle',
