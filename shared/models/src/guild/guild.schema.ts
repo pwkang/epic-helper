@@ -35,4 +35,23 @@ export const guildSchema = new Schema<IGuild>({
     },
     readyAt: Date,
   },
+  toggle: {
+    active: {type: Boolean, default: true},
+    upgraid: {
+      reminder: {type: Boolean, default: true},
+      sendUpgraidList: {type: Boolean, default: true},
+      allowReserved: {type: Boolean, default: true},
+    },
+    duel: {
+      log: {
+        active: {type: Boolean, default: true},
+        duelAdd: {type: Boolean, default: true},
+        duelUndo: {type: Boolean, default: true},
+        duelReset: {type: Boolean, default: true},
+        duelModify: {type: Boolean, default: true},
+      },
+      linkRequired: {type: Boolean, default: false},
+      autoReset: {type: Boolean, default: true},
+    },
+  },
 });

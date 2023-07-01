@@ -206,6 +206,49 @@ const weeklyReset = async ({client}: IWeeklyReset) => {
   );
 };
 
+interface IUpdateToggle {
+  serverId: string;
+  roleId: string;
+  query: UpdateQuery<IGuild>;
+}
+
+const updateToggle = async ({serverId, roleId, query}: IUpdateToggle): Promise<IGuild | null> => {
+  const guild = await dbGuild.findOneAndUpdate(
+    {
+      serverId,
+      roleId,
+    },
+    query,
+    {
+      new: true,
+    }
+  );
+  return guild ?? null;
+};
+
+interface IResetToggle {
+  serverId: string;
+  roleId: string;
+}
+
+const resetToggle = async ({serverId, roleId}: IResetToggle): Promise<IGuild | null> => {
+  const guild = await dbGuild.findOneAndUpdate(
+    {
+      serverId,
+      roleId,
+    },
+    {
+      $unset: {
+        toggle: '',
+      },
+    },
+    {
+      new: true,
+    }
+  );
+  return guild ?? null;
+};
+
 export const guildService = {
   registerGuild,
   isRoleUsed,
@@ -220,4 +263,6 @@ export const guildService = {
   registerReminder,
   updateGuildInfo,
   weeklyReset,
+  updateToggle,
+  resetToggle,
 };

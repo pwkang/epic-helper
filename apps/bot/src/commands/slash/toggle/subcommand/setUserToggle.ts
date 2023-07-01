@@ -2,28 +2,28 @@ import type {IToggleSubcommand} from '../toggle.type';
 import commandHelper from '../../../../lib/epic-helper/command-helper';
 import djsInteractionHelper from '../../../../lib/discordjs/interaction';
 import {userService} from '../../../../services/database/user.service';
+import {toggleDisplayList} from '../../../../lib/epic-helper/command-helper/toggle/toggle.list';
+import {IUser} from '@epic-helper/models';
 
 export const setUserToggleSlash = async ({client, interaction}: IToggleSubcommand) => {
   const onStr = interaction.options.getString('on');
   const offStr = interaction.options.getString('off');
-  let userToggle = await userService.getUserToggle(interaction.user.id);
-  if (!userToggle) return;
+  let userAccount = await userService.getUserAccount(interaction.user.id);
+  if (!userAccount) return;
 
-  const query = commandHelper.toggle.getUpdateQuery({
-    userToggle,
+  const query = commandHelper.toggle.getUpdateQuery<IUser>({
     on: onStr ? onStr : undefined,
     off: offStr ? offStr : undefined,
-    isDonor: true,
+    toggleInfo: toggleDisplayList.donor(userAccount.toggle),
   });
-  userToggle = await userService.updateUserToggle({
+  userAccount = await userService.updateUserToggle({
     query,
     userId: interaction.user.id,
   });
-  if (!userToggle) return;
-  const embed = commandHelper.toggle.getUserToggleEmbed({
-    isDonor: true,
+  if (!userAccount) return;
+  const embed = commandHelper.toggle.getDonorToggleEmbed({
     author: interaction.user,
-    userToggle,
+    userAccount,
   });
   await djsInteractionHelper.replyInteraction({
     client,

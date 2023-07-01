@@ -1,22 +1,21 @@
-import commandHelper from '../../../../lib/epic-helper/command-helper';
-import {djsMessageHelper} from '../../../../lib/discordjs/message';
+import commandHelper from '../../../../../lib/epic-helper/command-helper';
+import {djsMessageHelper} from '../../../../../lib/discordjs/message';
 import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
-import {userService} from '../../../../services/database/user.service';
+import {userService} from '../../../../../services/database/user.service';
 
 export default <PrefixCommand>{
   name: 'toggleReset',
   commands: ['toggle reset', 't reset'],
   type: PREFIX_COMMAND_TYPE.bot,
   execute: async (client, message) => {
-    const userToggle = await userService.resetUserToggle({
+    const userAccount = await userService.resetUserToggle({
       userId: message.author.id,
     });
-    if (!userToggle) return;
+    if (!userAccount) return;
 
-    const embed = commandHelper.toggle.getUserToggleEmbed({
-      isDonor: true,
+    const embed = commandHelper.toggle.getDonorToggleEmbed({
       author: message.author,
-      userToggle,
+      userAccount,
     });
     await djsMessageHelper.send({
       client,
