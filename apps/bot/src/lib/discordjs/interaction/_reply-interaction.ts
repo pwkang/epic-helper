@@ -42,6 +42,7 @@ export default async function _replyInteraction<T>({
   const sentMessage = await interactionResponse.fetch();
   const channel = interaction.channel;
   const registeredEvents = new Collection<string | T, Function>();
+  let allEventsFn: Function | null = null;
   if (!channel) return;
   const collector = interactionResponse.createMessageComponentCollector({
     idle: ms('1m'),
@@ -56,11 +57,24 @@ export default async function _replyInteraction<T>({
     registeredEvents.set(customId, callback);
   }
 
+  function every(
+    callback: (
+      collected: BaseInteraction | StringSelectMenuInteraction,
+      customId: string
+    ) => Promise<InteractionUpdateOptions | null> | InteractionUpdateOptions | null
+  ) {
+    allEventsFn = callback;
+  }
+
   collector?.on('collect', async (collected) => {
     if (collected.message.id !== sentMessage.id) return;
     const callback = registeredEvents.get(collected.customId as string);
-    if (!callback) return;
-    const replyOptions = await callback(collected);
+    let replyOptions: InteractionUpdateOptions | null = null;
+    if (allEventsFn) {
+      replyOptions = await allEventsFn(collected, collected.customId as string);
+    } else if (callback) {
+      replyOptions = await callback(collected);
+    }
     if (!replyOptions) return;
     await _updateInteraction({
       client,
@@ -94,5 +108,6 @@ export default async function _replyInteraction<T>({
   return {
     on,
     stop,
+    every,
   };
 }

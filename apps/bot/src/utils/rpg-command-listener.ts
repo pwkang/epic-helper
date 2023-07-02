@@ -64,7 +64,11 @@ export const createRpgCommandListener = ({channelId, client, author}: IRpgComman
   collector.on('collect', messageCollected);
 
   async function messageCollected(collected: Message) {
-    if (isSlashCommand({collected, author})) {
+    if (
+      isSlashCommand({collected, author}) &&
+      collected.content === '' &&
+      collected.embeds.length === 0
+    ) {
       await sleep(1000);
       collected = collector?.channel.messages.cache.get(collected.id) as Message;
     }
