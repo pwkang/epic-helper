@@ -20,8 +20,8 @@ export default async function loadRoutes() {
   });
   commands.forEach(({data, path}) => {
     if (!data?.length) return;
-    const routePath = '/' + path.replace(/\/\w+\.ts$/, '');
-    const method = path.replace(/.*\/(\w+)\.ts$/, '$1') as ValuesOf<typeof methods>;
+    const routePath = '/' + path.replace(/\w+\.ts$/, '');
+    const method = path.match(/\w+\.ts$/)?.[0].replace(/\.ts$/, '') as keyof typeof methods;
     if (!Object.values(methods).some((_method) => _method === method)) return;
     if (!router[method]) throw new Error(`Method ${method} not found`);
     logger({
