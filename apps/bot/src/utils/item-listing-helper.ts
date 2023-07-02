@@ -5,7 +5,7 @@ import {
   EmbedBuilder,
   Message,
 } from 'discord.js';
-import {generateNavigationRow} from './pagination-row';
+import {generateNavigationRow, NAVIGATION_ROW_BUTTONS} from './pagination-row';
 import {sleep} from '@epic-helper/utils';
 import djsInteractionHelper from '../lib/discordjs/interaction';
 import {djsMessageHelper} from '../lib/discordjs/message';
@@ -46,12 +46,12 @@ export const itemListingHelper = async ({
   });
   if (!event) return;
   const events = {
-    prev: () => page--,
-    next: () => page++,
-    last: () => (page = Math.floor(totalItems / itemsPerPage)),
-    first: () => {
+    [NAVIGATION_ROW_BUTTONS.first]: () => {
       page = 0;
     },
+    [NAVIGATION_ROW_BUTTONS.prev]: () => page--,
+    [NAVIGATION_ROW_BUTTONS.next]: () => page++,
+    [NAVIGATION_ROW_BUTTONS.last]: () => (page = Math.floor(totalItems / itemsPerPage)),
   };
   for (const [key, fn] of Object.entries(events)) {
     event.on(key, () => {
@@ -64,7 +64,7 @@ export const itemListingHelper = async ({
       });
     });
   }
-  event.on('all', async () => {
+  event.on(NAVIGATION_ROW_BUTTONS.all, async () => {
     showAllItems({
       channelId,
       client,

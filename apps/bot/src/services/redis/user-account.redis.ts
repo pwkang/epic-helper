@@ -20,7 +20,8 @@ const getRuby = async (userId: string, cb: () => Promise<IUser>) => {
   const data = await redisService.get(`${userRubyPrefix}:${userId}`);
   if (!data) {
     const user = await cb();
-    await setRuby(userId, user.items.ruby);
+    // TODO: check if user exists
+    await setRuby(userId, user?.items.ruby ?? 0);
     return user.items.ruby;
   }
   const {ruby} = JSON.parse(data) as IRedisUserRubyAmount;

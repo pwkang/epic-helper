@@ -1,70 +1,24 @@
 import {IGuildSubCommand} from './type';
 import djsInteractionHelper from '../../../../lib/discordjs/interaction';
 import commandHelper from '../../../../lib/epic-helper/command-helper';
-import {guildService} from '../../../../services/database/guild.service';
+import {GUILD_SETTINGS_PAGE_TYPE} from '../../../../lib/epic-helper/command-helper/guild-settings/_showSettings';
 
 export const viewGuildSettings = async ({client, interaction}: IGuildSubCommand) => {
-  const guilds = await guildService.getAllGuilds({
-    serverId: interaction.guildId!,
+  const guildSettings = await commandHelper.guildSettings.showSettings({
+    server: interaction.guild!,
+    type: GUILD_SETTINGS_PAGE_TYPE.settings,
   });
-  let selectedGuildRoleId: string | undefined = undefined;
-  let page = 0;
   const event = await djsInteractionHelper.replyInteraction({
     client,
     interaction,
-    options: await commandHelper.guildSettings.getMessagePayload({
-      server: interaction.guild!,
-      guilds,
-      page,
-    }),
+    options: guildSettings.getMessagePayload(),
     interactive: true,
   });
   if (!event) return;
-  event.on('first', (interaction) => {
-    page = 0;
-    return commandHelper.guildSettings.getMessagePayload({
-      server: interaction.guild!,
-      guilds,
-      page,
-      guildRoleId: selectedGuildRoleId,
-    });
-  });
-  event.on('prev', (interaction) => {
-    page--;
-    return commandHelper.guildSettings.getMessagePayload({
-      server: interaction.guild!,
-      guilds,
-      page,
-      guildRoleId: selectedGuildRoleId,
-    });
-  });
-  event.on('next', (interaction) => {
-    page++;
-    return commandHelper.guildSettings.getMessagePayload({
-      server: interaction.guild!,
-      guilds,
-      page,
-      guildRoleId: selectedGuildRoleId,
-    });
-  });
-  event.on('last', (interaction) => {
-    page = Math.floor(guilds.length / commandHelper.guildSettings.ITEMS_PER_PAGE);
-    return commandHelper.guildSettings.getMessagePayload({
-      server: interaction.guild!,
-      guilds,
-      page,
-      guildRoleId: selectedGuildRoleId,
-    });
-  });
-  event.on(commandHelper.guildSettings.GUILD_SELECTOR_NAME, (interaction) => {
-    if (!interaction.isStringSelectMenu()) return null;
-    const guildId = interaction.values[0];
-    selectedGuildRoleId = guildId;
-    return commandHelper.guildSettings.getMessagePayload({
-      server: interaction.guild!,
-      guilds,
-      page,
-      guildRoleId: guildId,
+  event.every((interaction, customId) => {
+    return guildSettings.replyInteraction({
+      interaction,
+      customId,
     });
   });
 };

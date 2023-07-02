@@ -91,15 +91,7 @@ export default <SlashCommand>{
         .setName('toggle')
         .setDescription('Toggle guild features')
         .addSubcommand((subcommand) =>
-          subcommand
-            .setName('show')
-            .setDescription('Show guild features')
-            .addRoleOption((option) =>
-              option
-                .setName('role')
-                .setDescription('Select the role of the guild to show')
-                .setRequired(true)
-            )
+          subcommand.setName('show').setDescription('Show guild features')
         )
         .addSubcommand((subcommand) =>
           subcommand

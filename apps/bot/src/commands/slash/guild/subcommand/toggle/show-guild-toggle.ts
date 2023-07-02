@@ -1,35 +1,26 @@
 import {IGuildSubCommand} from '../type';
-import {guildService} from '../../../../../services/database/guild.service';
 import djsInteractionHelper from '../../../../../lib/discordjs/interaction';
 import commandHelper from '../../../../../lib/epic-helper/command-helper';
+import {GUILD_SETTINGS_PAGE_TYPE} from '../../../../../lib/epic-helper/command-helper/guild-settings/_showSettings';
 
 export const showGuildToggle = async ({client, interaction}: IGuildSubCommand) => {
   if (!interaction.inGuild()) return;
-  const guildRole = interaction.options.getRole('role', true);
 
-  const guildAccount = await guildService.findGuild({
-    serverId: interaction.guildId,
-    roleId: guildRole.id,
+  const guildSettings = await commandHelper.guildSettings.showSettings({
+    server: interaction.guild!,
+    type: GUILD_SETTINGS_PAGE_TYPE.toggle,
   });
-
-  if (!guildAccount)
-    return djsInteractionHelper.replyInteraction({
-      client,
-      interaction,
-      options: {
-        content: `There is no guild with role ${guildRole} setup in this server`,
-        ephemeral: true,
-      },
-    });
-
-  const embed = commandHelper.toggle.getGuildToggleEmbed({
-    guildAccount,
-  });
-  await djsInteractionHelper.replyInteraction({
+  const event = await djsInteractionHelper.replyInteraction({
     client,
     interaction,
-    options: {
-      embeds: [embed],
-    },
+    options: guildSettings.getMessagePayload(),
+    interactive: true,
+  });
+  if (!event) return;
+  event.every((interaction, customId) => {
+    return guildSettings.replyInteraction({
+      interaction,
+      customId,
+    });
   });
 };
