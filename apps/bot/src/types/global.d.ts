@@ -1,7 +1,11 @@
 import type {Client, ClientEvents, Message, SlashCommandBuilder, User} from 'discord.js';
 import {ChatInputCommandInteraction} from 'discord.js';
 import type {ScheduleOptions} from 'node-cron';
-import {PREFIX_COMMAND_TYPE, SLASH_MESSAGE_BOT_TYPE} from '@epic-helper/constants';
+import {
+  PREFIX_COMMAND_TYPE,
+  SLASH_MESSAGE_BOT_TYPE,
+  USER_NOT_REGISTERED_ACTIONS,
+} from '@epic-helper/constants';
 
 declare global {
   export type ValuesOf<T extends Record<string, unknown>> = T[keyof T];
@@ -10,6 +14,9 @@ declare global {
     name: string;
     commands: string[];
     execute: (client: Client, message: Message, args: string[]) => void | Promise<void>;
+    preCheck: {
+      userNotRegistered?: ValuesOf<typeof USER_NOT_REGISTERED_ACTIONS>;
+    };
     type: ValuesOf<typeof PREFIX_COMMAND_TYPE>;
   }
 

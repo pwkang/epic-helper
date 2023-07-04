@@ -8,6 +8,7 @@ export default <PrefixCommand>{
   name: 'listSlash',
   commands: ['slash'],
   type: PREFIX_COMMAND_TYPE.dev,
+  preCheck: {},
   execute: async (client, message) => {
     const slashCommands = await listSlashCommands();
     const guildSlashCommands = await djsRestHelper.slashCommand.guild.getAll({

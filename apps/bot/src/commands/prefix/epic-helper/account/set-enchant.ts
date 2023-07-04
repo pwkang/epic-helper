@@ -1,6 +1,10 @@
 import {ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuInteraction} from 'discord.js';
 import {djsMessageHelper} from '../../../../lib/discordjs/message';
-import {PREFIX_COMMAND_TYPE, RPG_ENCHANT_LEVEL} from '@epic-helper/constants';
+import {
+  PREFIX_COMMAND_TYPE,
+  RPG_ENCHANT_LEVEL,
+  USER_NOT_REGISTERED_ACTIONS,
+} from '@epic-helper/constants';
 import {userService} from '../../../../services/database/user.service';
 
 type SelectOptionsValue = ValuesOf<typeof RPG_ENCHANT_LEVEL> | 'remove';
@@ -9,6 +13,9 @@ export default <PrefixCommand>{
   name: 'setEnchant',
   commands: ['set enchant', 'setEnchant', 'se'],
   type: PREFIX_COMMAND_TYPE.bot,
+  preCheck: {
+    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
+  },
   execute: async (client, message) => {
     const event = await djsMessageHelper.interactiveSend({
       options: {

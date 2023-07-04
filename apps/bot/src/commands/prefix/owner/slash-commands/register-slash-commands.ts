@@ -8,6 +8,7 @@ export default <PrefixCommand>{
   name: 'registerSlash',
   commands: ['slash register'],
   type: PREFIX_COMMAND_TYPE.dev,
+  preCheck: {},
   execute: async (client, message, args) => {
     const slashCommands = await listSlashCommands();
 

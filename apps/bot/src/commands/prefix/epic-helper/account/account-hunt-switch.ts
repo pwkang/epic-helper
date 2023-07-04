@@ -1,11 +1,14 @@
 import {djsMessageHelper} from '../../../../lib/discordjs/message';
-import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
+import {PREFIX_COMMAND_TYPE, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
 import {userService} from '../../../../services/database/user.service';
 
 export default <PrefixCommand>{
   name: 'accountHuntSwitch',
   commands: ['hunt switch', 'hs'],
   type: PREFIX_COMMAND_TYPE.bot,
+  preCheck: {
+    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
+  },
   execute: async (client, message) => {
     const newStatus = await userService.toggleHuntSwitch(message.author.id);
 

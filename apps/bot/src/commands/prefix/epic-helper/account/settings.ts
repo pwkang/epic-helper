@@ -1,6 +1,6 @@
 import embedsList from '../../../../lib/epic-helper/embeds';
 import {djsMessageHelper} from '../../../../lib/discordjs/message';
-import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
+import {PREFIX_COMMAND_TYPE, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
 import {ActionRowBuilder, StringSelectMenuBuilder} from 'discord.js';
 import {userService} from '../../../../services/database/user.service';
 
@@ -8,6 +8,9 @@ export default <PrefixCommand>{
   name: 'settings',
   commands: ['settings', 's'],
   type: PREFIX_COMMAND_TYPE.bot,
+  preCheck: {
+    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
+  },
   execute: async (client, message) => {
     const userProfile = await userService.getUserAccount(message.author.id);
     if (!userProfile) return;
