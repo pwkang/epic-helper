@@ -1,8 +1,7 @@
-import {IServerConfig} from '../config.type';
-import djsInteractionHelper from '../../../../../lib/discordjs/interaction';
-import embedProvider from '../../../../../lib/epic-helper/embeds';
-import {serverService} from '../../../../../services/database/server.service';
-import commandHelper from '../../../../../lib/epic-helper/command-helper';
+import djsInteractionHelper from '../../../../lib/discordjs/interaction';
+import {serverService} from '../../../../services/database/server.service';
+import commandHelper from '../../../../lib/epic-helper/command-helper';
+import {IServerConfig} from './type';
 
 export const setEnchantMuteDuration = async ({client, interaction}: IServerConfig) => {
   if (!interaction.inGuild()) return;

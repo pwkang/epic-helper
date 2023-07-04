@@ -2,12 +2,12 @@ import {SlashCommandBuilder} from 'discord.js';
 import {guildSetup} from './subcommand/guild-setup';
 import {viewGuildSettings} from './subcommand/guild-settings';
 import {guildUpdateReminder} from './subcommand/guild-update-reminder';
-import {IGuild} from '@epic-helper/models';
 import {deleteGuild} from './subcommand/guild-delete';
 import {guildUpdateLeader} from './subcommand/guild-update-leader';
 import {showGuildToggle} from './subcommand/toggle/show-guild-toggle';
 import {setGuildToggle} from './subcommand/toggle/set-guild-toggle';
 import {resetGuildToggle} from './subcommand/toggle/reset-guild-toggle';
+import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
 
 export default <SlashCommand>{
   name: 'guild',
@@ -131,6 +131,10 @@ export default <SlashCommand>{
             .setRequired(true)
         )
     ),
+  preCheck: {
+    userAccOff: USER_ACC_OFF_ACTIONS.skip,
+    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,
+  },
   execute: async (client, interaction) => {
     const subcommandGroup = interaction.options.getSubcommandGroup();
     const subcommand = interaction.options.getSubcommand();

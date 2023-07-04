@@ -1,6 +1,6 @@
-import {IUserConfig} from '../config.type';
-import djsInteractionHelper from '../../../../../lib/discordjs/interaction';
-import {userService} from '../../../../../services/database/user.service';
+import {IUserConfig} from './type';
+import djsInteractionHelper from '../../../../lib/discordjs/interaction';
+import {userService} from '../../../../services/database/user.service';
 
 export const setHealReminder = async ({client, interaction}: IUserConfig) => {
   const userId = interaction.user.id;

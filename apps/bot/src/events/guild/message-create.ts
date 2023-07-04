@@ -144,8 +144,8 @@ interface IPreCheckPrefixCommand {
 
 const preCheckPrefixCommand = async ({preCheck, message, client}: IPreCheckPrefixCommand) => {
   const status: Record<keyof PrefixCommand['preCheck'], boolean> = {
-    userNotRegistered: false,
-    userAccOff: false,
+    userNotRegistered: true,
+    userAccOff: true,
   };
   const userAccount = await userService.getUserAccount(message.author.id);
   if (preCheck.userNotRegistered !== undefined) {

@@ -1,9 +1,9 @@
-import {IServerConfig} from '../config.type';
-import djsInteractionHelper from '../../../../../lib/discordjs/interaction';
-import commandHelper from '../../../../../lib/epic-helper/command-helper';
-import {SERVER_SETTINGS_PAGE_TYPE} from '../../../../../lib/epic-helper/command-helper/server-settings/constant';
-import {serverService} from '../../../../../services/database/server.service';
-import CommandHelper from '../../../../../lib/epic-helper/command-helper';
+import djsInteractionHelper from '../../../../lib/discordjs/interaction';
+import commandHelper from '../../../../lib/epic-helper/command-helper';
+import CommandHelper from '../../../../lib/epic-helper/command-helper';
+import {SERVER_SETTINGS_PAGE_TYPE} from '../../../../lib/epic-helper/command-helper/server-settings/constant';
+import {serverService} from '../../../../services/database/server.service';
+import {IServerConfig} from './type';
 
 export const viewServerSettings = async ({client, interaction}: IServerConfig) => {
   if (!interaction.inGuild() || !interaction.guild) return;

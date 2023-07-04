@@ -2,6 +2,7 @@ import {SlashCommandBuilder} from 'discord.js';
 import {showUserToggleSlash} from './subcommand/showUserToggle';
 import {setUserToggleSlash} from './subcommand/setUserToggle';
 import {resetUserToggleSlash} from './subcommand/resetUserToggle';
+import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
 
 export default <SlashCommand>{
   name: 'toggle',
@@ -23,6 +24,10 @@ export default <SlashCommand>{
     .addSubcommand((subcommand) =>
       subcommand.setName('reset').setDescription('Reset user features')
     ),
+  preCheck: {
+    userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
+    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
+  },
   execute: async (client, interaction) => {
     switch (interaction.options.getSubcommand()) {
       case 'show':

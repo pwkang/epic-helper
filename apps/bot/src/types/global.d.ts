@@ -26,6 +26,10 @@ declare global {
     name: string;
     interactionType: T;
     execute: (client: Client, interaction: T) => Promise<void>;
+    preCheck: {
+      userNotRegistered?: ValuesOf<typeof USER_NOT_REGISTERED_ACTIONS>;
+      userAccOff?: ValuesOf<typeof USER_ACC_OFF_ACTIONS>;
+    };
     builder: SlashCommandBuilder;
   }
 

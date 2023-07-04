@@ -1,4 +1,3 @@
-import {rpgWeekly} from '../../../../lib/epic-rpg/commands/progress/weekly';
 import {SLASH_MESSAGE_BOT_TYPE} from '@epic-helper/constants';
 import {rpgUseEpicItem} from '../../../../lib/epic-rpg/commands/progress/epic-items';
 
