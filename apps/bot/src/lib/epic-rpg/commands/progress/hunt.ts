@@ -87,20 +87,24 @@ interface IRpgHuntSuccess {
 const HUNT_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.hunt;
 
 const rpgHuntSuccess = async ({author, content, channelId}: IRpgHuntSuccess) => {
+  const userAccount = (await userService.getUserAccount(author.id))!;
   const hardMode = content.includes('(but stronger)');
   const together = content.includes('hunting together');
 
-  const cooldown = await calcCdReduction({
-    userId: author.id,
-    commandType: RPG_COMMAND_TYPE.hunt,
-    cooldown: HUNT_COOLDOWN,
-  });
-  await userReminderServices.saveUserHuntCooldown({
-    userId: author.id,
-    hardMode,
-    together,
-    readyAt: new Date(Date.now() + cooldown),
-  });
+  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.hunt) {
+    const cooldown = await calcCdReduction({
+      userId: author.id,
+      commandType: RPG_COMMAND_TYPE.hunt,
+      cooldown: HUNT_COOLDOWN,
+    });
+    await userReminderServices.saveUserHuntCooldown({
+      userId: author.id,
+      hardMode,
+      together,
+      readyAt: new Date(Date.now() + cooldown),
+    });
+  }
+  
   updateReminderChannel({
     userId: author.id,
     channelId,

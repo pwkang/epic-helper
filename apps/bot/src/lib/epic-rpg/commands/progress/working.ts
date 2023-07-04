@@ -110,16 +110,21 @@ interface IRpgWorkingSuccess {
 }
 
 const rpgWorkingSuccess = async ({author, workingType, channelId}: IRpgWorkingSuccess) => {
-  const cooldown = await calcCdReduction({
-    userId: author.id,
-    commandType: RPG_COMMAND_TYPE.working,
-    cooldown: WORKING_COOLDOWN,
-  });
-  await userReminderServices.saveUserWorkingCooldown({
-    userId: author.id,
-    workingType,
-    readyAt: new Date(Date.now() + cooldown),
-  });
+  const userAccount = (await userService.getUserAccount(author.id))!;
+
+  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.working) {
+    const cooldown = await calcCdReduction({
+      userId: author.id,
+      commandType: RPG_COMMAND_TYPE.working,
+      cooldown: WORKING_COOLDOWN,
+    });
+    await userReminderServices.saveUserWorkingCooldown({
+      userId: author.id,
+      workingType,
+      readyAt: new Date(Date.now() + cooldown),
+    });
+  }
+
   updateReminderChannel({
     userId: author.id,
     channelId,

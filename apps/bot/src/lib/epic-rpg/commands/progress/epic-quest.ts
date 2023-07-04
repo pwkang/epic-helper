@@ -6,6 +6,7 @@ import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown'
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {userStatsService} from '../../../../services/database/user-stats.service';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
+import {userService} from '../../../../services/database/user.service';
 
 interface IRpgEpicQuest {
   client: Client;
@@ -57,16 +58,21 @@ interface IRpgEpicQuestSuccess {
 const QUEST_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.epicQuest;
 
 const rpgEpicQuestSuccess = async ({author, channelId}: IRpgEpicQuestSuccess) => {
-  const cooldown = await calcCdReduction({
-    userId: author.id,
-    commandType: RPG_COMMAND_TYPE.quest,
-    cooldown: QUEST_COOLDOWN,
-  });
-  await userReminderServices.saveUserQuestCooldown({
-    epicQuest: true,
-    userId: author.id,
-    readyAt: new Date(Date.now() + cooldown),
-  });
+  const userAccount = (await userService.getUserAccount(author.id))!;
+
+  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.quest) {
+    const cooldown = await calcCdReduction({
+      userId: author.id,
+      commandType: RPG_COMMAND_TYPE.quest,
+      cooldown: QUEST_COOLDOWN,
+    });
+    await userReminderServices.saveUserQuestCooldown({
+      epicQuest: true,
+      userId: author.id,
+      readyAt: new Date(Date.now() + cooldown),
+    });
+  }
+  
   updateReminderChannel({
     userId: author.id,
     channelId,

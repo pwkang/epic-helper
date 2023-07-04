@@ -4,6 +4,7 @@ import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
+import {userService} from '../../../../services/database/user.service';
 
 const DAILY_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.daily;
 
@@ -54,15 +55,20 @@ interface IRpgDailySuccess {
 }
 
 const rpgDailySuccess = async ({author, channelId}: IRpgDailySuccess) => {
-  const cooldown = await calcCdReduction({
-    userId: author.id,
-    commandType: RPG_COMMAND_TYPE.daily,
-    cooldown: DAILY_COOLDOWN,
-  });
-  await userReminderServices.saveUserDailyCooldown({
-    userId: author.id,
-    readyAt: new Date(Date.now() + cooldown),
-  });
+  const userAccount = (await userService.getUserAccount(author.id))!;
+
+  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.daily) {
+    const cooldown = await calcCdReduction({
+      userId: author.id,
+      commandType: RPG_COMMAND_TYPE.daily,
+      cooldown: DAILY_COOLDOWN,
+    });
+    await userReminderServices.saveUserDailyCooldown({
+      userId: author.id,
+      readyAt: new Date(Date.now() + cooldown),
+    });
+  }
+
   updateReminderChannel({
     userId: author.id,
     channelId,

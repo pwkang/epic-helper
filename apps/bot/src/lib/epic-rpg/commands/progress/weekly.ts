@@ -5,6 +5,7 @@ import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
+import {userService} from '../../../../services/database/user.service';
 
 const WEEKLY_COOLDOWN = ms('1w') - ms('10m');
 
@@ -51,15 +52,20 @@ interface IRpgWeeklySuccess {
 }
 
 const rpgWeeklySuccess = async ({author, channelId}: IRpgWeeklySuccess) => {
-  const cooldown = await calcCdReduction({
-    userId: author.id,
-    commandType: RPG_COMMAND_TYPE.weekly,
-    cooldown: WEEKLY_COOLDOWN,
-  });
-  await userReminderServices.saveUserWeeklyCooldown({
-    userId: author.id,
-    readyAt: new Date(Date.now() + cooldown),
-  });
+  const userAccount = (await userService.getUserAccount(author.id))!;
+
+  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.weekly) {
+    const cooldown = await calcCdReduction({
+      userId: author.id,
+      commandType: RPG_COMMAND_TYPE.weekly,
+      cooldown: WEEKLY_COOLDOWN,
+    });
+    await userReminderServices.saveUserWeeklyCooldown({
+      userId: author.id,
+      readyAt: new Date(Date.now() + cooldown),
+    });
+  }
+  
   updateReminderChannel({
     userId: author.id,
     channelId,

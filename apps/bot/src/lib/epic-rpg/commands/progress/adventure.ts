@@ -65,18 +65,21 @@ interface IRpgAdventureSuccess {
 const ADVENTURE_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.adventure;
 
 const rpgAdventureSuccess = async ({author, content, channelId}: IRpgAdventureSuccess) => {
+  const userAccount = (await userService.getUserAccount(author.id))!;
   const hardMode = content.includes('(but stronger)');
 
-  const cooldown = await calcCdReduction({
-    userId: author.id,
-    commandType: RPG_COMMAND_TYPE.adventure,
-    cooldown: ADVENTURE_COOLDOWN,
-  });
-  await userReminderServices.saveUserAdventureCooldown({
-    userId: author.id,
-    hardMode,
-    readyAt: new Date(Date.now() + cooldown),
-  });
+  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.adventure) {
+    const cooldown = await calcCdReduction({
+      userId: author.id,
+      commandType: RPG_COMMAND_TYPE.adventure,
+      cooldown: ADVENTURE_COOLDOWN,
+    });
+    await userReminderServices.saveUserAdventureCooldown({
+      userId: author.id,
+      hardMode,
+      readyAt: new Date(Date.now() + cooldown),
+    });
+  }
 
   updateReminderChannel({
     userId: author.id,

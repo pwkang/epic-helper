@@ -6,6 +6,7 @@ import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown'
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {userStatsService} from '../../../../services/database/user-stats.service';
+import {userService} from '../../../../services/database/user.service';
 
 const FARM_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.farm;
 
@@ -63,17 +64,22 @@ interface IRpgFarmSuccess {
 }
 
 const rpgFarmSuccess = async ({content, author, channelId}: IRpgFarmSuccess) => {
+  const userAccount = (await userService.getUserAccount(author.id))!;
   const seedType = whatIsTheSeed(content);
-  const cooldown = await calcCdReduction({
-    userId: author.id,
-    commandType: RPG_COMMAND_TYPE.farm,
-    cooldown: FARM_COOLDOWN,
-  });
-  await userReminderServices.saveUserFarmCooldown({
-    userId: author.id,
-    readyAt: new Date(Date.now() + cooldown),
-    seedType,
-  });
+
+  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.farm) {
+    const cooldown = await calcCdReduction({
+      userId: author.id,
+      commandType: RPG_COMMAND_TYPE.farm,
+      cooldown: FARM_COOLDOWN,
+    });
+    await userReminderServices.saveUserFarmCooldown({
+      userId: author.id,
+      readyAt: new Date(Date.now() + cooldown),
+      seedType,
+    });
+  }
+
   updateReminderChannel({
     userId: author.id,
     channelId,

@@ -10,6 +10,7 @@ import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown'
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {userStatsService} from '../../../../services/database/user-stats.service';
+import {userService} from '../../../../services/database/user.service';
 
 const LOOTBOX_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.lootbox;
 
@@ -62,19 +63,24 @@ interface IRpgBuyLootboxSuccess {
 }
 
 const rpgBuyLootboxSuccess = async ({author, content, channelId}: IRpgBuyLootboxSuccess) => {
+  const userAccount = (await userService.getUserAccount(author.id))!;
   const lootboxType = Object.values(RPG_LOOTBOX_TYPE).find((type) =>
     content.toLowerCase().includes(type)
   );
-  const cooldown = await calcCdReduction({
-    userId: author.id,
-    commandType: RPG_COMMAND_TYPE.lootbox,
-    cooldown: LOOTBOX_COOLDOWN,
-  });
-  await userReminderServices.saveUserLootboxCooldown({
-    userId: author.id,
-    readyAt: new Date(Date.now() + cooldown),
-    lootboxType,
-  });
+
+  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.lootbox) {
+    const cooldown = await calcCdReduction({
+      userId: author.id,
+      commandType: RPG_COMMAND_TYPE.lootbox,
+      cooldown: LOOTBOX_COOLDOWN,
+    });
+    await userReminderServices.saveUserLootboxCooldown({
+      userId: author.id,
+      readyAt: new Date(Date.now() + cooldown),
+      lootboxType,
+    });
+  }
+
   updateReminderChannel({
     userId: author.id,
     channelId,

@@ -8,6 +8,7 @@ import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown'
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {userStatsService} from '../../../../services/database/user-stats.service';
+import {userService} from '../../../../services/database/user.service';
 
 interface IRpgTraining {
   client: Client;
@@ -68,16 +69,21 @@ interface IRpgTrainingSuccess {
 const TRAINING_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.training;
 
 const rpgTrainingSuccess = async ({author, channelId}: IRpgTrainingSuccess) => {
-  const cooldown = await calcCdReduction({
-    userId: author.id,
-    commandType: RPG_COMMAND_TYPE.training,
-    cooldown: TRAINING_COOLDOWN,
-  });
-  await userReminderServices.saveUserTrainingCooldown({
-    userId: author.id,
-    ultraining: false,
-    readyAt: new Date(Date.now() + cooldown),
-  });
+  const userAccount = (await userService.getUserAccount(author.id))!;
+
+  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.training) {
+    const cooldown = await calcCdReduction({
+      userId: author.id,
+      commandType: RPG_COMMAND_TYPE.training,
+      cooldown: TRAINING_COOLDOWN,
+    });
+    await userReminderServices.saveUserTrainingCooldown({
+      userId: author.id,
+      ultraining: false,
+      readyAt: new Date(Date.now() + cooldown),
+    });
+  }
+  
   updateReminderChannel({
     userId: author.id,
     channelId,
