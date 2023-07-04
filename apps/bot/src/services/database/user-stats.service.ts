@@ -101,9 +101,20 @@ const getUserBestStats = async ({
   return stats[0];
 };
 
+interface IClearUserStats {
+  userId: string;
+}
+
+const clearUserStats = async ({userId}: IClearUserStats) => {
+  await dbUserStats.deleteMany({
+    userId,
+  });
+};
+
 export const userStatsService = {
   countUserStats,
   getUserStats,
   getUserStatsOfLast2Weeks,
   getUserBestStats,
+  clearUserStats,
 };

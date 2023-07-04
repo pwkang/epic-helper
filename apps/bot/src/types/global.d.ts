@@ -4,6 +4,7 @@ import type {ScheduleOptions} from 'node-cron';
 import {
   PREFIX_COMMAND_TYPE,
   SLASH_MESSAGE_BOT_TYPE,
+  USER_ACC_OFF_ACTIONS,
   USER_NOT_REGISTERED_ACTIONS,
 } from '@epic-helper/constants';
 
@@ -16,6 +17,7 @@ declare global {
     execute: (client: Client, message: Message, args: string[]) => void | Promise<void>;
     preCheck: {
       userNotRegistered?: ValuesOf<typeof USER_NOT_REGISTERED_ACTIONS>;
+      userAccOff?: ValuesOf<typeof USER_ACC_OFF_ACTIONS>;
     };
     type: ValuesOf<typeof PREFIX_COMMAND_TYPE>;
   }

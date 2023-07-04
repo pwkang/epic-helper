@@ -5,6 +5,7 @@ export * from './epic-helper/command-base-cd';
 export * from './epic-helper/general';
 export * from './epic-helper/custom-message';
 export * from './epic-helper/timezone';
+export * from './epic-helper/clickable-slash';
 
 export * from './epic-rpg/clickable-slash';
 export * from './epic-rpg/enchant';

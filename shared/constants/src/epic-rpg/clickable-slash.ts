@@ -35,9 +35,11 @@ export const RPG_CLICKABLE_SLASH_COMMANDS = {
   miniboss: '</miniboss:960740632400388146>',
   dungeon: '</dungeon:966956823032791090>',
   epicItem: '</use:959916181073068143>',
+  petList: '</pets list:961046238613090385>',
   petSummary: '</pets summary:961046238613090385>',
   petClaim: '</pets claim:961046238613090385>',
   petAdventure: '</pets adventure:961046238613090385>',
   heal: '</heal:959915737777061928>',
   guildStats: '</guild stats:961046237753257994>',
+  cd: '</cd:958554802038636654>',
 } as const;

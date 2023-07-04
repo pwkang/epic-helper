@@ -4,7 +4,11 @@ import {
   rpgPetCancelChecker,
 } from '../../../../lib/epic-rpg/commands/pets/pet-cancel';
 import {djsMessageHelper} from '../../../../lib/discordjs/message';
-import {PREFIX_COMMAND_TYPE, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
+import {
+  PREFIX_COMMAND_TYPE,
+  USER_ACC_OFF_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS,
+} from '@epic-helper/constants';
 
 const args1 = ['pets', 'pet'];
 const args2 = ['adventure', 'adv'];
@@ -22,6 +26,7 @@ export default <PrefixCommand>{
   type: PREFIX_COMMAND_TYPE.rpg,
   preCheck: {
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.abort,
+    userAccOff: USER_ACC_OFF_ACTIONS.abort,
   },
   execute: (client, message, args) => {
     const event = createRpgCommandListener({

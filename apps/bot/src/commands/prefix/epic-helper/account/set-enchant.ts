@@ -3,6 +3,7 @@ import {djsMessageHelper} from '../../../../lib/discordjs/message';
 import {
   PREFIX_COMMAND_TYPE,
   RPG_ENCHANT_LEVEL,
+  USER_ACC_OFF_ACTIONS,
   USER_NOT_REGISTERED_ACTIONS,
 } from '@epic-helper/constants';
 import {userService} from '../../../../services/database/user.service';
@@ -15,6 +16,7 @@ export default <PrefixCommand>{
   type: PREFIX_COMMAND_TYPE.bot,
   preCheck: {
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
+    userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
   },
   execute: async (client, message) => {
     const event = await djsMessageHelper.interactiveSend({

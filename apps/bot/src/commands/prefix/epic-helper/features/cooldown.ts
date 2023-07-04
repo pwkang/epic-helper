@@ -1,6 +1,10 @@
-import embedsList from '../../../../lib/epic-helper/embeds';
+import embedProvider from '../../../../lib/epic-helper/embeds';
 import {djsMessageHelper} from '../../../../lib/discordjs/message';
-import {PREFIX_COMMAND_TYPE, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
+import {
+  PREFIX_COMMAND_TYPE,
+  USER_ACC_OFF_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS,
+} from '@epic-helper/constants';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 
 export default <PrefixCommand>{
@@ -9,9 +13,10 @@ export default <PrefixCommand>{
   type: PREFIX_COMMAND_TYPE.bot,
   preCheck: {
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
+    userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
   },
   execute: async (client, message) => {
-    const embed = embedsList.userCooldown({
+    const embed = embedProvider.userCooldown({
       author: message.author,
       userReminder: await userReminderServices.getUserAllCooldowns(message.author.id),
     });
