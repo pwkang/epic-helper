@@ -1,4 +1,4 @@
-import {Client, Events, Message} from 'discord.js';
+import {Client, Events, Message, User} from 'discord.js';
 import {
   DEVS_ID,
   EPIC_RPG_ID,
@@ -10,7 +10,6 @@ import {
 import {userService} from '../../services/database/user.service';
 import {djsMessageHelper} from '../../lib/discordjs/message';
 import embedProvider from '../../lib/epic-helper/embeds';
-import {logger} from '@epic-helper/utils';
 
 export default <BotEvent>{
   eventName: Events.MessageCreate,
@@ -19,6 +18,11 @@ export default <BotEvent>{
     if (isBotSlashCommand(message) && isNotDeferred(message)) {
       const messages = searchSlashMessages(client, message);
       if (!messages.size) return;
+      const toExecute = await preCheckBotSlashCommand({
+        client,
+        author: message.interaction?.user!,
+      });
+      if (!toExecute) return;
       messages.forEach((cmd) => cmd.execute(client, message, message.interaction?.user!));
     }
 
@@ -191,6 +195,17 @@ const preCheckPrefixCommand = async ({preCheck, message, client}: IPreCheckPrefi
         break;
     }
   }
-  
+
   return Object.values(status).every((value) => value);
+};
+
+interface IPreCheckBotSlashCommand {
+  client: Client;
+  author: User;
+}
+
+const preCheckBotSlashCommand = async ({author, client}: IPreCheckBotSlashCommand) => {
+  const userAccount = await userService.getUserAccount(author.id);
+
+  return userAccount?.config.onOff ?? false;
 };
