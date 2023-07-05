@@ -9,6 +9,7 @@ export default <PrefixCommand>{
   name: 'deleteSlash',
   commands: ['slash delete'],
   type: PREFIX_COMMAND_TYPE.dev,
+  preCheck: {},
   execute: async (client, message, args) => {
     const slashCommands = await listSlashCommands();
 

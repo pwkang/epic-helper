@@ -7,6 +7,7 @@ export default <PrefixCommand>{
   name: 'patron',
   commands: ['p'],
   type: PREFIX_COMMAND_TYPE.dev,
+  preCheck: {},
   execute: async (client, message) => {
     const data = await patreonApi.getPatrons(client);
     if (!data) return;

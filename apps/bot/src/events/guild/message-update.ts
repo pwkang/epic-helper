@@ -1,6 +1,8 @@
-import {Client, Events, Message} from 'discord.js';
+import {Client, Events, Message, User} from 'discord.js';
 import {rpgPetList, rpgPetListChecker} from '../../lib/epic-rpg/commands/pets/pet-list';
 import {redisRpgMessageOwner} from '../../services/redis/rpg-message-owner.redis';
+import {userService} from '../../services/database/user.service';
+import {logger} from '@epic-helper/utils';
 
 export default <BotEvent>{
   eventName: Events.MessageUpdate,
@@ -8,6 +10,11 @@ export default <BotEvent>{
     if (isBotSlashCommand(newMessage) && isFirstUpdateAfterDeferred(oldMessage)) {
       const messages = searchSlashMessages(client, newMessage);
       if (!messages.size) return;
+      const toExecute = await preCheckBotSlashCommand({
+        client,
+        author: newMessage.interaction?.user!,
+      });
+      if (!toExecute) return;
       messages.forEach((cmd) => cmd.execute(client, newMessage, newMessage.interaction?.user!));
     }
 
@@ -39,3 +46,14 @@ const searchSlashMessages = (client: Client, message: Message) =>
       (name) => name.toLowerCase() === message.interaction?.commandName?.toLowerCase()
     )
   );
+
+interface IPreCheckBotSlashCommand {
+  client: Client;
+  author: User;
+}
+
+const preCheckBotSlashCommand = async ({author, client}: IPreCheckBotSlashCommand) => {
+  const userAccount = await userService.getUserAccount(author.id);
+
+  return userAccount?.config.onOff ?? false;
+};

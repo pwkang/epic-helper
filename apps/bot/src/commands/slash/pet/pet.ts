@@ -2,6 +2,7 @@ import {SlashCommandBuilder} from 'discord.js';
 import petList from './subcommand/pet-list';
 import petCd from './subcommand/pet-cd';
 import petCalcFusionScore from './subcommand/pet-calc-fusion-score';
+import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
 
 export default <SlashCommand>{
   name: 'pet',
@@ -25,6 +26,10 @@ export default <SlashCommand>{
             .setRequired(true)
         )
     ),
+  preCheck: {
+    userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
+    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
+  },
   execute: async (client, interaction) => {
     switch (interaction.options.getSubcommand()) {
       case 'list':

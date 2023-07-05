@@ -1,8 +1,8 @@
-import {IServerConfig} from '../config.type';
-import {RPG_RANDOM_EVENTS, RPG_RANDOM_EVENTS_COMMAND} from '@epic-helper/constants';
-import djsInteractionHelper from '../../../../../lib/discordjs/interaction';
-import {serverService} from '../../../../../services/database/server.service';
-import commandHelper from '../../../../../lib/epic-helper/command-helper';
+import {RPG_RANDOM_EVENTS_COMMAND} from '@epic-helper/constants';
+import djsInteractionHelper from '../../../../lib/discordjs/interaction';
+import {serverService} from '../../../../services/database/server.service';
+import commandHelper from '../../../../lib/epic-helper/command-helper';
+import {IServerConfig} from './type';
 
 export const setRandomEventMessages = async ({client, interaction}: IServerConfig) => {
   const log = interaction.options.getString(

@@ -9,6 +9,7 @@ export default <PrefixCommand>{
   name: 'listEmoji',
   commands: ['list emoji', 'le'],
   type: PREFIX_COMMAND_TYPE.dev,
+  preCheck: {},
   execute: (client, message) => {
     const emojis = message.guild && [...message.guild?.emojis.cache.values()];
     const emojiList =

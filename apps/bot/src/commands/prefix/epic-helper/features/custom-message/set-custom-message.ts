@@ -1,4 +1,8 @@
-import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
+import {
+  PREFIX_COMMAND_TYPE,
+  USER_ACC_OFF_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS,
+} from '@epic-helper/constants';
 import {
   CUSTOM_MESSAGE_PAGE_TYPE,
   CUSTOM_MESSAGE_TYPES_DISPLAY_NAME,
@@ -11,6 +15,10 @@ export default <PrefixCommand>{
   name: 'customMessageSet',
   commands: ['customMessage set', 'cm set'],
   type: PREFIX_COMMAND_TYPE.bot,
+  preCheck: {
+    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
+    userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
+  },
   execute: async (client, message, args) => {
     const type = args[2];
     if (!Object.values(CUSTOM_MESSAGE_TYPES_DISPLAY_NAME).includes(type.toLowerCase())) {

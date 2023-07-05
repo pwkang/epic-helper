@@ -4,12 +4,20 @@ import {
   rpgPetClaim,
   rpgPetClaimChecker,
 } from '../../../../lib/epic-rpg/commands/pets/pet-claim';
-import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
+import {
+  PREFIX_COMMAND_TYPE,
+  USER_ACC_OFF_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS,
+} from '@epic-helper/constants';
 
 export default <PrefixCommand>{
   name: 'petClaim',
   commands: ['pet claim', 'pets claim'],
   type: PREFIX_COMMAND_TYPE.rpg,
+  preCheck: {
+    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.abort,
+    userAccOff: USER_ACC_OFF_ACTIONS.abort,
+  },
   execute: (client, message) => {
     const event = createRpgCommandListener({
       channelId: message.channel.id,

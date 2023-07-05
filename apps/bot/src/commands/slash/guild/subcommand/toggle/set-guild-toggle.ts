@@ -3,7 +3,7 @@ import {guildService} from '../../../../../services/database/guild.service';
 import djsInteractionHelper from '../../../../../lib/discordjs/interaction';
 import commandHelper from '../../../../../lib/epic-helper/command-helper';
 import {toggleDisplayList} from '../../../../../lib/epic-helper/command-helper/toggle/toggle.list';
-import {IGuild, IUser} from '@epic-helper/models';
+import {IGuild} from '@epic-helper/models';
 
 export const setGuildToggle = async ({client, interaction}: IGuildSubCommand) => {
   if (!interaction.inGuild()) return;

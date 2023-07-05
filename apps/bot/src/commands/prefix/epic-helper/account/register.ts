@@ -1,11 +1,20 @@
 import {djsMessageHelper} from '../../../../lib/discordjs/message';
-import {PREFIX_COMMAND_TYPE, RPG_CLICKABLE_SLASH_COMMANDS} from '@epic-helper/constants';
+import {
+  PREFIX_COMMAND_TYPE,
+  USER_ACC_OFF_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS,
+} from '@epic-helper/constants';
 import {userService} from '../../../../services/database/user.service';
+import embedProvider from '../../../../lib/epic-helper/embeds';
 
 export default <PrefixCommand>{
   name: 'register',
   commands: ['register'],
   type: PREFIX_COMMAND_TYPE.bot,
+  preCheck: {
+    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,
+    userAccOff: USER_ACC_OFF_ACTIONS.skip,
+  },
   execute: async (client, message) => {
     const created = await userService.registerUserAccount({
       userId: message.author.id,
@@ -16,7 +25,9 @@ export default <PrefixCommand>{
       djsMessageHelper.reply({
         client,
         message,
-        options: `Successfully registered!\nUse ${RPG_CLICKABLE_SLASH_COMMANDS.inventory} to start tracking your ruby amount.`,
+        options: {
+          embeds: [embedProvider.successfullyRegister()],
+        },
       });
     } else {
       djsMessageHelper.reply({

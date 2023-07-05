@@ -1,5 +1,15 @@
-import {Client, Events, Message} from 'discord.js';
-import {DEVS_ID, EPIC_RPG_ID, PREFIX, PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
+import {Client, Events, Message, User} from 'discord.js';
+import {
+  DEVS_ID,
+  EPIC_RPG_ID,
+  PREFIX,
+  PREFIX_COMMAND_TYPE,
+  USER_ACC_OFF_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS,
+} from '@epic-helper/constants';
+import {userService} from '../../services/database/user.service';
+import {djsMessageHelper} from '../../lib/discordjs/message';
+import embedProvider from '../../lib/epic-helper/embeds';
 
 export default <BotEvent>{
   eventName: Events.MessageCreate,
@@ -8,12 +18,23 @@ export default <BotEvent>{
     if (isBotSlashCommand(message) && isNotDeferred(message)) {
       const messages = searchSlashMessages(client, message);
       if (!messages.size) return;
+      const toExecute = await preCheckBotSlashCommand({
+        client,
+        author: message.interaction?.user!,
+      });
+      if (!toExecute) return;
       messages.forEach((cmd) => cmd.execute(client, message, message.interaction?.user!));
     }
 
     if (isSentByUser(message)) {
       const result = searchCommand(client, message);
       if (!result) return;
+      const toExecute = await preCheckPrefixCommand({
+        client,
+        message,
+        preCheck: result.command.preCheck,
+      });
+      if (!toExecute) return;
       await result.command.execute(client, message, result.args);
     }
 
@@ -114,3 +135,77 @@ const isNotDeferred = (message: Message) => !(message.content === '' && !message
 
 const searchBotMatchedCommands = (client: Client, message: Message) =>
   client.botMessages.filter((cmd) => message.author.id === cmd.bot && cmd.match(message));
+
+interface IPreCheckPrefixCommand {
+  client: Client;
+  preCheck: PrefixCommand['preCheck'];
+  message: Message;
+}
+
+const preCheckPrefixCommand = async ({preCheck, message, client}: IPreCheckPrefixCommand) => {
+  const status: Record<keyof PrefixCommand['preCheck'], boolean> = {
+    userNotRegistered: true,
+    userAccOff: true,
+  };
+  const userAccount = await userService.getUserAccount(message.author.id);
+  if (preCheck.userNotRegistered !== undefined) {
+    switch (preCheck.userNotRegistered) {
+      case USER_NOT_REGISTERED_ACTIONS.skip:
+        status.userNotRegistered = true;
+        break;
+      case USER_NOT_REGISTERED_ACTIONS.abort:
+        status.userNotRegistered = !!userAccount;
+        break;
+      case USER_NOT_REGISTERED_ACTIONS.askToRegister:
+        status.userNotRegistered = !!userAccount;
+        if (!userAccount)
+          await djsMessageHelper.send({
+            client,
+            channelId: message.channelId,
+            options: {
+              embeds: [
+                embedProvider.howToRegister({
+                  author: message.author,
+                }),
+              ],
+            },
+          });
+        break;
+    }
+  }
+
+  if (preCheck.userAccOff !== undefined) {
+    switch (preCheck.userAccOff) {
+      case USER_ACC_OFF_ACTIONS.skip:
+        status.userAccOff = true;
+        break;
+      case USER_ACC_OFF_ACTIONS.abort:
+        status.userAccOff = !!userAccount?.config.onOff;
+        break;
+      case USER_ACC_OFF_ACTIONS.askToTurnOn:
+        status.userAccOff = !!userAccount?.config.onOff;
+        if (!userAccount?.config.onOff)
+          await djsMessageHelper.send({
+            client,
+            channelId: message.channelId,
+            options: {
+              embeds: [embedProvider.turnOnAccount()],
+            },
+          });
+        break;
+    }
+  }
+
+  return Object.values(status).every((value) => value);
+};
+
+interface IPreCheckBotSlashCommand {
+  client: Client;
+  author: User;
+}
+
+const preCheckBotSlashCommand = async ({author, client}: IPreCheckBotSlashCommand) => {
+  const userAccount = await userService.getUserAccount(author.id);
+
+  return userAccount?.config.onOff ?? false;
+};

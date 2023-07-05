@@ -1,5 +1,4 @@
 import {SLASH_MESSAGE_BOT_TYPE} from '@epic-helper/constants';
-import {rpgGuild} from '../../../../lib/epic-rpg/commands/guild/guild';
 import {rpgGuildUpgrade} from '../../../../lib/epic-rpg/commands/guild/guild-upgrade';
 
 export default <SlashMessage>{
