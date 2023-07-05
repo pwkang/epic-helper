@@ -1,9 +1,9 @@
-import {IUserConfig} from './type';
+import {IAccountSubcommand} from './type';
 import djsInteractionHelper from '../../../../lib/discordjs/interaction';
 import {RPG_COMMAND_TYPE, RPG_WORKING_TYPE} from '@epic-helper/constants';
 import {userService} from '../../../../services/database/user.service';
 
-export const setReminderChannelSlash = async ({client, interaction}: IUserConfig) => {
+export const slashAccountReminderChannel = async ({client, interaction}: IAccountSubcommand) => {
   const optionReminderType = interaction.options.getString('reminder-type')!;
   const optionAction = interaction.options.getString('action')! as 'set' | 'remove';
 

@@ -1,6 +1,6 @@
 import {ChatInputCommandInteraction, Client} from 'discord.js';
 
-export interface IUserConfig {
+export interface IAccountSubcommand {
   client: Client;
   interaction: ChatInputCommandInteraction;
 }
