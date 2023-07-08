@@ -33,10 +33,7 @@ interface IGetServerProps {
 const getServer = async ({serverId}: IGetServerProps): Promise<IServer | null> => {
   const server = await dbServer.findOne({serverId});
 
-  if (!server) {
-    return null;
-  }
-  return server;
+  return server ?? null;
 };
 
 const listRegisteredServersId = async (): Promise<string[]> => {

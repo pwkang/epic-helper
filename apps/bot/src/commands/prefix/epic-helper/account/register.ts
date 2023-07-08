@@ -4,8 +4,7 @@ import {
   USER_ACC_OFF_ACTIONS,
   USER_NOT_REGISTERED_ACTIONS,
 } from '@epic-helper/constants';
-import {userService} from '../../../../services/database/user.service';
-import embedProvider from '../../../../lib/epic-helper/embeds';
+import commandHelper from '../../../../lib/epic-helper/command-helper';
 
 export default <PrefixCommand>{
   name: 'register',
@@ -16,25 +15,14 @@ export default <PrefixCommand>{
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
   },
   execute: async (client, message) => {
-    const created = await userService.registerUserAccount({
-      userId: message.author.id,
-      username: message.author.username,
+    const messageOptions = await commandHelper.userAccount.register({
+      author: message.author,
       channelId: message.channel.id,
     });
-    if (created) {
-      djsMessageHelper.reply({
-        client,
-        message,
-        options: {
-          embeds: [embedProvider.successfullyRegister()],
-        },
-      });
-    } else {
-      djsMessageHelper.reply({
-        client,
-        message,
-        options: `You have already registered!`,
-      });
-    }
+    await djsMessageHelper.reply({
+      client,
+      message,
+      options: messageOptions,
+    });
   },
 };

@@ -4,7 +4,7 @@ import {
   USER_ACC_OFF_ACTIONS,
   USER_NOT_REGISTERED_ACTIONS,
 } from '@epic-helper/constants';
-import {userService} from '../../../../services/database/user.service';
+import commandHelper from '../../../../lib/epic-helper/command-helper';
 
 export default <PrefixCommand>{
   name: 'accountOn',
@@ -15,11 +15,13 @@ export default <PrefixCommand>{
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
   },
   execute: async (client, message) => {
-    await userService.userAccountOn(message.author.id);
-    djsMessageHelper.reply({
+    const messageOptions = await commandHelper.userAccount.turnOnAccount({
+      author: message.author,
+    });
+    await djsMessageHelper.reply({
       client,
       message,
-      options: `Successfully turned on the helper!`,
+      options: messageOptions,
     });
   },
 };

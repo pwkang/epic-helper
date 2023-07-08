@@ -32,10 +32,20 @@ export default async function _sendInteractiveMessage<EventType extends string>(
   });
   if (!sentMessage) return;
 
+  let allEventsFn: Function | null = null;
   const registeredEvents = new Collection<string | EventType, Function>();
   const collector = sentMessage.createMessageComponentCollector({
     idle: ms('1m'),
   });
+
+  function every(
+    callback: (
+      collected: BaseInteraction | StringSelectMenuInteraction,
+      customId: string
+    ) => Promise<InteractionUpdateOptions | null> | InteractionUpdateOptions | null
+  ) {
+    allEventsFn = callback;
+  }
 
   function on(
     customId: EventType extends undefined ? string : EventType,
@@ -49,12 +59,17 @@ export default async function _sendInteractiveMessage<EventType extends string>(
   collector.on('collect', async (collected) => {
     if (collected.message.id !== sentMessage.id) return;
     const callback = registeredEvents.get(collected.customId as string);
-    if (!callback) return;
-    const replyMsg = await callback(collected);
-    if (!replyMsg) return;
+    let replyOptions: InteractionUpdateOptions | null = null;
+
+    if (allEventsFn) {
+      replyOptions = await allEventsFn(collected, collected.customId as string);
+    } else if (callback) {
+      replyOptions = await callback(collected);
+    }
+    if (!replyOptions) return;
     await djsInteractionHelper.updateInteraction({
       interaction: collected,
-      options: replyMsg,
+      options: replyOptions,
       client,
     });
   });
@@ -85,6 +100,7 @@ export default async function _sendInteractiveMessage<EventType extends string>(
     on,
     stop,
     isEnded,
+    every,
     message: sentMessage,
   };
 }

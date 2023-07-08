@@ -1,8 +1,8 @@
-import {IUserConfig} from './type';
+import {IAccountSubcommand} from './type';
 import djsInteractionHelper from '../../../../lib/discordjs/interaction';
 import {userService} from '../../../../services/database/user.service';
 
-export const setHealReminder = async ({client, interaction}: IUserConfig) => {
+export const slashAccountHealReminder = async ({client, interaction}: IAccountSubcommand) => {
   const userId = interaction.user.id;
   const toRemove = interaction.options.getBoolean('remove');
   const hp = interaction.options.getNumber('hp');

@@ -23,8 +23,8 @@ const registerUserAccount = async ({
     const newUser = new dbUser({
       userId,
       username,
-      config: {
-        channel: channelId,
+      channel: {
+        all: channelId,
       },
     });
 
@@ -119,16 +119,6 @@ const removeRpgDonorPTier = async (userId: string): Promise<void> => {
       },
     }
   );
-};
-
-const toggleHuntSwitch = async (userId: string): Promise<boolean> => {
-  let user = await dbUser.findOne({
-    userId,
-  });
-  if (!user) return false;
-  user.config.huntSwitch = !user.config.huntSwitch;
-  await user.save();
-  return user.config.huntSwitch;
 };
 
 const getUserAccount = async (userId: string): Promise<IUser | null> => {
@@ -484,7 +474,6 @@ export const userService = {
   updateRpgDonorTier,
   updateRpgDonorPTier,
   removeRpgDonorPTier,
-  toggleHuntSwitch,
   getUserAccount,
   updateUserRubyAmount,
   getUserRubyAmount,

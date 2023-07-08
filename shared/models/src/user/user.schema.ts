@@ -76,6 +76,7 @@ export const userSchema = new Schema<IUser>({
       ruby: {type: Boolean, default: true},
       basic: {type: Boolean, default: true},
     },
+    huntSwitch: {type: Boolean, default: false},
     petCatch: {type: Boolean, default: true},
     emoji: {type: Boolean, default: true},
     quest: {
@@ -138,7 +139,6 @@ export const userSchema = new Schema<IUser>({
     enchant: {type: String},
     donor: {type: String, default: RPG_DONOR_TIER.nonDonor},
     donorP: {type: String},
-    huntSwitch: {type: Boolean, default: false},
     onOff: {type: Boolean, default: true},
     timeFormat: {
       type: String,
