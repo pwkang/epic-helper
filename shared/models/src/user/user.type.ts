@@ -22,6 +22,7 @@ export interface IUserToggle extends Record<string, boolean | Record<string, boo
     ruby: boolean;
     basic: boolean;
   };
+  huntSwitch: boolean;
   petCatch: boolean;
   emoji: boolean;
   quest: {
@@ -50,7 +51,6 @@ export interface IUser {
     enchant: keyof typeof RPG_ENCHANT_LEVEL;
     donor: ValuesOf<typeof RPG_DONOR_TIER>;
     donorP: ValuesOf<typeof RPG_DONOR_TIER> | null;
-    huntSwitch: boolean;
     onOff: boolean;
     timeFormat: ValuesOf<typeof BOT_TIME_FORMAT>;
   };

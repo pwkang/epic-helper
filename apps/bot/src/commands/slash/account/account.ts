@@ -8,6 +8,9 @@ import {slashShowUserAccount} from './subcommand/slash-show-user-account';
 import {slashAccountOn} from './subcommand/slash-account-on';
 import {slashAccountOff} from './subcommand/slash-account-off';
 import {slashAccountDelete} from './subcommand/account-delete';
+import {slashAccountDonor} from './subcommand/account-donor';
+import {slashAccountDonorPartner} from './subcommand/account-donor-partner';
+import {slashAccountEnchantTier} from './subcommand/account-enchant';
 
 export default <SlashCommand>{
   name: 'account',
@@ -34,6 +37,12 @@ export default <SlashCommand>{
         .addBooleanOption((option) =>
           option.setName('remove').setDescription('Remove and disable heal reminder')
         )
+    )
+    .addSubcommand((subcommand) =>
+      subcommand.setName('donor').setDescription('Set EPIC RPG donor tier')
+    )
+    .addSubcommand((subcommand) =>
+      subcommand.setName('donor-partner').setDescription('Set EPIC RPG donor partner tier')
     )
     .addSubcommand((subcommand) =>
       subcommand
@@ -66,6 +75,11 @@ export default <SlashCommand>{
         .setDescription('Customize the reminder messages for different reminders')
     )
     .addSubcommand((subcommand) =>
+      subcommand
+        .setName('enchant-tier')
+        .setDescription('Set the enchant tier for enchant mute helper')
+    )
+    .addSubcommand((subcommand) =>
       subcommand.setName('delete').setDescription('Delete your account')
     ),
   preCheck: {
@@ -92,8 +106,17 @@ export default <SlashCommand>{
       case 'reminder-channel':
         await slashAccountReminderChannel({client, interaction});
         break;
+      case 'donor':
+        await slashAccountDonor({client, interaction});
+        break;
+      case 'donor-partner':
+        await slashAccountDonorPartner({client, interaction});
+        break;
       case 'custom-messages':
         await slashAccountCustomMessages({client, interaction});
+        break;
+      case 'enchant-tier':
+        await slashAccountEnchantTier({client, interaction});
         break;
       case 'delete':
         await slashAccountDelete({client, interaction});

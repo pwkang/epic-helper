@@ -3,7 +3,6 @@ import {BOT_COLOR} from '@epic-helper/constants';
 import {IUser} from '@epic-helper/models';
 
 export interface IGetUserSettingsEmbed {
-  client: Client;
   author: User;
   userProfile: IUser;
 }
@@ -48,12 +47,6 @@ const getUserSettingsEmbed = ({userProfile, author}: IGetUserSettingsEmbed) => {
       value: `\`hunt t\` with **${DONOR_DISPLAY[userProfile.config.donorP]}** cooldown`,
     });
   }
-
-  if (userProfile.config.huntSwitch)
-    helperSettings.push({
-      icon: '🔁',
-      value: 'Switch hunt message between **hunt** and **hunt together**',
-    });
 
   if (userProfile.config.enchant)
     helperSettings.push({

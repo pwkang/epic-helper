@@ -72,6 +72,11 @@ export const donor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
           path: 'toggle.countdown.all',
           label: 'Show upcoming reminder countdown',
         },
+        {
+          value: userToggle.huntSwitch,
+          path: 'toggle.huntSwitch',
+          label: 'Switch hunt reminder between `hunt` & `hunt t`',
+        },
         // {
         //   value: userToggle.event.loveShareAdv,
         //   label: 'Adventure -10% cooldown',

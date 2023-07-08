@@ -67,7 +67,7 @@ const keyWords: IKeyword = {
   lootbox: ['lootbox', 'buy'],
   pet: ['pet', 'pets'],
   quest: ['quest', 'epic quest'],
-  epicItem: ['use', 'epic items', 'epic item'],
+  epicItem: ['use', 'epic items', 'epic item', 'epicItems', 'epicItem'],
   training: ['training', 'tr'],
   vote: ['vote'],
   weekly: ['weekly'],
@@ -80,7 +80,7 @@ const matchReminderType = (reminderType: string) => {
   const matched: (keyof IKeyword)[] = [];
   for (const key in keyWords) {
     const _key = key as keyof typeof keyWords;
-    if (keyWords[_key].some((keyword) => reminderTypeLower.includes(keyword))) {
+    if (keyWords[_key].some((keyword) => reminderTypeLower.includes(keyword.toLowerCase()))) {
       if (!matched.includes(_key)) {
         matched.push(_key);
       }
