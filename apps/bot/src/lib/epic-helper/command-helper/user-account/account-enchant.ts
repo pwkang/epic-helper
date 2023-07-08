@@ -1,22 +1,32 @@
 import {
   ActionRowBuilder,
   BaseMessageOptions,
+  EmbedBuilder,
+  Guild,
   StringSelectMenuBuilder,
   StringSelectMenuInteraction,
   User,
 } from 'discord.js';
-import {RPG_ENCHANT_LEVEL} from '@epic-helper/constants';
+import {BOT_COLOR, RPG_ENCHANT_LEVEL} from '@epic-helper/constants';
 import {userService} from '../../../../services/database/user.service';
+import {IServer} from '@epic-helper/models';
+import {serverService} from '../../../../services/database/server.service';
+import messageFormatter from '../../../discordjs/message-formatter';
 
 interface ISlashAccountEnchant {
   author: User;
+  server: Guild;
 }
 
-export const _setEnchant = ({author}: ISlashAccountEnchant) => {
+export const _setEnchant = async ({author, server}: ISlashAccountEnchant) => {
+  const serverAccount = await serverService.getServer({
+    serverId: server.id,
+  });
+
   function render(): BaseMessageOptions {
     return {
-      content: 'Select target enchant tier',
       components: [actionRow],
+      embeds: [selectEnchantEmbed],
     };
   }
 
@@ -30,8 +40,8 @@ export const _setEnchant = ({author}: ISlashAccountEnchant) => {
       case 'remove':
         await userService.removeUserEnchantTier({userId: author.id});
         return {
-          content: `You have removed your enchant tier`,
           components: [],
+          embeds: [removedEmbed],
         };
       default:
         await userService.setUserEnchantTier({
@@ -39,7 +49,7 @@ export const _setEnchant = ({author}: ISlashAccountEnchant) => {
           tier: selectedEnchantLevel,
         });
         return {
-          content: `You have selected ${interaction.values[0]}`,
+          embeds: [getEmbed({serverAccount, tier: selectedEnchantLevel})],
           components: [],
         };
     }
@@ -73,3 +83,40 @@ const actionRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
       {label: 'Remove', value: 'remove'},
     ])
 );
+
+interface IGetEmbed {
+  serverAccount: IServer | null;
+  tier: ValuesOf<typeof RPG_ENCHANT_LEVEL>;
+}
+
+const getEmbed = ({serverAccount, tier}: IGetEmbed) => {
+  const embed = new EmbedBuilder().setColor(BOT_COLOR.embed).setDescription(
+    `Successfully set your target enchant tier to **${tier.toUpperCase()}**
+    
+    Note: Enchant mute will only available in the channels set by server admins`
+  );
+
+  if (serverAccount?.settings.enchant.channels.length) {
+    embed.addFields({
+      name: 'Available channels',
+      value: serverAccount.settings.enchant.channels
+        .map((channel) => messageFormatter.channel(channel.channelId))
+        .join(' '),
+    });
+  } else {
+    embed.addFields({
+      name: 'Available channels',
+      value: 'No channel set',
+    });
+  }
+
+  return embed;
+};
+
+const removedEmbed = new EmbedBuilder()
+  .setColor(BOT_COLOR.embed)
+  .setDescription('You have removed your enchant tier');
+
+const selectEnchantEmbed = new EmbedBuilder()
+  .setColor(BOT_COLOR.embed)
+  .setDescription('Select your target enchant tier');

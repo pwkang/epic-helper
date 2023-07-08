@@ -1,5 +1,12 @@
-import {ActionRowBuilder, BaseMessageOptions, ButtonBuilder, ButtonStyle, User} from 'discord.js';
-import {RPG_DONOR_TIER} from '@epic-helper/constants';
+import {
+  ActionRowBuilder,
+  BaseMessageOptions,
+  ButtonBuilder,
+  ButtonStyle,
+  EmbedBuilder,
+  User,
+} from 'discord.js';
+import {BOT_CLICKABLE_SLASH_COMMANDS, BOT_COLOR, RPG_DONOR_TIER} from '@epic-helper/constants';
 import {userService} from '../../../../services/database/user.service';
 
 interface ISetDonor {
@@ -9,7 +16,7 @@ interface ISetDonor {
 export const _setDonor = ({author}: ISetDonor) => {
   function render(): BaseMessageOptions {
     return {
-      content: 'Select your epic rpg cd reduction',
+      embeds: [embed],
       components: [row],
     };
   }
@@ -32,8 +39,8 @@ export const _setDonor = ({author}: ISetDonor) => {
     });
 
     return {
-      content: RESPONSE_MSG[tier],
       components: [],
+      embeds: [getSuccessEmbed(tier)],
     };
   }
 
@@ -56,3 +63,31 @@ const RESPONSE_MSG = {
   [RPG_DONOR_TIER.donor20]: 'You have set your donor tier to -20%',
   [RPG_DONOR_TIER.donor35]: 'You have set your donor tier to -35%',
 } as const;
+
+const getSuccessEmbed = (tier: ValuesOf<typeof RPG_DONOR_TIER>) => {
+  const embed = new EmbedBuilder().setColor(BOT_COLOR.embed);
+
+  switch (tier) {
+    case RPG_DONOR_TIER.nonDonor:
+      embed.setTitle('You have set your donor tier to Non-donor');
+      break;
+    case RPG_DONOR_TIER.donor10:
+      embed.setTitle('You have set your donor tier to -10%');
+      break;
+    case RPG_DONOR_TIER.donor20:
+      embed.setTitle('You have set your donor tier to -20%');
+      break;
+    case RPG_DONOR_TIER.donor35:
+      embed.setTitle('You have set your donor tier to -35%');
+      break;
+  }
+  embed.setDescription(
+    `If you wish to hunt with your partner's cooldown, you can setup via ${BOT_CLICKABLE_SLASH_COMMANDS.accountDonorPartner}`
+  );
+
+  return embed;
+};
+
+const embed = new EmbedBuilder()
+  .setColor(BOT_COLOR.embed)
+  .setDescription('Select your EPIC RPG cd reduction');

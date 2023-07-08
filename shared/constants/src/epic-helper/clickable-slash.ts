@@ -4,6 +4,7 @@ export const BOT_CLICKABLE_SLASH_COMMANDS = {
   accountDonor: '/not-implemented',
   accountRegister: '/not-implemented',
   accountReminderChannel: '/not-implemented',
+  accountDonorPartner: '/not-implemented',
   toggleShow: '/not-implemented',
   stats: '/not-implemented',
   help: '/not-implemented',

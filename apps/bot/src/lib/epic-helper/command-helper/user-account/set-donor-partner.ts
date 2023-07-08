@@ -1,5 +1,12 @@
-import {ActionRowBuilder, BaseMessageOptions, ButtonBuilder, ButtonStyle, User} from 'discord.js';
-import {RPG_DONOR_TIER} from '@epic-helper/constants';
+import {
+  ActionRowBuilder,
+  BaseMessageOptions,
+  ButtonBuilder,
+  ButtonStyle,
+  EmbedBuilder,
+  User,
+} from 'discord.js';
+import {BOT_CLICKABLE_SLASH_COMMANDS, BOT_COLOR, RPG_DONOR_TIER} from '@epic-helper/constants';
 import {userService} from '../../../../services/database/user.service';
 
 interface ISetDonor {
@@ -9,8 +16,8 @@ interface ISetDonor {
 export const _setDonorP = ({author}: ISetDonor) => {
   function render(): BaseMessageOptions {
     return {
-      content: 'Select your partner epic rpg cd reduction',
       components: [row],
+      embeds: [embed],
     };
   }
 
@@ -36,8 +43,8 @@ export const _setDonorP = ({author}: ISetDonor) => {
     }
 
     return {
-      content: RESPONSE_MSG[tier!],
       components: [],
+      embeds: [getSuccessEmbed(tier!)],
     };
   }
 
@@ -55,10 +62,41 @@ const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
   new ButtonBuilder().setCustomId('remove').setLabel('Remove').setStyle(ButtonStyle.Secondary)
 );
 
-const RESPONSE_MSG = {
-  [RPG_DONOR_TIER.nonDonor]: 'You have set your partner donor tier to Non-donor',
-  [RPG_DONOR_TIER.donor10]: 'You have set your partner donor tier to -10%',
-  [RPG_DONOR_TIER.donor20]: 'You have set your partner donor tier to -20%',
-  [RPG_DONOR_TIER.donor35]: 'You have set your partner donor tier to -35%',
-  remove: 'You have removed your partner donor tier settings',
+const tierLabel = {
+  [RPG_DONOR_TIER.nonDonor]: 'Non-donor',
+  [RPG_DONOR_TIER.donor10]: '-10%',
+  [RPG_DONOR_TIER.donor20]: '-20%',
+  [RPG_DONOR_TIER.donor35]: '-35%',
+  remove: '',
 } as const;
+
+const getSuccessEmbed = (tier: ValuesOf<typeof RPG_DONOR_TIER> | 'remove') => {
+  const embed = new EmbedBuilder().setColor(BOT_COLOR.embed);
+
+  switch (tier) {
+    case RPG_DONOR_TIER.nonDonor:
+    case RPG_DONOR_TIER.donor10:
+    case RPG_DONOR_TIER.donor20:
+    case RPG_DONOR_TIER.donor35:
+      embed.setTitle(`You have set your partner donor tier to ${tierLabel[tier]}\n`).setDescription(
+        "You will now hunt with your partner's cooldown reduction\n\n" +
+          `If you wish to hunt with your own cooldown
+You may use ${BOT_CLICKABLE_SLASH_COMMANDS.accountDonorPartner} and select "Remove"`
+      );
+      break;
+    case 'remove':
+      embed
+        .setTitle('You have removed your partner EPIC RPG donor tier')
+        .setDescription('You will now hunt with your cooldown');
+      break;
+  }
+
+  return embed;
+};
+
+const embed = new EmbedBuilder()
+  .setColor(BOT_COLOR.embed)
+  .setTitle('Select your partner EPIC RPG donor tier')
+  .setDescription(
+    "By setting your partner donor tier,\nyou will hunt will your partner's cooldown"
+  );

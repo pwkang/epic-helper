@@ -1,7 +1,6 @@
 import {
   ActionRowBuilder,
   BaseMessageOptions,
-  Client,
   StringSelectMenuBuilder,
   StringSelectMenuInteraction,
   User,

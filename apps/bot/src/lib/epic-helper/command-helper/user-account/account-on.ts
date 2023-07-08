@@ -1,5 +1,6 @@
-import {BaseMessageOptions, User} from 'discord.js';
+import {BaseMessageOptions, EmbedBuilder, User} from 'discord.js';
 import {userService} from '../../../../services/database/user.service';
+import {BOT_COLOR} from '@epic-helper/constants';
 
 interface ITurnOnAccount {
   author: User;
@@ -8,6 +9,10 @@ interface ITurnOnAccount {
 export const _turnOnAccount = async ({author}: ITurnOnAccount): Promise<BaseMessageOptions> => {
   await userService.userAccountOn(author.id);
   return {
-    content: 'Successfully turned on the helper!',
+    embeds: [embed],
   };
 };
+
+const embed = new EmbedBuilder()
+  .setColor(BOT_COLOR.embed)
+  .setDescription('Successfully turned on the helper!');

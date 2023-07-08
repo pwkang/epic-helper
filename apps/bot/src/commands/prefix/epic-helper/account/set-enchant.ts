@@ -15,8 +15,9 @@ export default <PrefixCommand>{
     userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
   },
   execute: async (client, message) => {
-    const setEnchant = commandHelper.userAccount.setEnchant({
+    const setEnchant = await commandHelper.userAccount.setEnchant({
       author: message.author,
+      server: message.guild!,
     });
     const event = await djsMessageHelper.interactiveSend({
       client,

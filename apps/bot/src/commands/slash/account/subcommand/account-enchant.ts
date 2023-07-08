@@ -3,8 +3,9 @@ import commandHelper from '../../../../lib/epic-helper/command-helper';
 import djsInteractionHelper from '../../../../lib/discordjs/interaction';
 
 export const slashAccountEnchantTier = async ({client, interaction}: IAccountSubcommand) => {
-  const setEnchantTier = commandHelper.userAccount.setEnchant({
+  const setEnchantTier = await commandHelper.userAccount.setEnchant({
     author: interaction.user,
+    server: interaction.guild!,
   });
   const event = await djsInteractionHelper.replyInteraction({
     client,
