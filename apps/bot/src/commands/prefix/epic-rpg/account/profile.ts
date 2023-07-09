@@ -14,11 +14,13 @@ export default <PrefixCommand>{
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
   },
   execute: (client, message) => {
+    if (!message.guild) return;
     rpgProfile({
       author: message.author,
       isSlashCommand: false,
       message,
       client,
+      server: message.guild,
     });
   },
 };

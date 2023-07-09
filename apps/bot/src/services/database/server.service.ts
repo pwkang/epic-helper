@@ -218,9 +218,16 @@ interface ISetTTVerificationRule {
   roleId: string;
   minTT: number;
   maxTT?: number;
+  message?: string;
 }
 
-const setTTVerificationRule = async ({serverId, roleId, minTT, maxTT}: ISetTTVerificationRule) => {
+const setTTVerificationRule = async ({
+  serverId,
+  roleId,
+  minTT,
+  maxTT,
+  message,
+}: ISetTTVerificationRule) => {
   const isExists = await isTTVerificationRuleExists({serverId, roleId});
   let server;
   if (!isExists) {
@@ -232,6 +239,7 @@ const setTTVerificationRule = async ({serverId, roleId, minTT, maxTT}: ISetTTVer
             roleId,
             minTT,
             maxTT,
+            message,
           },
         },
       },
@@ -248,6 +256,7 @@ const setTTVerificationRule = async ({serverId, roleId, minTT, maxTT}: ISetTTVer
             roleId,
             minTT,
             maxTT,
+            message,
           },
         },
       },

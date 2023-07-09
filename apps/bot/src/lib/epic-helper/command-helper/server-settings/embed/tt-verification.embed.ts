@@ -13,22 +13,25 @@ export const _getTTVerificationSettingsEmbed = ({serverAccount, guild}: IServerS
     .setColor(BOT_COLOR.embed)
     .addFields(
       {
-        name: 'Channel',
+        name: 'CHANNEL',
         value: settings?.channelId ? messageFormatter.channel(settings.channelId) : '-',
-        inline: true,
+        inline: false,
       },
       {
-        name: 'Rules',
+        name: 'RULES',
         value: settings?.rules.length
           ? settings.rules
+              .sort((a, b) => a.minTT - b.minTT)
               .map((rule) => {
-                return `${messageFormatter.role(rule.roleId)}: ${rule.minTT} -> ${
-                  rule.maxTT ?? '∞'
-                }`;
+                return (
+                  `**Role:** ${messageFormatter.role(rule.roleId)}\n` +
+                  `**Range:** ${rule.minTT} -> ${rule.maxTT ?? '∞'}\n` +
+                  `**Message:** ${rule.message ?? '-'}\n`
+                );
               })
               .join('\n')
           : '-',
-        inline: true,
+        inline: false,
       }
     );
 };

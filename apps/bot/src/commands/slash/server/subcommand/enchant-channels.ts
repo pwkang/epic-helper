@@ -3,6 +3,7 @@ import {IEnchantChannel} from '@epic-helper/models';
 import {serverService} from '../../../../services/database/server.service';
 import commandHelper from '../../../../lib/epic-helper/command-helper';
 import {IServerConfig} from './type';
+import {SERVER_SETTINGS_PAGE_TYPE} from '../../../../lib/epic-helper/command-helper/server-settings/constant';
 
 type TActionType = 'add' | 'remove' | 'reset';
 
@@ -38,21 +39,17 @@ export const setEnchantChannels = async ({client, interaction}: IServerConfig) =
       break;
   }
 
-  const serverProfile = await serverService.getServer({
-    serverId: interaction.guildId,
+  const serverSettings = await commandHelper.serverSettings.settings({
+    server: interaction.guild!,
   });
-  if (!serverProfile) return;
-
-  const embed = commandHelper.serverSettings.renderEnchantMuteEmbed({
-    enchantSettings: serverProfile.settings.enchant,
-    guild: interaction.guild!,
-  });
+  if (!serverSettings) return;
   await djsInteractionHelper.replyInteraction({
     client,
+    options: serverSettings.render({
+      type: SERVER_SETTINGS_PAGE_TYPE.enchantMute,
+      displayOnly: true,
+    }),
     interaction,
-    options: {
-      embeds: [embed],
-    },
   });
 };
 

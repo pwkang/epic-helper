@@ -7,6 +7,8 @@ export const slashServerTTVerificationSetRule = async ({client, interaction}: IS
   const role = interaction.options.getRole('role', true);
   const minTT = interaction.options.getNumber('min-tt', true);
   const maxTT = interaction.options.getNumber('max-tt') ?? undefined;
+  const message = interaction.options.getString('message') ?? undefined;
+  console.log({role, minTT, maxTT, message});
   const ttVerification = await commandHelper.serverSettings.ttVerification({
     server: interaction.guild,
   });
@@ -15,6 +17,7 @@ export const slashServerTTVerificationSetRule = async ({client, interaction}: IS
     maxTT,
     minTT,
     roleId: role.id,
+    message,
   });
   await djsInteractionHelper.replyInteraction({
     client,

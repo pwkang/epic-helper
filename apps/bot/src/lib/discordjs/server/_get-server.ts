@@ -1,4 +1,5 @@
 import {Client} from 'discord.js';
+import {logger} from '@epic-helper/utils';
 
 interface IGetServer {
   client: Client;
@@ -8,7 +9,16 @@ interface IGetServer {
 export const _getServer = async ({serverId, client}: IGetServer) => {
   let server = client.guilds.cache.get(serverId);
   if (!server) {
-    server = await client.guilds.fetch(serverId);
+    try {
+      server = await client.guilds.fetch(serverId);
+    } catch (e) {
+      logger({
+        logLevel: 'error',
+        message: `Failed to fetch server ${serverId}`,
+        clusterId: client.cluster?.id,
+        variant: 'fetch-server',
+      });
+    }
   }
   return server;
 };

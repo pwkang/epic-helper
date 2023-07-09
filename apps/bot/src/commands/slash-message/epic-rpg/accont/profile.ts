@@ -8,11 +8,13 @@ export default <SlashMessage>{
   bot: SLASH_MESSAGE_BOT_TYPE.rpg,
   commandName: ['profile'],
   execute: async (client, message, author) => {
+    if (!message.guild) return;
     rpgProfile({
       client,
       author,
       message,
       isSlashCommand: true,
+      server: message.guild,
     });
   },
 };

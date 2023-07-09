@@ -96,6 +96,9 @@ export default <SlashCommand>{
                 .setMinValue(0)
                 .setMaxValue(999)
             )
+            .addStringOption((option) =>
+              option.setName('message').setDescription('Custom message to be attached in the embed')
+            )
         )
         .addSubcommand((subcommand) =>
           subcommand

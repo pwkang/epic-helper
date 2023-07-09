@@ -4,11 +4,13 @@ import {_serverSettingsHelper} from './server-settings';
 import {_guildSettingsHelper} from './guild-settings';
 import {_guildHelper} from './guild';
 import {_userAccountHelper} from './user-account';
+import {_serverHelper} from './server';
 
 const commandHelper = {
   toggle: _toggleHelper,
   customMessage: customMessageHelper,
   serverSettings: _serverSettingsHelper,
+  server: _serverHelper,
   guildSettings: _guildSettingsHelper,
   guild: _guildHelper,
   userAccount: _userAccountHelper,

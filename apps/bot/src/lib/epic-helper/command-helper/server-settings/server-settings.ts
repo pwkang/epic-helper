@@ -17,6 +17,7 @@ interface IServerSettings {
 
 interface IRender {
   type: ValuesOf<typeof SERVER_SETTINGS_PAGE_TYPE>;
+  displayOnly?: boolean;
 }
 
 export const _serverSettings = async ({server}: IServerSettings) => {
@@ -25,7 +26,7 @@ export const _serverSettings = async ({server}: IServerSettings) => {
   });
   if (!serverAccount) return null;
 
-  const render = ({type}: IRender): BaseMessageOptions => {
+  const render = ({type, displayOnly}: IRender): BaseMessageOptions => {
     let embed;
     switch (type) {
       case SERVER_SETTINGS_PAGE_TYPE.randomEvent:
@@ -47,9 +48,15 @@ export const _serverSettings = async ({server}: IServerSettings) => {
         });
         break;
     }
+    let components: ActionRowBuilder<StringSelectMenuBuilder>[] = [];
+
+    if (!displayOnly) {
+      components = [_getServerSettingsPageSelector({pageType: type})];
+    }
+
     return {
       embeds: [embed],
-      components: [_getServerSettingsPageSelector({pageType: type})],
+      components,
     };
   };
 

@@ -9,6 +9,7 @@ export interface ITTVerificationRules {
   roleId: string;
   minTT: number;
   maxTT?: number;
+  message?: string;
 }
 
 export interface IServer {

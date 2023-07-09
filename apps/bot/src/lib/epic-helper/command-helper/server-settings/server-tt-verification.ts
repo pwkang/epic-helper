@@ -14,6 +14,7 @@ interface IAddRule {
   roleId: string;
   minTT: number;
   maxTT?: number;
+  message?: string;
 }
 
 interface IRemoveRule {
@@ -45,12 +46,13 @@ export const _ttVerificationSettings = async ({server}: ITTVerificationSettings)
     return render();
   };
 
-  const setRule = async ({minTT, maxTT, roleId}: IAddRule) => {
+  const setRule = async ({minTT, maxTT, roleId, message}: IAddRule) => {
     serverAccount = await serverService.setTTVerificationRule({
       roleId,
       serverId: server.id,
       maxTT,
       minTT,
+      message,
     });
     return render();
   };

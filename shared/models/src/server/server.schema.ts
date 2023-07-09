@@ -33,6 +33,7 @@ export const serverSchema = new Schema<IServer>({
           roleId: {type: String, required: true},
           minTT: {type: Number, required: true},
           maxTT: Number,
+          message: String,
         }),
       ],
       channelId: String,

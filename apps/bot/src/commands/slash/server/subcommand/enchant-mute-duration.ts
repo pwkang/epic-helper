@@ -2,6 +2,7 @@ import djsInteractionHelper from '../../../../lib/discordjs/interaction';
 import {serverService} from '../../../../services/database/server.service';
 import commandHelper from '../../../../lib/epic-helper/command-helper';
 import {IServerConfig} from './type';
+import {SERVER_SETTINGS_PAGE_TYPE} from '../../../../lib/epic-helper/command-helper/server-settings/constant';
 
 export const setEnchantMuteDuration = async ({client, interaction}: IServerConfig) => {
   if (!interaction.inGuild()) return;
@@ -11,18 +12,17 @@ export const setEnchantMuteDuration = async ({client, interaction}: IServerConfi
     duration: duration * 1000,
     serverId: interaction.guildId!,
   });
-  const serverProfile = await serverService.getServer({
-    serverId: interaction.guildId!,
+
+  const serverSettings = await commandHelper.serverSettings.settings({
+    server: interaction.guild!,
   });
-  const embed = commandHelper.serverSettings.renderEnchantMuteEmbed({
-    enchantSettings: serverProfile!.settings.enchant,
-    guild: interaction.guild!,
-  });
+  if (!serverSettings) return;
   await djsInteractionHelper.replyInteraction({
     client,
-    options: {
-      embeds: [embed],
-    },
+    options: serverSettings.render({
+      type: SERVER_SETTINGS_PAGE_TYPE.enchantMute,
+      displayOnly: true,
+    }),
     interaction,
   });
 };
