@@ -27,5 +27,15 @@ export const serverSchema = new Schema<IServer>({
       muteDuration: {type: Number, default: 5000},
       channels: [enchantChannelSchema],
     },
+    ttVerification: {
+      rules: [
+        new Schema({
+          roleId: {type: String, required: true},
+          from: {type: Number, required: true},
+          to: Number,
+        }),
+      ],
+      channel: String,
+    },
   },
 });

@@ -5,6 +5,12 @@ export interface IEnchantChannel {
   muteDuration?: number;
 }
 
+export interface ITTVerificationRules {
+  roleId: string;
+  from: number;
+  to?: number;
+}
+
 export interface IServer {
   serverId: string;
   name: string;
@@ -17,6 +23,10 @@ export interface IServer {
     enchant: {
       muteDuration: number;
       channels: IEnchantChannel[];
+    };
+    ttVerification: {
+      channel: string;
+      rules: ITTVerificationRules[];
     };
   };
 }

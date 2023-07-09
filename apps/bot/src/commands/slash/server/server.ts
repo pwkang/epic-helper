@@ -9,6 +9,9 @@ import {setEnchantChannels} from './subcommand/enchant-channels';
 import {setEnchantMuteDuration} from './subcommand/enchant-mute-duration';
 import {viewServerSettings} from './subcommand/view-server-settings';
 import {setRandomEventMessages} from './subcommand/set-random-event-messages';
+import {slashServerTTVerificationSetChannels} from './subcommand/tt-verification/set-channels';
+import {slashServerTTVerificationSetRole} from './subcommand/tt-verification/set-role';
+import {slashServerTTVerificationRemoveRole} from './subcommand/tt-verification/remove-role';
 
 export default <SlashCommand>{
   name: 'server',
@@ -23,20 +26,15 @@ export default <SlashCommand>{
         .setName('enchant-channels')
         .setDescription('Set the enchant channels')
         .addStringOption((option) =>
-          option.setName('action').setDescription('Action to perform').setRequired(true).setChoices(
-            {
-              name: 'Add',
-              value: 'add',
-            },
-            {
-              name: 'Remove',
-              value: 'remove',
-            },
-            {
-              name: 'Reset',
-              value: 'reset',
-            }
-          )
+          option
+            .setName('action')
+            .setDescription('Action to perform')
+            .setRequired(true)
+            .setChoices(
+              {name: 'Add', value: 'add'},
+              {name: 'Remove', value: 'remove'},
+              {name: 'Reset', value: 'reset'}
+            )
         )
         .addStringOption((option) =>
           option
@@ -56,6 +54,52 @@ export default <SlashCommand>{
             .setRequired(true)
             .setMinValue(1)
             .setMaxValue(60)
+        )
+    )
+    .addSubcommandGroup((subcommandGroup) =>
+      subcommandGroup
+        .setName('tt-verification')
+        .setDescription('Set the TT verification settings')
+        .addSubcommand((subcommand) =>
+          subcommand
+            .setName('set-channel')
+            .setDescription('Set the TT verification channel')
+            .addChannelOption((option) =>
+              option
+                .setName('channel')
+                .setDescription('Channel to set as TT verification channel')
+                .setRequired(true)
+            )
+        )
+        .addSubcommand((subcommand) =>
+          subcommand
+            .setName('set-role')
+            .addRoleOption((option) =>
+              option
+                .setName('role')
+                .setDescription('Role to assign to verified users')
+                .setRequired(true)
+            )
+            .addNumberOption((option) =>
+              option
+                .setName('from')
+                .setDescription('Minimum time travels to assign role')
+                .setRequired(true)
+            )
+            .addNumberOption((option) =>
+              option.setName('to').setDescription('Maximum time travels to assign role')
+            )
+        )
+        .addSubcommand((subcommand) =>
+          subcommand
+            .setName('remove-role')
+            .setDescription('Role to remove')
+            .addRoleOption((option) =>
+              option
+                .setName('role')
+                .setDescription('Role to remove from verified users')
+                .setRequired(true)
+            )
         )
     )
     .addSubcommand((subcommand) =>
@@ -103,18 +147,39 @@ export default <SlashCommand>{
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,
   },
   execute: async (client, interaction) => {
-    switch (interaction.options.getSubcommand()) {
+    const subcommandGroup = interaction.options.getSubcommandGroup();
+    const subcommand = interaction.options.getSubcommand();
+
+    if (subcommandGroup) {
+      switch (subcommandGroup) {
+        case 'tt-verification':
+          switch (subcommand) {
+            case 'set-channels':
+              await slashServerTTVerificationSetChannels({client, interaction});
+              break;
+            case 'set-role':
+              await slashServerTTVerificationSetRole({client, interaction});
+              break;
+            case 'remove-role':
+              await slashServerTTVerificationRemoveRole({client, interaction});
+              break;
+          }
+          break;
+      }
+      return;
+    }
+    switch (subcommand) {
       case 'enchant-channels':
-        setEnchantChannels({client, interaction});
+        await setEnchantChannels({client, interaction});
         break;
       case 'enchant-mute-duration':
-        setEnchantMuteDuration({client, interaction});
+        await setEnchantMuteDuration({client, interaction});
         break;
       case 'settings':
-        viewServerSettings({client, interaction});
+        await viewServerSettings({client, interaction});
         break;
       case 'random-events':
-        setRandomEventMessages({client, interaction});
+        await setRandomEventMessages({client, interaction});
         break;
     }
   },
