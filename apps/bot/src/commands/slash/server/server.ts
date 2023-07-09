@@ -10,8 +10,8 @@ import {setEnchantMuteDuration} from './subcommand/enchant-mute-duration';
 import {viewServerSettings} from './subcommand/view-server-settings';
 import {setRandomEventMessages} from './subcommand/set-random-event-messages';
 import {slashServerTTVerificationSetChannels} from './subcommand/tt-verification/set-channels';
-import {slashServerTTVerificationSetRole} from './subcommand/tt-verification/set-role';
-import {slashServerTTVerificationRemoveRole} from './subcommand/tt-verification/remove-role';
+import {slashServerTTVerificationSetRule} from './subcommand/tt-verification/set-rule';
+import {slashServerTTVerificationRemoveRule} from './subcommand/tt-verification/remove-rule';
 
 export default <SlashCommand>{
   name: 'server',
@@ -73,7 +73,8 @@ export default <SlashCommand>{
         )
         .addSubcommand((subcommand) =>
           subcommand
-            .setName('set-role')
+            .setName('set-rule')
+            .setDescription('Add a new assign rule')
             .addRoleOption((option) =>
               option
                 .setName('role')
@@ -82,18 +83,24 @@ export default <SlashCommand>{
             )
             .addNumberOption((option) =>
               option
-                .setName('from')
-                .setDescription('Minimum time travels to assign role')
+                .setName('min-tt')
+                .setDescription('Minimum time travels amount to assign role')
                 .setRequired(true)
+                .setMinValue(0)
+                .setMaxValue(999)
             )
             .addNumberOption((option) =>
-              option.setName('to').setDescription('Maximum time travels to assign role')
+              option
+                .setName('max-tt')
+                .setDescription('Maximum time travels amount to assign role')
+                .setMinValue(0)
+                .setMaxValue(999)
             )
         )
         .addSubcommand((subcommand) =>
           subcommand
-            .setName('remove-role')
-            .setDescription('Role to remove')
+            .setName('remove-rule')
+            .setDescription('Remove an existing rule')
             .addRoleOption((option) =>
               option
                 .setName('role')
@@ -154,14 +161,14 @@ export default <SlashCommand>{
       switch (subcommandGroup) {
         case 'tt-verification':
           switch (subcommand) {
-            case 'set-channels':
+            case 'set-channel':
               await slashServerTTVerificationSetChannels({client, interaction});
               break;
-            case 'set-role':
-              await slashServerTTVerificationSetRole({client, interaction});
+            case 'set-rule':
+              await slashServerTTVerificationSetRule({client, interaction});
               break;
-            case 'remove-role':
-              await slashServerTTVerificationRemoveRole({client, interaction});
+            case 'remove-rule':
+              await slashServerTTVerificationRemoveRule({client, interaction});
               break;
           }
           break;

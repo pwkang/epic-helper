@@ -7,8 +7,8 @@ export interface IEnchantChannel {
 
 export interface ITTVerificationRules {
   roleId: string;
-  from: number;
-  to?: number;
+  minTT: number;
+  maxTT?: number;
 }
 
 export interface IServer {
@@ -25,7 +25,7 @@ export interface IServer {
       channels: IEnchantChannel[];
     };
     ttVerification: {
-      channel: string;
+      channelId: string;
       rules: ITTVerificationRules[];
     };
   };

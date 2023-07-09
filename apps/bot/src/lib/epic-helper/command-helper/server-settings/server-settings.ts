@@ -9,6 +9,7 @@ import {serverService} from '../../../../services/database/server.service';
 import {_getRandomEventSettingsEmbed} from './embed/random-event.embed';
 import _getEnchantChannelsEmbed from './embed/enchant-channels.embed';
 import {SERVER_SETTINGS_PAGE_TYPE} from './constant';
+import {_getTTVerificationSettingsEmbed} from './embed/tt-verification.embed';
 
 interface IServerSettings {
   server: Guild;
@@ -36,6 +37,12 @@ export const _serverSettings = async ({server}: IServerSettings) => {
       case SERVER_SETTINGS_PAGE_TYPE.enchantMute:
         embed = _getEnchantChannelsEmbed({
           enchantSettings: serverAccount.settings.enchant,
+          guild: server,
+        });
+        break;
+      case SERVER_SETTINGS_PAGE_TYPE.ttVerification:
+        embed = _getTTVerificationSettingsEmbed({
+          serverAccount,
           guild: server,
         });
         break;
@@ -74,6 +81,10 @@ const SERVER_SETTINGS_PAGES: IPage[] = [
   {
     id: SERVER_SETTINGS_PAGE_TYPE.enchantMute,
     label: 'Enchant mute',
+  },
+  {
+    id: SERVER_SETTINGS_PAGE_TYPE.ttVerification,
+    label: 'TT verification',
   },
 ];
 

@@ -15,8 +15,8 @@ import _updateInteraction from './_update-interaction';
 export interface IReplyInteraction {
   client: Client;
   interaction: BaseInteraction;
-  interactive?: boolean;
   options: InteractionReplyOptions;
+  interactive?: boolean;
 }
 
 export default async function _replyInteraction<T>({

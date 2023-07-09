@@ -14,8 +14,7 @@ const _getEnchantChannelsEmbed = ({guild, enchantSettings}: IGetEnchantChannelsE
       name: `${guild.name}'s enchant channels`,
       iconURL: guild.iconURL() ?? undefined,
     })
-    .setColor(BOT_COLOR.embed)
-    .setThumbnail(guild.iconURL());
+    .setColor(BOT_COLOR.embed);
 
   const fields: EmbedField[] = [
     {

@@ -31,11 +31,11 @@ export const serverSchema = new Schema<IServer>({
       rules: [
         new Schema({
           roleId: {type: String, required: true},
-          from: {type: Number, required: true},
-          to: Number,
+          minTT: {type: Number, required: true},
+          maxTT: Number,
         }),
       ],
-      channel: String,
+      channelId: String,
     },
   },
 });
