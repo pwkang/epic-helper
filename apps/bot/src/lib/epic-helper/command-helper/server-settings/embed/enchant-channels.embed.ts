@@ -3,7 +3,7 @@ import {IServer} from '@epic-helper/models';
 import {BOT_COLOR} from '@epic-helper/constants';
 import convertMsToHumanReadableString from '../../../../../utils/convert-ms-to-human-readable-string';
 
-export interface IGetEnchantChannelsEmbed {
+interface IGetEnchantChannelsEmbed {
   guild: Guild;
   enchantSettings: IServer['settings']['enchant'];
 }
@@ -14,8 +14,7 @@ const _getEnchantChannelsEmbed = ({guild, enchantSettings}: IGetEnchantChannelsE
       name: `${guild.name}'s enchant channels`,
       iconURL: guild.iconURL() ?? undefined,
     })
-    .setColor(BOT_COLOR.embed)
-    .setThumbnail(guild.iconURL());
+    .setColor(BOT_COLOR.embed);
 
   const fields: EmbedField[] = [
     {

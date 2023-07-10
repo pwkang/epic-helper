@@ -45,18 +45,7 @@ export const _accountSettings = async ({author}: IAccountSettings) => {
 
   function responseInteraction(interaction: StringSelectMenuInteraction): BaseMessageOptions {
     const selected = interaction.values[0] as ValuesOf<typeof PAGE_TYPE>;
-    switch (selected) {
-      case PAGE_TYPE.settings:
-        return {
-          embeds: [userSettingsEmbed],
-          components: [getActionRow({selected: PAGE_TYPE.settings})],
-        };
-      case PAGE_TYPE.reminderChannel:
-        return {
-          embeds: [userReminderChannelEmbed],
-          components: [getActionRow({selected: PAGE_TYPE.reminderChannel})],
-        };
-    }
+    return render({type: selected});
   }
 
   return {

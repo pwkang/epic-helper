@@ -3,6 +3,7 @@ import djsInteractionHelper from '../../../../lib/discordjs/interaction';
 import {serverService} from '../../../../services/database/server.service';
 import commandHelper from '../../../../lib/epic-helper/command-helper';
 import {IServerConfig} from './type';
+import {SERVER_SETTINGS_PAGE_TYPE} from '../../../../lib/epic-helper/command-helper/server-settings/constant';
 
 export const setRandomEventMessages = async ({client, interaction}: IServerConfig) => {
   const log = interaction.options.getString(
@@ -40,16 +41,16 @@ export const setRandomEventMessages = async ({client, interaction}: IServerConfi
     },
   });
   if (!serverAccount) return null;
-  djsInteractionHelper.replyInteraction({
+  const serverSettings = await commandHelper.serverSettings.settings({
+    server: interaction.guild!,
+  });
+  if (!serverSettings) return null;
+  await djsInteractionHelper.replyInteraction({
     client,
     interaction,
-    options: {
-      embeds: [
-        commandHelper.serverSettings.renderRandomEventEmbed({
-          guild: interaction.guild!,
-          serverAccount,
-        }),
-      ],
-    },
+    options: serverSettings.render({
+      type: SERVER_SETTINGS_PAGE_TYPE.randomEvent,
+      displayOnly: true,
+    }),
   });
 };

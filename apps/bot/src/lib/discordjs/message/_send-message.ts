@@ -47,7 +47,7 @@ async function checkTypeAndSend({
       sentMessage = await textChannel.send(options);
     } catch (error: DiscordAPIError | any) {
       logger({
-        message: error.rawError.message,
+        message: error.message,
         logLevel: 'warn',
         variant: 'sendMessage',
         clusterId: client.cluster?.id,

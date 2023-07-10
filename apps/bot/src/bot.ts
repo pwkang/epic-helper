@@ -45,6 +45,7 @@ Promise.all([loadCommands(client), loadBotEvents(client), loadRedis(), loadCronJ
       logger({
         message: error.message,
         clusterId: client.cluster?.id,
+        logLevel: 'error',
       });
     });
   }

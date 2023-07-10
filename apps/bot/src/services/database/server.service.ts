@@ -183,6 +183,111 @@ const updateRandomEvents = async ({
   return dbServer.findOneAndUpdate({serverId}, query, {new: true});
 };
 
+interface ISetTTVerificationChannel {
+  serverId: string;
+  channelId: string;
+}
+
+const setTTVerificationChannel = async ({serverId, channelId}: ISetTTVerificationChannel) => {
+  const server = await dbServer.findOneAndUpdate(
+    {serverId},
+    {
+      $set: {'settings.ttVerification.channelId': channelId},
+    },
+    {new: true}
+  );
+
+  return server ?? null;
+};
+
+interface IIsTTVerificationRuleExists {
+  serverId: string;
+  roleId: string;
+}
+
+const isTTVerificationRuleExists = async ({serverId, roleId}: IIsTTVerificationRuleExists) => {
+  const server = await dbServer.findOne({
+    serverId,
+  });
+
+  return server?.settings.ttVerification.rules.some((rule) => rule.roleId === roleId) ?? false;
+};
+
+interface ISetTTVerificationRule {
+  serverId: string;
+  roleId: string;
+  minTT: number;
+  maxTT?: number;
+  message?: string;
+}
+
+const setTTVerificationRule = async ({
+  serverId,
+  roleId,
+  minTT,
+  maxTT,
+  message,
+}: ISetTTVerificationRule) => {
+  const isExists = await isTTVerificationRuleExists({serverId, roleId});
+  let server;
+  if (!isExists) {
+    server = await dbServer.findOneAndUpdate(
+      {serverId},
+      {
+        $push: {
+          'settings.ttVerification.rules': {
+            roleId,
+            minTT,
+            maxTT,
+            message,
+          },
+        },
+      },
+      {
+        new: true,
+      }
+    );
+  } else {
+    server = await dbServer.findOneAndUpdate(
+      {serverId, 'settings.ttVerification.rules.roleId': roleId},
+      {
+        $set: {
+          'settings.ttVerification.rules.$': {
+            roleId,
+            minTT,
+            maxTT,
+            message,
+          },
+        },
+      },
+      {
+        new: true,
+      }
+    );
+  }
+  return server ?? null;
+};
+
+interface IRemoveTTVerificationRule {
+  serverId: string;
+  roleId: string;
+}
+
+const removeTTVerificationRule = async ({serverId, roleId}: IRemoveTTVerificationRule) => {
+  const server = await dbServer.findOneAndUpdate(
+    {serverId},
+    {
+      $pull: {
+        'settings.ttVerification.rules': {
+          roleId,
+        },
+      },
+    },
+    {new: true}
+  );
+  return server ?? null;
+};
+
 export const serverService = {
   registerServer,
   getServer,
@@ -195,4 +300,8 @@ export const serverService = {
   resetEnchantChannels,
   updateEnchantMuteDuration,
   updateRandomEvents,
+  setTTVerificationChannel,
+  isTTVerificationRuleExists,
+  setTTVerificationRule,
+  removeTTVerificationRule,
 };

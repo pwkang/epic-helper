@@ -5,13 +5,14 @@ export interface IGuildReader {
   embed: Embed;
 }
 
-export const guildReader = ({embed}: IGuildReader) => {
+const guildReader = ({embed}: IGuildReader) => {
   const name = embed.description?.split('**')[1]!;
   const level = embed.fields?.[0].value.split('\n')[0].match(/\d+/g)?.[0]!;
   const xp = embed.fields?.[0].value.split('\n')[1].match(/\d+/g)?.[0]!;
   const energy = embed.fields?.[1].value.split('\n')[0].match(/\d+/g)?.[0]!;
   const stealth = embed.fields?.[1].value.split('\n')[1].match(/\d+/g)?.[0]!;
   const time = embed.fields?.[1].value.split('\n')[3].split('**')[1]?.split(' ') ?? [];
+
   return {
     name,
     level: Number(level),
@@ -23,3 +24,5 @@ export const guildReader = ({embed}: IGuildReader) => {
     energy: Number(energy),
   };
 };
+
+export default guildReader;
