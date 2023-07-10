@@ -69,8 +69,8 @@ interface IRpgCooldownSuccess {
 
 const rpgCooldownSuccess = async ({author, embed}: IRpgCooldownSuccess) => {
   const currentCooldowns = await userReminderServices.getUserAllCooldowns(author.id);
-  const userProfile = await userService.getUserAccount(author.id);
-  if (!userProfile) return;
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount) return;
 
   const fields = embed.fields.flatMap((field) => field.value.split('\n'));
 
@@ -86,13 +86,16 @@ const rpgCooldownSuccess = async ({author, embed}: IRpgCooldownSuccess) => {
       }
     } else {
       let readyIn = extractAndCalculateReadyAt(row);
-      if (commandType === RPG_COMMAND_TYPE.hunt && userProfile.config.donorP) {
+      if (commandType === RPG_COMMAND_TYPE.hunt && userAccount.config.donorP) {
         const extraDuration = calcExtraHuntCdWithPartner({
-          donorP: userProfile.config.donorP,
-          donor: userProfile.config.donor,
+          donorP: userAccount.config.donorP,
+          donor: userAccount.config.donor,
         });
         readyIn += extraDuration;
       }
+      if (!userAccount.toggle.reminder.all || !userAccount.toggle.reminder[commandType])
+        readyIn = 0;
+
       const readyAt = new Date(Date.now() + readyIn);
       const currentCooldown = currentCooldowns.find((cooldown) => cooldown.type === commandType);
       if (currentCooldown) {

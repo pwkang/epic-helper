@@ -8,15 +8,15 @@ import {userPetServices} from '../../../../services/database/user-pet.service';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {generateUserReminderMessage} from '../message-generator/custom-message-generator';
 
-export const userPetReminderTimesUp = async (client: Client, user: IUser) => {
+export const userPetReminderTimesUp = async (client: Client, userAccount: IUser) => {
   const channelId = await getReminderChannel({
     commandType: RPG_COMMAND_TYPE.pet,
-    userId: user.userId,
+    userId: userAccount.userId,
     client,
   });
   if (!channelId || !client.channels.cache.has(channelId)) return;
 
-  const userId = user.userId;
+  const userId = userAccount.userId;
   const pets = await userPetServices.getUserReadyPets({userId});
   const petIds = pets.map((pet) => pet.petId);
 
@@ -24,6 +24,7 @@ export const userPetReminderTimesUp = async (client: Client, user: IUser) => {
     petIds,
     userId,
   });
+  if (!userAccount.toggle.reminder.pet) return;
 
   const nextReminder = await userReminderServices.getNextReadyCommand({
     userId,
@@ -32,7 +33,7 @@ export const userPetReminderTimesUp = async (client: Client, user: IUser) => {
   const reminderMessage = await generateUserReminderMessage({
     client,
     userId,
-    userAccount: user,
+    userAccount: userAccount,
     type: RPG_COMMAND_TYPE.pet,
     nextReminder: nextReminder ?? undefined,
     readyPetsId: petIds,

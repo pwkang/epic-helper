@@ -9,29 +9,30 @@ import {userReminderServices} from '../../../../services/database/user-reminder.
 import {generateUserReminderMessage} from '../message-generator/custom-message-generator';
 
 export const userReminderTimesUp = async (client: Client, userId: string) => {
-  const user = await userService.getUserAccount(userId);
-  if (!user?.config?.onOff) return;
+  const userAccount = await userService.getUserAccount(userId);
+  if (!userAccount?.config?.onOff) return;
 
   const readyCommands = await userReminderServices.findUserReadyCommands(userId);
   for (let command of readyCommands) {
     if (Date.now() - command.readyAt.getTime() > ms('5s')) {
       await userReminderServices.deleteUserCooldowns({
-        userId: user.userId,
+        userId: userAccount.userId,
         types: [command.type],
       });
       continue;
     }
 
     if (command.type === RPG_COMMAND_TYPE.pet) {
-      return userPetReminderTimesUp(client, user);
+      return userPetReminderTimesUp(client, userAccount);
     }
 
     const channelId = await getReminderChannel({
       commandType: command.type,
-      userId: user.userId,
+      userId: userAccount.userId,
       client,
     });
-    if (!channelId || !client.channels.cache.has(channelId)) return;
+    if (!channelId || !client.channels.cache.has(channelId)) continue;
+    if (!userAccount.toggle.reminder.all || !userAccount.toggle.reminder[command.type]) continue;
 
     const nextReminder = await userReminderServices.getNextReadyCommand({
       userId,
@@ -40,7 +41,7 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
     const reminderMessage = await generateUserReminderMessage({
       client,
       userId,
-      userAccount: user,
+      userAccount: userAccount,
       props: command.props,
       type: command.type,
       nextReminder: nextReminder ?? undefined,
@@ -54,7 +55,7 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
     });
   }
   await userReminderServices.deleteUserCooldowns({
-    userId: user.userId,
+    userId: userAccount.userId,
     types: readyCommands.map((cmd) => cmd.type),
   });
 };
