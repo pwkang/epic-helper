@@ -58,7 +58,8 @@ interface IRpgEpicQuestSuccess {
 const QUEST_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.epicQuest;
 
 const rpgEpicQuestSuccess = async ({author, channelId}: IRpgEpicQuestSuccess) => {
-  const userAccount = (await userService.getUserAccount(author.id))!;
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount) return;
 
   if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.quest) {
     const cooldown = await calcCdReduction({
@@ -72,13 +73,13 @@ const rpgEpicQuestSuccess = async ({author, channelId}: IRpgEpicQuestSuccess) =>
       readyAt: new Date(Date.now() + cooldown),
     });
   }
-  
-  updateReminderChannel({
+
+  await updateReminderChannel({
     userId: author.id,
     channelId,
   });
 
-  userStatsService.countUserStats({
+  await userStatsService.countUserStats({
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.epicQuest,
   });

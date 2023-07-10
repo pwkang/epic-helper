@@ -23,9 +23,9 @@ export function rpgWeekly({client, message, author, isSlashCommand}: IRpgWeekly)
     client,
   });
   if (!event) return;
-  event.on('embed', (embed) => {
+  event.on('embed', async (embed) => {
     if (isRpgWeeklySuccess({embed, author})) {
-      rpgWeeklySuccess({
+      await rpgWeeklySuccess({
         embed,
         author,
         channelId: message.channel.id,
@@ -34,8 +34,8 @@ export function rpgWeekly({client, message, author, isSlashCommand}: IRpgWeekly)
       event.stop();
     }
   });
-  event.on('cooldown', (cooldown) => {
-    userReminderServices.updateUserCooldown({
+  event.on('cooldown', async (cooldown) => {
+    await userReminderServices.updateUserCooldown({
       userId: author.id,
       readyAt: new Date(Date.now() + cooldown),
       type: RPG_COMMAND_TYPE.weekly,
@@ -52,7 +52,8 @@ interface IRpgWeeklySuccess {
 }
 
 const rpgWeeklySuccess = async ({author, channelId}: IRpgWeeklySuccess) => {
-  const userAccount = (await userService.getUserAccount(author.id))!;
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount) return;
 
   if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.weekly) {
     const cooldown = await calcCdReduction({
@@ -65,8 +66,8 @@ const rpgWeeklySuccess = async ({author, channelId}: IRpgWeeklySuccess) => {
       readyAt: new Date(Date.now() + cooldown),
     });
   }
-  
-  updateReminderChannel({
+
+  await updateReminderChannel({
     userId: author.id,
     channelId,
   });

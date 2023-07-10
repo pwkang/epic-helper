@@ -24,9 +24,9 @@ export function rpgFarm({client, message, author, isSlashCommand}: IRpgFarm) {
     channelId: message.channel.id,
   });
   if (!event) return;
-  event.on('content', (content, collected) => {
+  event.on('content', async (content, collected) => {
     if (isRpgFarmSuccess({content, author}) || isSeedNotGrowingUpEnded({content, author})) {
-      rpgFarmSuccess({
+      await rpgFarmSuccess({
         author,
         client,
         channelId: message.channel.id,
@@ -46,8 +46,8 @@ export function rpgFarm({client, message, author, isSlashCommand}: IRpgFarm) {
       // event.stop();
     }
   });
-  event.on('cooldown', (cooldown) => {
-    userReminderServices.updateUserCooldown({
+  event.on('cooldown', async (cooldown) => {
+    await userReminderServices.updateUserCooldown({
       userId: author.id,
       readyAt: new Date(Date.now() + cooldown),
       type: RPG_COMMAND_TYPE.farm,
@@ -64,7 +64,8 @@ interface IRpgFarmSuccess {
 }
 
 const rpgFarmSuccess = async ({content, author, channelId}: IRpgFarmSuccess) => {
-  const userAccount = (await userService.getUserAccount(author.id))!;
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount) return;
   const seedType = whatIsTheSeed(content);
 
   if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.farm) {
@@ -80,7 +81,7 @@ const rpgFarmSuccess = async ({content, author, channelId}: IRpgFarmSuccess) => 
     });
   }
 
-  updateReminderChannel({
+  await updateReminderChannel({
     userId: author.id,
     channelId,
   });

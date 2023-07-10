@@ -29,7 +29,7 @@ export function rpgTraining({client, message, author, isSlashCommand}: IRpgTrain
       event.pendingAnswer();
       const answer = await getTrainingAnswer({author, content});
       if (!answer) return;
-      djsMessageHelper.send({
+      await djsMessageHelper.send({
         channelId: message.channel.id,
         client,
         options: {
@@ -39,15 +39,15 @@ export function rpgTraining({client, message, author, isSlashCommand}: IRpgTrain
     }
 
     if (isRpgTrainingSuccess({author, content})) {
-      rpgTrainingSuccess({
+      await rpgTrainingSuccess({
         author,
         channelId: message.channel.id,
         client,
       });
     }
   });
-  event.on('cooldown', (cooldown) => {
-    userReminderServices.updateUserCooldown({
+  event.on('cooldown', async (cooldown) => {
+    await userReminderServices.updateUserCooldown({
       userId: author.id,
       type: RPG_COMMAND_TYPE.training,
       readyAt: new Date(Date.now() + cooldown),
@@ -86,7 +86,7 @@ const rpgTrainingSuccess = async ({author, channelId}: IRpgTrainingSuccess) => {
     });
   }
 
-  updateReminderChannel({
+  await updateReminderChannel({
     userId: author.id,
     channelId,
   });

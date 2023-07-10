@@ -28,9 +28,9 @@ export function rpgBuyLootbox({client, message, author, isSlashCommand}: IRpgLoo
     client,
   });
   if (!event) return;
-  event.on('content', (content, collected) => {
+  event.on('content', async (content, collected) => {
     if (isLootboxSuccessfullyBought({content})) {
-      rpgBuyLootboxSuccess({
+      await rpgBuyLootboxSuccess({
         author,
         client,
         channelId: message.channel.id,
@@ -45,8 +45,8 @@ export function rpgBuyLootbox({client, message, author, isSlashCommand}: IRpgLoo
       event.stop();
     }
   });
-  event.on('cooldown', (cooldown) => {
-    userReminderServices.updateUserCooldown({
+  event.on('cooldown', async (cooldown) => {
+    await userReminderServices.updateUserCooldown({
       type: RPG_COMMAND_TYPE.lootbox,
       readyAt: new Date(Date.now() + cooldown),
       userId: author.id,
@@ -63,7 +63,8 @@ interface IRpgBuyLootboxSuccess {
 }
 
 const rpgBuyLootboxSuccess = async ({author, content, channelId}: IRpgBuyLootboxSuccess) => {
-  const userAccount = (await userService.getUserAccount(author.id))!;
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount) return;
   const lootboxType = Object.values(RPG_LOOTBOX_TYPE).find((type) =>
     content.toLowerCase().includes(type)
   );
@@ -81,7 +82,7 @@ const rpgBuyLootboxSuccess = async ({author, content, channelId}: IRpgBuyLootbox
     });
   }
 
-  updateReminderChannel({
+  await updateReminderChannel({
     userId: author.id,
     channelId,
   });

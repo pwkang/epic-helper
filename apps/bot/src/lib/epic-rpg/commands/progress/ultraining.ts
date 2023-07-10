@@ -22,9 +22,9 @@ export function rpgUltraining({client, message, author, isSlashCommand}: IRpgUlt
     author,
   });
   if (!event) return;
-  event.on('embed', (embed) => {
+  event.on('embed', async (embed) => {
     if (isRpgUltrainingSuccess({embed, author})) {
-      rpgUlTrainingSuccess({
+      await rpgUlTrainingSuccess({
         author,
         channelId: message.channel.id,
         client,
@@ -56,7 +56,8 @@ interface IRpgTrainingSuccess {
 const TRAINING_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.training;
 
 const rpgUlTrainingSuccess = async ({author, channelId}: IRpgTrainingSuccess) => {
-  const userAccount = (await userService.getUserAccount(author.id))!;
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount) return;
 
   if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.training) {
     const cooldown = await calcCdReduction({
@@ -71,7 +72,7 @@ const rpgUlTrainingSuccess = async ({author, channelId}: IRpgTrainingSuccess) =>
     });
   }
 
-  updateReminderChannel({
+  await updateReminderChannel({
     userId: author.id,
     channelId,
   });

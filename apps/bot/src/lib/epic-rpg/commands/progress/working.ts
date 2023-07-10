@@ -77,7 +77,7 @@ export function rpgWorking({client, message, author, isSlashCommand, workingType
         ruby: 10,
       });
       event.stop();
-      djsMessageHelper.reply({
+      await djsMessageHelper.reply({
         client,
         message,
         options: {
@@ -86,8 +86,8 @@ export function rpgWorking({client, message, author, isSlashCommand, workingType
       });
     }
   });
-  event.on('cooldown', (cooldown) => {
-    userReminderServices.updateUserCooldown({
+  event.on('cooldown', async (cooldown) => {
+    await userReminderServices.updateUserCooldown({
       userId: author.id,
       type: RPG_COMMAND_TYPE.working,
       readyAt: new Date(Date.now() + cooldown),
@@ -110,7 +110,8 @@ interface IRpgWorkingSuccess {
 }
 
 const rpgWorkingSuccess = async ({author, workingType, channelId}: IRpgWorkingSuccess) => {
-  const userAccount = (await userService.getUserAccount(author.id))!;
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount) return;
 
   if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.working) {
     const cooldown = await calcCdReduction({
@@ -125,12 +126,12 @@ const rpgWorkingSuccess = async ({author, workingType, channelId}: IRpgWorkingSu
     });
   }
 
-  updateReminderChannel({
+  await updateReminderChannel({
     userId: author.id,
     channelId,
   });
 
-  userStatsService.countUserStats({
+  await userStatsService.countUserStats({
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.working,
   });

@@ -47,9 +47,8 @@ export function rpgUseEpicItem({author, message, isSlashCommand, client}: IRpgUs
       });
     }
   });
-  event.on('embed', (embed) => {});
-  event.on('cooldown', (cooldown) => {
-    userReminderServices.updateUserCooldown({
+  event.on('cooldown', async (cooldown) => {
+    await userReminderServices.updateUserCooldown({
       userId: author.id,
       readyAt: new Date(Date.now() + cooldown),
       type: RPG_COMMAND_TYPE.epicItem,
@@ -66,7 +65,8 @@ interface IRpgUseEpicItemSuccess {
 }
 
 const rpgUseEpicItemSuccess = async ({author, type, channelId}: IRpgUseEpicItemSuccess) => {
-  const userAccount = (await userService.getUserAccount(author.id))!;
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount) return;
 
   if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.epicItem) {
     const cooldown = await calcCdReduction({
@@ -81,7 +81,7 @@ const rpgUseEpicItemSuccess = async ({author, type, channelId}: IRpgUseEpicItemS
     });
   }
 
-  updateReminderChannel({
+  await updateReminderChannel({
     userId: author.id,
     channelId,
   });

@@ -22,23 +22,23 @@ export function rpgDaily({client, message, author, isSlashCommand}: IRpgDaily) {
     client,
   });
   if (!event) return;
-  event.on('embed', (embed) => {
+  event.on('embed', async (embed) => {
     if (isRpgDailySuccess({embed, author})) {
-      rpgDailySuccess({
+      await rpgDailySuccess({
         embed,
         author,
         channelId: message.channel.id,
         client,
       });
-      updateReminderChannel({
+      await updateReminderChannel({
         userId: author.id,
         channelId: message.channel.id,
       });
       event.stop();
     }
   });
-  event.on('cooldown', (cooldown) => {
-    userReminderServices.updateUserCooldown({
+  event.on('cooldown', async (cooldown) => {
+    await userReminderServices.updateUserCooldown({
       userId: author.id,
       readyAt: new Date(Date.now() + cooldown),
       type: RPG_COMMAND_TYPE.daily,
@@ -55,7 +55,8 @@ interface IRpgDailySuccess {
 }
 
 const rpgDailySuccess = async ({author, channelId}: IRpgDailySuccess) => {
-  const userAccount = (await userService.getUserAccount(author.id))!;
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount) return;
 
   if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.daily) {
     const cooldown = await calcCdReduction({
@@ -69,7 +70,7 @@ const rpgDailySuccess = async ({author, channelId}: IRpgDailySuccess) => {
     });
   }
 
-  updateReminderChannel({
+  await updateReminderChannel({
     userId: author.id,
     channelId,
   });
