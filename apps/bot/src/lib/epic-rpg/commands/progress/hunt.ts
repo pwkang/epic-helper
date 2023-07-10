@@ -28,9 +28,9 @@ export function rpgHunt({author, message, client, isSlashCommand}: IRpgHunt) {
     author,
   });
   if (!event) return;
-  event.on('content', (content) => {
+  event.on('content', async (content) => {
     if (isRpgHuntSuccess({author, content}) || isZombieHordeEnded({author, content})) {
-      rpgHuntSuccess({
+      await rpgHuntSuccess({
         client,
         channelId: message.channel.id,
         author,
@@ -40,7 +40,7 @@ export function rpgHunt({author, message, client, isSlashCommand}: IRpgHunt) {
     }
 
     if (isRpgHuntSuccess({author, content})) {
-      healReminder({
+      await healReminder({
         client,
         author,
         content,
@@ -49,7 +49,7 @@ export function rpgHunt({author, message, client, isSlashCommand}: IRpgHunt) {
     }
 
     if (isUserJoinedTheHorde({author, content})) {
-      djsMessageHelper.reply({
+      await djsMessageHelper.reply({
         message,
         client,
         options: {
@@ -87,7 +87,8 @@ interface IRpgHuntSuccess {
 const HUNT_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.hunt;
 
 const rpgHuntSuccess = async ({author, content, channelId}: IRpgHuntSuccess) => {
-  const userAccount = (await userService.getUserAccount(author.id))!;
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount) return;
   const hardMode = content.includes('(but stronger)');
   const together = content.includes('hunting together');
 
@@ -104,7 +105,7 @@ const rpgHuntSuccess = async ({author, content, channelId}: IRpgHuntSuccess) => 
       readyAt: new Date(Date.now() + cooldown),
     });
   }
-  
+
   updateReminderChannel({
     userId: author.id,
     channelId,
@@ -124,6 +125,9 @@ interface IHealReminder {
 }
 
 const healReminder = async ({client, channelId, author, content}: IHealReminder) => {
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount?.toggle.heal) return;
+
   const together = content.includes('hunting together');
   const healReminder = await userService.getUserHealReminder({
     userId: author.id,
@@ -136,7 +140,7 @@ const healReminder = async ({client, channelId, author, content}: IHealReminder)
     target: healReminder,
   });
   if (!healReminderMsg) return;
-  djsMessageHelper.send({
+  await djsMessageHelper.send({
     channelId,
     options: {
       content: author + healReminderMsg,
