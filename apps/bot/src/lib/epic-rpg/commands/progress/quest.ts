@@ -22,9 +22,9 @@ export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
     author,
   });
   if (!event) return;
-  event.on('content', (content, collected) => {
+  event.on('content', async (content, collected) => {
     if (isQuestAccepted({author, content})) {
-      rpgQuestSuccess({
+      await rpgQuestSuccess({
         author,
         channelId: message.channel.id,
         client,
@@ -33,7 +33,7 @@ export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
       event.stop();
     }
     if (isQuestDeclined({message: collected, author})) {
-      rpgQuestSuccess({
+      await rpgQuestSuccess({
         author,
         channelId: message.channel.id,
         client,
@@ -41,14 +41,14 @@ export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
       });
     }
   });
-  event.on('cooldown', (cooldown) => {
-    userReminderServices.updateUserCooldown({
+  event.on('cooldown', async (cooldown) => {
+    await userReminderServices.updateUserCooldown({
       userId: author.id,
       type: RPG_COMMAND_TYPE.quest,
       readyAt: new Date(Date.now() + cooldown),
     });
   });
-  event.on('embed', (embed) => {
+  event.on('embed', async (embed) => {
     if (isCompletingQuest({author, embed})) {
       event.stop();
     }
@@ -56,9 +56,19 @@ export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
       event.stop();
     }
     if (isArenaQuest({author, embed})) {
+      await showArenaCooldown({
+        author,
+        channelId: message.channel.id,
+        client,
+      });
       event.stop();
     }
     if (isMinibossQuest({author, embed})) {
+      await showMinibossCooldown({
+        author,
+        channelId: message.channel.id,
+        client,
+      });
       event.stop();
     }
   });
@@ -76,7 +86,8 @@ const QUEST_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.quest.accepted;
 const DECLINED_QUEST_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.quest.declined;
 
 const rpgQuestSuccess = async ({author, questAccepted, channelId}: IRpgQuestSuccess) => {
-  const userAccount = (await userService.getUserAccount(author.id))!;
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount) return;
 
   if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.quest) {
     const cooldown = await calcCdReduction({
@@ -90,8 +101,8 @@ const rpgQuestSuccess = async ({author, questAccepted, channelId}: IRpgQuestSucc
       readyAt: new Date(Date.now() + cooldown),
     });
   }
-  
-  updateReminderChannel({
+
+  await updateReminderChannel({
     userId: author.id,
     channelId,
   });
@@ -100,6 +111,28 @@ const rpgQuestSuccess = async ({author, questAccepted, channelId}: IRpgQuestSucc
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.quest,
   });
+};
+
+interface IShowArenaCooldown {
+  client: Client;
+  author: User;
+  channelId: string;
+}
+
+export const showArenaCooldown = async ({client, author, channelId}: IShowArenaCooldown) => {
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount?.toggle.quest.all || !userAccount?.toggle.quest.arena) return;
+};
+
+interface IShowMinibossCooldown {
+  client: Client;
+  author: User;
+  channelId: string;
+}
+
+export const showMinibossCooldown = async ({client, author, channelId}: IShowMinibossCooldown) => {
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount?.toggle.quest.all || !userAccount?.toggle.quest.miniboss) return;
 };
 
 interface IIsQuestAccepted {
