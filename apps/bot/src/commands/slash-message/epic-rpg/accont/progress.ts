@@ -1,13 +1,13 @@
 import {SLASH_MESSAGE_BOT_TYPE} from '@epic-helper/constants';
-import {rpgProfile} from '../../../../lib/epic-rpg/commands/account/profile';
+import {rpgProgress} from '../../../../lib/epic-rpg/commands/account/progress';
 
 export default <SlashMessage>{
-  name: 'rpgProfile',
+  name: 'rpgProgress',
   bot: SLASH_MESSAGE_BOT_TYPE.rpg,
-  commandName: ['profile'],
+  commandName: ['progress'],
   execute: async (client, message, author) => {
     if (!message.guild) return;
-    rpgProfile({
+    rpgProgress({
       client,
       author,
       message,

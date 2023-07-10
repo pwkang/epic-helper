@@ -42,4 +42,5 @@ export const RPG_CLICKABLE_SLASH_COMMANDS = {
   heal: '</heal:959915737777061928>',
   guildStats: '</guild stats:961046237753257994>',
   cd: '</cd:958554802038636654>',
+  progress: '</progress:958558817921159251>',
 } as const;

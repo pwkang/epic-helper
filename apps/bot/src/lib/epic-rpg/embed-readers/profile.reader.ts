@@ -1,5 +1,4 @@
 import {Embed} from 'discord.js';
-import {createJsonBin} from '@epic-helper/utils';
 
 interface IProfileReader {
   embed: Embed;

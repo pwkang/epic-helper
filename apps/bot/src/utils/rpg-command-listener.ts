@@ -14,6 +14,7 @@ type TEventTypes = {
   embed: [Embed, Message];
   content: [Message['content'], Message];
   cooldown: [number];
+  attachments: [Message['attachments'], Message];
 };
 
 type TExtraProps = {
@@ -128,6 +129,10 @@ export const createRpgCommandListener = ({channelId, client, author}: IRpgComman
 
       if (police) return;
       event.emit('content', collected.content, collected);
+    }
+
+    if (collected.attachments.size) {
+      event.emit('attachments', collected.attachments, collected);
     }
   }
 

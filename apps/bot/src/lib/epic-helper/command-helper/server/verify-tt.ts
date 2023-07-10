@@ -1,7 +1,6 @@
-import {Client, Embed, EmbedBuilder, Guild, User} from 'discord.js';
+import {Client, EmbedBuilder, Guild, User} from 'discord.js';
 import {serverService} from '../../../../services/database/server.service';
 import {djsMemberHelper} from '../../../discordjs/member';
-import {djsServerHelper} from '../../../discordjs/server';
 import {djsMessageHelper} from '../../../discordjs/message';
 import {BOT_COLOR} from '@epic-helper/constants';
 import {ITTVerificationRules} from '@epic-helper/models';
@@ -88,25 +87,30 @@ interface IGetEmbed {
 }
 
 const getEmbed = ({server, author, addedRole, removedRole}: IGetEmbed) => {
-  return new EmbedBuilder()
-    .setColor(BOT_COLOR.embed)
-    .setAuthor({
-      name: author.username,
-      iconURL: author.avatarURL() || undefined,
-    })
-    .addFields(
-      {
-        name: 'Added roles',
-        value: addedRole.map((role) => `- ${messageFormatter.role(role.roleId)}`).join('\n') || '-',
-      },
-      {
-        name: 'Removed roles',
-        value:
-          removedRole.map((role) => `- ${messageFormatter.role(role.roleId)}`).join('\n') || '-',
-      },
-      {
-        name: 'Info',
-        value: addedRole.length ? addedRole.map((role) => role.message).join('\n') : '-',
-      }
-    );
+  const embed = new EmbedBuilder().setColor(BOT_COLOR.embed).setAuthor({
+    name: author.username,
+    iconURL: author.avatarURL() || undefined,
+  });
+  if (addedRole.length) {
+    embed.addFields({
+      name: 'Added roles',
+      value: addedRole.map((role) => `- ${messageFormatter.role(role.roleId)}`).join('\n') || '-',
+    });
+  }
+  if (removedRole.length) {
+    embed.addFields({
+      name: 'Removed roles',
+      value: removedRole.map((role) => `- ${messageFormatter.role(role.roleId)}`).join('\n') || '-',
+    });
+  }
+  if (!addedRole.length && !removedRole.length) {
+    embed.setDescription('No action was performed.');
+  } else {
+    embed.addFields({
+      name: 'Info',
+      value: addedRole.length ? addedRole.map((role) => role.message).join('\n') : '-',
+    });
+  }
+
+  return embed;
 };

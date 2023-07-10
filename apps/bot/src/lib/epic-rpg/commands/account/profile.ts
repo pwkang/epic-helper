@@ -1,11 +1,11 @@
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {Channel, Client, Embed, Guild, Message, User} from 'discord.js';
+import {Channel, Client, Embed, EmbedBuilder, Guild, Message, User} from 'discord.js';
 import {IMessageEmbedChecker} from '../../../../types/utils';
 import embedReaders from '../../embed-readers';
-import {serverService} from '../../../../services/database/server.service';
-import {djsMemberHelper} from '../../../discordjs/member';
-import messageFormatter from '../../../discordjs/message-formatter';
 import commandHelper from '../../../epic-helper/command-helper';
+import {serverService} from '../../../../services/database/server.service';
+import {djsMessageHelper} from '../../../discordjs/message';
+import embedProvider from '../../../epic-helper/embeds';
 
 interface IRpgProfile {
   server: Guild;
@@ -34,6 +34,15 @@ export const rpgProfile = ({client, message, author, isSlashCommand, server}: IR
       event.stop();
     }
   });
+  event.on('attachments', async () => {
+    await rpgProfileAttachment({
+      channelId: message.channel.id,
+      server,
+      client,
+      author,
+    });
+    event.stop();
+  });
   if (isSlashCommand) event.triggerCollect(message);
 };
 
@@ -60,3 +69,32 @@ const rpgProfileSuccess = async ({embed, server, client, channel, author}: IRpgP
 
 const isUserProfile = ({author, embed}: IMessageEmbedChecker) =>
   embed.author?.name === `${author.username} — profile`;
+
+interface IRpgProfileAttachment {
+  server: Guild;
+  channelId: string;
+  client: Client;
+  author: User;
+}
+
+const rpgProfileAttachment = async ({server, channelId, client, author}: IRpgProfileAttachment) => {
+  const serverAccount = await serverService.getServer({
+    serverId: server.id,
+  });
+  if (!serverAccount) return;
+  const ttVerificationSettings = serverAccount.settings.ttVerification;
+  if (!ttVerificationSettings) return;
+  if (ttVerificationSettings.channelId !== channelId) return;
+
+  djsMessageHelper.send({
+    client,
+    channelId,
+    options: {
+      embeds: [
+        embedProvider.profileBackgroundNotSupported({
+          author,
+        }),
+      ],
+    },
+  });
+};
