@@ -28,6 +28,7 @@ export function rpgTraining({client, message, author, isSlashCommand}: IRpgTrain
     if (isRpgTrainingQuestion({author, content})) {
       event.pendingAnswer();
       const answer = await getTrainingAnswer({author, content});
+      if (!answer) return;
       djsMessageHelper.send({
         channelId: message.channel.id,
         client,
@@ -69,7 +70,8 @@ interface IRpgTrainingSuccess {
 const TRAINING_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.training;
 
 const rpgTrainingSuccess = async ({author, channelId}: IRpgTrainingSuccess) => {
-  const userAccount = (await userService.getUserAccount(author.id))!;
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount) return;
 
   if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.training) {
     const cooldown = await calcCdReduction({
@@ -83,7 +85,7 @@ const rpgTrainingSuccess = async ({author, channelId}: IRpgTrainingSuccess) => {
       readyAt: new Date(Date.now() + cooldown),
     });
   }
-  
+
   updateReminderChannel({
     userId: author.id,
     channelId,
