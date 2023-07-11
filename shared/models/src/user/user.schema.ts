@@ -30,6 +30,7 @@ export const userSchema = new Schema<IUser>({
       dungeon: {type: Boolean, default: false},
       use: {type: Boolean, default: false},
       pet: {type: Boolean, default: false},
+      epicItem: {type: Boolean, default: false},
     },
     reminder: {
       all: {type: Boolean, default: true},
@@ -49,6 +50,7 @@ export const userSchema = new Schema<IUser>({
       dungeon: {type: Boolean, default: true},
       use: {type: Boolean, default: true},
       pet: {type: Boolean, default: true},
+      epicItem: {type: Boolean, default: true},
     },
     mentions: {
       all: {type: Boolean, default: true},
@@ -70,6 +72,7 @@ export const userSchema = new Schema<IUser>({
       pet: {type: Boolean, default: true},
       trainingAnswer: {type: Boolean, default: true},
       petCatch: {type: Boolean, default: true},
+      epicItem: {type: Boolean, default: true},
     },
     training: {
       all: {type: Boolean, default: true},
