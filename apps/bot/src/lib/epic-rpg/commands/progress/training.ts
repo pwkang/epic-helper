@@ -53,8 +53,13 @@ export function rpgTraining({client, message, author, isSlashCommand}: IRpgTrain
       readyAt: new Date(Date.now() + cooldown),
     });
   });
-  event.on('embed', (embed) => {
+  event.on('embed', async (embed) => {
     if (isEncounteringPet({author, embed})) {
+      await encounteringPet({
+        client,
+        author,
+        embed,
+      });
       event.stop();
     }
   });
@@ -95,6 +100,18 @@ const rpgTrainingSuccess = async ({author, channelId}: IRpgTrainingSuccess) => {
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.training,
   });
+};
+
+interface IEncounteringPet {
+  client: Client;
+  embed: Embed;
+  author: User;
+}
+
+const encounteringPet = async ({embed, author}: IEncounteringPet) => {
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount?.toggle.petCatch) return;
+  // catch pet
 };
 
 interface IIsRpgTrainingSuccess {
