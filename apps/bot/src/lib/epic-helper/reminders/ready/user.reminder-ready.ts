@@ -23,7 +23,11 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
     }
 
     if (command.type === RPG_COMMAND_TYPE.pet) {
-      return userPetReminderTimesUp(client, userAccount);
+      return userPetReminderTimesUp({
+        userReminder: command,
+        userAccount,
+        client,
+      });
     }
 
     const channelId = await getReminderChannel({
@@ -42,9 +46,9 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
       client,
       userId,
       userAccount: userAccount,
-      props: command.props,
       type: command.type,
       nextReminder: nextReminder ?? undefined,
+      userReminder: command,
     });
     await djsMessageHelper.send({
       client,

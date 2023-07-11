@@ -5,7 +5,7 @@ import {
   RPG_LOOTBOX_TYPE,
   RPG_WORKING_TYPE,
 } from '@epic-helper/constants';
-import {IUserReminderPropsCondition} from '@epic-helper/models';
+import {IUser, IUserReminder, IUserReminderPropsCondition} from '@epic-helper/models';
 
 interface IGetDailyCommandStr {}
 
@@ -22,10 +22,13 @@ const getWeeklyCommandStr = ({}: IGetWeeklyCommandStr) => {
 interface IGetHuntCommandStr {
   hardMode?: boolean;
   together?: boolean;
+  userAccount: IUser;
 }
 
-const getHuntCommandStr = ({hardMode, together}: IGetHuntCommandStr) => {
-  return `RPG HUNT${hardMode ? ' HARDMODE' : ''}${together ? ' TOGETHER' : ''}`;
+const getHuntCommandStr = ({hardMode, together, userAccount}: IGetHuntCommandStr) => {
+  const huntSwitch = userAccount.toggle.huntSwitch;
+
+  return `RPG HUNT${hardMode ? ' HARDMODE' : ''}${together && !huntSwitch ? ' TOGETHER' : ''}`;
 };
 
 interface IGetAdventureCommandStr {
@@ -120,44 +123,49 @@ const getPetCommandStr = ({}: IGetPetCommandStr) => {
   return `RPG PET CLAIM`;
 };
 
-export const _parseCommandString = (data: IUserReminderPropsCondition) => {
-  switch (data.type) {
+type IGetPetTrainCommandStr = IUserReminder & {
+  userAccount: IUser;
+};
+
+export const _parseCommandString = ({userAccount, props, type}: IGetPetTrainCommandStr) => {
+  switch (type) {
     case RPG_COMMAND_TYPE.daily:
       return getDailyCommandStr({});
     case RPG_COMMAND_TYPE.weekly:
       return getWeeklyCommandStr({});
     case RPG_COMMAND_TYPE.lootbox:
       return GetLootboxCommandStr({
-        lootboxType: data?.props?.lootboxType,
+        lootboxType: props?.lootboxType,
       });
     case RPG_COMMAND_TYPE.vote:
       return GetVoteCommandStr({});
     case RPG_COMMAND_TYPE.hunt:
       return getHuntCommandStr({
-        hardMode: data?.props?.hardMode,
-        together: data?.props?.together,
+        hardMode: props?.hardMode,
+        together: props?.together,
+        userAccount,
       });
     case RPG_COMMAND_TYPE.adventure:
       return getAdventureCommandStr({
-        hardMode: data?.props?.hardMode,
+        hardMode: props?.hardMode,
       });
     case RPG_COMMAND_TYPE.training:
       return getTrainingCommandStr({
-        ultraining: data?.props?.ultraining,
+        ultraining: props?.ultraining,
       });
     case RPG_COMMAND_TYPE.duel:
       return getDuelCommandStr({});
     case RPG_COMMAND_TYPE.quest:
       return getQuestCommandStr({
-        epicQuest: data?.props?.epicQuest,
+        epicQuest: props?.epicQuest,
       });
     case RPG_COMMAND_TYPE.working:
       return getWorkCommandStr({
-        workingType: data?.props?.workingType,
+        workingType: props?.workingType,
       });
     case RPG_COMMAND_TYPE.farm:
       return getFarmCommandStr({
-        seedType: data?.props?.seedType,
+        seedType: props?.seedType,
       });
     case RPG_COMMAND_TYPE.horse:
       return getHorseCommandStr({});
@@ -167,7 +175,7 @@ export const _parseCommandString = (data: IUserReminderPropsCondition) => {
       return GetDungeonCommandStr({});
     case RPG_COMMAND_TYPE.epicItem:
       return getEpicItemCommandStr({
-        epicItemType: data?.props?.epicItemType,
+        epicItemType: props?.epicItemType,
       });
     case RPG_COMMAND_TYPE.pet:
       return getPetCommandStr({});

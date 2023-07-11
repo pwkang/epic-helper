@@ -15,7 +15,7 @@ interface IGenerateCustomMessage {
   client: Client;
   userId: string;
   userAccount: IUser;
-  props?: IUserReminder['props'];
+  userReminder: IUserReminder;
   type: IUserReminder['type'];
   nextReminder?: IUserReminder;
   readyPetsId?: number[];
@@ -25,18 +25,23 @@ export const generateUserReminderMessage = async ({
   userId,
   userAccount,
   client,
-  props,
+  userReminder,
   type,
   nextReminder,
   readyPetsId,
 }: IGenerateCustomMessage) => {
-  const cmdName = _parseCommandString({
-    type,
-    props,
-  } as IUserReminderPropsCondition);
-  const hasSlash = userAccount.toggle.slash;
-  const toMentions = userAccount.toggle.mentions[type];
-  const hasEmoji = userAccount.toggle.emoji;
+  /**
+   * Command String
+   */
+  const commandString = _parseCommandString({
+    userAccount,
+    ...userReminder,
+  });
+
+  /**
+   * Countdown string to next reminder
+   */
+  const hasCountdown = userAccount.toggle.countdown.all;
   const nextReminderTime = nextReminder?.readyAt
     ? timestampHelper.relative({
         time: nextReminder?.readyAt?.getTime(),
@@ -44,30 +49,46 @@ export const generateUserReminderMessage = async ({
     : '';
   const nextReminderType = nextReminder
     ? _parseCommandString({
-        type: nextReminder.type,
-        props: nextReminder.props,
-      } as IUserReminderPropsCondition)
+        userAccount,
+        ...nextReminder,
+      })
     : '';
-  const nextReminderString = nextReminder
-    ? `\`${nextReminderType}\` ready **${nextReminderTime}**`
-    : '';
+  const nextReminderString =
+    hasCountdown && nextReminder ? `\`${nextReminderType}\` ready **${nextReminderTime}**` : '';
+
+  /**
+   * Ready Pets Ids
+   */
   const readyPetIdsString = readyPetsId?.map(convertNumToPetId).join(', ') ?? '';
 
+  /**
+   * Emoji
+   */
+  const hasEmoji = userAccount.toggle.emoji;
+  const emojiString = hasEmoji ? _parseEmoji({type}) : '';
+
+  /**
+   * Slash Command
+   */
+  const hasSlash = userAccount.toggle.slash;
+  const slashCommandString = hasSlash ? _parseSlash(userReminder) : '';
+
+  /**
+   * User string
+   */
+  const toMentions = userAccount.toggle.mentions.all && userAccount.toggle.mentions[type];
+  const userString = _parseUser({
+    client,
+    type: toMentions ? 'mentions' : 'username',
+    userId,
+  });
+
   const variables: Partial<Record<ValuesOf<typeof BOT_CUSTOM_MESSAGE_VARIABLES>, string>> = {
-    user: _parseUser({
-      client,
-      type: toMentions ? 'mentions' : 'username',
-      userId,
-    }),
-    cmd_upper: cmdName.toUpperCase(),
-    cmd_lower: cmdName.toLowerCase(),
-    slash: hasSlash
-      ? _parseSlash({
-          type,
-          props,
-        } as IUserReminderPropsCondition)
-      : '',
-    emoji: hasEmoji ? _parseEmoji({type}) : '',
+    user: userString,
+    cmd_upper: commandString.toUpperCase(),
+    cmd_lower: commandString.toLowerCase(),
+    slash: slashCommandString,
+    emoji: emojiString,
     next_reminder: nextReminderString,
     pet_id: readyPetIdsString,
   };
@@ -76,11 +97,6 @@ export const generateUserReminderMessage = async ({
     userAccount,
     userId,
     type,
-  });
-  logger({
-    message: `messageTemplate: ${messageTemplate}`,
-    logLevel: 'debug',
-    clusterId: client.cluster?.id,
   });
   return interpolateMessage({
     message: messageTemplate,
