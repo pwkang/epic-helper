@@ -24,7 +24,7 @@ async function updateNextPetReminderTime(userId: string, model: Model<IUserPet>)
     .sort({readyAt: 1})
     .limit(1);
   if (!nextReminderTime.length)
-    await userReminderServices.deleteUserCooldowns({
+    await userReminderServices.updateRemindedCooldowns({
       userId,
       types: ['pet'],
     });

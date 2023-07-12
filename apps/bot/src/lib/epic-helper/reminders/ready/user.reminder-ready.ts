@@ -14,8 +14,8 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
 
   const readyCommands = await userReminderServices.findUserReadyCommands(userId);
   for (let command of readyCommands) {
-    if (Date.now() - command.readyAt.getTime() > ms('5s')) {
-      await userReminderServices.deleteUserCooldowns({
+    if (command.readyAt && Date.now() - command.readyAt.getTime() > ms('5s')) {
+      await userReminderServices.updateRemindedCooldowns({
         userId: userAccount.userId,
         types: [command.type],
       });
@@ -58,7 +58,7 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
       },
     });
   }
-  await userReminderServices.deleteUserCooldowns({
+  await userReminderServices.updateRemindedCooldowns({
     userId: userAccount.userId,
     types: readyCommands.map((cmd) => cmd.type),
   });

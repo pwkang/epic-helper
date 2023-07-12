@@ -79,7 +79,7 @@ const rpgCooldownSuccess = async ({author, embed}: IRpgCooldownSuccess) => {
 
     if (isReady(row)) {
       if (currentCooldowns.some((cooldown) => cooldown.type === commandType)) {
-        await userReminderServices.deleteUserCooldowns({
+        await userReminderServices.updateRemindedCooldowns({
           types: [commandType],
           userId: author.id,
         });
@@ -99,7 +99,10 @@ const rpgCooldownSuccess = async ({author, embed}: IRpgCooldownSuccess) => {
       const readyAt = new Date(Date.now() + readyIn);
       const currentCooldown = currentCooldowns.find((cooldown) => cooldown.type === commandType);
       if (currentCooldown) {
-        if (Math.abs(currentCooldown.readyAt.getTime() - readyAt.getTime()) > 1000) {
+        if (
+          currentCooldown.readyAt &&
+          Math.abs(currentCooldown.readyAt.getTime() - readyAt.getTime()) > 1000
+        ) {
           await userReminderServices.updateUserCooldown({
             userId: author.id,
             type: commandType,
