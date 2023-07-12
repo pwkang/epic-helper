@@ -7,6 +7,7 @@ import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import {userService} from '../../../../services/database/user.service';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {generateUserReminderMessage} from '../message-generator/custom-message-generator';
+import {djsUserHelper} from '../../../discordjs/user';
 
 export const userReminderTimesUp = async (client: Client, userId: string) => {
   const userAccount = await userService.getUserAccount(userId);
@@ -50,13 +51,23 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
       nextReminder: nextReminder ?? undefined,
       userReminder: command,
     });
-    await djsMessageHelper.send({
-      client,
-      channelId,
-      options: {
-        content: reminderMessage,
-      },
-    });
+    if (userAccount.toggle.dm.all && userAccount.toggle.dm[command.type]) {
+      await djsUserHelper.sendDm({
+        client,
+        userId,
+        options: {
+          content: reminderMessage,
+        },
+      });
+    } else {
+      await djsMessageHelper.send({
+        client,
+        channelId,
+        options: {
+          content: reminderMessage,
+        },
+      });
+    }
   }
   await userReminderServices.updateRemindedCooldowns({
     userId: userAccount.userId,

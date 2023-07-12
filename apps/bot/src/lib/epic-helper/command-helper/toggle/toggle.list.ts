@@ -181,7 +181,7 @@ export const donor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
         },
         {
           value: userToggle.reminder.epicItem,
-          path: 'toggle.reminder.use',
+          path: 'toggle.reminder.epicItem',
           label: 'Epic Items',
         },
       ],
@@ -270,7 +270,7 @@ export const donor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
         },
         {
           value: userToggle.dm.epicItem,
-          path: 'toggle.dm.use',
+          path: 'toggle.dm.epicItem',
           label: 'Epic Items',
         },
         {
@@ -368,7 +368,7 @@ export const donor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
         },
         {
           value: userToggle.mentions.epicItem,
-          path: 'toggle.mentions.use',
+          path: 'toggle.mentions.epicItem',
           label: 'Epic Items',
         },
         {
