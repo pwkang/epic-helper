@@ -5,6 +5,7 @@ import {guildService} from '../../../../services/database/guild.service';
 import ms from 'ms';
 import {upgraidService} from '../../../../services/database/upgraid.service';
 import {_checkUserGuildRoles, _sendUpgraidResultToGuildChannel} from './_shared';
+import {RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants';
 
 interface IRpgGuildUpgrade {
   client: Client;
@@ -24,6 +25,7 @@ export const rpgGuildUpgrade = async ({
     author,
     client,
     channelId: message.channel.id,
+    commandType: RPG_COOLDOWN_EMBED_TYPE.guild,
   });
   if (!event) return;
   event.on('embed', async (embed) => {

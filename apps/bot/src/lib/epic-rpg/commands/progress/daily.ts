@@ -1,4 +1,8 @@
-import {BOT_REMINDER_BASE_COOLDOWN, RPG_COMMAND_TYPE} from '@epic-helper/constants';
+import {
+  BOT_REMINDER_BASE_COOLDOWN,
+  RPG_COMMAND_TYPE,
+  RPG_COOLDOWN_EMBED_TYPE,
+} from '@epic-helper/constants';
 import {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
@@ -20,6 +24,7 @@ export function rpgDaily({client, message, author, isSlashCommand}: IRpgDaily) {
     author,
     channelId: message.channel.id,
     client,
+    commandType: RPG_COOLDOWN_EMBED_TYPE.daily,
   });
   if (!event) return;
   event.on('embed', async (embed) => {

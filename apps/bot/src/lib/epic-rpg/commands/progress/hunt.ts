@@ -7,6 +7,7 @@ import {
   HUNT_MONSTER_LIST,
   RPG_CLICKABLE_SLASH_COMMANDS,
   RPG_COMMAND_TYPE,
+  RPG_COOLDOWN_EMBED_TYPE,
 } from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
@@ -26,6 +27,7 @@ export function rpgHunt({author, message, client, isSlashCommand}: IRpgHunt) {
     client,
     channelId: message.channel.id,
     author,
+    commandType: RPG_COOLDOWN_EMBED_TYPE.hunt,
   });
   if (!event) return;
   event.on('content', async (content) => {

@@ -1,6 +1,7 @@
 import {
   BOT_REMINDER_BASE_COOLDOWN,
   RPG_COMMAND_TYPE,
+  RPG_COOLDOWN_EMBED_TYPE,
   RPG_EPIC_ITEM_TYPES,
   RPG_ITEMS,
 } from '@epic-helper/constants';
@@ -26,6 +27,7 @@ export function rpgUseEpicItem({author, message, isSlashCommand, client}: IRpgUs
     channelId: message.channel.id,
     client,
     author: message.author,
+    commandType: RPG_COOLDOWN_EMBED_TYPE.epicItem,
   });
   if (!event) return;
   event.on('content', async (content, collected) => {

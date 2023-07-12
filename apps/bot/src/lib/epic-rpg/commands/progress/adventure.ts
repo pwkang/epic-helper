@@ -6,6 +6,7 @@ import {
   BOT_REMINDER_BASE_COOLDOWN,
   RPG_CLICKABLE_SLASH_COMMANDS,
   RPG_COMMAND_TYPE,
+  RPG_COOLDOWN_EMBED_TYPE,
 } from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
@@ -26,6 +27,7 @@ export function rpgAdventure({client, message, author, isSlashCommand}: IRpgAdve
     channelId: message.channel.id,
     author,
     client,
+    commandType: RPG_COOLDOWN_EMBED_TYPE.adventure,
   });
   if (!event) return;
   event.on('content', async (content) => {

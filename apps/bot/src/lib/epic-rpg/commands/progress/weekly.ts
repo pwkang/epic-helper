@@ -1,7 +1,7 @@
 import {Client, Embed, Message, User} from 'discord.js';
 import ms from 'ms';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
+import {RPG_COMMAND_TYPE, RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
@@ -21,6 +21,7 @@ export function rpgWeekly({client, message, author, isSlashCommand}: IRpgWeekly)
     author,
     channelId: message.channel.id,
     client,
+    commandType: RPG_COOLDOWN_EMBED_TYPE.weekly,
   });
   if (!event) return;
   event.on('embed', async (embed) => {

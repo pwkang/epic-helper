@@ -1,5 +1,10 @@
 import {Client, Embed, Message, User} from 'discord.js';
-import {BOT_REMINDER_BASE_COOLDOWN, RPG_COMMAND_TYPE, RPG_FARM_SEED} from '@epic-helper/constants';
+import {
+  BOT_REMINDER_BASE_COOLDOWN,
+  RPG_COMMAND_TYPE,
+  RPG_COOLDOWN_EMBED_TYPE,
+  RPG_FARM_SEED,
+} from '@epic-helper/constants';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
@@ -22,6 +27,7 @@ export function rpgFarm({client, message, author, isSlashCommand}: IRpgFarm) {
     author,
     client,
     channelId: message.channel.id,
+    commandType: RPG_COOLDOWN_EMBED_TYPE.farm,
   });
   if (!event) return;
   event.on('content', async (content, collected) => {

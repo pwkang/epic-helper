@@ -1,13 +1,14 @@
 import {Client, Embed, Message, MessageCollector, TextChannel, User} from 'discord.js';
 import {TypedEventEmitter} from './typed-event-emitter';
 import ms from 'ms';
-import {sleep} from '@epic-helper/utils';
-import {EPIC_RPG_ID} from '@epic-helper/constants';
+import {sleep, typedObjectEntries} from '@epic-helper/utils';
+import {EPIC_RPG_ID, RPG_COMMAND_TYPE, RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants';
 
 interface IRpgCommandListener {
   client: Client;
   channelId: string;
   author: User;
+  commandType?: ValuesOf<typeof RPG_COOLDOWN_EMBED_TYPE>;
 }
 
 type TEventTypes = {
@@ -27,7 +28,12 @@ type TExtraProps = {
 
 const filter = (m: Message) => m.author.id === EPIC_RPG_ID;
 
-export const createRpgCommandListener = ({channelId, client, author}: IRpgCommandListener) => {
+export const createRpgCommandListener = ({
+  channelId,
+  client,
+  author,
+  commandType,
+}: IRpgCommandListener) => {
   const channel = client.channels.cache.get(channelId);
   if (!channel) return;
   let collector: MessageCollector | undefined;
@@ -79,7 +85,8 @@ export const createRpgCommandListener = ({channelId, client, author}: IRpgComman
 
       // the command is on cooldown
       if (embed.author?.name === `${author.username} — cooldown`) {
-        event.emit('cooldown', extractCooldown(embed));
+        const embedType = getCooldownType(embed);
+        if (commandType === embedType) event.emit('cooldown', extractCooldown(embed));
         event.stop();
         return;
       }
@@ -146,6 +153,34 @@ function extractCooldown(embed: Embed) {
     time_ms += ms(t);
   });
   return time_ms;
+}
+
+const commandKeyword: Record<ValuesOf<typeof RPG_COOLDOWN_EMBED_TYPE>, string> = {
+  daily: 'You have claimed your daily rewards already',
+  weekly: 'You have claimed your weekly rewards already',
+  lootbox: 'You have already bought a lootbox',
+  hunt: 'You have already looked around',
+  adventure: 'You have already been in an adventure',
+  training: 'You have trained already',
+  duel: 'You have been in a duel recently',
+  quest: 'You have already claimed a quest',
+  working: 'You have already got some resources',
+  farm: 'You have already farmed',
+  horse: 'You have used this command recently',
+  arena: 'You have started an arena recently',
+  dungeon: 'You have been in a fight with a boss recently',
+  epicItem: 'You have used an EPIC item already',
+  guild: 'Your guild has already raided or been upgraded',
+  halboo: 'You have scared someone recently',
+};
+
+function getCooldownType(embed: Embed) {
+  for (const [key, value] of typedObjectEntries(commandKeyword)) {
+    if (embed.title?.includes(value)) {
+      return key;
+    }
+  }
+  return null;
 }
 
 interface IChecker {

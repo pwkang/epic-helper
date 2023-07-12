@@ -1,6 +1,7 @@
 import {
   BOT_REMINDER_BASE_COOLDOWN,
   RPG_COMMAND_TYPE,
+  RPG_COOLDOWN_EMBED_TYPE,
   RPG_LOOTBOX_TYPE,
 } from '@epic-helper/constants';
 import {Client, Message, User} from 'discord.js';
@@ -26,6 +27,7 @@ export function rpgBuyLootbox({client, message, author, isSlashCommand}: IRpgLoo
     author,
     channelId: message.channel.id,
     client,
+    commandType: RPG_COOLDOWN_EMBED_TYPE.lootbox,
   });
   if (!event) return;
   event.on('content', async (content, collected) => {

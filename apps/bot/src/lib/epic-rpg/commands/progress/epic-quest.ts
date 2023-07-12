@@ -1,7 +1,11 @@
 import {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
-import {BOT_REMINDER_BASE_COOLDOWN, RPG_COMMAND_TYPE} from '@epic-helper/constants';
+import {
+  BOT_REMINDER_BASE_COOLDOWN,
+  RPG_COMMAND_TYPE,
+  RPG_COOLDOWN_EMBED_TYPE,
+} from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {userStatsService} from '../../../../services/database/user-stats.service';
@@ -20,6 +24,7 @@ export function rpgEpicQuest({client, message, author, isSlashCommand}: IRpgEpic
     author,
     client,
     channelId: message.channel.id,
+    commandType: RPG_COOLDOWN_EMBED_TYPE.quest,
   });
   if (!event) return;
   event.on('embed', async (embed) => {
