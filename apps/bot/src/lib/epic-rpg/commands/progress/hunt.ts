@@ -7,6 +7,7 @@ import {
   HUNT_MONSTER_LIST,
   RPG_CLICKABLE_SLASH_COMMANDS,
   RPG_COMMAND_TYPE,
+  RPG_COOLDOWN_EMBED_TYPE,
 } from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
@@ -26,11 +27,12 @@ export function rpgHunt({author, message, client, isSlashCommand}: IRpgHunt) {
     client,
     channelId: message.channel.id,
     author,
+    commandType: RPG_COOLDOWN_EMBED_TYPE.hunt,
   });
   if (!event) return;
-  event.on('content', (content) => {
+  event.on('content', async (content) => {
     if (isRpgHuntSuccess({author, content}) || isZombieHordeEnded({author, content})) {
-      rpgHuntSuccess({
+      await rpgHuntSuccess({
         client,
         channelId: message.channel.id,
         author,
@@ -40,7 +42,7 @@ export function rpgHunt({author, message, client, isSlashCommand}: IRpgHunt) {
     }
 
     if (isRpgHuntSuccess({author, content})) {
-      healReminder({
+      await healReminder({
         client,
         author,
         content,
@@ -49,7 +51,7 @@ export function rpgHunt({author, message, client, isSlashCommand}: IRpgHunt) {
     }
 
     if (isUserJoinedTheHorde({author, content})) {
-      djsMessageHelper.reply({
+      await djsMessageHelper.reply({
         message,
         client,
         options: {
@@ -87,20 +89,25 @@ interface IRpgHuntSuccess {
 const HUNT_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.hunt;
 
 const rpgHuntSuccess = async ({author, content, channelId}: IRpgHuntSuccess) => {
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount) return;
   const hardMode = content.includes('(but stronger)');
   const together = content.includes('hunting together');
 
-  const cooldown = await calcCdReduction({
-    userId: author.id,
-    commandType: RPG_COMMAND_TYPE.hunt,
-    cooldown: HUNT_COOLDOWN,
-  });
-  await userReminderServices.saveUserHuntCooldown({
-    userId: author.id,
-    hardMode,
-    together,
-    readyAt: new Date(Date.now() + cooldown),
-  });
+  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.hunt) {
+    const cooldown = await calcCdReduction({
+      userId: author.id,
+      commandType: RPG_COMMAND_TYPE.hunt,
+      cooldown: HUNT_COOLDOWN,
+    });
+    await userReminderServices.saveUserHuntCooldown({
+      userId: author.id,
+      hardMode,
+      together,
+      readyAt: new Date(Date.now() + cooldown),
+    });
+  }
+
   updateReminderChannel({
     userId: author.id,
     channelId,
@@ -120,6 +127,9 @@ interface IHealReminder {
 }
 
 const healReminder = async ({client, channelId, author, content}: IHealReminder) => {
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount?.toggle.heal) return;
+
   const together = content.includes('hunting together');
   const healReminder = await userService.getUserHealReminder({
     userId: author.id,
@@ -132,7 +142,7 @@ const healReminder = async ({client, channelId, author, content}: IHealReminder)
     target: healReminder,
   });
   if (!healReminderMsg) return;
-  djsMessageHelper.send({
+  await djsMessageHelper.send({
     channelId,
     options: {
       content: author + healReminderMsg,

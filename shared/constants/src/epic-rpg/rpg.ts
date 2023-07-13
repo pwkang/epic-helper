@@ -34,6 +34,25 @@ export const RPG_WORKING_TYPE = {
   dynamite: 'dynamite',
 } as const;
 
+export const RPG_COOLDOWN_EMBED_TYPE = {
+  daily: 'daily',
+  weekly: 'weekly',
+  lootbox: 'lootbox',
+  hunt: 'hunt',
+  adventure: 'adventure',
+  training: 'training',
+  duel: 'duel',
+  quest: 'quest',
+  working: 'working',
+  farm: 'farm',
+  horse: 'horse',
+  arena: 'arena',
+  dungeon: 'dungeon',
+  epicItem: 'epicItem',
+  guild: 'guild',
+  halboo: 'halboo',
+} as const;
+
 export const RPG_FARM_SEED = {
   seed: null,
   carrot: 'carrot',

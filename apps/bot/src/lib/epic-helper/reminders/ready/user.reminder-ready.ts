@@ -7,31 +7,37 @@ import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import {userService} from '../../../../services/database/user.service';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {generateUserReminderMessage} from '../message-generator/custom-message-generator';
+import {djsUserHelper} from '../../../discordjs/user';
 
 export const userReminderTimesUp = async (client: Client, userId: string) => {
-  const user = await userService.getUserAccount(userId);
-  if (!user?.config?.onOff) return;
+  const userAccount = await userService.getUserAccount(userId);
+  if (!userAccount?.config?.onOff) return;
 
   const readyCommands = await userReminderServices.findUserReadyCommands(userId);
   for (let command of readyCommands) {
-    if (Date.now() - command.readyAt.getTime() > ms('5s')) {
-      await userReminderServices.deleteUserCooldowns({
-        userId: user.userId,
+    if (command.readyAt && Date.now() - command.readyAt.getTime() > ms('5s')) {
+      await userReminderServices.updateRemindedCooldowns({
+        userId: userAccount.userId,
         types: [command.type],
       });
       continue;
     }
 
     if (command.type === RPG_COMMAND_TYPE.pet) {
-      return userPetReminderTimesUp(client, user);
+      return userPetReminderTimesUp({
+        userReminder: command,
+        userAccount,
+        client,
+      });
     }
 
     const channelId = await getReminderChannel({
       commandType: command.type,
-      userId: user.userId,
+      userId: userAccount.userId,
       client,
     });
-    if (!channelId || !client.channels.cache.has(channelId)) return;
+    if (!channelId || !client.channels.cache.has(channelId)) continue;
+    if (!userAccount.toggle.reminder.all || !userAccount.toggle.reminder[command.type]) continue;
 
     const nextReminder = await userReminderServices.getNextReadyCommand({
       userId,
@@ -40,21 +46,31 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
     const reminderMessage = await generateUserReminderMessage({
       client,
       userId,
-      userAccount: user,
-      props: command.props,
+      userAccount: userAccount,
       type: command.type,
       nextReminder: nextReminder ?? undefined,
+      userReminder: command,
     });
-    await djsMessageHelper.send({
-      client,
-      channelId,
-      options: {
-        content: reminderMessage,
-      },
-    });
+    if (userAccount.toggle.dm.all && userAccount.toggle.dm[command.type]) {
+      await djsUserHelper.sendDm({
+        client,
+        userId,
+        options: {
+          content: reminderMessage,
+        },
+      });
+    } else {
+      await djsMessageHelper.send({
+        client,
+        channelId,
+        options: {
+          content: reminderMessage,
+        },
+      });
+    }
   }
-  await userReminderServices.deleteUserCooldowns({
-    userId: user.userId,
+  await userReminderServices.updateRemindedCooldowns({
+    userId: userAccount.userId,
     types: readyCommands.map((cmd) => cmd.type),
   });
 };

@@ -24,10 +24,11 @@ async function updateNextReminderTime(userId: string, model: Model<IUserReminder
   const nextReminderTime = await model
     .find({
       userId,
+      readyAt: {$gt: new Date()},
     })
     .sort({readyAt: 1})
     .limit(1);
-  if (nextReminderTime.length)
+  if (nextReminderTime.length && nextReminderTime[0].readyAt)
     await redisUserReminder.setReminderTime(userId, nextReminderTime[0].readyAt);
   else await redisUserReminder.deleteReminderTime(userId);
 }
@@ -427,6 +428,25 @@ const getNextReadyCommand = async ({
   return reminder ? reminder[0].toObject() : null;
 };
 
+interface IUpdateRemindedCooldowns {
+  userId: string;
+  types: ValuesOf<typeof RPG_COMMAND_TYPE>[];
+}
+
+const updateRemindedCooldowns = async ({userId, types}: IUpdateRemindedCooldowns) => {
+  await dbUserReminder.updateMany(
+    {
+      userId,
+      type: {$in: types},
+    },
+    {
+      $unset: {
+        readyAt: 1,
+      },
+    }
+  );
+};
+
 export const userReminderServices = {
   saveUserAdventureCooldown,
   saveUserHuntCooldown,
@@ -445,4 +465,5 @@ export const userReminderServices = {
   getUserAllCooldowns,
   clearUserCooldowns,
   getNextReadyCommand,
+  updateRemindedCooldowns,
 };

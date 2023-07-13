@@ -1,11 +1,17 @@
 import {Client, Embed, Message, User} from 'discord.js';
-import {BOT_REMINDER_BASE_COOLDOWN, RPG_COMMAND_TYPE, RPG_FARM_SEED} from '@epic-helper/constants';
+import {
+  BOT_REMINDER_BASE_COOLDOWN,
+  RPG_COMMAND_TYPE,
+  RPG_COOLDOWN_EMBED_TYPE,
+  RPG_FARM_SEED,
+} from '@epic-helper/constants';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {userStatsService} from '../../../../services/database/user-stats.service';
+import {userService} from '../../../../services/database/user.service';
 
 const FARM_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.farm;
 
@@ -21,11 +27,12 @@ export function rpgFarm({client, message, author, isSlashCommand}: IRpgFarm) {
     author,
     client,
     channelId: message.channel.id,
+    commandType: RPG_COOLDOWN_EMBED_TYPE.farm,
   });
   if (!event) return;
-  event.on('content', (content, collected) => {
+  event.on('content', async (content, collected) => {
     if (isRpgFarmSuccess({content, author}) || isSeedNotGrowingUpEnded({content, author})) {
-      rpgFarmSuccess({
+      await rpgFarmSuccess({
         author,
         client,
         channelId: message.channel.id,
@@ -45,8 +52,8 @@ export function rpgFarm({client, message, author, isSlashCommand}: IRpgFarm) {
       // event.stop();
     }
   });
-  event.on('cooldown', (cooldown) => {
-    userReminderServices.updateUserCooldown({
+  event.on('cooldown', async (cooldown) => {
+    await userReminderServices.updateUserCooldown({
       userId: author.id,
       readyAt: new Date(Date.now() + cooldown),
       type: RPG_COMMAND_TYPE.farm,
@@ -63,18 +70,24 @@ interface IRpgFarmSuccess {
 }
 
 const rpgFarmSuccess = async ({content, author, channelId}: IRpgFarmSuccess) => {
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount) return;
   const seedType = whatIsTheSeed(content);
-  const cooldown = await calcCdReduction({
-    userId: author.id,
-    commandType: RPG_COMMAND_TYPE.farm,
-    cooldown: FARM_COOLDOWN,
-  });
-  await userReminderServices.saveUserFarmCooldown({
-    userId: author.id,
-    readyAt: new Date(Date.now() + cooldown),
-    seedType,
-  });
-  updateReminderChannel({
+
+  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.farm) {
+    const cooldown = await calcCdReduction({
+      userId: author.id,
+      commandType: RPG_COMMAND_TYPE.farm,
+      cooldown: FARM_COOLDOWN,
+    });
+    await userReminderServices.saveUserFarmCooldown({
+      userId: author.id,
+      readyAt: new Date(Date.now() + cooldown),
+      seedType,
+    });
+  }
+
+  await updateReminderChannel({
     userId: author.id,
     channelId,
   });

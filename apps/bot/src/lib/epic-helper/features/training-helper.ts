@@ -53,13 +53,21 @@ const CASINO_ANSWER_LIST = {
 export default async function getTrainingAnswer({
   content,
   author,
-}: IGetTrainingAnswer): Promise<ActionRowBuilder<ButtonBuilder>[]> {
+}: IGetTrainingAnswer): Promise<ActionRowBuilder<ButtonBuilder>[] | null> {
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount) return null;
+  if (!userAccount.toggle.training.all) return null;
+
   let components: ActionRowBuilder<ButtonBuilder>[] = [];
   if (content.includes('is training in the river')) {
+    if (!userAccount.toggle.training.basic) return null;
+
     if (content.includes(':normiefish:')) components = generateRows(RIVER, 'normie');
     if (content.includes(':goldenfish:')) components = generateRows(RIVER, 'golden');
     if (content.includes(':EPICfish:')) components = generateRows(RIVER, 'epic');
   } else if (content.includes('is training in the field')) {
+    if (!userAccount.toggle.training.basic) return null;
+
     if (content.includes(':Apple:')) {
       if (content.includes('**first**')) components = generateRows(FIELD, 'A');
       if (content.includes('**second**')) components = generateRows(FIELD, 'P');
@@ -75,17 +83,23 @@ export default async function getTrainingAnswer({
       if (content.includes('**sixth**')) components = generateRows(FIELD, 'A');
     }
   } else if (content.includes('is training in the forest')) {
+    if (!userAccount.toggle.training.basic) return null;
+
     const questionLogs = content.split('\n')[1].match(/<:[A-Za-z]+log:\d+>/g);
     const targetLog = content.split('\n')[2].match(/<:[A-Za-z]+log:\d+>/g);
     if (questionLogs && targetLog) {
       components = generateRows(FOREST, questionLogs.filter((log) => log === targetLog[0]).length);
     }
   } else if (content.includes('is training in the... casino?')) {
+    if (!userAccount.toggle.training.basic) return null;
+
     const matched = Object.entries(CASINO_ANSWER_LIST).some(
       ([key, value]) => content.split('\n')[1].includes(value) && content.includes(key)
     );
     components = generateRows(TRUE_FALSE, matched);
   } else if (content.includes('in the mine')) {
+    if (!userAccount.toggle.training.ruby) return null;
+
     const questionRuby = Number(content.match(/more than (\d+) </)?.[1] ?? 0);
     const userRuby = await userService.getUserRubyAmount(author.id);
     components = generateRows(TRUE_FALSE, userRuby > questionRuby);

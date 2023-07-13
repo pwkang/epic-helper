@@ -1,11 +1,11 @@
 import {RPG_CLICKABLE_SLASH_COMMANDS, RPG_COMMAND_TYPE} from '@epic-helper/constants';
-import {IUserReminderPropsCondition} from '@epic-helper/models';
+import {IUserReminder, IUserReminderPropsCondition} from '@epic-helper/models';
 
 interface IParseSlash {
   type: ValuesOf<typeof RPG_COMMAND_TYPE>;
 }
 
-export const _parseSlash = (data: IUserReminderPropsCondition) => {
+export const _parseSlash = (data: IUserReminder) => {
   switch (data.type) {
     case RPG_COMMAND_TYPE.hunt:
       return RPG_CLICKABLE_SLASH_COMMANDS.hunt;

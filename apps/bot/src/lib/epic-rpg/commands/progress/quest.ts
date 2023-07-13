@@ -1,11 +1,16 @@
 import {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
-import {BOT_REMINDER_BASE_COOLDOWN, RPG_COMMAND_TYPE} from '@epic-helper/constants';
+import {
+  BOT_REMINDER_BASE_COOLDOWN,
+  RPG_COMMAND_TYPE,
+  RPG_COOLDOWN_EMBED_TYPE,
+} from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {userStatsService} from '../../../../services/database/user-stats.service';
+import {userService} from '../../../../services/database/user.service';
 
 interface IRpgQuest {
   client: Client;
@@ -19,11 +24,12 @@ export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
     channelId: message.channel.id,
     client,
     author,
+    commandType: RPG_COOLDOWN_EMBED_TYPE.quest,
   });
   if (!event) return;
-  event.on('content', (content, collected) => {
+  event.on('content', async (content, collected) => {
     if (isQuestAccepted({author, content})) {
-      rpgQuestSuccess({
+      await rpgQuestSuccess({
         author,
         channelId: message.channel.id,
         client,
@@ -32,7 +38,7 @@ export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
       event.stop();
     }
     if (isQuestDeclined({message: collected, author})) {
-      rpgQuestSuccess({
+      await rpgQuestSuccess({
         author,
         channelId: message.channel.id,
         client,
@@ -40,14 +46,14 @@ export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
       });
     }
   });
-  event.on('cooldown', (cooldown) => {
-    userReminderServices.updateUserCooldown({
+  event.on('cooldown', async (cooldown) => {
+    await userReminderServices.updateUserCooldown({
       userId: author.id,
       type: RPG_COMMAND_TYPE.quest,
       readyAt: new Date(Date.now() + cooldown),
     });
   });
-  event.on('embed', (embed) => {
+  event.on('embed', async (embed) => {
     if (isCompletingQuest({author, embed})) {
       event.stop();
     }
@@ -55,9 +61,19 @@ export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
       event.stop();
     }
     if (isArenaQuest({author, embed})) {
+      await showArenaCooldown({
+        author,
+        channelId: message.channel.id,
+        client,
+      });
       event.stop();
     }
     if (isMinibossQuest({author, embed})) {
+      await showMinibossCooldown({
+        author,
+        channelId: message.channel.id,
+        client,
+      });
       event.stop();
     }
   });
@@ -75,17 +91,23 @@ const QUEST_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.quest.accepted;
 const DECLINED_QUEST_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.quest.declined;
 
 const rpgQuestSuccess = async ({author, questAccepted, channelId}: IRpgQuestSuccess) => {
-  const cooldown = await calcCdReduction({
-    userId: author.id,
-    commandType: RPG_COMMAND_TYPE.quest,
-    cooldown: questAccepted ? QUEST_COOLDOWN : DECLINED_QUEST_COOLDOWN,
-  });
-  await userReminderServices.saveUserQuestCooldown({
-    epicQuest: false,
-    userId: author.id,
-    readyAt: new Date(Date.now() + cooldown),
-  });
-  updateReminderChannel({
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount) return;
+
+  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.quest) {
+    const cooldown = await calcCdReduction({
+      userId: author.id,
+      commandType: RPG_COMMAND_TYPE.quest,
+      cooldown: questAccepted ? QUEST_COOLDOWN : DECLINED_QUEST_COOLDOWN,
+    });
+    await userReminderServices.saveUserQuestCooldown({
+      epicQuest: false,
+      userId: author.id,
+      readyAt: new Date(Date.now() + cooldown),
+    });
+  }
+
+  await updateReminderChannel({
     userId: author.id,
     channelId,
   });
@@ -94,6 +116,28 @@ const rpgQuestSuccess = async ({author, questAccepted, channelId}: IRpgQuestSucc
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.quest,
   });
+};
+
+interface IShowArenaCooldown {
+  client: Client;
+  author: User;
+  channelId: string;
+}
+
+export const showArenaCooldown = async ({client, author, channelId}: IShowArenaCooldown) => {
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount?.toggle.quest.all || !userAccount?.toggle.quest.arena) return;
+};
+
+interface IShowMinibossCooldown {
+  client: Client;
+  author: User;
+  channelId: string;
+}
+
+export const showMinibossCooldown = async ({client, author, channelId}: IShowMinibossCooldown) => {
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount?.toggle.quest.all || !userAccount?.toggle.quest.miniboss) return;
 };
 
 interface IIsQuestAccepted {

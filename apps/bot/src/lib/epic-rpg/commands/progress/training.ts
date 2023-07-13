@@ -3,11 +3,16 @@ import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import getTrainingAnswer from '../../../epic-helper/features/training-helper';
 import {djsMessageHelper} from '../../../discordjs/message';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
-import {BOT_REMINDER_BASE_COOLDOWN, RPG_COMMAND_TYPE} from '@epic-helper/constants';
+import {
+  BOT_REMINDER_BASE_COOLDOWN,
+  RPG_COMMAND_TYPE,
+  RPG_COOLDOWN_EMBED_TYPE,
+} from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {userStatsService} from '../../../../services/database/user-stats.service';
+import {userService} from '../../../../services/database/user.service';
 
 interface IRpgTraining {
   client: Client;
@@ -21,13 +26,15 @@ export function rpgTraining({client, message, author, isSlashCommand}: IRpgTrain
     channelId: message.channel.id,
     client,
     author,
+    commandType: RPG_COOLDOWN_EMBED_TYPE.training,
   });
   if (!event) return;
   event.on('content', async (content) => {
     if (isRpgTrainingQuestion({author, content})) {
       event.pendingAnswer();
       const answer = await getTrainingAnswer({author, content});
-      djsMessageHelper.send({
+      if (!answer) return;
+      await djsMessageHelper.send({
         channelId: message.channel.id,
         client,
         options: {
@@ -37,22 +44,27 @@ export function rpgTraining({client, message, author, isSlashCommand}: IRpgTrain
     }
 
     if (isRpgTrainingSuccess({author, content})) {
-      rpgTrainingSuccess({
+      await rpgTrainingSuccess({
         author,
         channelId: message.channel.id,
         client,
       });
     }
   });
-  event.on('cooldown', (cooldown) => {
-    userReminderServices.updateUserCooldown({
+  event.on('cooldown', async (cooldown) => {
+    await userReminderServices.updateUserCooldown({
       userId: author.id,
       type: RPG_COMMAND_TYPE.training,
       readyAt: new Date(Date.now() + cooldown),
     });
   });
-  event.on('embed', (embed) => {
+  event.on('embed', async (embed) => {
     if (isEncounteringPet({author, embed})) {
+      await encounteringPet({
+        client,
+        author,
+        embed,
+      });
       event.stop();
     }
   });
@@ -68,17 +80,23 @@ interface IRpgTrainingSuccess {
 const TRAINING_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.training;
 
 const rpgTrainingSuccess = async ({author, channelId}: IRpgTrainingSuccess) => {
-  const cooldown = await calcCdReduction({
-    userId: author.id,
-    commandType: RPG_COMMAND_TYPE.training,
-    cooldown: TRAINING_COOLDOWN,
-  });
-  await userReminderServices.saveUserTrainingCooldown({
-    userId: author.id,
-    ultraining: false,
-    readyAt: new Date(Date.now() + cooldown),
-  });
-  updateReminderChannel({
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount) return;
+
+  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.training) {
+    const cooldown = await calcCdReduction({
+      userId: author.id,
+      commandType: RPG_COMMAND_TYPE.training,
+      cooldown: TRAINING_COOLDOWN,
+    });
+    await userReminderServices.saveUserTrainingCooldown({
+      userId: author.id,
+      ultraining: false,
+      readyAt: new Date(Date.now() + cooldown),
+    });
+  }
+
+  await updateReminderChannel({
     userId: author.id,
     channelId,
   });
@@ -87,6 +105,18 @@ const rpgTrainingSuccess = async ({author, channelId}: IRpgTrainingSuccess) => {
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.training,
   });
+};
+
+interface IEncounteringPet {
+  client: Client;
+  embed: Embed;
+  author: User;
+}
+
+const encounteringPet = async ({embed, author}: IEncounteringPet) => {
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount?.toggle.petCatch) return;
+  // catch pet
 };
 
 interface IIsRpgTrainingSuccess {

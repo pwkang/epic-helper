@@ -1,19 +1,13 @@
 import timestampHelper from '../../discordjs/timestamp';
 import {BOT_COLOR, BOT_EMOJI, RPG_COMMAND_TYPE} from '@epic-helper/constants';
-import {
-  IAdventureReminderProps,
-  IFarmReminderProps,
-  IHuntReminderProps,
-  IQuestReminderProps,
-  ITrainingReminderProps,
-  IUserReminder,
-  IWorkingReminderProps,
-} from '@epic-helper/models';
+import {IUser, IUserReminder} from '@epic-helper/models';
 import {EmbedBuilder, User} from 'discord.js';
+import {_parseCommandString} from '../reminders/message-generator/parse-command-name';
+import {capitalizeFirstLetters} from '@epic-helper/utils';
 
 interface ICooldownItem {
   type: ValuesOf<typeof RPG_COMMAND_TYPE>;
-  name: (props: any) => string;
+  name: string;
 }
 
 interface ICooldown {
@@ -28,19 +22,19 @@ const cmd: ICooldown[] = [
     value: [
       {
         type: RPG_COMMAND_TYPE.daily,
-        name: () => 'Daily',
+        name: 'Daily',
       },
       {
         type: RPG_COMMAND_TYPE.weekly,
-        name: () => 'Weekly',
+        name: 'Weekly',
       },
       {
         type: RPG_COMMAND_TYPE.lootbox,
-        name: () => 'Lootbox',
+        name: 'Lootbox',
       },
       {
         type: RPG_COMMAND_TYPE.vote,
-        name: () => 'Vote',
+        name: 'Vote',
       },
     ],
   },
@@ -49,24 +43,23 @@ const cmd: ICooldown[] = [
     value: [
       {
         type: RPG_COMMAND_TYPE.hunt,
-        name: (props: IHuntReminderProps) =>
-          `Hunt${props?.hardMode ? ' Hardmode' : ''}${props?.together ? ' Together' : ''}`,
+        name: 'Hunt',
       },
       {
         type: RPG_COMMAND_TYPE.adventure,
-        name: (props: IAdventureReminderProps) => `Adventure${props?.hardMode ? ' Hardmode' : ''}`,
+        name: 'Adventure',
       },
       {
         type: RPG_COMMAND_TYPE.training,
-        name: (props: ITrainingReminderProps) => (props?.ultraining ? 'Ultraining' : 'Training'),
+        name: 'Training',
       },
       {
         type: RPG_COMMAND_TYPE.duel,
-        name: () => 'Duel',
+        name: 'Duel',
       },
       {
         type: RPG_COMMAND_TYPE.quest,
-        name: (props: IQuestReminderProps) => (props?.epicQuest ? 'Epic Quest' : 'Quest'),
+        name: 'Quest',
       },
     ],
   },
@@ -75,24 +68,23 @@ const cmd: ICooldown[] = [
     value: [
       {
         type: RPG_COMMAND_TYPE.working,
-        name: (props: IWorkingReminderProps) =>
-          props?.workingType ? props.workingType : 'Working',
+        name: 'Working',
       },
       {
         type: RPG_COMMAND_TYPE.farm,
-        name: (props: IFarmReminderProps) => `farm${props?.seedType ? ` ${props?.seedType}` : ''}`,
+        name: 'Farm',
       },
       {
         type: RPG_COMMAND_TYPE.horse,
-        name: () => 'Horse Breeding | Horse Race',
+        name: 'Horse Breeding | Horse Race',
       },
       {
         type: RPG_COMMAND_TYPE.arena,
-        name: () => 'Arena',
+        name: 'Arena',
       },
       {
         type: RPG_COMMAND_TYPE.dungeon,
-        name: () => 'Dungeon | Miniboss',
+        name: 'Dungeon | Miniboss',
       },
     ],
   },
@@ -106,9 +98,10 @@ const cmd: ICooldown[] = [
 export interface IGetUserCooldownEmbedProps {
   author: User;
   userReminder: IUserReminder[];
+  userAccount: IUser;
 }
 
-const getUserCooldownEmbed = ({userReminder, author}: IGetUserCooldownEmbedProps) => {
+const getUserCooldownEmbed = ({userReminder, author, userAccount}: IGetUserCooldownEmbedProps) => {
   const embed = new EmbedBuilder()
     .setAuthor({
       name: `${author.username}'s cooldowns`,
@@ -121,14 +114,25 @@ const getUserCooldownEmbed = ({userReminder, author}: IGetUserCooldownEmbedProps
     const value = [];
     for (const item of field.value) {
       const cooldown = userReminder.find((c) => c.type === item.type);
-      if (cooldown && cooldown.readyAt.getTime() > Date.now()) {
-        const readyIn = timestampHelper.relative({
+      const commandName = cooldown
+        ? _parseCommandString({
+            userAccount,
+            ...cooldown,
+          }).replace('RPG ', '')
+        : item.name;
+      const readyIn =
+        !!cooldown?.readyAt &&
+        cooldown.readyAt.getTime() > Date.now() &&
+        timestampHelper.relative({
           time: cooldown.readyAt,
         });
-        value.push(`${BOT_EMOJI.utils.notReady} ~-~ \`${item.name(cooldown.props)}\` (${readyIn})`);
-      } else if (!field.skipIfNone) {
-        value.push(`${BOT_EMOJI.utils.ready} ~-~ \`${item.name({})}\``);
-      }
+      const icon =
+        cooldown?.readyAt && cooldown?.readyAt.getTime() > Date.now()
+          ? BOT_EMOJI.utils.notReady
+          : BOT_EMOJI.utils.ready;
+      const formattedCommandName = capitalizeFirstLetters(commandName);
+      const readyString = readyIn ? ` (${readyIn})` : '';
+      value.push(`${icon} ~-~ \`${formattedCommandName}\`${readyString}`);
     }
     if (value.length > 0) {
       fields.push({

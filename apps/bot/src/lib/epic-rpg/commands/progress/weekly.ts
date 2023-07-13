@@ -1,10 +1,11 @@
 import {Client, Embed, Message, User} from 'discord.js';
 import ms from 'ms';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
+import {RPG_COMMAND_TYPE, RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
+import {userService} from '../../../../services/database/user.service';
 
 const WEEKLY_COOLDOWN = ms('1w') - ms('10m');
 
@@ -20,11 +21,12 @@ export function rpgWeekly({client, message, author, isSlashCommand}: IRpgWeekly)
     author,
     channelId: message.channel.id,
     client,
+    commandType: RPG_COOLDOWN_EMBED_TYPE.weekly,
   });
   if (!event) return;
-  event.on('embed', (embed) => {
+  event.on('embed', async (embed) => {
     if (isRpgWeeklySuccess({embed, author})) {
-      rpgWeeklySuccess({
+      await rpgWeeklySuccess({
         embed,
         author,
         channelId: message.channel.id,
@@ -33,8 +35,8 @@ export function rpgWeekly({client, message, author, isSlashCommand}: IRpgWeekly)
       event.stop();
     }
   });
-  event.on('cooldown', (cooldown) => {
-    userReminderServices.updateUserCooldown({
+  event.on('cooldown', async (cooldown) => {
+    await userReminderServices.updateUserCooldown({
       userId: author.id,
       readyAt: new Date(Date.now() + cooldown),
       type: RPG_COMMAND_TYPE.weekly,
@@ -51,16 +53,22 @@ interface IRpgWeeklySuccess {
 }
 
 const rpgWeeklySuccess = async ({author, channelId}: IRpgWeeklySuccess) => {
-  const cooldown = await calcCdReduction({
-    userId: author.id,
-    commandType: RPG_COMMAND_TYPE.weekly,
-    cooldown: WEEKLY_COOLDOWN,
-  });
-  await userReminderServices.saveUserWeeklyCooldown({
-    userId: author.id,
-    readyAt: new Date(Date.now() + cooldown),
-  });
-  updateReminderChannel({
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount) return;
+
+  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.weekly) {
+    const cooldown = await calcCdReduction({
+      userId: author.id,
+      commandType: RPG_COMMAND_TYPE.weekly,
+      cooldown: WEEKLY_COOLDOWN,
+    });
+    await userReminderServices.saveUserWeeklyCooldown({
+      userId: author.id,
+      readyAt: new Date(Date.now() + cooldown),
+    });
+  }
+
+  await updateReminderChannel({
     userId: author.id,
     channelId,
   });

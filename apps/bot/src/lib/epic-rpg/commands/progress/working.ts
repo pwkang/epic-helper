@@ -1,6 +1,7 @@
 import {
   BOT_REMINDER_BASE_COOLDOWN,
   RPG_COMMAND_TYPE,
+  RPG_COOLDOWN_EMBED_TYPE,
   RPG_WORKING_TYPE,
 } from '@epic-helper/constants';
 import {Client, Embed, Message, User} from 'discord.js';
@@ -46,6 +47,7 @@ export function rpgWorking({client, message, author, isSlashCommand, workingType
     channelId: message.channel.id,
     client,
     author,
+    commandType: RPG_COOLDOWN_EMBED_TYPE.working,
   });
   if (!event) return;
   event.on('content', async (content) => {
@@ -77,7 +79,7 @@ export function rpgWorking({client, message, author, isSlashCommand, workingType
         ruby: 10,
       });
       event.stop();
-      djsMessageHelper.reply({
+      await djsMessageHelper.reply({
         client,
         message,
         options: {
@@ -86,8 +88,8 @@ export function rpgWorking({client, message, author, isSlashCommand, workingType
       });
     }
   });
-  event.on('cooldown', (cooldown) => {
-    userReminderServices.updateUserCooldown({
+  event.on('cooldown', async (cooldown) => {
+    await userReminderServices.updateUserCooldown({
       userId: author.id,
       type: RPG_COMMAND_TYPE.working,
       readyAt: new Date(Date.now() + cooldown),
@@ -110,22 +112,28 @@ interface IRpgWorkingSuccess {
 }
 
 const rpgWorkingSuccess = async ({author, workingType, channelId}: IRpgWorkingSuccess) => {
-  const cooldown = await calcCdReduction({
-    userId: author.id,
-    commandType: RPG_COMMAND_TYPE.working,
-    cooldown: WORKING_COOLDOWN,
-  });
-  await userReminderServices.saveUserWorkingCooldown({
-    userId: author.id,
-    workingType,
-    readyAt: new Date(Date.now() + cooldown),
-  });
-  updateReminderChannel({
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount) return;
+
+  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.working) {
+    const cooldown = await calcCdReduction({
+      userId: author.id,
+      commandType: RPG_COMMAND_TYPE.working,
+      cooldown: WORKING_COOLDOWN,
+    });
+    await userReminderServices.saveUserWorkingCooldown({
+      userId: author.id,
+      workingType,
+      readyAt: new Date(Date.now() + cooldown),
+    });
+  }
+
+  await updateReminderChannel({
     userId: author.id,
     channelId,
   });
 
-  userStatsService.countUserStats({
+  await userStatsService.countUserStats({
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.working,
   });

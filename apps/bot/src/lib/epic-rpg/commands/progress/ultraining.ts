@@ -1,11 +1,16 @@
 import {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
-import {BOT_REMINDER_BASE_COOLDOWN, RPG_COMMAND_TYPE} from '@epic-helper/constants';
+import {
+  BOT_REMINDER_BASE_COOLDOWN,
+  RPG_COMMAND_TYPE,
+  RPG_COOLDOWN_EMBED_TYPE,
+} from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {userStatsService} from '../../../../services/database/user-stats.service';
+import {userService} from '../../../../services/database/user.service';
 
 interface IRpgUltraining {
   client: Client;
@@ -19,11 +24,12 @@ export function rpgUltraining({client, message, author, isSlashCommand}: IRpgUlt
     channelId: message.channel.id,
     client,
     author,
+    commandType: RPG_COOLDOWN_EMBED_TYPE.training,
   });
   if (!event) return;
-  event.on('embed', (embed) => {
+  event.on('embed', async (embed) => {
     if (isRpgUltrainingSuccess({embed, author})) {
-      rpgUlTrainingSuccess({
+      await rpgUlTrainingSuccess({
         author,
         channelId: message.channel.id,
         client,
@@ -55,17 +61,23 @@ interface IRpgTrainingSuccess {
 const TRAINING_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.training;
 
 const rpgUlTrainingSuccess = async ({author, channelId}: IRpgTrainingSuccess) => {
-  const cooldown = await calcCdReduction({
-    userId: author.id,
-    commandType: RPG_COMMAND_TYPE.training,
-    cooldown: TRAINING_COOLDOWN,
-  });
-  await userReminderServices.saveUserTrainingCooldown({
-    userId: author.id,
-    ultraining: true,
-    readyAt: new Date(Date.now() + cooldown),
-  });
-  updateReminderChannel({
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount) return;
+
+  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.training) {
+    const cooldown = await calcCdReduction({
+      userId: author.id,
+      commandType: RPG_COMMAND_TYPE.training,
+      cooldown: TRAINING_COOLDOWN,
+    });
+    await userReminderServices.saveUserTrainingCooldown({
+      userId: author.id,
+      ultraining: true,
+      readyAt: new Date(Date.now() + cooldown),
+    });
+  }
+
+  await updateReminderChannel({
     userId: author.id,
     channelId,
   });

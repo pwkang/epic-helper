@@ -12,18 +12,24 @@ interface IReturn<T> {
 
 export const importFiles = <T>({options, path}: IImportFiles): Promise<IReturn<T>[]> => {
   return new Promise((resolve) => {
-    const files: IReturn<T>[] = [];
+    const files: Promise<IReturn<T>>[] = [];
     readdirp(path, options)
       .on('data', async (entry: EntryInfo) => {
         const {fullPath, path} = entry;
-        const file = await import(fullPath);
-        files.push({
-          data: file.default,
-          path,
-        });
+        files.push(
+          new Promise(async (resolve) => {
+            const file = await import(fullPath);
+            resolve({
+              data: file.default,
+              path,
+            });
+          })
+        );
       })
       .on('end', () => {
-        resolve(files);
+        Promise.all(files).then((data) => {
+          resolve(data);
+        });
       });
   });
 };

@@ -1,6 +1,7 @@
 import {
   BOT_REMINDER_BASE_COOLDOWN,
   RPG_COMMAND_TYPE,
+  RPG_COOLDOWN_EMBED_TYPE,
   RPG_EPIC_ITEM_TYPES,
   RPG_ITEMS,
 } from '@epic-helper/constants';
@@ -10,6 +11,7 @@ import {IMessageContentChecker} from '../../../../types/utils';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
+import {userService} from '../../../../services/database/user.service';
 
 const EPIC_ITEM_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.epicItem;
 
@@ -25,6 +27,7 @@ export function rpgUseEpicItem({author, message, isSlashCommand, client}: IRpgUs
     channelId: message.channel.id,
     client,
     author: message.author,
+    commandType: RPG_COOLDOWN_EMBED_TYPE.epicItem,
   });
   if (!event) return;
   event.on('content', async (content, collected) => {
@@ -46,9 +49,8 @@ export function rpgUseEpicItem({author, message, isSlashCommand, client}: IRpgUs
       });
     }
   });
-  event.on('embed', (embed) => {});
-  event.on('cooldown', (cooldown) => {
-    userReminderServices.updateUserCooldown({
+  event.on('cooldown', async (cooldown) => {
+    await userReminderServices.updateUserCooldown({
       userId: author.id,
       readyAt: new Date(Date.now() + cooldown),
       type: RPG_COMMAND_TYPE.epicItem,
@@ -65,17 +67,23 @@ interface IRpgUseEpicItemSuccess {
 }
 
 const rpgUseEpicItemSuccess = async ({author, type, channelId}: IRpgUseEpicItemSuccess) => {
-  const cooldown = await calcCdReduction({
-    userId: author.id,
-    commandType: RPG_COMMAND_TYPE.daily,
-    cooldown: EPIC_ITEM_COOLDOWN,
-  });
-  await userReminderServices.saveUserEpicItemCooldown({
-    userId: author.id,
-    readyAt: new Date(Date.now() + cooldown),
-    epicItemType: type,
-  });
-  updateReminderChannel({
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount) return;
+
+  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.epicItem) {
+    const cooldown = await calcCdReduction({
+      userId: author.id,
+      commandType: RPG_COMMAND_TYPE.daily,
+      cooldown: EPIC_ITEM_COOLDOWN,
+    });
+    await userReminderServices.saveUserEpicItemCooldown({
+      userId: author.id,
+      readyAt: new Date(Date.now() + cooldown),
+      epicItemType: type,
+    });
+  }
+
+  await updateReminderChannel({
     userId: author.id,
     channelId,
   });

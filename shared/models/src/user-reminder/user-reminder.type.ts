@@ -46,7 +46,7 @@ export interface IEpicItemReminderProps {
 
 type BaseUserReminder = {
   userId: string;
-  readyAt: Date;
+  readyAt?: Date;
 };
 
 export type IUserReminderPropsCondition =

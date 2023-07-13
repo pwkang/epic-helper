@@ -1,6 +1,7 @@
 import {
   BOT_REMINDER_BASE_COOLDOWN,
   RPG_COMMAND_TYPE,
+  RPG_COOLDOWN_EMBED_TYPE,
   RPG_LOOTBOX_TYPE,
 } from '@epic-helper/constants';
 import {Client, Message, User} from 'discord.js';
@@ -10,6 +11,7 @@ import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown'
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {userStatsService} from '../../../../services/database/user-stats.service';
+import {userService} from '../../../../services/database/user.service';
 
 const LOOTBOX_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.lootbox;
 
@@ -25,11 +27,12 @@ export function rpgBuyLootbox({client, message, author, isSlashCommand}: IRpgLoo
     author,
     channelId: message.channel.id,
     client,
+    commandType: RPG_COOLDOWN_EMBED_TYPE.lootbox,
   });
   if (!event) return;
-  event.on('content', (content, collected) => {
+  event.on('content', async (content, collected) => {
     if (isLootboxSuccessfullyBought({content})) {
-      rpgBuyLootboxSuccess({
+      await rpgBuyLootboxSuccess({
         author,
         client,
         channelId: message.channel.id,
@@ -44,8 +47,8 @@ export function rpgBuyLootbox({client, message, author, isSlashCommand}: IRpgLoo
       event.stop();
     }
   });
-  event.on('cooldown', (cooldown) => {
-    userReminderServices.updateUserCooldown({
+  event.on('cooldown', async (cooldown) => {
+    await userReminderServices.updateUserCooldown({
       type: RPG_COMMAND_TYPE.lootbox,
       readyAt: new Date(Date.now() + cooldown),
       userId: author.id,
@@ -62,20 +65,26 @@ interface IRpgBuyLootboxSuccess {
 }
 
 const rpgBuyLootboxSuccess = async ({author, content, channelId}: IRpgBuyLootboxSuccess) => {
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount) return;
   const lootboxType = Object.values(RPG_LOOTBOX_TYPE).find((type) =>
     content.toLowerCase().includes(type)
   );
-  const cooldown = await calcCdReduction({
-    userId: author.id,
-    commandType: RPG_COMMAND_TYPE.lootbox,
-    cooldown: LOOTBOX_COOLDOWN,
-  });
-  await userReminderServices.saveUserLootboxCooldown({
-    userId: author.id,
-    readyAt: new Date(Date.now() + cooldown),
-    lootboxType,
-  });
-  updateReminderChannel({
+
+  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.lootbox) {
+    const cooldown = await calcCdReduction({
+      userId: author.id,
+      commandType: RPG_COMMAND_TYPE.lootbox,
+      cooldown: LOOTBOX_COOLDOWN,
+    });
+    await userReminderServices.saveUserLootboxCooldown({
+      userId: author.id,
+      readyAt: new Date(Date.now() + cooldown),
+      lootboxType,
+    });
+  }
+
+  await updateReminderChannel({
     userId: author.id,
     channelId,
   });

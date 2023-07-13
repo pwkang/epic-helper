@@ -59,15 +59,21 @@ export const _getCustomMessageEmbed = async ({
               together: false,
             },
           },
-          props: {
-            epicItemType: 'epic seed',
-            epicQuest: false,
-            hardMode: false,
-            lootboxType: 'edgy',
-            seedType: 'carrot',
-            together: false,
-            ultraining: false,
-            workingType: 'fish',
+          // @ts-ignore
+          userReminder: {
+            type,
+            userId: author.id,
+            readyAt: new Date(Date.now() + ms('1h')),
+            props: {
+              epicItemType: 'epic seed',
+              epicQuest: false,
+              hardMode: false,
+              lootboxType: 'edgy',
+              seedType: 'carrot',
+              together: true,
+              ultraining: true,
+              workingType: 'fish',
+            },
           },
         });
         embedValue.push(`${currentMessage}`);

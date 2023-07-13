@@ -5,3 +5,4 @@ export * from './logger';
 export * from './datetime';
 export * from './filesImport';
 export * from './typed-object-entries';
+export * from './capitalize-first-letters';

@@ -6,6 +6,7 @@ import {
   BOT_REMINDER_BASE_COOLDOWN,
   RPG_CLICKABLE_SLASH_COMMANDS,
   RPG_COMMAND_TYPE,
+  RPG_COOLDOWN_EMBED_TYPE,
 } from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
@@ -26,17 +27,18 @@ export function rpgAdventure({client, message, author, isSlashCommand}: IRpgAdve
     channelId: message.channel.id,
     author,
     client,
+    commandType: RPG_COOLDOWN_EMBED_TYPE.adventure,
   });
   if (!event) return;
-  event.on('content', (content) => {
+  event.on('content', async (content) => {
     if (isRpgAdventureSuccess({author, content})) {
-      rpgAdventureSuccess({
+      await rpgAdventureSuccess({
         author,
         client,
         channelId: message.channel.id,
         content,
       });
-      healReminder({
+      await healReminder({
         client,
         author,
         content,
@@ -45,8 +47,8 @@ export function rpgAdventure({client, message, author, isSlashCommand}: IRpgAdve
       event.stop();
     }
   });
-  event.on('cooldown', (cooldown) => {
-    userReminderServices.updateUserCooldown({
+  event.on('cooldown', async (cooldown) => {
+    await userReminderServices.updateUserCooldown({
       userId: author.id,
       type: RPG_COMMAND_TYPE.adventure,
       readyAt: new Date(Date.now() + cooldown),
@@ -65,18 +67,22 @@ interface IRpgAdventureSuccess {
 const ADVENTURE_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.adventure;
 
 const rpgAdventureSuccess = async ({author, content, channelId}: IRpgAdventureSuccess) => {
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount) return;
   const hardMode = content.includes('(but stronger)');
 
-  const cooldown = await calcCdReduction({
-    userId: author.id,
-    commandType: RPG_COMMAND_TYPE.adventure,
-    cooldown: ADVENTURE_COOLDOWN,
-  });
-  await userReminderServices.saveUserAdventureCooldown({
-    userId: author.id,
-    hardMode,
-    readyAt: new Date(Date.now() + cooldown),
-  });
+  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.adventure) {
+    const cooldown = await calcCdReduction({
+      userId: author.id,
+      commandType: RPG_COMMAND_TYPE.adventure,
+      cooldown: ADVENTURE_COOLDOWN,
+    });
+    await userReminderServices.saveUserAdventureCooldown({
+      userId: author.id,
+      hardMode,
+      readyAt: new Date(Date.now() + cooldown),
+    });
+  }
 
   updateReminderChannel({
     userId: author.id,
@@ -97,13 +103,16 @@ interface IHealReminder {
 }
 
 async function healReminder({client, channelId, author, content}: IHealReminder) {
+  const userAccount = await userService.getUserAccount(author.id);
+  if (!userAccount?.toggle.heal) return;
+
   const healReminder = await userService.getUserHealReminder({
     userId: author.id,
   });
   if (!healReminder) return;
   const healReminderMsg = await getHealReminderMsg({content, target: healReminder});
   if (!healReminderMsg) return;
-  djsMessageHelper.send({
+  await djsMessageHelper.send({
     channelId,
     options: {
       content: author + healReminderMsg,
