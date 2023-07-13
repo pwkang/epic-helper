@@ -9,11 +9,6 @@ export const donor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
       inline: true,
       children: [
         {
-          value: userToggle.reminder.pet,
-          path: 'toggle.reminder.pet',
-          label: 'Pets Reminder',
-        },
-        {
           value: userToggle.training.all,
           label: 'Give answer on training',
           path: 'toggle.training.all',
@@ -77,24 +72,6 @@ export const donor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
           path: 'toggle.huntSwitch',
           label: 'Switch hunt reminder between `hunt` & `hunt t`',
         },
-        // {
-        //   value: userToggle.event.loveShareAdv,
-        //   label: 'Adventure -10% cooldown',
-        // },
-        // {
-        //     value: "toggle.world.all",
-        //     label: "World boost reminder",
-        //     children: [
-        //         {
-        //             value: "toggle.world.monster",
-        //             label: "Monster drop"
-        //         },
-        //         {
-        //             value: "toggle.world.lootbox",
-        //             label: "Lootbox drop"
-        //         }
-        //     ]
-        // },
       ],
     },
     {
@@ -183,6 +160,11 @@ export const donor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
           value: userToggle.reminder.epicItem,
           path: 'toggle.reminder.epicItem',
           label: 'Epic Items',
+        },
+        {
+          value: userToggle.reminder.pet,
+          path: 'toggle.reminder.pet',
+          label: 'Pets',
         },
       ],
     },
@@ -278,10 +260,6 @@ export const donor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
           path: 'toggle.dm.pet',
           label: 'Pets',
         },
-        // {
-        //     value: "toggle.dm.world",
-        //     label: "World boost"
-        // }
       ],
     },
     {
