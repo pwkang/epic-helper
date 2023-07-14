@@ -19,3 +19,14 @@ export const DONOR_TOKEN_AMOUNT = {
   ultimate: 500,
   insane: 1000,
 } as const;
+
+export const DONOR_TIER_ID = {
+  normie: '6881102',
+  epic: '7368499',
+  super: '7368500',
+  mega: '7368502',
+  hyper: '7368505',
+  ultra: '7368515',
+  ultimate: '8364342',
+  insane: '8364343',
+} as const;

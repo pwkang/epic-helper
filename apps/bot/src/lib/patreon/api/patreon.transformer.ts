@@ -9,6 +9,8 @@ import {
   PATREON_PATRON_STATUS,
   PATREON_PAYMENT_STATUS,
 } from '../patreon.constant';
+import {DONOR_TIER, DONOR_TIER_ID} from '@epic-helper/constants';
+import {typedObjectEntries} from '@epic-helper/utils';
 
 interface ITier {
   id: string;
@@ -23,7 +25,9 @@ interface ICampaignInfo {
   tiers: ITier[];
 }
 
-export const toCampaignInfo = (response: IFetchPatreonCampaignResponse): ICampaignInfo[] => {
+export const toCampaignInfo = (
+  response: Pick<IFetchPatreonCampaignResponse, 'data' | 'included'>
+): ICampaignInfo[] => {
   const campaignInfo: ICampaignInfo[] = [];
 
   for (let campaign of response.data) {
@@ -49,8 +53,6 @@ export const toCampaignInfo = (response: IFetchPatreonCampaignResponse): ICampai
 };
 
 interface IPatron {
-  memberId: string;
-  email?: string;
   subscription: {
     lastChargeDate?: Date;
     lastChargeStatus?: ValuesOf<typeof PATREON_PAYMENT_STATUS>;
@@ -59,15 +61,21 @@ interface IPatron {
     patronStatus?: ValuesOf<typeof PATREON_PATRON_STATUS>;
     pledgeRelationshipStart?: Date;
   };
-  currentTier: {
-    id: string;
-  };
+  currentTier?: ValuesOf<typeof DONOR_TIER>;
   discord: {
     userId?: string;
   };
+  patreon: {
+    memberId: string;
+    userId: string;
+    email?: string;
+    fullName?: string;
+  };
 }
 
-export const toPatrons = (response: IFetchPatreonCampaignMembersResponse): IPatron[] => {
+export const toPatrons = (
+  response: Pick<IFetchPatreonCampaignMembersResponse, 'data' | 'included'>
+): IPatron[] => {
   const patrons: IPatron[] = [];
   for (let member of response.data) {
     const userAttributes = response.included.find(
@@ -81,9 +89,11 @@ export const toPatrons = (response: IFetchPatreonCampaignMembersResponse): IPatr
     const pledgeRelationshipStart = member.attributes.pledge_relationship_start;
     const currentTierId = member.relationships.currently_entitled_tiers.data[0]?.id;
     const discordUserId = userAttributes?.attributes.social_connections?.discord?.user_id;
+    const patronUserId = member.relationships.user.data.id;
+    const patronEmail = userAttributes?.attributes.email;
+    const patronFullName = userAttributes?.attributes.full_name;
 
     const patron: IPatron = {
-      memberId: member.id,
       subscription: {
         lastChargeDate: lastChargeDate ? new Date(lastChargeDate) : undefined,
         lastChargeStatus,
@@ -94,11 +104,17 @@ export const toPatrons = (response: IFetchPatreonCampaignMembersResponse): IPatr
           ? new Date(pledgeRelationshipStart)
           : undefined,
       },
-      currentTier: {
-        id: currentTierId,
-      },
+      currentTier: currentTierId
+        ? typedObjectEntries(DONOR_TIER_ID).find(([, v]) => v === currentTierId)?.[0]
+        : undefined,
       discord: {
         userId: discordUserId ?? undefined,
+      },
+      patreon: {
+        memberId: member.id,
+        userId: patronUserId,
+        email: patronEmail ?? undefined,
+        fullName: patronFullName ?? undefined,
       },
     };
     patrons.push(patron);
