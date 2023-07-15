@@ -1,6 +1,7 @@
 import {mongoClient} from '@epic-helper/services';
 import {donorSchema, IDonor} from '@epic-helper/models';
 import {DONOR_TIER} from '@epic-helper/constants';
+import {FilterQuery, QueryOptions} from 'mongoose';
 
 const dbDonor = mongoClient.model<IDonor>('donors', donorSchema);
 
@@ -43,8 +44,47 @@ const registerDonors = async (donors: IRegisterDonor[]): Promise<void> => {
   await bulk.execute();
 };
 
+interface IGetDonors {
+  tier?: ValuesOf<typeof DONOR_TIER>;
+  page?: number;
+  limit?: number;
+}
+
+const getDonors = async ({tier, page, limit}: IGetDonors) => {
+  const query: FilterQuery<IDonor> = {};
+  if (tier) query.tier = tier;
+  const options: QueryOptions<IDonor> = {
+    sort: {
+      expiresAt: -1,
+    },
+  };
+  if (page !== undefined && limit) {
+    options.skip = page * limit;
+    options.limit = limit;
+  }
+  const data = await dbDonor.find(query, null, options);
+  const total = await dbDonor.countDocuments(query);
+  return {
+    data,
+    total,
+  };
+};
+
+interface IFindDonor {
+  discordUserId?: string;
+}
+
+const findDonor = async ({discordUserId}: IFindDonor) => {
+  const query: FilterQuery<IDonor> = {};
+  if (discordUserId) query['discord.userId'] = discordUserId;
+  const donor = await dbDonor.findOne(query);
+  return donor ?? null;
+};
+
 const donorService = {
   registerDonors,
+  getDonors,
+  findDonor,
 };
 
 export default donorService;

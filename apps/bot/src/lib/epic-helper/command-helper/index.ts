@@ -5,6 +5,7 @@ import {_guildSettingsHelper} from './guild-settings';
 import {_guildHelper} from './guild';
 import {_userAccountHelper} from './user-account';
 import {_serverHelper} from './server';
+import {_donorHelper} from './donor';
 
 const commandHelper = {
   toggle: _toggleHelper,
@@ -14,6 +15,7 @@ const commandHelper = {
   guildSettings: _guildSettingsHelper,
   guild: _guildHelper,
   userAccount: _userAccountHelper,
+  donor: _donorHelper,
 };
 
 export default commandHelper;

@@ -18,6 +18,6 @@ export interface IDonor {
     username?: string;
   };
   tier?: ValuesOf<typeof DONOR_TIER>;
-  expiresAt?: Date;
+  expiresAt: Date;
   boostedGuilds: IBoostedGuild[];
 }
