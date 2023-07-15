@@ -10,29 +10,27 @@ import {
   StringSelectMenuInteraction,
   UserSelectMenuBuilder,
 } from 'discord.js';
-import {IDonor} from '@epic-helper/models';
+import {IDonor, IFreeDonor} from '@epic-helper/models';
 import messageFormatter from '../../../discordjs/message-formatter';
 import {djsUserHelper} from '../../../discordjs/user';
 import timestampHelper from '../../../discordjs/timestamp';
 import {generateNavigationRow, NAVIGATION_ROW_BUTTONS} from '../../../../utils/pagination-row';
 import {capitalizeFirstLetters, typedObjectEntries} from '@epic-helper/utils';
+import freeDonorService from '../../../../services/database/free-donor.service';
 
 const PAGE_SIZE = 6;
 
-interface IListDonors {
+interface IListFreeDonors {
   client: Client;
 }
 
-export const _listDonors = ({client}: IListDonors) => {
+export const _listFreeDonors = ({client}: IListFreeDonors) => {
   let page = 0;
-  let tier: ValuesOf<typeof DONOR_TIER> | undefined = undefined;
   let total = 0;
   let userId: string | undefined = undefined;
 
   const generateComponents = (): BaseMessageOptions['components'] => {
     const components = [];
-
-    components.push(generateTierSelector(tier));
 
     components.push(userSelector);
     if (!userId) {
@@ -52,24 +50,23 @@ export const _listDonors = ({client}: IListDonors) => {
   const render = async (): Promise<BaseMessageOptions> => {
     let embed: EmbedBuilder;
     if (userId) {
-      const donor = await donorService.findDonor({
+      const donor = await freeDonorService.findFreeDonor({
         discordUserId: userId,
       });
       total = 0;
-      embed = await buildDonorEmbed({
+      embed = await buildFreeDonorEmbed({
         client,
-        donor: donor ?? undefined,
+        freeDonor: donor ?? undefined,
         userId,
       });
     } else {
-      const donors = await donorService.getDonors({
-        tier,
+      const donors = await freeDonorService.getFreeDonors({
         page,
         limit: PAGE_SIZE,
       });
       total = donors.total;
-      embed = await buildDonorsEmbed({
-        donors: donors.data,
+      embed = await buildFreeDonorsEmbed({
+        freeDonors: donors.data,
         total: donors.total,
         client,
         page,
@@ -84,14 +81,6 @@ export const _listDonors = ({client}: IListDonors) => {
   const responseInteraction = async (
     interaction: BaseInteraction | StringSelectMenuInteraction
   ): Promise<BaseMessageOptions | null> => {
-    if (interaction.isStringSelectMenu()) {
-      tier =
-        interaction.values[0] === 'all'
-          ? undefined
-          : (interaction.values[0] as ValuesOf<typeof DONOR_TIER>);
-      page = 0;
-      userId = undefined;
-    }
     if (interaction.isButton()) {
       const customId = interaction.customId as ValuesOf<typeof NAVIGATION_ROW_BUTTONS>;
       switch (customId) {
@@ -122,62 +111,37 @@ export const _listDonors = ({client}: IListDonors) => {
 };
 
 interface IBuildEmbed {
-  donors: IDonor[];
+  freeDonors: IFreeDonor[];
   total: number;
   page: number;
   client: Client;
 }
 
-const buildDonorsEmbed = async ({donors, page, total, client}: IBuildEmbed) => {
+const buildFreeDonorsEmbed = async ({freeDonors, page, total, client}: IBuildEmbed) => {
   const embed = new EmbedBuilder().setColor(BOT_COLOR.embed).setFooter({
     text: `Page ${page + 1}/${Math.ceil(total / PAGE_SIZE)} • total: ${total}`,
   });
 
-  for (let donor of donors) {
-    const user = await fetchUser(client, donor.discord.userId);
+  for (let donor of freeDonors) {
+    const user = await fetchUser(client, donor.discordId);
     embed.addFields({
-      name: donor.discord.userId ?? '-',
+      name: donor.discordId ?? '-',
       value: [
         user ? messageFormatter.user(user.id) : 'Unknown',
         user ? `**${user.tag}**` : null,
-        `**Tier:** ${donor.tier ?? '-'}`,
         `**Expires:** ${timestampHelper.relative({time: donor.expiresAt})}`,
-        `**Token:** ${donor.boostedGuilds.length}/${
-          donor.tier ? DONOR_TOKEN_AMOUNT[donor.tier] : '0'
-        }`,
+        `**Token:** ${donor.boostedGuilds.length}/${donor.token ?? '0'}`,
       ]
         .filter((value) => !!value)
         .join('\n'),
       inline: true,
     });
   }
-  if (!donors.length) {
+  if (!freeDonors.length) {
     embed.setDescription('No free donors found');
   }
 
   return embed;
-};
-
-const generateTierSelector = (tier?: ValuesOf<typeof DONOR_TIER>) => {
-  return new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
-    new StringSelectMenuBuilder()
-      .setCustomId('tier')
-      .setPlaceholder('Tier')
-      .addOptions(
-        {
-          label: 'No filter',
-          value: 'all',
-          default: !tier,
-          description: 'Show all donors',
-        },
-        ...typedObjectEntries(DONOR_TIER).map(([key, value]) => ({
-          value,
-          label: capitalizeFirstLetters(key),
-          default: value === tier,
-          description: `Token: ${DONOR_TOKEN_AMOUNT[value]}`,
-        }))
-      )
-  );
 };
 
 const userSelector = new ActionRowBuilder<UserSelectMenuBuilder>().addComponents(
@@ -185,12 +149,12 @@ const userSelector = new ActionRowBuilder<UserSelectMenuBuilder>().addComponents
 );
 
 interface IBuildDonorEmbed {
-  donor?: IDonor;
+  freeDonor?: IFreeDonor;
   client: Client;
   userId: string;
 }
 
-const buildDonorEmbed = async ({donor, userId, client}: IBuildDonorEmbed) => {
+const buildFreeDonorEmbed = async ({freeDonor, userId, client}: IBuildDonorEmbed) => {
   const embed = new EmbedBuilder().setColor(BOT_COLOR.embed);
   const user = await fetchUser(client, userId);
   if (user) {
@@ -206,13 +170,14 @@ const buildDonorEmbed = async ({donor, userId, client}: IBuildDonorEmbed) => {
       name: 'PROFILE',
       value: [
         `**Status:** ${
-          donor ? (donor.expiresAt.getTime() > Date.now() ? 'Active' : 'Expired') : 'Non-donor'
+          freeDonor
+            ? freeDonor.expiresAt.getTime() > Date.now()
+              ? 'Active'
+              : 'Expired'
+            : 'Non-donor'
         }`,
-        `**Tier:** ${donor?.tier ? capitalizeFirstLetters(donor.tier) : '-'}`,
-        `**Expires:** ${donor ? timestampHelper.relative({time: donor.expiresAt}) : '-'}`,
-        `**Token:** ${donor?.boostedGuilds.length ?? '0'}/${
-          donor?.tier ? DONOR_TOKEN_AMOUNT[donor.tier] : '0'
-        }`,
+        `**Expires:** ${freeDonor ? timestampHelper.relative({time: freeDonor.expiresAt}) : '-'}`,
+        `**Token:** ${freeDonor?.boostedGuilds.length ?? '0'}/${freeDonor?.token ?? '0'}`,
       ].join('\n'),
       inline: false,
     },
@@ -220,8 +185,8 @@ const buildDonorEmbed = async ({donor, userId, client}: IBuildDonorEmbed) => {
       name: 'BOOSTED GUILDS',
       value:
         // TODO: fetch guild name here
-        donor?.boostedGuilds.length
-          ? donor?.boostedGuilds.map((guild) => `${guild.guildId} - ${guild.token}`).join('\n')
+        freeDonor?.boostedGuilds.length
+          ? freeDonor?.boostedGuilds.map((guild) => `${guild.guildId} - ${guild.token}`).join('\n')
           : '-',
       inline: false,
     }
