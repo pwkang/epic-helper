@@ -1,14 +1,8 @@
-import {IBoostedGuild, IDonor} from './donor.type';
+import {IDonor} from './donor.type';
 import {Schema} from 'mongoose';
 import {DONOR_TIER} from '@epic-helper/constants';
 
-const boostedGuildSchema = new Schema<IBoostedGuild>({
-  guildId: {type: String, required: true},
-  token: {type: Number, required: true},
-});
-
 export const donorSchema = new Schema<IDonor>({
-  boostedGuilds: [boostedGuildSchema],
   discord: {
     type: {
       userId: {type: String},

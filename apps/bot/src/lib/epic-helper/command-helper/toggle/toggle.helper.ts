@@ -162,11 +162,9 @@ const getGuildToggleEmbed = ({guildAccount}: IGetGuildToggleEmbed) => {
   });
 };
 
-const _toggleHelper = {
+export const _toggleHelper = {
   getDonorToggleEmbed,
   getNonDonorToggleEmbed,
   getUpdateQuery,
   getGuildToggleEmbed,
 };
-
-export default _toggleHelper;

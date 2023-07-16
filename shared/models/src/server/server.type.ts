@@ -12,6 +12,11 @@ export interface ITTVerificationRules {
   message?: string;
 }
 
+export interface IToken {
+  userId: string;
+  amount: number;
+}
+
 export interface IServer {
   serverId: string;
   name: string;
@@ -30,4 +35,5 @@ export interface IServer {
       rules: ITTVerificationRules[];
     };
   };
+  tokens: IToken[];
 }

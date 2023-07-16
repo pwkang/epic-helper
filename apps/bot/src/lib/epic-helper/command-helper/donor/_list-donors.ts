@@ -142,9 +142,9 @@ const buildDonorsEmbed = async ({donors, page, total, client}: IBuildEmbed) => {
         user ? `**${user.tag}**` : null,
         `**Tier:** ${donor.tier ?? '-'}`,
         `**Expires:** ${timestampHelper.relative({time: donor.expiresAt})}`,
-        `**Token:** ${donor.boostedGuilds.length}/${
-          donor.tier ? DONOR_TOKEN_AMOUNT[donor.tier] : '0'
-        }`,
+        // `**Token:** ${donor.boostedGuilds.length}/${
+        //   donor.tier ? DONOR_TOKEN_AMOUNT[donor.tier] : '0'
+        // }`,
       ]
         .filter((value) => !!value)
         .join('\n'),
@@ -210,21 +210,21 @@ const buildDonorEmbed = async ({donor, userId, client}: IBuildDonorEmbed) => {
         }`,
         `**Tier:** ${donor?.tier ? capitalizeFirstLetters(donor.tier) : '-'}`,
         `**Expires:** ${donor ? timestampHelper.relative({time: donor.expiresAt}) : '-'}`,
-        `**Token:** ${donor?.boostedGuilds.length ?? '0'}/${
-          donor?.tier ? DONOR_TOKEN_AMOUNT[donor.tier] : '0'
-        }`,
+        // `**Token:** ${donor?.boostedGuilds.length ?? '0'}/${
+        //   donor?.tier ? DONOR_TOKEN_AMOUNT[donor.tier] : '0'
+        // }`,
       ].join('\n'),
       inline: false,
-    },
-    {
-      name: 'BOOSTED GUILDS',
-      value:
-        // TODO: fetch guild name here
-        donor?.boostedGuilds.length
-          ? donor?.boostedGuilds.map((guild) => `${guild.guildId} - ${guild.token}`).join('\n')
-          : '-',
-      inline: false,
     }
+    // {
+    //   name: 'BOOSTED GUILDS',
+    //   value:
+    //     // TODO: fetch guild name here
+    //     donor?.boostedGuilds.length
+    //       ? donor?.boostedGuilds.map((guild) => `${guild.guildId} - ${guild.token}`).join('\n')
+    //       : '-',
+    //   inline: false,
+    // }
   );
 
   embed.setFooter({

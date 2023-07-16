@@ -130,7 +130,7 @@ const buildFreeDonorsEmbed = async ({freeDonors, page, total, client}: IBuildEmb
         user ? messageFormatter.user(user.id) : 'Unknown',
         user ? `**${user.tag}**` : null,
         `**Expires:** ${timestampHelper.relative({time: donor.expiresAt})}`,
-        `**Token:** ${donor.boostedGuilds.length}/${donor.token ?? '0'}`,
+        // `**Token:** ${donor.boostedGuilds.length}/${donor.token ?? '0'}`,
       ]
         .filter((value) => !!value)
         .join('\n'),
@@ -177,19 +177,19 @@ const buildFreeDonorEmbed = async ({freeDonor, userId, client}: IBuildDonorEmbed
             : 'Non-donor'
         }`,
         `**Expires:** ${freeDonor ? timestampHelper.relative({time: freeDonor.expiresAt}) : '-'}`,
-        `**Token:** ${freeDonor?.boostedGuilds.length ?? '0'}/${freeDonor?.token ?? '0'}`,
+        // `**Token:** ${freeDonor?.boostedGuilds.length ?? '0'}/${freeDonor?.token ?? '0'}`,
       ].join('\n'),
       inline: false,
-    },
-    {
-      name: 'BOOSTED GUILDS',
-      value:
-        // TODO: fetch guild name here
-        freeDonor?.boostedGuilds.length
-          ? freeDonor?.boostedGuilds.map((guild) => `${guild.guildId} - ${guild.token}`).join('\n')
-          : '-',
-      inline: false,
     }
+    // {
+    //   name: 'BOOSTED GUILDS',
+    //   value:
+    //     // TODO: fetch guild name here
+    //     freeDonor?.boostedGuilds.length
+    //       ? freeDonor?.boostedGuilds.map((guild) => `${guild.guildId} - ${guild.token}`).join('\n')
+    //       : '-',
+    //   inline: false,
+    // }
   );
 
   embed.setFooter({
