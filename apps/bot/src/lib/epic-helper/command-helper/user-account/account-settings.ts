@@ -6,7 +6,13 @@ import {
   User,
 } from 'discord.js';
 import {userService} from '../../../../services/database/user.service';
-import embedProvider from '../../embeds';
+import {_getUserSettingsEmbed} from './embeds/user-settings.embed';
+import {_getUserReminderChannelEmbed} from './embeds/reminder-channels.embed';
+import donorService from '../../../../services/database/donor.service';
+import freeDonor from '../../../../commands/prefix/owner/free-donor/free-donor';
+import freeDonorService from '../../../../services/database/free-donor.service';
+import {serverService} from '../../../../services/database/server.service';
+import {_getDonorInfoEmbed} from './embeds/donor-info.embed';
 
 interface IAccountSettings {
   author: User;
@@ -19,13 +25,28 @@ interface IRender {
 export const _accountSettings = async ({author}: IAccountSettings) => {
   const userProfile = await userService.getUserAccount(author.id);
   if (!userProfile) return null;
-  const userSettingsEmbed = embedProvider.userSettings({
+  const donor = await donorService.findDonor({
+    discordUserId: author.id,
+  });
+  const freeDonor = await freeDonorService.findFreeDonor({
+    discordUserId: author.id,
+  });
+  const boostedServers = await serverService.getUserBoostedServers({
+    userId: author.id,
+  });
+  const userSettingsEmbed = _getUserSettingsEmbed({
     author,
     userProfile,
   });
-  const userReminderChannelEmbed = embedProvider.reminderChannel({
+  const userReminderChannelEmbed = _getUserReminderChannelEmbed({
     userProfile,
     author,
+  });
+  const donorInfoEmbed = _getDonorInfoEmbed({
+    author,
+    donor,
+    freeDonor,
+    boostedServers,
   });
 
   function render({type}: IRender) {
@@ -39,6 +60,11 @@ export const _accountSettings = async ({author}: IAccountSettings) => {
         return {
           embeds: [userReminderChannelEmbed],
           components: [getActionRow({selected: PAGE_TYPE.reminderChannel})],
+        };
+      case PAGE_TYPE.donorInfo:
+        return {
+          embeds: [donorInfoEmbed],
+          components: [getActionRow({selected: PAGE_TYPE.donorInfo})],
         };
     }
   }
@@ -57,6 +83,7 @@ export const _accountSettings = async ({author}: IAccountSettings) => {
 const PAGE_TYPE = {
   settings: 'settings',
   reminderChannel: 'reminder_channel',
+  donorInfo: 'donor_info',
 } as const;
 
 interface IGetActionRow {
@@ -78,6 +105,11 @@ const getActionRow = ({selected}: IGetActionRow) => {
           label: 'Reminder Channel',
           value: 'reminder_channel',
           default: selected === PAGE_TYPE.reminderChannel,
+        },
+        {
+          label: 'Donor Info',
+          value: 'donor_info',
+          default: selected === PAGE_TYPE.donorInfo,
         }
       )
   );
