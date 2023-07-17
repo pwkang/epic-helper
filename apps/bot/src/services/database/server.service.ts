@@ -387,21 +387,48 @@ const addTokens = async ({serverId, userId, amount}: IAddTokens) => {
 interface IRemoveTokens {
   serverId: string;
   userId: string;
+  tokens?: number;
 }
 
-const removeTokens = async ({serverId, userId}: IRemoveTokens) => {
-  await dbServer.findOneAndUpdate(
-    {
-      serverId,
-    },
-    {
-      $pull: {
-        tokens: {
-          userId,
-        },
+const removeTokens = async ({serverId, userId, tokens}: IRemoveTokens) => {
+  const isUserExists = await dbServer.findOne({
+    serverId,
+    tokens: {
+      $elemMatch: {
+        userId,
       },
-    }
-  );
+    },
+  });
+  if (!isUserExists) return;
+  const tokenBoosted = isUserExists.tokens.find((token) => token.userId === userId)?.amount;
+  if (!tokenBoosted) return;
+  const toRemove = tokens === undefined || tokens > tokenBoosted;
+  if (toRemove) {
+    await dbServer.findOneAndUpdate(
+      {
+        serverId,
+      },
+      {
+        $pull: {
+          tokens: {
+            userId,
+          },
+        },
+      }
+    );
+  } else {
+    await dbServer.findOneAndUpdate(
+      {
+        serverId,
+        'tokens.userId': userId,
+      },
+      {
+        $inc: {
+          'tokens.$.amount': -tokens,
+        },
+      }
+    );
+  }
 };
 
 export const serverService = {
