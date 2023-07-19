@@ -12,6 +12,7 @@ import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown'
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {userService} from '../../../../services/database/user.service';
+import toggleUserChecker from '../../../epic-helper/donor-checker/toggle-checker/user';
 
 const EPIC_ITEM_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.epicItem;
 
@@ -67,10 +68,10 @@ interface IRpgUseEpicItemSuccess {
 }
 
 const rpgUseEpicItemSuccess = async ({author, type, channelId}: IRpgUseEpicItemSuccess) => {
-  const userAccount = await userService.getUserAccount(author.id);
-  if (!userAccount) return;
+  const toggleChecker = await toggleUserChecker({userId: author.id});
+  if (!toggleChecker) return;
 
-  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.epicItem) {
+  if (toggleChecker.reminder.epicItem) {
     const cooldown = await calcCdReduction({
       userId: author.id,
       commandType: RPG_COMMAND_TYPE.daily,

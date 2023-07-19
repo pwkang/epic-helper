@@ -5,6 +5,7 @@ import {calcExtraHuntCdWithPartner} from '../../../epic-helper/reminders/command
 import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {userService} from '../../../../services/database/user.service';
+import toggleUserChecker from '../../../epic-helper/donor-checker/toggle-checker/user';
 
 const RPG_COMMAND_CATEGORY = {
   daily: ['daily'],
@@ -72,6 +73,9 @@ const rpgCooldownSuccess = async ({author, embed}: IRpgCooldownSuccess) => {
   const userAccount = await userService.getUserAccount(author.id);
   if (!userAccount) return;
 
+  const toggleChecker = await toggleUserChecker({userId: author.id});
+  if (!toggleChecker) return;
+
   const fields = embed.fields.flatMap((field) => field.value.split('\n'));
 
   for (let row of fields) {
@@ -93,8 +97,7 @@ const rpgCooldownSuccess = async ({author, embed}: IRpgCooldownSuccess) => {
         });
         readyIn += extraDuration;
       }
-      if (!userAccount.toggle.reminder.all || !userAccount.toggle.reminder[commandType])
-        readyIn = 0;
+      if (!toggleChecker.reminder[commandType]) readyIn = 0;
 
       const readyAt = new Date(Date.now() + readyIn);
       const currentCooldown = currentCooldowns.find((cooldown) => cooldown.type === commandType);

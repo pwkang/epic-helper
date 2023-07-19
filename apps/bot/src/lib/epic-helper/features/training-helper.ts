@@ -1,5 +1,6 @@
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle, User} from 'discord.js';
 import {userService} from '../../../services/database/user.service';
+import toggleUserChecker from '../donor-checker/toggle-checker/user';
 
 type TAnswerType = string | number | boolean;
 
@@ -54,19 +55,18 @@ export default async function getTrainingAnswer({
   content,
   author,
 }: IGetTrainingAnswer): Promise<ActionRowBuilder<ButtonBuilder>[] | null> {
-  const userAccount = await userService.getUserAccount(author.id);
-  if (!userAccount) return null;
-  if (!userAccount.toggle.training.all) return null;
-
   let components: ActionRowBuilder<ButtonBuilder>[] = [];
+  const toggleChecker = await toggleUserChecker({userId: author.id});
+  if (!toggleChecker) return null;
+
   if (content.includes('is training in the river')) {
-    if (!userAccount.toggle.training.basic) return null;
+    if (!toggleChecker?.trainingBasic) return null;
 
     if (content.includes(':normiefish:')) components = generateRows(RIVER, 'normie');
     if (content.includes(':goldenfish:')) components = generateRows(RIVER, 'golden');
     if (content.includes(':EPICfish:')) components = generateRows(RIVER, 'epic');
   } else if (content.includes('is training in the field')) {
-    if (!userAccount.toggle.training.basic) return null;
+    if (!toggleChecker?.trainingBasic) return null;
 
     if (content.includes(':Apple:')) {
       if (content.includes('**first**')) components = generateRows(FIELD, 'A');
@@ -83,7 +83,7 @@ export default async function getTrainingAnswer({
       if (content.includes('**sixth**')) components = generateRows(FIELD, 'A');
     }
   } else if (content.includes('is training in the forest')) {
-    if (!userAccount.toggle.training.basic) return null;
+    if (!toggleChecker?.trainingBasic) return null;
 
     const questionLogs = content.split('\n')[1].match(/<:[A-Za-z]+log:\d+>/g);
     const targetLog = content.split('\n')[2].match(/<:[A-Za-z]+log:\d+>/g);
@@ -91,14 +91,14 @@ export default async function getTrainingAnswer({
       components = generateRows(FOREST, questionLogs.filter((log) => log === targetLog[0]).length);
     }
   } else if (content.includes('is training in the... casino?')) {
-    if (!userAccount.toggle.training.basic) return null;
+    if (!toggleChecker?.trainingBasic) return null;
 
     const matched = Object.entries(CASINO_ANSWER_LIST).some(
       ([key, value]) => content.split('\n')[1].includes(value) && content.includes(key)
     );
     components = generateRows(TRUE_FALSE, matched);
   } else if (content.includes('in the mine')) {
-    if (!userAccount.toggle.training.ruby) return null;
+    if (!toggleChecker?.trainingRuby) return null;
 
     const questionRuby = Number(content.match(/more than (\d+) </)?.[1] ?? 0);
     const userRuby = await userService.getUserRubyAmount(author.id);

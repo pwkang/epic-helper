@@ -21,16 +21,17 @@ export default <PrefixCommand>{
     });
     if (!userAccount) return;
 
-    const embed = commandHelper.toggle.getDonorToggleEmbed({
+    const userToggle = await commandHelper.toggle.user({
       author: message.author,
-      userAccount,
     });
+    if (!userToggle) return;
+
+    const messageOptions = userToggle.render();
+
     await djsMessageHelper.send({
       client,
       channelId: message.channel.id,
-      options: {
-        embeds: [embed],
-      },
+      options: messageOptions,
     });
   },
 };

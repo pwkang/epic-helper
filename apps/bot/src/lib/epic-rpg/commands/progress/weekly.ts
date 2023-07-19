@@ -6,6 +6,7 @@ import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown'
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {userService} from '../../../../services/database/user.service';
+import toggleUserChecker from '../../../epic-helper/donor-checker/toggle-checker/user';
 
 const WEEKLY_COOLDOWN = ms('1w') - ms('10m');
 
@@ -53,10 +54,10 @@ interface IRpgWeeklySuccess {
 }
 
 const rpgWeeklySuccess = async ({author, channelId}: IRpgWeeklySuccess) => {
-  const userAccount = await userService.getUserAccount(author.id);
-  if (!userAccount) return;
+  const toggleChecker = await toggleUserChecker({userId: author.id});
+  if (!toggleChecker) return;
 
-  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.weekly) {
+  if (toggleChecker.reminder.weekly) {
     const cooldown = await calcCdReduction({
       userId: author.id,
       commandType: RPG_COMMAND_TYPE.weekly,

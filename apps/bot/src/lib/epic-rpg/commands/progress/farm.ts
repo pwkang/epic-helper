@@ -12,6 +12,7 @@ import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-cha
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {userStatsService} from '../../../../services/database/user-stats.service';
 import {userService} from '../../../../services/database/user.service';
+import toggleUserChecker from '../../../epic-helper/donor-checker/toggle-checker/user';
 
 const FARM_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.farm;
 
@@ -70,11 +71,11 @@ interface IRpgFarmSuccess {
 }
 
 const rpgFarmSuccess = async ({content, author, channelId}: IRpgFarmSuccess) => {
-  const userAccount = await userService.getUserAccount(author.id);
-  if (!userAccount) return;
+  const toggleChecker = await toggleUserChecker({userId: author.id});
+  if (!toggleChecker) return;
   const seedType = whatIsTheSeed(content);
 
-  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.farm) {
+  if (toggleChecker.reminder.farm) {
     const cooldown = await calcCdReduction({
       userId: author.id,
       commandType: RPG_COMMAND_TYPE.farm,

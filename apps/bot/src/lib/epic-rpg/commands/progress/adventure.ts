@@ -14,6 +14,7 @@ import {userStatsService} from '../../../../services/database/user-stats.service
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {userService} from '../../../../services/database/user.service';
 import {djsMessageHelper} from '../../../discordjs/message';
+import toggleUserChecker from '../../../epic-helper/donor-checker/toggle-checker/user';
 
 interface IRpgAdventure {
   client: Client;
@@ -67,11 +68,11 @@ interface IRpgAdventureSuccess {
 const ADVENTURE_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.adventure;
 
 const rpgAdventureSuccess = async ({author, content, channelId}: IRpgAdventureSuccess) => {
-  const userAccount = await userService.getUserAccount(author.id);
-  if (!userAccount) return;
+  const toggleChecker = await toggleUserChecker({userId: author.id});
+  if (!toggleChecker) return;
   const hardMode = content.includes('(but stronger)');
 
-  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.adventure) {
+  if (toggleChecker.reminder.adventure) {
     const cooldown = await calcCdReduction({
       userId: author.id,
       commandType: RPG_COMMAND_TYPE.adventure,
@@ -103,8 +104,8 @@ interface IHealReminder {
 }
 
 async function healReminder({client, channelId, author, content}: IHealReminder) {
-  const userAccount = await userService.getUserAccount(author.id);
-  if (!userAccount?.toggle.heal) return;
+  const toggleChecker = await toggleUserChecker({userId: author.id});
+  if (!toggleChecker?.heal) return;
 
   const healReminder = await userService.getUserHealReminder({
     userId: author.id,

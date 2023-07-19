@@ -5,7 +5,6 @@ import {
   USER_ACC_OFF_ACTIONS,
   USER_NOT_REGISTERED_ACTIONS,
 } from '@epic-helper/constants';
-import {userService} from '../../../../../services/database/user.service';
 
 export default <PrefixCommand>{
   name: 'toggle',
@@ -16,19 +15,16 @@ export default <PrefixCommand>{
     userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
   },
   execute: async (client, message) => {
-    const userAccount = await userService.getUserAccount(message.author.id);
-    if (!userAccount) return;
-
-    const embed = commandHelper.toggle.getDonorToggleEmbed({
+    const userToggle = await commandHelper.toggle.user({
       author: message.author,
-      userAccount,
     });
+    if (!userToggle) return;
+    const messageOptions = userToggle.render();
+
     await djsMessageHelper.send({
       client,
       channelId: message.channel.id,
-      options: {
-        embeds: [embed],
-      },
+      options: messageOptions,
     });
   },
 };

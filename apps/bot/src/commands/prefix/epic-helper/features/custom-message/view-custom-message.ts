@@ -7,6 +7,7 @@ import {userService} from '../../../../../services/database/user.service';
 import {djsMessageHelper} from '../../../../../lib/discordjs/message';
 import commandHelper from '../../../../../lib/epic-helper/command-helper';
 import {CUSTOM_MESSAGE_PAGE_TYPE} from '../../../../../lib/epic-helper/command-helper/custom-message/custom-message.constant';
+import toggleUserChecker from '../../../../../lib/epic-helper/donor-checker/toggle-checker/user';
 
 export default <PrefixCommand>{
   name: 'customMessage',
@@ -18,7 +19,9 @@ export default <PrefixCommand>{
   },
   execute: async (client, message) => {
     const userAccount = await userService.getUserAccount(message.author.id);
-    if (!userAccount) return;
+    const toggleChecker = await toggleUserChecker({userId: message.author.id});
+
+    if (!userAccount || !toggleChecker) return;
     const event = await djsMessageHelper.interactiveSend({
       channelId: message.channel.id,
       client,
@@ -26,6 +29,7 @@ export default <PrefixCommand>{
         author: message.author,
         client,
         userAccount,
+        toggleChecker,
       }),
     });
     if (!event) return;
@@ -39,6 +43,7 @@ export default <PrefixCommand>{
           pageType: customId as ValuesOf<typeof CUSTOM_MESSAGE_PAGE_TYPE>,
           userAccount,
           client,
+          toggleChecker,
         });
       });
     }

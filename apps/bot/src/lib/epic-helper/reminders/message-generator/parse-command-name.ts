@@ -6,6 +6,7 @@ import {
   RPG_WORKING_TYPE,
 } from '@epic-helper/constants';
 import {IUser, IUserReminder, IUserReminderPropsCondition} from '@epic-helper/models';
+import {IToggleUserCheckerReturnType} from '../../donor-checker/toggle-checker/user';
 
 interface IGetDailyCommandStr {}
 
@@ -22,11 +23,11 @@ const getWeeklyCommandStr = ({}: IGetWeeklyCommandStr) => {
 interface IGetHuntCommandStr {
   hardMode?: boolean;
   together?: boolean;
-  userAccount: IUser;
+  toggleChecker: IToggleUserCheckerReturnType;
 }
 
-const getHuntCommandStr = ({hardMode, together, userAccount}: IGetHuntCommandStr) => {
-  const huntSwitch = userAccount.toggle.huntSwitch;
+const getHuntCommandStr = ({hardMode, together, toggleChecker}: IGetHuntCommandStr) => {
+  const huntSwitch = toggleChecker?.huntSwitch;
 
   return `RPG HUNT${hardMode ? ' HARDMODE' : ''}${together && !huntSwitch ? ' TOGETHER' : ''}`;
 };
@@ -124,10 +125,10 @@ const getPetCommandStr = ({}: IGetPetCommandStr) => {
 };
 
 type IGetPetTrainCommandStr = IUserReminder & {
-  userAccount: IUser;
+  toggleChecker: IToggleUserCheckerReturnType;
 };
 
-export const _parseCommandString = ({userAccount, props, type}: IGetPetTrainCommandStr) => {
+export const _parseCommandString = ({props, type, toggleChecker}: IGetPetTrainCommandStr) => {
   switch (type) {
     case RPG_COMMAND_TYPE.daily:
       return getDailyCommandStr({});
@@ -143,7 +144,7 @@ export const _parseCommandString = ({userAccount, props, type}: IGetPetTrainComm
       return getHuntCommandStr({
         hardMode: props?.hardMode,
         together: props?.together,
-        userAccount,
+        toggleChecker,
       });
     case RPG_COMMAND_TYPE.adventure:
       return getAdventureCommandStr({

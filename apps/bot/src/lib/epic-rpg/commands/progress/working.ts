@@ -13,6 +13,7 @@ import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-cha
 import {userService} from '../../../../services/database/user.service';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {userStatsService} from '../../../../services/database/user-stats.service';
+import toggleUserChecker from '../../../epic-helper/donor-checker/toggle-checker/user';
 
 const WORKING_ITEMS = [
   'normie fish',
@@ -112,10 +113,10 @@ interface IRpgWorkingSuccess {
 }
 
 const rpgWorkingSuccess = async ({author, workingType, channelId}: IRpgWorkingSuccess) => {
-  const userAccount = await userService.getUserAccount(author.id);
-  if (!userAccount) return;
+  const toggleChecker = await toggleUserChecker({userId: author.id});
+  if (!toggleChecker) return;
 
-  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.working) {
+  if (toggleChecker.reminder.working) {
     const cooldown = await calcCdReduction({
       userId: author.id,
       commandType: RPG_COMMAND_TYPE.working,

@@ -14,6 +14,7 @@ import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-cha
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {userStatsService} from '../../../../services/database/user-stats.service';
 import {userService} from '../../../../services/database/user.service';
+import toggleUserChecker from '../../../epic-helper/donor-checker/toggle-checker/user';
 
 interface IRpgHunt {
   client: Client;
@@ -89,12 +90,12 @@ interface IRpgHuntSuccess {
 const HUNT_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.hunt;
 
 const rpgHuntSuccess = async ({author, content, channelId}: IRpgHuntSuccess) => {
-  const userAccount = await userService.getUserAccount(author.id);
-  if (!userAccount) return;
+  const toggleChecker = await toggleUserChecker({userId: author.id});
+  if (!toggleChecker) return;
   const hardMode = content.includes('(but stronger)');
   const together = content.includes('hunting together');
 
-  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.hunt) {
+  if (toggleChecker.reminder.hunt) {
     const cooldown = await calcCdReduction({
       userId: author.id,
       commandType: RPG_COMMAND_TYPE.hunt,
@@ -127,8 +128,8 @@ interface IHealReminder {
 }
 
 const healReminder = async ({client, channelId, author, content}: IHealReminder) => {
-  const userAccount = await userService.getUserAccount(author.id);
-  if (!userAccount?.toggle.heal) return;
+  const toggleChecker = await toggleUserChecker({userId: author.id});
+  if (!toggleChecker?.heal) return;
 
   const together = content.includes('hunting together');
   const healReminder = await userService.getUserHealReminder({
