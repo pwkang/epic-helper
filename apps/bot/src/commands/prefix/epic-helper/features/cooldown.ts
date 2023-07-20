@@ -7,6 +7,7 @@ import {
 } from '@epic-helper/constants';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {userService} from '../../../../services/database/user.service';
+import toggleUserChecker from '../../../../lib/epic-helper/donor-checker/toggle-checker/user';
 
 export default <PrefixCommand>{
   name: 'ehCooldown',
@@ -18,11 +19,14 @@ export default <PrefixCommand>{
   },
   execute: async (client, message) => {
     const userAccount = await userService.getUserAccount(message.author.id);
-    if (!userAccount) return;
+    const toggleChecker = await toggleUserChecker({userId: message.author.id});
+    if (!userAccount || !toggleChecker) return;
+
     const embed = embedProvider.userCooldown({
       author: message.author,
       userReminder: await userReminderServices.getUserAllCooldowns(message.author.id),
       userAccount,
+      toggleChecker,
     });
     await djsMessageHelper.send({
       channelId: message.channel.id,

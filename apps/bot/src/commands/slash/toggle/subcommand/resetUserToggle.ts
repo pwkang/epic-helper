@@ -9,15 +9,15 @@ export const resetUserToggleSlash = async ({client, interaction}: IToggleSubcomm
   });
   if (!userAccount) return;
 
-  const embed = commandHelper.toggle.getDonorToggleEmbed({
+  const userToggle = await commandHelper.toggle.user({
     author: interaction.user,
-    userAccount,
   });
+  if (!userToggle) return;
+
+  const messageOptions = userToggle.render();
   await djsInteractionHelper.replyInteraction({
     client,
     interaction,
-    options: {
-      embeds: [embed],
-    },
+    options: messageOptions,
   });
 };

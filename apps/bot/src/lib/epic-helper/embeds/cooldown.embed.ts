@@ -4,6 +4,7 @@ import {IUser, IUserReminder} from '@epic-helper/models';
 import {EmbedBuilder, User} from 'discord.js';
 import {_parseCommandString} from '../reminders/message-generator/parse-command-name';
 import {capitalizeFirstLetters} from '@epic-helper/utils';
+import {IToggleUserCheckerReturnType} from '../donor-checker/toggle-checker/user';
 
 interface ICooldownItem {
   type: ValuesOf<typeof RPG_COMMAND_TYPE>;
@@ -99,9 +100,14 @@ export interface IGetUserCooldownEmbedProps {
   author: User;
   userReminder: IUserReminder[];
   userAccount: IUser;
+  toggleChecker: IToggleUserCheckerReturnType;
 }
 
-const getUserCooldownEmbed = ({userReminder, author, userAccount}: IGetUserCooldownEmbedProps) => {
+const getUserCooldownEmbed = ({
+  userReminder,
+  author,
+  toggleChecker,
+}: IGetUserCooldownEmbedProps) => {
   const embed = new EmbedBuilder()
     .setAuthor({
       name: `${author.username}'s cooldowns`,
@@ -116,7 +122,7 @@ const getUserCooldownEmbed = ({userReminder, author, userAccount}: IGetUserCoold
       const cooldown = userReminder.find((c) => c.type === item.type);
       const commandName = cooldown
         ? _parseCommandString({
-            userAccount,
+            toggleChecker,
             ...cooldown,
           }).replace('RPG ', '')
         : item.name;

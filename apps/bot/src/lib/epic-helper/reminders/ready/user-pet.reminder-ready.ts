@@ -7,17 +7,20 @@ import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import {userPetServices} from '../../../../services/database/user-pet.service';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {generateUserReminderMessage} from '../message-generator/custom-message-generator';
+import toggleUserChecker from '../../donor-checker/toggle-checker/user';
 
 interface IUserPetReminderTimesUp {
   client: Client;
   userAccount: IUser;
   userReminder: IUserReminder;
+  toggleChecker: Awaited<ReturnType<typeof toggleUserChecker>>;
 }
 
 export const userPetReminderTimesUp = async ({
   client,
   userAccount,
   userReminder,
+  toggleChecker,
 }: IUserPetReminderTimesUp) => {
   const channelId = await getReminderChannel({
     commandType: RPG_COMMAND_TYPE.pet,
@@ -34,13 +37,13 @@ export const userPetReminderTimesUp = async ({
     petIds,
     userId,
   });
-  if (!userAccount.toggle.reminder.pet) return;
+  if (!toggleChecker?.reminder.pet) return;
 
   const nextReminder = await userReminderServices.getNextReadyCommand({
     userId,
   });
 
-  const reminderMessage = await generateUserReminderMessage({
+  const reminderMessage = generateUserReminderMessage({
     client,
     userId,
     userAccount,
@@ -48,6 +51,7 @@ export const userPetReminderTimesUp = async ({
     type: RPG_COMMAND_TYPE.pet,
     userReminder,
     readyPetsId: petIds,
+    toggleChecker,
   });
 
   await djsMessageHelper.send({

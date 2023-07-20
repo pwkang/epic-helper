@@ -9,10 +9,8 @@ const validatePatreonSignature: Handler = (req, res, next) => {
   next();
 };
 
-export default <Handler[]>[
-  validatePatreonSignature,
-  (req, res, next) => {
-    console.log(req.body);
-    res.send('success');
-  },
-];
+const respondOK: Handler = (req, res) => {
+  res.send('OK');
+};
+
+export default <Handler[]>[validatePatreonSignature, respondOK];

@@ -1,5 +1,5 @@
 import {Schema} from 'mongoose';
-import {IEnchantChannel, IServer} from './server.type';
+import {IEnchantChannel, IServer, IToken, ITTVerificationRules} from './server.type';
 
 const enchantChannelSchema = new Schema<IEnchantChannel>({
   channelId: {type: String, required: true},
@@ -29,7 +29,7 @@ export const serverSchema = new Schema<IServer>({
     },
     ttVerification: {
       rules: [
-        new Schema({
+        new Schema<ITTVerificationRules>({
           roleId: {type: String, required: true},
           minTT: {type: Number, required: true},
           maxTT: Number,
@@ -39,4 +39,10 @@ export const serverSchema = new Schema<IServer>({
       channelId: String,
     },
   },
+  tokens: [
+    new Schema<IToken>({
+      amount: {type: Number, required: true},
+      userId: {type: String, required: true},
+    }),
+  ],
 });

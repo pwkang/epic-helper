@@ -1,4 +1,4 @@
-import {Client, EmbedBuilder, User} from 'discord.js';
+import {EmbedBuilder, User} from 'discord.js';
 import {BOT_COLOR} from '@epic-helper/constants';
 import {IUser} from '@epic-helper/models';
 
@@ -19,7 +19,7 @@ const DONOR_DISPLAY = {
   donor35: '35%',
 } as const;
 
-const getUserSettingsEmbed = ({userProfile, author}: IGetUserSettingsEmbed) => {
+export const _getUserSettingsEmbed = ({userProfile, author}: IGetUserSettingsEmbed) => {
   const embed = new EmbedBuilder()
     .setAuthor({
       name: `${author.username}'s settings`,
@@ -85,5 +85,3 @@ const getUserSettingsEmbed = ({userProfile, author}: IGetUserSettingsEmbed) => {
 
   return embed;
 };
-
-export default getUserSettingsEmbed;

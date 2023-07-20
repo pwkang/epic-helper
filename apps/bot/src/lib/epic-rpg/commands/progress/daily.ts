@@ -9,6 +9,7 @@ import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-cha
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {userService} from '../../../../services/database/user.service';
+import toggleUserChecker from '../../../epic-helper/donor-checker/toggle-checker/user';
 
 const DAILY_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.daily;
 
@@ -60,10 +61,10 @@ interface IRpgDailySuccess {
 }
 
 const rpgDailySuccess = async ({author, channelId}: IRpgDailySuccess) => {
-  const userAccount = await userService.getUserAccount(author.id);
-  if (!userAccount) return;
+  const toggleChecker = await toggleUserChecker({userId: author.id});
+  if (!toggleChecker) return;
 
-  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.daily) {
+  if (toggleChecker.reminder.daily) {
     const cooldown = await calcCdReduction({
       userId: author.id,
       commandType: RPG_COMMAND_TYPE.daily,

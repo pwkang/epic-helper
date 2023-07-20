@@ -7,7 +7,7 @@ interface IGetReminderMessageTemplate {
   type: ValuesOf<typeof RPG_COMMAND_TYPE>;
 }
 
-export const getReminderMessageTemplate = async ({
+export const getReminderMessageTemplate = ({
   userAccount,
   userId,
   type,

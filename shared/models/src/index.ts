@@ -21,3 +21,9 @@ export * from './user-reminder/user-reminder.type';
 
 export * from './user-stats/user-stats.schema';
 export * from './user-stats/user-stats.type';
+
+export * from './donor/donor.schema';
+export * from './donor/donor.type';
+
+export * from './free-donor/free-donor.schema';
+export * from './free-donor/free-donor.type';

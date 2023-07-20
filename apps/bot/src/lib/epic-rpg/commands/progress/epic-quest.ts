@@ -11,6 +11,7 @@ import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-cha
 import {userStatsService} from '../../../../services/database/user-stats.service';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {userService} from '../../../../services/database/user.service';
+import toggleUserChecker from '../../../epic-helper/donor-checker/toggle-checker/user';
 
 interface IRpgEpicQuest {
   client: Client;
@@ -63,10 +64,10 @@ interface IRpgEpicQuestSuccess {
 const QUEST_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.epicQuest;
 
 const rpgEpicQuestSuccess = async ({author, channelId}: IRpgEpicQuestSuccess) => {
-  const userAccount = await userService.getUserAccount(author.id);
-  if (!userAccount) return;
+  const toggleChecker = await toggleUserChecker({userId: author.id});
+  if (!toggleChecker) return;
 
-  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.quest) {
+  if (toggleChecker.reminder.quest) {
     const cooldown = await calcCdReduction({
       userId: author.id,
       commandType: RPG_COMMAND_TYPE.quest,

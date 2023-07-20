@@ -1,11 +1,13 @@
 import type {IToggleEmbedsInfo} from './toggle.embed';
 import {renderEmbed} from './toggle.embed';
 import type {UpdateQuery} from 'mongoose';
-import {Guild, User} from 'discord.js';
+import {BaseMessageOptions, User} from 'discord.js';
 import {toggleDisplayList} from './toggle.list';
 import {IGuild, IUser, IUserToggle} from '@epic-helper/models';
 import {PREFIX} from '@epic-helper/constants';
-import {logger} from '@epic-helper/utils';
+import {userService} from '../../../../services/database/user.service';
+import donorChecker from '../../donor-checker';
+import commandHelper from '../index';
 
 export interface IGetUpdateQuery {
   on?: string;
@@ -113,12 +115,11 @@ const findPath = ({toggleInfo, groupIndex, parentIndex, childIndex}: IFindPath):
 };
 
 interface IGetDonorToggleEmbed {
-  userAccount: IUser;
+  userToggle: IUserToggle;
   author: User;
 }
 
-const getDonorToggleEmbed = ({userAccount, author}: IGetDonorToggleEmbed) => {
-  const userToggle = userAccount.toggle;
+const getDonorToggleEmbed = ({userToggle, author}: IGetDonorToggleEmbed) => {
   return renderEmbed({
     embedsInfo: toggleDisplayList.donor(userToggle),
     displayItem: 'common',
@@ -162,11 +163,66 @@ const getGuildToggleEmbed = ({guildAccount}: IGetGuildToggleEmbed) => {
   });
 };
 
-const _toggleHelper = {
-  getDonorToggleEmbed,
-  getNonDonorToggleEmbed,
-  getUpdateQuery,
-  getGuildToggleEmbed,
+interface IGetUserToggle {
+  author: User;
+}
+
+interface IUpdateToggle {
+  on?: string;
+  off?: string;
+}
+
+const getUserToggle = async ({author}: IGetUserToggle) => {
+  let userToggle = await userService.getUserToggle(author.id);
+  if (!userToggle) return null;
+  const isDonor = await donorChecker.isDonor({
+    userId: author.id,
+  });
+
+  function render(userToggle: IUserToggle): BaseMessageOptions {
+    const embed = getEmbed(userToggle);
+    return {
+      embeds: [embed],
+    };
+  }
+
+  function getEmbed(userToggle: IUserToggle) {
+    return isDonor
+      ? getDonorToggleEmbed({
+          author,
+          userToggle,
+        })
+      : getNonDonorToggleEmbed({
+          author,
+          userToggle,
+        });
+  }
+
+  async function update({on, off}: IUpdateToggle) {
+    const query = commandHelper.toggle.getUpdateQuery<IUser>({
+      on,
+      off,
+      toggleInfo: isDonor
+        ? toggleDisplayList.donor(userToggle!)
+        : toggleDisplayList.nonDonor(userToggle!),
+    });
+    const userAccount = await userService.updateUserToggle({
+      query,
+      userId: author.id,
+    });
+    if (!userAccount) return null;
+    userToggle = userAccount.toggle;
+    return render(userToggle);
+  }
+
+  return {
+    render: () => render(userToggle!),
+    update,
+  };
 };
 
-export default _toggleHelper;
+export const _toggleHelper = {
+  getUpdateQuery,
+  getGuildToggleEmbed,
+  user: getUserToggle,
+};

@@ -11,6 +11,7 @@ import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-cha
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {userStatsService} from '../../../../services/database/user-stats.service';
 import {userService} from '../../../../services/database/user.service';
+import toggleUserChecker from '../../../epic-helper/donor-checker/toggle-checker/user';
 
 interface IRpgQuest {
   client: Client;
@@ -91,10 +92,10 @@ const QUEST_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.quest.accepted;
 const DECLINED_QUEST_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.quest.declined;
 
 const rpgQuestSuccess = async ({author, questAccepted, channelId}: IRpgQuestSuccess) => {
-  const userAccount = await userService.getUserAccount(author.id);
-  if (!userAccount) return;
+  const toggleChecker = await toggleUserChecker({userId: author.id});
+  if (!toggleChecker) return;
 
-  if (userAccount.toggle.reminder.all && userAccount.toggle.reminder.quest) {
+  if (toggleChecker.reminder.quest) {
     const cooldown = await calcCdReduction({
       userId: author.id,
       commandType: RPG_COMMAND_TYPE.quest,
@@ -125,8 +126,9 @@ interface IShowArenaCooldown {
 }
 
 export const showArenaCooldown = async ({client, author, channelId}: IShowArenaCooldown) => {
-  const userAccount = await userService.getUserAccount(author.id);
-  if (!userAccount?.toggle.quest.all || !userAccount?.toggle.quest.arena) return;
+  const toggleChecker = await toggleUserChecker({userId: author.id});
+  if (!toggleChecker) return;
+  if (toggleChecker.questArena) return;
 };
 
 interface IShowMinibossCooldown {
@@ -136,8 +138,9 @@ interface IShowMinibossCooldown {
 }
 
 export const showMinibossCooldown = async ({client, author, channelId}: IShowMinibossCooldown) => {
-  const userAccount = await userService.getUserAccount(author.id);
-  if (!userAccount?.toggle.quest.all || !userAccount?.toggle.quest.miniboss) return;
+  const toggleChecker = await toggleUserChecker({userId: author.id});
+  if (!toggleChecker) return;
+  if (toggleChecker.questMiniboss) return;
 };
 
 interface IIsQuestAccepted {

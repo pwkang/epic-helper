@@ -288,6 +288,149 @@ const removeTTVerificationRule = async ({serverId, roleId}: IRemoveTTVerificatio
   return server ?? null;
 };
 
+interface IGetUserBoostedServers {
+  userId: string;
+}
+
+interface IGetUserBoostedServersResponse {
+  serverId: string;
+  token: number;
+  name: string;
+}
+
+const getUserBoostedServers = async ({userId}: IGetUserBoostedServers) => {
+  const servers = await dbServer.aggregate<IGetUserBoostedServersResponse>([
+    {
+      $match: {
+        tokens: {
+          $elemMatch: {
+            userId,
+          },
+        },
+      },
+    },
+    {
+      $project: {
+        serverId: 1,
+        name: 1,
+        token: {
+          $arrayElemAt: [
+            {
+              $filter: {
+                input: '$tokens',
+                as: 'token',
+                cond: {
+                  $eq: ['$$token.userId', userId],
+                },
+              },
+            },
+            0,
+          ],
+        },
+      },
+    },
+    {
+      $project: {
+        serverId: 1,
+        name: 1,
+        token: '$token.amount',
+      },
+    },
+  ]);
+  return servers ?? [];
+};
+
+interface IAddTokens {
+  serverId: string;
+  userId: string;
+  amount: number;
+}
+
+const addTokens = async ({serverId, userId, amount}: IAddTokens) => {
+  const isUserExists = await dbServer.findOne({
+    serverId,
+    tokens: {
+      $elemMatch: {
+        userId,
+      },
+    },
+  });
+  if (isUserExists) {
+    await dbServer.findOneAndUpdate(
+      {
+        serverId,
+        'tokens.userId': userId,
+      },
+      {
+        $inc: {
+          'tokens.$.amount': amount,
+        },
+      }
+    );
+  } else {
+    await dbServer.findOneAndUpdate(
+      {
+        serverId,
+      },
+      {
+        $push: {
+          tokens: {
+            userId,
+            amount: amount,
+          },
+        },
+      }
+    );
+  }
+};
+
+interface IRemoveTokens {
+  serverId: string;
+  userId: string;
+  tokens?: number;
+}
+
+const removeTokens = async ({serverId, userId, tokens}: IRemoveTokens) => {
+  const isUserExists = await dbServer.findOne({
+    serverId,
+    tokens: {
+      $elemMatch: {
+        userId,
+      },
+    },
+  });
+  if (!isUserExists) return;
+  const tokenBoosted = isUserExists.tokens.find((token) => token.userId === userId)?.amount;
+  if (!tokenBoosted) return;
+  const toRemove = tokens === undefined || tokens >= tokenBoosted;
+  if (toRemove) {
+    await dbServer.findOneAndUpdate(
+      {
+        serverId,
+      },
+      {
+        $pull: {
+          tokens: {
+            userId,
+          },
+        },
+      }
+    );
+  } else {
+    await dbServer.findOneAndUpdate(
+      {
+        serverId,
+        'tokens.userId': userId,
+      },
+      {
+        $inc: {
+          'tokens.$.amount': -tokens,
+        },
+      }
+    );
+  }
+};
+
 export const serverService = {
   registerServer,
   getServer,
@@ -304,4 +447,7 @@ export const serverService = {
   isTTVerificationRuleExists,
   setTTVerificationRule,
   removeTTVerificationRule,
+  getUserBoostedServers,
+  addTokens,
+  removeTokens,
 };

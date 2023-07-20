@@ -1,4 +1,4 @@
-import {IUser, IUserReminder, IUserReminderPropsCondition} from '@epic-helper/models';
+import {IUser, IUserReminder} from '@epic-helper/models';
 import {Client} from 'discord.js';
 import {_parseUser} from './parse-user';
 import {_parseCommandString} from './parse-command-name';
@@ -7,9 +7,9 @@ import {getReminderMessageTemplate} from './get-reminder-message-template';
 import {_parseEmoji} from './parse-emoji';
 import {interpolateMessage} from '../../../../utils/message-interpolation';
 import {BOT_CUSTOM_MESSAGE_VARIABLES} from '@epic-helper/constants';
-import {convertNumToPetId, logger} from '@epic-helper/utils';
+import {convertNumToPetId} from '@epic-helper/utils';
 import timestampHelper from '../../../discordjs/timestamp';
-import ms from 'ms';
+import {IToggleUserCheckerReturnType} from '../../donor-checker/toggle-checker/user';
 
 interface IGenerateCustomMessage {
   client: Client;
@@ -19,9 +19,10 @@ interface IGenerateCustomMessage {
   type: IUserReminder['type'];
   nextReminder?: IUserReminder;
   readyPetsId?: number[];
+  toggleChecker: IToggleUserCheckerReturnType;
 }
 
-export const generateUserReminderMessage = async ({
+export const generateUserReminderMessage = ({
   userId,
   userAccount,
   client,
@@ -29,19 +30,20 @@ export const generateUserReminderMessage = async ({
   type,
   nextReminder,
   readyPetsId,
+  toggleChecker,
 }: IGenerateCustomMessage) => {
   /**
    * Command String
    */
   const commandString = _parseCommandString({
-    userAccount,
+    toggleChecker,
     ...userReminder,
   });
 
   /**
    * Countdown string to next reminder
    */
-  const hasCountdown = userAccount.toggle.countdown.all;
+  const hasCountdown = toggleChecker?.countdown;
   const nextReminderTime = nextReminder?.readyAt
     ? timestampHelper.relative({
         time: nextReminder?.readyAt?.getTime(),
@@ -49,7 +51,7 @@ export const generateUserReminderMessage = async ({
     : '';
   const nextReminderType = nextReminder
     ? _parseCommandString({
-        userAccount,
+        toggleChecker,
         ...nextReminder,
       })
     : '';
@@ -64,19 +66,19 @@ export const generateUserReminderMessage = async ({
   /**
    * Emoji
    */
-  const hasEmoji = userAccount.toggle.emoji;
+  const hasEmoji = toggleChecker?.emoji;
   const emojiString = hasEmoji ? _parseEmoji({type}) : '';
 
   /**
    * Slash Command
    */
-  const hasSlash = userAccount.toggle.slash;
+  const hasSlash = toggleChecker?.slash;
   const slashCommandString = hasSlash ? _parseSlash(userReminder) : '';
 
   /**
    * User string
    */
-  const toMentions = userAccount.toggle.mentions.all && userAccount.toggle.mentions[type];
+  const toMentions = toggleChecker?.mentions[type];
   const userString = _parseUser({
     client,
     type: toMentions ? 'mentions' : 'username',
@@ -93,7 +95,7 @@ export const generateUserReminderMessage = async ({
     pet_id: readyPetIdsString,
   };
 
-  const messageTemplate = await getReminderMessageTemplate({
+  const messageTemplate = getReminderMessageTemplate({
     userAccount,
     userId,
     type,

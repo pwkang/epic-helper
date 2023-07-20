@@ -14,19 +14,24 @@ import {
 } from './custom-message.constant';
 import {generateUserReminderMessage} from '../../reminders/message-generator/custom-message-generator';
 import ms from 'ms';
+import toggleUserChecker, {
+  IToggleUserCheckerReturnType,
+} from '../../donor-checker/toggle-checker/user';
 
 export interface IGetCustomMessageEmbed {
   client: Client;
   author: User;
   userAccount: IUser;
   pageType?: ValuesOf<typeof CUSTOM_MESSAGE_PAGE_TYPE>;
+  toggleChecker: IToggleUserCheckerReturnType;
 }
 
-export const _getCustomMessageEmbed = async ({
+export const _getCustomMessageEmbed = ({
   client,
   userAccount,
   author,
   pageType = CUSTOM_MESSAGE_PAGE_TYPE.general,
+  toggleChecker,
 }: IGetCustomMessageEmbed) => {
   const embed = new EmbedBuilder()
     .setAuthor({
@@ -44,11 +49,12 @@ export const _getCustomMessageEmbed = async ({
         const {label, type} = row;
         const embedValue: string[] = [];
 
-        const currentMessage = await generateUserReminderMessage({
+        const currentMessage = generateUserReminderMessage({
           userId: author.id,
           client,
           type,
           userAccount,
+          toggleChecker,
           readyPetsId: [1, 27, 55],
           nextReminder: {
             type: 'hunt',

@@ -1,0 +1,90 @@
+import {mongoClient} from '@epic-helper/services';
+import {donorSchema, IDonor} from '@epic-helper/models';
+import {DONOR_TIER} from '@epic-helper/constants';
+import {FilterQuery, QueryOptions} from 'mongoose';
+
+const dbDonor = mongoClient.model<IDonor>('donors', donorSchema);
+
+interface IRegisterDonor {
+  patreon: {
+    email?: string;
+    fullName?: string;
+    userId: string;
+    memberId: string;
+  };
+  discord: {
+    userId?: string;
+    username?: string;
+  };
+  tier?: ValuesOf<typeof DONOR_TIER>;
+  expiresAt?: Date;
+}
+
+const registerDonors = async (donors: IRegisterDonor[]): Promise<void> => {
+  const bulk = dbDonor.collection.initializeUnorderedBulkOp();
+  for (const donor of donors) {
+    bulk
+      .find({
+        'patreon.userId': donor.patreon.userId,
+      })
+      .upsert()
+      .updateOne({
+        $set: {
+          'discord.userId': donor.discord.userId,
+          'discord.username': donor.discord.username,
+          'patreon.email': donor.patreon.email,
+          'patreon.fullName': donor.patreon.fullName?.trim().replace(/\s+/g, ' '),
+          'patreon.userId': donor.patreon.userId,
+          'patreon.memberId': donor.patreon.memberId,
+          tier: donor.tier,
+          expiresAt: donor.expiresAt,
+        },
+      });
+  }
+  await bulk.execute();
+};
+
+interface IGetDonors {
+  tier?: ValuesOf<typeof DONOR_TIER>;
+  page?: number;
+  limit?: number;
+}
+
+const getDonors = async ({tier, page, limit}: IGetDonors) => {
+  const query: FilterQuery<IDonor> = {};
+  if (tier) query.tier = tier;
+  const options: QueryOptions<IDonor> = {
+    sort: {
+      expiresAt: -1,
+    },
+  };
+  if (page !== undefined && limit) {
+    options.skip = page * limit;
+    options.limit = limit;
+  }
+  const data = await dbDonor.find(query, null, options);
+  const total = await dbDonor.countDocuments(query);
+  return {
+    data,
+    total,
+  };
+};
+
+interface IFindDonor {
+  discordUserId?: string;
+}
+
+const findDonor = async ({discordUserId}: IFindDonor) => {
+  const query: FilterQuery<IDonor> = {};
+  if (discordUserId) query['discord.userId'] = discordUserId;
+  const donor = await dbDonor.findOne(query);
+  return donor ?? null;
+};
+
+const donorService = {
+  registerDonors,
+  getDonors,
+  findDonor,
+};
+
+export default donorService;
