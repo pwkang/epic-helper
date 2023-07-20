@@ -16,6 +16,7 @@ import {djsUserHelper} from '../../../discordjs/user';
 import timestampHelper from '../../../discordjs/timestamp';
 import {generateNavigationRow, NAVIGATION_ROW_BUTTONS} from '../../../../utils/pagination-row';
 import {capitalizeFirstLetters, typedObjectEntries} from '@epic-helper/utils';
+import {serverService} from '../../../../services/database/server.service';
 
 const PAGE_SIZE = 6;
 
@@ -142,9 +143,7 @@ const buildDonorsEmbed = async ({donors, page, total, client}: IBuildEmbed) => {
         user ? `**${user.tag}**` : null,
         `**Tier:** ${donor.tier ?? '-'}`,
         `**Expires:** ${timestampHelper.relative({time: donor.expiresAt})}`,
-        // `**Token:** ${donor.boostedGuilds.length}/${
-        //   donor.tier ? DONOR_TOKEN_AMOUNT[donor.tier] : '0'
-        // }`,
+        `**Token:** ${donor.tier ? DONOR_TOKEN_AMOUNT[donor.tier] : '0'}`,
       ]
         .filter((value) => !!value)
         .join('\n'),
@@ -201,6 +200,9 @@ const buildDonorEmbed = async ({donor, userId, client}: IBuildDonorEmbed) => {
     embed.setThumbnail(user.displayAvatarURL());
     embed.setDescription(messageFormatter.user(user.id));
   }
+  const boostedServers = await serverService.getUserBoostedServers({
+    userId,
+  });
   embed.addFields(
     {
       name: 'PROFILE',
@@ -210,21 +212,19 @@ const buildDonorEmbed = async ({donor, userId, client}: IBuildDonorEmbed) => {
         }`,
         `**Tier:** ${donor?.tier ? capitalizeFirstLetters(donor.tier) : '-'}`,
         `**Expires:** ${donor ? timestampHelper.relative({time: donor.expiresAt}) : '-'}`,
-        // `**Token:** ${donor?.boostedGuilds.length ?? '0'}/${
-        //   donor?.tier ? DONOR_TOKEN_AMOUNT[donor.tier] : '0'
-        // }`,
+        `**Token:** ${donor?.tier ? DONOR_TOKEN_AMOUNT[donor.tier] : '0'}`,
       ].join('\n'),
       inline: false,
+    },
+    {
+      name: 'BOOSTED GUILDS',
+      value: boostedServers.length
+        ? boostedServers
+            .map((guild, index) => `\`[${index + 1}]\` **${guild.name}** - ${guild.token}`)
+            .join('\n')
+        : '-',
+      inline: false,
     }
-    // {
-    //   name: 'BOOSTED GUILDS',
-    //   value:
-    //     // TODO: fetch guild name here
-    //     donor?.boostedGuilds.length
-    //       ? donor?.boostedGuilds.map((guild) => `${guild.guildId} - ${guild.token}`).join('\n')
-    //       : '-',
-    //   inline: false,
-    // }
   );
 
   embed.setFooter({
