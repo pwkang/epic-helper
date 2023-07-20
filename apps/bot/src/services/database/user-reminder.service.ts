@@ -447,6 +447,23 @@ const updateRemindedCooldowns = async ({userId, types}: IUpdateRemindedCooldowns
   );
 };
 
+interface IFindUserCooldown {
+  userId: string;
+  type: ValuesOf<typeof RPG_COMMAND_TYPE>;
+}
+
+const findUserCooldown = async ({
+  userId,
+  type,
+}: IFindUserCooldown): Promise<IUserReminder | null> => {
+  const reminder = await dbUserReminder.findOne({
+    userId,
+    type,
+  });
+
+  return reminder ? reminder.toObject() : null;
+};
+
 export const userReminderServices = {
   saveUserAdventureCooldown,
   saveUserHuntCooldown,
@@ -466,4 +483,5 @@ export const userReminderServices = {
   clearUserCooldowns,
   getNextReadyCommand,
   updateRemindedCooldowns,
+  findUserCooldown,
 };
