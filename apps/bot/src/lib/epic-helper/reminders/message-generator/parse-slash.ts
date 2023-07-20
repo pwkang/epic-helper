@@ -1,5 +1,5 @@
 import {RPG_CLICKABLE_SLASH_COMMANDS, RPG_COMMAND_TYPE} from '@epic-helper/constants';
-import {IUserReminder, IUserReminderPropsCondition} from '@epic-helper/models';
+import {IUserReminder} from '@epic-helper/models';
 
 interface IParseSlash {
   type: ValuesOf<typeof RPG_COMMAND_TYPE>;

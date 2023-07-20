@@ -1,4 +1,4 @@
-import {Client, Embed, EmbedBuilder, Guild, Message, User} from 'discord.js';
+import {Client, Embed, EmbedBuilder, Guild, User} from 'discord.js';
 import {upgraidService} from '../../../../services/database/upgraid.service';
 import {guildService} from '../../../../services/database/guild.service';
 import {_renderThisWeekUpgraidListEmbed} from '../../../epic-helper/command-helper/guild/embed/this-week-upgraid-list';

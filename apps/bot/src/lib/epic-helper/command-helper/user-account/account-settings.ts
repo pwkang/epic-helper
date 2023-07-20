@@ -9,7 +9,6 @@ import {userService} from '../../../../services/database/user.service';
 import {_getUserSettingsEmbed} from './embeds/user-settings.embed';
 import {_getUserReminderChannelEmbed} from './embeds/reminder-channels.embed';
 import donorService from '../../../../services/database/donor.service';
-import freeDonor from '../../../../commands/prefix/owner/free-donor/free-donor';
 import freeDonorService from '../../../../services/database/free-donor.service';
 import {serverService} from '../../../../services/database/server.service';
 import {_getDonorInfoEmbed} from './embeds/donor-info.embed';

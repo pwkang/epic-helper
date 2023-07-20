@@ -1,11 +1,6 @@
 import {Client, EmbedBuilder, User} from 'discord.js';
 import {IUser} from '@epic-helper/models';
-import {
-  BOT_COLOR,
-  BOT_REMINDER_DEFAULT_MESSAGES,
-  PREFIX,
-  RPG_COMMAND_TYPE,
-} from '@epic-helper/constants';
+import {BOT_COLOR, BOT_REMINDER_DEFAULT_MESSAGES, PREFIX} from '@epic-helper/constants';
 import {
   CUSTOM_MESSAGE_PAGE_TYPE,
   CUSTOM_MESSAGE_PAGES,
@@ -14,9 +9,7 @@ import {
 } from './custom-message.constant';
 import {generateUserReminderMessage} from '../../reminders/message-generator/custom-message-generator';
 import ms from 'ms';
-import toggleUserChecker, {
-  IToggleUserCheckerReturnType,
-} from '../../donor-checker/toggle-checker/user';
+import {IToggleUserCheckerReturnType} from '../../donor-checker/toggle-checker/user';
 
 export interface IGetCustomMessageEmbed {
   client: Client;

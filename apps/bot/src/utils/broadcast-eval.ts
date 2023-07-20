@@ -1,6 +1,5 @@
 import {Client} from 'discord.js';
 import {evalOptions, getInfo} from 'discord-hybrid-sharding';
-import {logger} from '@epic-helper/utils';
 
 interface IBroadcastEval<T> {
   client: Client;

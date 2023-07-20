@@ -1,6 +1,5 @@
 import {Client} from 'discord.js';
 import {djsServerHelper} from '../server';
-import {djsMemberHelper} from './index';
 import {_fetchMember} from './_fetch-member';
 import {logger} from '@epic-helper/utils';
 

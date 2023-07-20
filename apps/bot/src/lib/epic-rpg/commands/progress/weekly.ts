@@ -5,7 +5,6 @@ import {RPG_COMMAND_TYPE, RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants'
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
-import {userService} from '../../../../services/database/user.service';
 import toggleUserChecker from '../../../epic-helper/donor-checker/toggle-checker/user';
 
 const WEEKLY_COOLDOWN = ms('1w') - ms('10m');

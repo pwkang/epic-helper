@@ -5,7 +5,6 @@ import embedReaders from '../../embed-readers';
 import commandHelper from '../../../epic-helper/command-helper';
 import {djsMessageHelper} from '../../../discordjs/message';
 import {guildService} from '../../../../services/database/guild.service';
-import {RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants';
 
 export interface IRpgGuild {
   client: Client;

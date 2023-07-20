@@ -5,7 +5,7 @@ import {
   RPG_LOOTBOX_TYPE,
   RPG_WORKING_TYPE,
 } from '@epic-helper/constants';
-import {IUser, IUserReminder, IUserReminderPropsCondition} from '@epic-helper/models';
+import {IUserReminder} from '@epic-helper/models';
 import {IToggleUserCheckerReturnType} from '../../donor-checker/toggle-checker/user';
 
 interface IGetDailyCommandStr {}

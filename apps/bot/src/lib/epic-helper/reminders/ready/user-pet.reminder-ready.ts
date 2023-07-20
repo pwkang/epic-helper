@@ -1,7 +1,6 @@
 import {Client} from 'discord.js';
 import {getReminderChannel} from '../reminder-channel';
 import {djsMessageHelper} from '../../../discordjs/message';
-import {convertNumToPetId, logger} from '@epic-helper/utils';
 import {IUser, IUserReminder} from '@epic-helper/models';
 import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import {userPetServices} from '../../../../services/database/user-pet.service';

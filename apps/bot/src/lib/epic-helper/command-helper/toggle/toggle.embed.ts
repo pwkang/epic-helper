@@ -1,6 +1,6 @@
-import type {EmbedAuthorOptions, EmbedField} from 'discord.js';
+import type {EmbedField} from 'discord.js';
 import {EmbedBuilder} from 'discord.js';
-import {BOT_COLOR, BOT_EMOJI, PREFIX} from '@epic-helper/constants';
+import {BOT_COLOR, BOT_EMOJI} from '@epic-helper/constants';
 
 export interface IToggleEmbedsInfo {
   id: string;
