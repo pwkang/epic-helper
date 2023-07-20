@@ -402,7 +402,7 @@ const removeTokens = async ({serverId, userId, tokens}: IRemoveTokens) => {
   if (!isUserExists) return;
   const tokenBoosted = isUserExists.tokens.find((token) => token.userId === userId)?.amount;
   if (!tokenBoosted) return;
-  const toRemove = tokens === undefined || tokens > tokenBoosted;
+  const toRemove = tokens === undefined || tokens >= tokenBoosted;
   if (toRemove) {
     await dbServer.findOneAndUpdate(
       {
