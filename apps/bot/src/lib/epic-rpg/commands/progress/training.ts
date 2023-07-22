@@ -16,6 +16,7 @@ import toggleUserChecker from '../../../epic-helper/donor-checker/toggle-checker
 import embedReaders from '../../embed-readers';
 import {generatePetCatchMessageOptions} from '../../utils/pet-catch-cmd';
 import messageFormatter from '../../../discordjs/message-formatter';
+import {createMessageEditedListener} from '../../../../utils/message-edited-listener';
 
 interface IRpgTraining {
   client: Client;
@@ -61,13 +62,14 @@ export function rpgTraining({client, message, author, isSlashCommand}: IRpgTrain
       readyAt: new Date(Date.now() + cooldown),
     });
   });
-  event.on('embed', async (embed) => {
+  event.on('embed', async (embed, collected) => {
     if (isEncounteringPet({author, embed})) {
       await encounteringPet({
         client,
         author,
         embed,
         channelId: message.channel.id,
+        wildPetMessage: collected,
       });
       event.stop();
     }
@@ -116,9 +118,16 @@ interface IEncounteringPet {
   embed: Embed;
   author: User;
   channelId: string;
+  wildPetMessage: Message;
 }
 
-const encounteringPet = async ({embed, author, client, channelId}: IEncounteringPet) => {
+const encounteringPet = async ({
+  embed,
+  author,
+  client,
+  channelId,
+  wildPetMessage,
+}: IEncounteringPet) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker?.petCatch) return;
 
@@ -126,13 +135,35 @@ const encounteringPet = async ({embed, author, client, channelId}: IEncountering
     embed,
   });
   const messageOptions = generatePetCatchMessageOptions({info});
-  await djsMessageHelper.send({
+  const sentMessage = await djsMessageHelper.send({
     options: {
       ...messageOptions,
       content: toggleChecker?.mentions.petCatch ? messageFormatter.user(author.id) : undefined,
     },
     channelId,
     client,
+  });
+  if (!sentMessage) return;
+  let clicked = 0;
+  const event = await createMessageEditedListener({
+    messageId: wildPetMessage.id,
+  });
+  event.on('edited', async (message) => {
+    const embed = message.embeds[0];
+    if (!embed) return;
+    clicked++;
+    const info = embedReaders.wildPet({
+      embed,
+    });
+    const messageOptions = generatePetCatchMessageOptions({info, clicked});
+    await djsMessageHelper.edit({
+      options: {
+        ...messageOptions,
+        content: toggleChecker?.mentions.petCatch ? messageFormatter.user(author.id) : undefined,
+      },
+      client,
+      message: sentMessage,
+    });
   });
 };
 

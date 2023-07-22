@@ -10,6 +10,7 @@ import {BOT_COLOR, BOT_EMOJI, RPG_PET_THUMBNAIL} from '@epic-helper/constants';
 
 interface IGeneratePetCatchCommand {
   info: ReturnType<typeof wildPetReader>;
+  clicked?: number;
 }
 
 interface ICmd {
@@ -23,9 +24,10 @@ interface ICmd {
 
 export const generatePetCatchMessageOptions = ({
   info,
+  clicked = 0,
 }: IGeneratePetCatchCommand): BaseMessageOptions => {
   const {hunger, petName, owner, happiness} = info;
-  const commands = getCommands(hunger, happiness);
+  const commands = getCommands(hunger, happiness, clicked);
 
   return {
     embeds: [getEmbed(commands, owner ?? undefined, petName)],
@@ -108,9 +110,11 @@ const getComponents = (commands: ICmd[]) => {
   return [actionRow, actionRow2];
 };
 
-const getCommands = (hunger: number, happiness: number) => {
+const MAX_CLICKS = 6;
+
+const getCommands = (hunger: number, happiness: number, clicked: number) => {
   let feedAmount = getFeedTimes(hunger);
-  let patAmount = getPatTimes(happiness, 6 - feedAmount);
+  let patAmount = getPatTimes(happiness, MAX_CLICKS - clicked - feedAmount);
   const list: ICmd[] = [];
   while (1) {
     const percentage = generatePercentage(hunger, happiness, feedAmount, patAmount);

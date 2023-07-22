@@ -2,6 +2,7 @@ import {Client, Events, Message, User} from 'discord.js';
 import {rpgPetList, rpgPetListChecker} from '../../lib/epic-rpg/commands/pets/pet-list';
 import {redisRpgMessageOwner} from '../../services/redis/rpg-message-owner.redis';
 import {userService} from '../../services/database/user.service';
+import {emitMessageEdited} from '../../utils/message-edited-listener';
 
 export default <BotEvent>{
   eventName: Events.MessageUpdate,
@@ -16,6 +17,8 @@ export default <BotEvent>{
       if (!toExecute) return;
       messages.forEach((cmd) => cmd.execute(client, newMessage, newMessage.interaction?.user!));
     }
+
+    await emitMessageEdited(newMessage);
 
     const ownerId = await redisRpgMessageOwner.getOwner({
       client,
