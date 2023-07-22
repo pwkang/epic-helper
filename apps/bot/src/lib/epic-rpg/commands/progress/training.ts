@@ -13,6 +13,9 @@ import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-cha
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {userStatsService} from '../../../../services/database/user-stats.service';
 import toggleUserChecker from '../../../epic-helper/donor-checker/toggle-checker/user';
+import embedReaders from '../../embed-readers';
+import {generatePetCatchMessageOptions} from '../../utils/pet-catch-cmd';
+import messageFormatter from '../../../discordjs/message-formatter';
 
 interface IRpgTraining {
   client: Client;
@@ -64,6 +67,7 @@ export function rpgTraining({client, message, author, isSlashCommand}: IRpgTrain
         client,
         author,
         embed,
+        channelId: message.channel.id,
       });
       event.stop();
     }
@@ -111,12 +115,25 @@ interface IEncounteringPet {
   client: Client;
   embed: Embed;
   author: User;
+  channelId: string;
 }
 
-const encounteringPet = async ({embed, author}: IEncounteringPet) => {
+const encounteringPet = async ({embed, author, client, channelId}: IEncounteringPet) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker?.petCatch) return;
-  // catch pet
+
+  const info = embedReaders.wildPet({
+    embed,
+  });
+  const messageOptions = generatePetCatchMessageOptions({info});
+  await djsMessageHelper.send({
+    options: {
+      ...messageOptions,
+      content: toggleChecker?.mentions.petCatch ? messageFormatter.user(author.id) : undefined,
+    },
+    channelId,
+    client,
+  });
 };
 
 interface IIsRpgTrainingSuccess {

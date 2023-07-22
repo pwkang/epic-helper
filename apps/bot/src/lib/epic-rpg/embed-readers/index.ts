@@ -4,6 +4,7 @@ import inventoryReader from './inventory.reader';
 import guildReader from './guild.reader';
 import profileReader from './profile.reader';
 import progressReader from './progress.reader';
+import wildPetReader from './wild-pet.reader';
 
 const embedReaders = {
   lootbox: lootboxReader,
@@ -12,6 +13,7 @@ const embedReaders = {
   guild: guildReader,
   profile: profileReader,
   progress: progressReader,
+  wildPet: wildPetReader,
 };
 
 export default embedReaders;
