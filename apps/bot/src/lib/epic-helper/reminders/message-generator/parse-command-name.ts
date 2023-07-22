@@ -27,9 +27,9 @@ interface IGetHuntCommandStr {
 }
 
 const getHuntCommandStr = ({hardMode, together, toggleChecker}: IGetHuntCommandStr) => {
-  const huntSwitch = toggleChecker?.huntSwitch;
+  if (toggleChecker?.huntSwitch) together = !together;
 
-  return `RPG HUNT${hardMode ? ' HARDMODE' : ''}${together && !huntSwitch ? ' TOGETHER' : ''}`;
+  return `RPG HUNT${hardMode ? ' HARDMODE' : ''}${together ? ' TOGETHER' : ''}`;
 };
 
 interface IGetAdventureCommandStr {
