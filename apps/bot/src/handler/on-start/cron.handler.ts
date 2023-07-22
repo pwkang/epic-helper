@@ -16,6 +16,9 @@ export default async function loadCronJob(client: Client) {
   });
   commands.forEach(({data}) => {
     if (!data?.name || data.disabled) return;
-    schedule(data.expression, () => data.execute(client), data.cronOptions);
+    schedule(data.expression, () => data.execute(client), {
+      ...data.cronOptions,
+      timezone: 'Asia/Kuala_Lumpur',
+    });
   });
 }
