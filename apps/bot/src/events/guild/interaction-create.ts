@@ -1,14 +1,6 @@
-import {
-  BaseInteraction,
-  ChatInputCommandInteraction,
-  Client,
-  Events,
-  Message,
-  User,
-} from 'discord.js';
+import {BaseInteraction, Client, Events, User} from 'discord.js';
 import {userService} from '../../services/database/user.service';
 import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
-import {djsMessageHelper} from '../../lib/discordjs/message';
 import embedProvider from '../../lib/epic-helper/embeds';
 import djsInteractionHelper from '../../lib/discordjs/interaction';
 

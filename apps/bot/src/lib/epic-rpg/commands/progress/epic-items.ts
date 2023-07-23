@@ -3,15 +3,13 @@ import {
   RPG_COMMAND_TYPE,
   RPG_COOLDOWN_EMBED_TYPE,
   RPG_EPIC_ITEM_TYPES,
-  RPG_ITEMS,
 } from '@epic-helper/constants';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {Client, Embed, Message, User} from 'discord.js';
+import {Client, Message, User} from 'discord.js';
 import {IMessageContentChecker} from '../../../../types/utils';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
-import {userService} from '../../../../services/database/user.service';
 import toggleUserChecker from '../../../epic-helper/donor-checker/toggle-checker/user';
 
 const EPIC_ITEM_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.epicItem;

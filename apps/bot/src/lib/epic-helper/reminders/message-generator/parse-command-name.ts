@@ -5,7 +5,7 @@ import {
   RPG_LOOTBOX_TYPE,
   RPG_WORKING_TYPE,
 } from '@epic-helper/constants';
-import {IUser, IUserReminder, IUserReminderPropsCondition} from '@epic-helper/models';
+import {IUserReminder} from '@epic-helper/models';
 import {IToggleUserCheckerReturnType} from '../../donor-checker/toggle-checker/user';
 
 interface IGetDailyCommandStr {}
@@ -27,9 +27,9 @@ interface IGetHuntCommandStr {
 }
 
 const getHuntCommandStr = ({hardMode, together, toggleChecker}: IGetHuntCommandStr) => {
-  const huntSwitch = toggleChecker?.huntSwitch;
+  if (toggleChecker?.huntSwitch) together = !together;
 
-  return `RPG HUNT${hardMode ? ' HARDMODE' : ''}${together && !huntSwitch ? ' TOGETHER' : ''}`;
+  return `RPG HUNT${hardMode ? ' HARDMODE' : ''}${together ? ' TOGETHER' : ''}`;
 };
 
 interface IGetAdventureCommandStr {

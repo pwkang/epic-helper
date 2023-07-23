@@ -24,6 +24,8 @@ export const BOT_EMOJI = {
     on: '<:on:1108797573432614922>',
     ready: '<:on:863824531445121034>',
     notReady: '🕓',
+    heart: '<:heart:1132270394976522341>',
+    taco: '<:taco:1132270398235496468>',
   },
   halloween: {
     pumpkin: '<:pumpkin:1108800482169851904>',

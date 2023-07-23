@@ -20,6 +20,11 @@ userReminderSchema.post('deleteMany', async function () {
   await updateNextReminderTime(deletedUserId, this.model);
 });
 
+userReminderSchema.post('updateMany', async function () {
+  const updatedUserId = this.getQuery().userId;
+  await updateNextReminderTime(updatedUserId, this.model);
+});
+
 async function updateNextReminderTime(userId: string, model: Model<IUserReminder>) {
   const nextReminderTime = await model
     .find({
@@ -425,7 +430,7 @@ const getNextReadyCommand = async ({
       limit: 1,
     }
   );
-  return reminder ? reminder[0].toObject() : null;
+  return reminder?.length ? reminder[0].toObject() : null;
 };
 
 interface IUpdateRemindedCooldowns {

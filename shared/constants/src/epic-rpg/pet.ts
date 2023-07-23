@@ -14,6 +14,14 @@ export const RPG_PET_TYPE = {
   voiDog: 'VoiDog',
 } as const;
 
+export const RPG_WILD_PET_TYPE = {
+  cat: 'cat',
+  dog: 'dog',
+  dragon: 'dragon',
+  bunny: 'bunny',
+  fakeGoldenBunny: 'Fake golden bunny',
+} as const;
+
 export const RPG_PET_SKILL = {
   normie: 'Normie',
   fast: 'Fast',
@@ -72,4 +80,12 @@ export const RPG_PET_SKILL_TIER_REVERSE: Record<TSkillTierNumber, TSkillTierStr>
   7: 's',
   8: 'ss',
   9: 'ss+',
+} as const;
+
+export const RPG_PET_THUMBNAIL = {
+  cat: 'https://cdn.discordapp.com/emojis/703150997517893692.png?v=1',
+  dog: 'https://cdn.discordapp.com/emojis/703152291540369450.png?v=1',
+  dragon: 'https://cdn.discordapp.com/emojis/705963075576135691.png?v=1',
+  bunny: 'https://cdn.discordapp.com/emojis/690094269125361672.png?v=1',
+  fakeGoldenBunny: 'https://cdn.discordapp.com/emojis/690840027420295248.webp?size=44',
 } as const;

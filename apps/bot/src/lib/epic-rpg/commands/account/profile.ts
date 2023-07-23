@@ -1,5 +1,5 @@
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {Channel, Client, Embed, EmbedBuilder, Guild, Message, User} from 'discord.js';
+import {Channel, Client, Embed, Guild, Message, User} from 'discord.js';
 import {IMessageEmbedChecker} from '../../../../types/utils';
 import embedReaders from '../../embed-readers';
 import commandHelper from '../../../epic-helper/command-helper';

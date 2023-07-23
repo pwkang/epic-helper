@@ -1,5 +1,4 @@
 import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
-import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import freeDonorService from '../../../../services/database/free-donor.service';
 import {djsMessageHelper} from '../../../../lib/discordjs/message';
 import commandHelper from '../../../../lib/epic-helper/command-helper';

@@ -2,7 +2,6 @@ import {redisService} from '../services/redis/redis.service';
 import {logger} from '@epic-helper/utils';
 import {redisGuildReminder} from '../services/redis/guild-reminder.redis';
 import {guildReminderTimesUp} from '../lib/epic-helper/reminders/ready/guild.reminder-ready';
-import {guildService} from '../services/database/guild.service';
 
 export default <CronJob>{
   name: 'guild-reminder',

@@ -2,7 +2,7 @@ import {Client, Embed, Message, MessageCollector, TextChannel, User} from 'disco
 import {TypedEventEmitter} from './typed-event-emitter';
 import ms from 'ms';
 import {sleep, typedObjectEntries} from '@epic-helper/utils';
-import {EPIC_RPG_ID, RPG_COMMAND_TYPE, RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants';
+import {EPIC_RPG_ID, RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants';
 
 interface IRpgCommandListener {
   client: Client;
