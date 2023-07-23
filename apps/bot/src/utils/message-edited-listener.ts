@@ -2,6 +2,7 @@ import {TypedEventEmitter} from './typed-event-emitter';
 import {Message} from 'discord.js';
 import {redisMessageEdited} from '../services/redis/message-edited.redis';
 import {EventEmitter} from 'events';
+import ms from 'ms';
 
 const messageEditedEvent = new EventEmitter();
 
@@ -26,13 +27,22 @@ export const createMessageEditedListener = async ({messageId}: ICreateMessageEdi
 
   messageEditedEvent.on(messageId, messageEdited);
 
+  const timeout = setTimeout(() => {
+    clear();
+  }, ms('1m'));
+
   event.stop = () => {
-    event.removeAllListeners();
-    messageEditedEvent.removeListener(messageId, messageEdited);
+    clear();
   };
 
   function messageEdited(message: Message) {
     event.emit('edited', message);
+  }
+
+  function clear() {
+    clearTimeout(timeout);
+    event.removeAllListeners();
+    messageEditedEvent.removeListener(messageId, messageEdited);
   }
 
   return event;

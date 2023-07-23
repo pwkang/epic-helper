@@ -164,6 +164,9 @@ const encounteringPet = async ({
       client,
       message: sentMessage,
     });
+    if (clicked === 6) {
+      event.stop();
+    }
   });
 };
 
