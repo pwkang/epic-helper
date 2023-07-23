@@ -135,38 +135,13 @@ const encounteringPet = async ({
     embed,
   });
   const messageOptions = generatePetCatchMessageOptions({info});
-  const sentMessage = await djsMessageHelper.send({
+  await djsMessageHelper.send({
     options: {
       ...messageOptions,
       content: toggleChecker?.mentions.petCatch ? messageFormatter.user(author.id) : undefined,
     },
     channelId,
     client,
-  });
-  if (!sentMessage) return;
-  let clicked = 0;
-  const event = await createMessageEditedListener({
-    messageId: wildPetMessage.id,
-  });
-  event.on('edited', async (message) => {
-    const embed = message.embeds[0];
-    if (!embed) return;
-    clicked++;
-    const info = embedReaders.wildPet({
-      embed,
-    });
-    const messageOptions = generatePetCatchMessageOptions({info, clicked});
-    await djsMessageHelper.edit({
-      options: {
-        ...messageOptions,
-        content: toggleChecker?.mentions.petCatch ? messageFormatter.user(author.id) : undefined,
-      },
-      client,
-      message: sentMessage,
-    });
-    if (clicked === 6) {
-      event.stop();
-    }
   });
 };
 
