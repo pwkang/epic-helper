@@ -38,7 +38,7 @@ export const _info = async ({client, server}: IInfo): Promise<EmbedBuilder> => {
   );
 
   embed.addFields({
-    name: '**Lnks**',
+    name: '**Links**',
     value: `**[Invite Link](${BOT_INVITE_LINK}) | [Support Server](${SUPPORT_SERVER_INVITE_LINK})**`,
   });
 
@@ -114,6 +114,7 @@ const getUptime = (client: Client): string => {
   if (hours > 0) str += `${hours}h `;
   if (minutes > 0) str += `${minutes}m `;
   if (seconds > 0) str += `${seconds}s `;
+  if (str === '') str = '0s';
 
   return str.trim();
 };

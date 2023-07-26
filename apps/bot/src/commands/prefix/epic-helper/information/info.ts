@@ -7,15 +7,19 @@ import {djsMessageHelper} from '../../../../lib/discordjs/message';
 import commandHelper from '../../../../lib/epic-helper/command-helper';
 
 export default <PrefixCommand>{
-  name: 'invite',
+  name: 'info',
   type: PREFIX_COMMAND_TYPE.bot,
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,
   },
-  commands: ['invite', 'inv'],
+  commands: ['info'],
   execute: async (client, message) => {
-    const botInfo = commandHelper.information.invite();
+    if (!message.inGuild()) return;
+    const botInfo = await commandHelper.information.info({
+      client,
+      server: message.guild,
+    });
     await djsMessageHelper.send({
       client,
       options: {
