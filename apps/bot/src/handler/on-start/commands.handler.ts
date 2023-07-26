@@ -23,7 +23,7 @@ async function loadSlashCommands(client: Client) {
   const commands = await importFiles<SlashCommand>({
     path: `./${handlerRoot}/commands/slash`,
     options: {
-      fileFilter: [handlerFileFilter, '!*.type.ts'],
+      fileFilter: [handlerFileFilter, '!*.type.ts', '!constant.ts'],
     },
   });
   logger({
