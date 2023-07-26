@@ -33,7 +33,7 @@ const searchSlashCommand = (client: Client, interaction: BaseInteraction) => {
   if (!interaction.isCommand() || !interaction.isChatInputCommand()) return null;
   const commandName = interaction.commandName;
   const subcommandGroupName = interaction.options.getSubcommandGroup();
-  const subcommandName = interaction.options.getSubcommand();
+  const subcommandName = interaction.options.getSubcommand(false);
   const searchCommandName = [commandName, subcommandGroupName, subcommandName]
     .filter((name) => !!name)
     .join(' ');

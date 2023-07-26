@@ -33,7 +33,7 @@ async function loadSlashCommands(client: Client) {
   commands.forEach(({data}) => {
     if (!data?.name) return;
     const commandName: string[] = [];
-    if (data.type === 'command' && data.builder) {
+    if (data.type === 'command') {
       commandName.push(data.name);
     } else if (data.type === 'subcommand') {
       commandName.push(data.commandName);
