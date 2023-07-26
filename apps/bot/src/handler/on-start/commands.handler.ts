@@ -24,7 +24,6 @@ async function loadSlashCommands(client: Client) {
     path: `./${handlerRoot}/commands/slash`,
     options: {
       fileFilter: [handlerFileFilter, '!*.type.ts'],
-      directoryFilter: ['!subcommand'],
     },
   });
   logger({
@@ -33,7 +32,15 @@ async function loadSlashCommands(client: Client) {
   });
   commands.forEach(({data}) => {
     if (!data?.name) return;
-    client.slashCommands.set(data.name, data);
+    const commandName: string[] = [];
+    if (data.type === 'command' && data.builder) {
+      commandName.push(data.name);
+    } else if (data.type === 'subcommand') {
+      commandName.push(data.commandName);
+      if (data.groupName) commandName.push(data.groupName);
+      commandName.push(data.name);
+    }
+    client.slashCommands.set(commandName.join(' '), data);
   });
 }
 

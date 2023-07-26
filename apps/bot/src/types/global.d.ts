@@ -1,4 +1,12 @@
-import type {Client, ClientEvents, Message, SlashCommandBuilder, User} from 'discord.js';
+import type {
+  Client,
+  ClientEvents,
+  Message,
+  SlashCommandBuilder,
+  SlashCommandSubcommandBuilder,
+  SlashCommandSubcommandGroupBuilder,
+  User,
+} from 'discord.js';
 import {ChatInputCommandInteraction} from 'discord.js';
 import type {ScheduleOptions} from 'node-cron';
 import {
@@ -22,15 +30,33 @@ declare global {
     type: ValuesOf<typeof PREFIX_COMMAND_TYPE>;
   }
 
-  interface SlashCommand<T = ChatInputCommandInteraction> {
+  type SlashCommand = SlashCommandRoot | SlashCommandSubcommand | SlashCommandSubcommandGroup;
+
+  interface SlashCommandBase {
     name: string;
-    interactionType: T;
-    execute: (client: Client, interaction: T) => Promise<void>;
+    description: string;
+    execute: (client: Client, interaction: ChatInputCommandInteraction) => Promise<void>;
     preCheck: {
       userNotRegistered?: ValuesOf<typeof USER_NOT_REGISTERED_ACTIONS>;
       userAccOff?: ValuesOf<typeof USER_ACC_OFF_ACTIONS>;
     };
-    builder: SlashCommandBuilder;
+  }
+
+  interface SlashCommandRoot extends SlashCommandBase {
+    type: 'command';
+    builder?: (command: SlashCommandBuilder) => SlashCommandBuilder;
+  }
+
+  interface SlashCommandSubcommand extends SlashCommandBase {
+    type: 'subcommand';
+    groupName?: string;
+    commandName: string;
+    builder?: (subcommand: SlashCommandSubcommandBuilder) => SlashCommandSubcommandBuilder;
+  }
+
+  interface SlashCommandSubcommandGroup extends SlashCommandBase {
+    type: 'subcommandGroup';
+    commandName: string;
   }
 
   interface SlashMessage {

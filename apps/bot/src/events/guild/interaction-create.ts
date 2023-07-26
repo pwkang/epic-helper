@@ -1,8 +1,9 @@
-import {BaseInteraction, Client, Events, User} from 'discord.js';
+import {BaseInteraction, ChatInputCommandInteraction, Client, Events, User} from 'discord.js';
 import {userService} from '../../services/database/user.service';
 import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
 import embedProvider from '../../lib/epic-helper/embeds';
 import djsInteractionHelper from '../../lib/discordjs/interaction';
+import interaction from '../../lib/discordjs/interaction';
 
 export default <BotEvent>{
   eventName: Events.InteractionCreate,
@@ -10,26 +11,34 @@ export default <BotEvent>{
   execute: async (client, interaction: BaseInteraction) => {
     if (!interaction.guild) return;
 
-    const command = searchSlashCommand(client, interaction);
+    if (interaction.isChatInputCommand()) {
+      const command = searchSlashCommand(client, interaction);
 
-    if (!command) return;
+      if (!command) return;
 
-    const toExecute = await preCheckSlashCommand({
-      client,
-      interaction,
-      preCheck: command.preCheck,
-      author: interaction.user,
-    });
-    if (!toExecute) return;
+      const toExecute = await preCheckSlashCommand({
+        client,
+        interaction,
+        preCheck: command.preCheck,
+        author: interaction.user,
+      });
+      if (!toExecute) return;
 
-    await command.execute(client, interaction as typeof command.interactionType);
+      await command.execute(client, interaction);
+    }
   },
 };
 
-const searchSlashCommand = (client: Client, interaction: BaseInteraction) =>
-  client.slashCommands.find(
-    (cmd) => interaction.isCommand() && cmd.builder.name === interaction.commandName
-  );
+const searchSlashCommand = (client: Client, interaction: BaseInteraction) => {
+  if (!interaction.isCommand() || !interaction.isChatInputCommand()) return null;
+  const commandName = interaction.commandName;
+  const subcommandGroupName = interaction.options.getSubcommandGroup();
+  const subcommandName = interaction.options.getSubcommand();
+  const searchCommandName = [commandName, subcommandGroupName, subcommandName]
+    .filter((name) => !!name)
+    .join(' ');
+  return client.slashCommands.get(searchCommandName);
+};
 
 interface IPreCheckSlashCommand {
   client: Client;
