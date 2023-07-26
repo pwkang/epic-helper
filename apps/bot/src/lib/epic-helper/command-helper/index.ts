@@ -8,6 +8,7 @@ import {_serverHelper} from './server';
 import {_donorHelper} from './donor';
 import {_freeDonorHelper} from './free-donor';
 import {_epicTokenHelper} from './epic-token';
+import {_botInfoHelper} from './bot-info';
 
 const commandHelper = {
   toggle: _toggleHelper,
@@ -20,6 +21,7 @@ const commandHelper = {
   donor: _donorHelper,
   freeDonor: _freeDonorHelper,
   epicToken: _epicTokenHelper,
+  information: _botInfoHelper,
 };
 
 export default commandHelper;
