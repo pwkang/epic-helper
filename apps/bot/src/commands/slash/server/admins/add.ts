@@ -1,5 +1,7 @@
 import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
 import {SLASH_COMMAND} from '../../constant';
+import commandHelper from '../../../../lib/epic-helper/command-helper';
+import djsInteractionHelper from '../../../../lib/discordjs/interaction';
 
 export default <SlashCommand>{
   name: SLASH_COMMAND.server.admins.add.name,
@@ -15,5 +17,20 @@ export default <SlashCommand>{
     subcommand.addUserOption((option) =>
       option.setName('user').setDescription('The user to add as admin').setRequired(true)
     ),
-  execute: async (client, interaction) => {},
+  execute: async (client, interaction) => {
+    const user = interaction.options.getUser('user', true);
+    if (!interaction.guild) return;
+    const admins = await commandHelper.serverSettings.admin({
+      server: interaction.guild,
+    });
+    const messageOptions = await admins.addAdmin({
+      userId: user.id,
+    });
+    if (!messageOptions) return;
+    await djsInteractionHelper.replyInteraction({
+      client,
+      interaction,
+      options: messageOptions,
+    });
+  },
 };
