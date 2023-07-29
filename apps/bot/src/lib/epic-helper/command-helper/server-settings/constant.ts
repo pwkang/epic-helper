@@ -3,4 +3,5 @@ export const SERVER_SETTINGS_PAGE_TYPE = {
   enchantMute: 'enchantMute',
   ttVerification: 'ttVerification',
   admins: 'admins',
+  adminRoles: 'adminRoles',
 } as const;

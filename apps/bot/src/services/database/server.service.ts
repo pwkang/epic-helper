@@ -471,16 +471,73 @@ const removeServerAdmins = async ({serverId, usersId}: IRemoveServerAdmins) => {
   return server ?? null;
 };
 
-interface ICleanServerAdmins {
+interface IClearServerAdmins {
   serverId: string;
 }
 
-const clearServerAdmins = async ({serverId}: ICleanServerAdmins) => {
+const clearServerAdmins = async ({serverId}: IClearServerAdmins) => {
   const server = await dbServer.findOneAndUpdate(
     {serverId},
     {
       $set: {
         'settings.admin.usersId': [],
+      },
+    },
+    {new: true}
+  );
+  return server ?? null;
+};
+
+interface IAddServerAdminRoles {
+  serverId: string;
+  rolesId: string[];
+}
+
+const addServerAdminRoles = async ({serverId, rolesId}: IAddServerAdminRoles) => {
+  const server = await dbServer.findOneAndUpdate(
+    {serverId},
+    {
+      $addToSet: {
+        'settings.admin.rolesId': {
+          $each: rolesId,
+        },
+      },
+    },
+    {new: true}
+  );
+  return server ?? null;
+};
+
+interface IRemoveServerAdminRoles {
+  serverId: string;
+  rolesId: string[];
+}
+
+const removeServerAdminRoles = async ({serverId, rolesId}: IRemoveServerAdminRoles) => {
+  const server = await dbServer.findOneAndUpdate(
+    {serverId},
+    {
+      $pull: {
+        'settings.admin.rolesId': {
+          $in: rolesId,
+        },
+      },
+    },
+    {new: true}
+  );
+  return server ?? null;
+};
+
+interface IClearServerAdminRoles {
+  serverId: string;
+}
+
+const clearServerAdminRoles = async ({serverId}: IClearServerAdminRoles) => {
+  const server = await dbServer.findOneAndUpdate(
+    {serverId},
+    {
+      $set: {
+        'settings.admin.rolesId': [],
       },
     },
     {new: true}
@@ -510,4 +567,7 @@ export const serverService = {
   addServerAdmins,
   removeServerAdmins,
   clearServerAdmins,
+  addServerAdminRoles,
+  removeServerAdminRoles,
+  clearServerAdminRoles,
 };
