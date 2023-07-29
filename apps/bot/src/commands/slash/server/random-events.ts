@@ -8,13 +8,13 @@ import djsInteractionHelper from '../../../lib/discordjs/interaction';
 import {serverService} from '../../../services/database/server.service';
 import commandHelper from '../../../lib/epic-helper/command-helper';
 import {SERVER_SETTINGS_PAGE_TYPE} from '../../../lib/epic-helper/command-helper/server-settings/constant';
-import {SLASH_COMMAND_SERVER_NAME} from './constant';
+import {SLASH_COMMAND} from '../constant';
 
 export default <SlashCommand>{
-  name: 'random-events',
-  description: 'set message to send when random events occur (type "clear" to remove)',
+  name: SLASH_COMMAND.server.randomEvents.name,
+  description: SLASH_COMMAND.server.randomEvents.description,
+  commandName: SLASH_COMMAND.server.name,
   type: 'subcommand',
-  commandName: SLASH_COMMAND_SERVER_NAME,
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,

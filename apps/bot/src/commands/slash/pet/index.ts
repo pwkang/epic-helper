@@ -1,7 +1,7 @@
-import {SLASH_COMMAND_PET_NAME} from './constant';
+import {SLASH_COMMAND} from '../constant';
 
 export default <SlashCommand>{
-  name: SLASH_COMMAND_PET_NAME,
-  description: 'Pets command',
+  name: SLASH_COMMAND.pet.name,
+  description: SLASH_COMMAND.pet.description,
   type: 'command',
 };

@@ -1,8 +1,8 @@
-import {SLASH_COMMAND_GUILD_NAME, SLASH_COMMAND_GUILD_TOGGLE_NAME} from '../constant';
+import {SLASH_COMMAND} from '../../constant';
 
 export default <SlashCommand>{
-  name: SLASH_COMMAND_GUILD_TOGGLE_NAME,
-  commandName: SLASH_COMMAND_GUILD_NAME,
-  description: 'Toggle guild features',
+  name: SLASH_COMMAND.guild.toggle.name,
+  description: SLASH_COMMAND.guild.toggle.description,
+  commandName: SLASH_COMMAND.guild.name,
   type: 'subcommandGroup',
 };

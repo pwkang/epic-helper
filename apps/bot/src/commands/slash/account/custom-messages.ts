@@ -4,17 +4,17 @@ import commandHelper from '../../../lib/epic-helper/command-helper';
 import {CUSTOM_MESSAGE_PAGE_TYPE} from '../../../lib/epic-helper/command-helper/custom-message/custom-message.constant';
 import toggleUserChecker from '../../../lib/epic-helper/donor-checker/toggle-checker/user';
 import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
-import {SLASH_COMMAND_ACCOUNT_NAME} from './constant';
+import {SLASH_COMMAND} from '../constant';
 
 export default <SlashCommand>{
-  name: 'custom-messages',
-  description: 'Customize the reminder messages for different reminders',
+  name: SLASH_COMMAND.account.customMessage.name,
+  description: SLASH_COMMAND.account.customMessage.description,
   type: 'subcommand',
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
   },
-  commandName: SLASH_COMMAND_ACCOUNT_NAME,
+  commandName: SLASH_COMMAND.account.name,
   builder: (subcommand) => subcommand,
   execute: async (client, interaction) => {
     const userAccount = await userService.getUserAccount(interaction.user.id);

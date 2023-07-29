@@ -1,7 +1,7 @@
-import {SLASH_COMMAND_EPIC_TOKEN_NAME} from './constant';
+import {SLASH_COMMAND} from '../constant';
 
 export default <SlashCommand>{
-  name: SLASH_COMMAND_EPIC_TOKEN_NAME,
-  description: 'EPIC Token related commands',
+  name: SLASH_COMMAND.epicToken.name,
+  description: SLASH_COMMAND.epicToken.description,
   type: 'command',
 };

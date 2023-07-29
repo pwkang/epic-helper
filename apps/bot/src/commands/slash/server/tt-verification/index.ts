@@ -1,8 +1,8 @@
-import {SLASH_COMMAND_SERVER_NAME, SLASH_COMMAND_SERVER_TT_VERIFICATION_NAME} from '../constant';
+import {SLASH_COMMAND} from '../../constant';
 
 export default <SlashCommand>{
-  name: SLASH_COMMAND_SERVER_TT_VERIFICATION_NAME,
-  commandName: SLASH_COMMAND_SERVER_NAME,
+  name: SLASH_COMMAND.server.ttVerification.name,
+  description: SLASH_COMMAND.server.ttVerification.description,
   type: 'subcommandGroup',
-  description: 'TT Verification',
+  commandName: SLASH_COMMAND.server.name,
 };

@@ -4,18 +4,18 @@ import commandHelper from '../../../../lib/epic-helper/command-helper';
 import {toggleDisplayList} from '../../../../lib/epic-helper/command-helper/toggle/toggle.list';
 import {IGuild} from '@epic-helper/models';
 import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
-import {SLASH_COMMAND_GUILD_NAME, SLASH_COMMAND_GUILD_TOGGLE_NAME} from '../constant';
+import {SLASH_COMMAND} from '../../constant';
 
 export default <SlashCommand>{
-  name: 'set',
-  description: 'Update guild toggle',
+  name: SLASH_COMMAND.guild.toggle.set.name,
+  description: SLASH_COMMAND.guild.toggle.set.description,
+  commandName: SLASH_COMMAND.guild.name,
+  groupName: SLASH_COMMAND.guild.toggle.name,
   type: 'subcommand',
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,
   },
-  commandName: SLASH_COMMAND_GUILD_NAME,
-  groupName: SLASH_COMMAND_GUILD_TOGGLE_NAME,
   builder: (subcommand) =>
     subcommand
       .addRoleOption((option) =>

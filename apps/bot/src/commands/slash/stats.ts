@@ -1,10 +1,11 @@
 import {getStatsEmbeds, statsActionRow, TEventTypes} from '../../lib/epic-helper/features/stats';
 import djsInteractionHelper from '../../lib/discordjs/interaction';
 import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
+import {SLASH_COMMAND} from './constant';
 
 export default <SlashCommand>{
-  name: 'user-stats',
-  description: 'Commands counter',
+  name: SLASH_COMMAND.stats.name,
+  description: SLASH_COMMAND.stats.description,
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,

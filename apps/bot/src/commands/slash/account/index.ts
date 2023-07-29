@@ -1,7 +1,7 @@
-import {SLASH_COMMAND_ACCOUNT_NAME} from './constant';
+import {SLASH_COMMAND} from '../constant';
 
 export default <SlashCommand>{
-  name: SLASH_COMMAND_ACCOUNT_NAME,
-  description: 'Account related commands',
+  name: SLASH_COMMAND.account.name,
+  description: SLASH_COMMAND.account.description,
   type: 'command',
 };

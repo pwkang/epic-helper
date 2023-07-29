@@ -1,12 +1,12 @@
 import djsInteractionHelper from '../../../lib/discordjs/interaction';
 import commandHelper from '../../../lib/epic-helper/command-helper';
 import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
-import {SLASH_COMMAND_EPIC_TOKEN_NAME} from './constant';
+import {SLASH_COMMAND} from '../constant';
 
 export default <SlashCommand>{
-  name: 'use',
-  description: 'Use your epic token on this server',
-  commandName: SLASH_COMMAND_EPIC_TOKEN_NAME,
+  name: SLASH_COMMAND.epicToken.use.name,
+  description: SLASH_COMMAND.epicToken.use.description,
+  commandName: SLASH_COMMAND.epicToken.name,
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,

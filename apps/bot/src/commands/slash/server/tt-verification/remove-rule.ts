@@ -1,14 +1,14 @@
 import commandHelper from '../../../../lib/epic-helper/command-helper';
 import djsInteractionHelper from '../../../../lib/discordjs/interaction';
-import {SLASH_COMMAND_SERVER_NAME, SLASH_COMMAND_SERVER_TT_VERIFICATION_NAME} from '../constant';
 import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
+import {SLASH_COMMAND} from '../../constant';
 
 export default <SlashCommand>{
-  name: 'remove-rule',
-  description: 'Remove an existing rule',
+  name: SLASH_COMMAND.server.ttVerification.removeRule.name,
+  description: SLASH_COMMAND.server.ttVerification.removeRule.description,
+  commandName: SLASH_COMMAND.server.name,
+  groupName: SLASH_COMMAND.server.ttVerification.name,
   type: 'subcommand',
-  commandName: SLASH_COMMAND_SERVER_NAME,
-  groupName: SLASH_COMMAND_SERVER_TT_VERIFICATION_NAME,
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,

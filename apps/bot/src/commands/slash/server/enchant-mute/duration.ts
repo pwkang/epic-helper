@@ -2,15 +2,15 @@ import djsInteractionHelper from '../../../../lib/discordjs/interaction';
 import {serverService} from '../../../../services/database/server.service';
 import commandHelper from '../../../../lib/epic-helper/command-helper';
 import {SERVER_SETTINGS_PAGE_TYPE} from '../../../../lib/epic-helper/command-helper/server-settings/constant';
-import {SLASH_COMMAND_SERVER_ENCHANT_MUTE_NAME, SLASH_COMMAND_SERVER_NAME} from '../constant';
 import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
+import {SLASH_COMMAND} from '../../constant';
 
 export default <SlashCommand>{
-  name: 'duration',
-  description: 'Set the enchant mute duration',
+  name: SLASH_COMMAND.server.enchantMute.duration.name,
+  description: SLASH_COMMAND.server.enchantMute.duration.description,
+  commandName: SLASH_COMMAND.server.name,
+  groupName: SLASH_COMMAND.server.enchantMute.name,
   type: 'subcommand',
-  commandName: SLASH_COMMAND_SERVER_NAME,
-  groupName: SLASH_COMMAND_SERVER_ENCHANT_MUTE_NAME,
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,

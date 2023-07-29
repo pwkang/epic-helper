@@ -4,13 +4,13 @@ import commandHelper from '../../../lib/epic-helper/command-helper';
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder} from 'discord.js';
 import {BOT_COLOR, USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
 import messageFormatter from '../../../lib/discordjs/message-formatter';
-import {SLASH_COMMAND_GUILD_NAME} from './constant';
+import {SLASH_COMMAND} from '../constant';
 
 export default <SlashCommand>{
-  name: 'delete',
-  description: 'Delete a guild',
+  name: SLASH_COMMAND.guild.delete.name,
+  description: SLASH_COMMAND.guild.delete.description,
+  commandName: SLASH_COMMAND.guild.name,
   type: 'subcommand',
-  commandName: SLASH_COMMAND_GUILD_NAME,
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,
