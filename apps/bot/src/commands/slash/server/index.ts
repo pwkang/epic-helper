@@ -1,7 +1,7 @@
-import {SLASH_COMMAND_SERVER_NAME} from './constant';
+import {SLASH_COMMAND} from '../constant';
 
 export default <SlashCommand>{
-  name: SLASH_COMMAND_SERVER_NAME,
-  description: 'Server configuration',
+  name: SLASH_COMMAND.server.name,
+  description: SLASH_COMMAND.server.description,
   type: 'command',
 };

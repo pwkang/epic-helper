@@ -1,17 +1,17 @@
 import commandHelper from '../../../lib/epic-helper/command-helper';
 import djsInteractionHelper from '../../../lib/discordjs/interaction';
 import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
-import {SLASH_COMMAND_ACCOUNT_NAME} from './constant';
+import {SLASH_COMMAND} from '../constant';
 
 export default <SlashCommand>{
-  name: 'enchant-tier',
-  description: 'Set the enchant tier for enchant mute helper',
+  name: SLASH_COMMAND.account.enchantTier.name,
+  description: SLASH_COMMAND.account.enchantTier.description,
   type: 'subcommand',
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
   },
-  commandName: SLASH_COMMAND_ACCOUNT_NAME,
+  commandName: SLASH_COMMAND.account.name,
   builder: (subcommand) => subcommand,
   execute: async (client, interaction) => {
     const setEnchantTier = await commandHelper.userAccount.setEnchant({

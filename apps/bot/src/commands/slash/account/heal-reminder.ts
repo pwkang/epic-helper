@@ -1,17 +1,17 @@
 import djsInteractionHelper from '../../../lib/discordjs/interaction';
 import {userService} from '../../../services/database/user.service';
 import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
-import {SLASH_COMMAND_ACCOUNT_NAME} from './constant';
+import {SLASH_COMMAND} from '../constant';
 
 export default <SlashCommand>{
-  name: 'heal-reminder',
-  description: 'Set the heal reminder HP target',
+  name: SLASH_COMMAND.account.healReminder.name,
+  description: SLASH_COMMAND.account.healReminder.description,
   type: 'subcommand',
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
   },
-  commandName: SLASH_COMMAND_ACCOUNT_NAME,
+  commandName: SLASH_COMMAND.account.name,
   builder: (subcommand) =>
     subcommand
       .addNumberOption((input) =>

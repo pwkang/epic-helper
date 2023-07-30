@@ -1,7 +1,7 @@
-import {SLASH_COMMAND_GUILD_NAME} from './constant';
+import {SLASH_COMMAND} from '../constant';
 
 export default <SlashCommand>{
-  name: SLASH_COMMAND_GUILD_NAME,
-  description: 'Guild settings',
+  name: SLASH_COMMAND.guild.name,
+  description: SLASH_COMMAND.guild.description,
   type: 'command',
 };

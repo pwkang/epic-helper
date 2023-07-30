@@ -1,13 +1,13 @@
-import commandHelper from '../../../../lib/epic-helper/command-helper';
-import djsInteractionHelper from '../../../../lib/discordjs/interaction';
 import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
 import {SLASH_COMMAND} from '../../constant';
+import commandHelper from '../../../../lib/epic-helper/command-helper';
+import djsInteractionHelper from '../../../../lib/discordjs/interaction';
 
 export default <SlashCommand>{
-  name: SLASH_COMMAND.server.ttVerification.removeRule.name,
-  description: SLASH_COMMAND.server.ttVerification.removeRule.description,
+  name: SLASH_COMMAND.server.adminRoles.add.name,
+  description: SLASH_COMMAND.server.adminRoles.add.description,
   commandName: SLASH_COMMAND.server.name,
-  groupName: SLASH_COMMAND.server.ttVerification.name,
+  groupName: SLASH_COMMAND.server.adminRoles.name,
   type: 'subcommand',
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
@@ -16,18 +16,18 @@ export default <SlashCommand>{
   },
   builder: (subcommand) =>
     subcommand.addRoleOption((option) =>
-      option.setName('role').setDescription('Role to remove from verified users').setRequired(true)
+      option.setName('role').setDescription('The role to add as admin role').setRequired(true)
     ),
   execute: async (client, interaction) => {
-    if (!interaction.inGuild() || !interaction.guild) return;
     const role = interaction.options.getRole('role', true);
-    const ttVerification = await commandHelper.serverSettings.ttVerification({
+    if (!interaction.guild) return;
+    const admins = await commandHelper.serverSettings.adminRole({
       server: interaction.guild,
     });
-    if (!ttVerification) return;
-    const messageOptions = await ttVerification.removeRule({
+    const messageOptions = await admins.addRole({
       roleId: role.id,
     });
+    if (!messageOptions) return;
     await djsInteractionHelper.replyInteraction({
       client,
       interaction,

@@ -1,7 +1,7 @@
-import {SLASH_COMMAND_TOGGLE_NAME} from './constant';
+import {SLASH_COMMAND} from '../constant';
 
 export default <SlashCommand>{
-  name: SLASH_COMMAND_TOGGLE_NAME,
-  description: 'Toggle settings',
+  name: SLASH_COMMAND.toggle.name,
+  description: SLASH_COMMAND.toggle.description,
   type: 'command',
 };

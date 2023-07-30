@@ -1,13 +1,13 @@
 import generateFusionScoreEmbed from '../../../lib/epic-helper/features/pets/pet-calc-fusion-score';
 import djsInteractionHelper from '../../../lib/discordjs/interaction';
-import {SLASH_COMMAND_PET_NAME} from './constant';
 import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
+import {SLASH_COMMAND} from '../constant';
 
 export default <SlashCommand>{
-  name: 'calc-fusion-score',
-  description: 'Calculate fusion score',
+  name: SLASH_COMMAND.pet.calcFusionScore.name,
+  description: SLASH_COMMAND.pet.calcFusionScore.description,
+  commandName: SLASH_COMMAND.pet.name,
   type: 'subcommand',
-  commandName: SLASH_COMMAND_PET_NAME,
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,

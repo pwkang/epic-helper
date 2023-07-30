@@ -6,17 +6,17 @@ import {
   USER_NOT_REGISTERED_ACTIONS,
 } from '@epic-helper/constants';
 import {userService} from '../../../services/database/user.service';
-import {SLASH_COMMAND_ACCOUNT_NAME} from './constant';
+import {SLASH_COMMAND} from '../constant';
 
 export default <SlashCommand>{
-  name: 'reminder-channel',
-  description: 'Customize the the channel for different reminders',
+  name: SLASH_COMMAND.account.reminderChannel.name,
+  description: SLASH_COMMAND.account.reminderChannel.description,
   type: 'subcommand',
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
   },
-  commandName: SLASH_COMMAND_ACCOUNT_NAME,
+  commandName: SLASH_COMMAND.account.name,
   builder: (subcommand) =>
     subcommand
       .addStringOption((option) =>

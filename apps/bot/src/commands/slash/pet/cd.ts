@@ -2,14 +2,14 @@ import {ButtonStyle} from 'discord.js';
 import {itemListingHelper} from '../../../utils/item-listing-helper';
 import {paginatePetCd, PET_CD_PET_PAGE} from '../../../lib/epic-helper/features/pets/pet-cd';
 import {userPetServices} from '../../../services/database/user-pet.service';
-import {SLASH_COMMAND_PET_NAME} from './constant';
 import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
+import {SLASH_COMMAND} from '../constant';
 
 export default <SlashCommand>{
-  name: 'cd',
-  description: 'List of pets on adventure',
+  name: SLASH_COMMAND.pet.cd.name,
+  description: SLASH_COMMAND.pet.cd.description,
+  commandName: SLASH_COMMAND.pet.name,
   type: 'subcommand',
-  commandName: SLASH_COMMAND_PET_NAME,
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,

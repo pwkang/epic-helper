@@ -10,6 +10,8 @@ import {_getRandomEventSettingsEmbed} from './embed/random-event.embed';
 import _getEnchantChannelsEmbed from './embed/enchant-channels.embed';
 import {SERVER_SETTINGS_PAGE_TYPE} from './constant';
 import {_getTTVerificationSettingsEmbed} from './embed/tt-verification.embed';
+import {_getServerAdminEmbed} from './embed/server-admin-embed';
+import {_getServerAdminRoleEmbed} from './embed/server-admin-role-embed';
 
 interface IServerSettings {
   server: Guild;
@@ -43,6 +45,18 @@ export const _serverSettings = async ({server}: IServerSettings) => {
         break;
       case SERVER_SETTINGS_PAGE_TYPE.ttVerification:
         embed = _getTTVerificationSettingsEmbed({
+          serverAccount,
+          guild: server,
+        });
+        break;
+      case SERVER_SETTINGS_PAGE_TYPE.admins:
+        embed = _getServerAdminEmbed({
+          serverAccount,
+          guild: server,
+        });
+        break;
+      case SERVER_SETTINGS_PAGE_TYPE.adminRoles:
+        embed = _getServerAdminRoleEmbed({
           serverAccount,
           guild: server,
         });
@@ -92,6 +106,14 @@ const SERVER_SETTINGS_PAGES: IPage[] = [
   {
     id: SERVER_SETTINGS_PAGE_TYPE.ttVerification,
     label: 'TT verification',
+  },
+  {
+    id: SERVER_SETTINGS_PAGE_TYPE.admins,
+    label: 'Admins',
+  },
+  {
+    id: SERVER_SETTINGS_PAGE_TYPE.adminRoles,
+    label: 'Admin roles',
   },
 ];
 

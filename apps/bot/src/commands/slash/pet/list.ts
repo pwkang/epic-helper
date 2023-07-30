@@ -5,14 +5,14 @@ import {
 } from '../../../lib/epic-helper/features/pets/pet-list';
 import {itemListingHelper} from '../../../utils/item-listing-helper';
 import {userPetServices} from '../../../services/database/user-pet.service';
-import {SLASH_COMMAND_PET_NAME} from './constant';
 import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
+import {SLASH_COMMAND} from '../constant';
 
 export default <SlashCommand>{
-  name: 'list',
-  description: 'List all your pets',
+  name: SLASH_COMMAND.pet.list.name,
+  description: SLASH_COMMAND.pet.list.description,
+  commandName: SLASH_COMMAND.pet.name,
   type: 'subcommand',
-  commandName: SLASH_COMMAND_PET_NAME,
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,

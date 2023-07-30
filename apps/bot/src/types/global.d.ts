@@ -4,17 +4,12 @@ import type {
   Message,
   SlashCommandBuilder,
   SlashCommandSubcommandBuilder,
-  SlashCommandSubcommandGroupBuilder,
   User,
 } from 'discord.js';
 import {ChatInputCommandInteraction} from 'discord.js';
 import type {ScheduleOptions} from 'node-cron';
-import {
-  PREFIX_COMMAND_TYPE,
-  SLASH_MESSAGE_BOT_TYPE,
-  USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
-} from '@epic-helper/constants';
+import {PREFIX_COMMAND_TYPE, SLASH_MESSAGE_BOT_TYPE} from '@epic-helper/constants';
+import {ICommandPreCheck} from './utils';
 
 declare global {
   export type ValuesOf<T extends Record<string, unknown>> = T[keyof T];
@@ -23,10 +18,7 @@ declare global {
     name: string;
     commands: string[];
     execute: (client: Client, message: Message, args: string[]) => void | Promise<void>;
-    preCheck: {
-      userNotRegistered?: ValuesOf<typeof USER_NOT_REGISTERED_ACTIONS>;
-      userAccOff?: ValuesOf<typeof USER_ACC_OFF_ACTIONS>;
-    };
+    preCheck: ICommandPreCheck;
     type: ValuesOf<typeof PREFIX_COMMAND_TYPE>;
   }
 
@@ -36,10 +28,7 @@ declare global {
     name: string;
     description: string;
     execute: (client: Client, interaction: ChatInputCommandInteraction) => Promise<void>;
-    preCheck: {
-      userNotRegistered?: ValuesOf<typeof USER_NOT_REGISTERED_ACTIONS>;
-      userAccOff?: ValuesOf<typeof USER_ACC_OFF_ACTIONS>;
-    };
+    preCheck: ICommandPreCheck;
   }
 
   interface SlashCommandRoot extends SlashCommandBase {

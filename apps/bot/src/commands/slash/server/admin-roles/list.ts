@@ -1,13 +1,14 @@
-import djsInteractionHelper from '../../../lib/discordjs/interaction';
-import commandHelper from '../../../lib/epic-helper/command-helper';
-import {SERVER_SETTINGS_PAGE_TYPE} from '../../../lib/epic-helper/command-helper/server-settings/constant';
 import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
-import {SLASH_COMMAND} from '../constant';
+import {SLASH_COMMAND} from '../../constant';
+import commandHelper from '../../../../lib/epic-helper/command-helper';
+import {SERVER_SETTINGS_PAGE_TYPE} from '../../../../lib/epic-helper/command-helper/server-settings/constant';
+import djsInteractionHelper from '../../../../lib/discordjs/interaction';
 
 export default <SlashCommand>{
-  name: SLASH_COMMAND.server.settings.name,
-  description: SLASH_COMMAND.server.settings.description,
+  name: SLASH_COMMAND.server.adminRoles.list.name,
+  description: SLASH_COMMAND.server.adminRoles.list.description,
   commandName: SLASH_COMMAND.server.name,
+  groupName: SLASH_COMMAND.server.adminRoles.name,
   type: 'subcommand',
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
@@ -21,7 +22,7 @@ export default <SlashCommand>{
     });
     if (!serverSettings) return;
     const messageOptions = serverSettings.render({
-      type: SERVER_SETTINGS_PAGE_TYPE.randomEvent,
+      type: SERVER_SETTINGS_PAGE_TYPE.adminRoles,
     });
     const event = await djsInteractionHelper.replyInteraction({
       client,
