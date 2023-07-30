@@ -9,7 +9,7 @@ import {
 } from './custom-message.constant';
 import {generateUserReminderMessage} from '../../reminders/message-generator/custom-message-generator';
 import ms from 'ms';
-import {IToggleUserCheckerReturnType} from '../../donor-checker/toggle-checker/user';
+import {IToggleUserCheckerReturnType} from '../../toggle-checker/user';
 
 export interface IGetCustomMessageEmbed {
   client: Client;

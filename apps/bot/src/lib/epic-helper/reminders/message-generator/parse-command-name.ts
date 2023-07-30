@@ -6,7 +6,7 @@ import {
   RPG_WORKING_TYPE,
 } from '@epic-helper/constants';
 import {IUserReminder} from '@epic-helper/models';
-import {IToggleUserCheckerReturnType} from '../../donor-checker/toggle-checker/user';
+import {IToggleUserCheckerReturnType} from '../../toggle-checker/user';
 
 interface IGetDailyCommandStr {}
 

@@ -3,7 +3,7 @@ import {BaseMessageOptions, Client, User} from 'discord.js';
 import {CUSTOM_MESSAGE_PAGE_TYPE} from './custom-message.constant';
 import {_getCustomMessageEmbed} from './custom-message.embed';
 import {_customMessagePageSelector} from './custom-message.components';
-import {IToggleUserCheckerReturnType} from '../../donor-checker/toggle-checker/user';
+import {IToggleUserCheckerReturnType} from '../../toggle-checker/user';
 
 export interface IGetMessageOptions {
   client: Client;

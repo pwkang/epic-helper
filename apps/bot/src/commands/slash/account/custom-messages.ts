@@ -2,7 +2,7 @@ import djsInteractionHelper from '../../../lib/discordjs/interaction';
 import {userService} from '../../../services/database/user.service';
 import commandHelper from '../../../lib/epic-helper/command-helper';
 import {CUSTOM_MESSAGE_PAGE_TYPE} from '../../../lib/epic-helper/command-helper/custom-message/custom-message.constant';
-import toggleUserChecker from '../../../lib/epic-helper/donor-checker/toggle-checker/user';
+import toggleUserChecker from '../../../lib/epic-helper/toggle-checker/user';
 import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
 import {SLASH_COMMAND} from '../constant';
 

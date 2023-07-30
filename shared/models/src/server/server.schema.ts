@@ -9,6 +9,11 @@ const enchantChannelSchema = new Schema<IEnchantChannel>({
 export const serverSchema = new Schema<IServer>({
   serverId: {type: String, required: true},
   name: {type: String, required: true},
+  toggle: {
+    enchantMute: {type: Boolean, default: true},
+    randomEvent: {type: Boolean, default: true},
+    ttVerification: {type: Boolean, default: true},
+  },
   settings: {
     admin: {
       usersId: [{type: String}],

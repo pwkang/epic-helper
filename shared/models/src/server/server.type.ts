@@ -17,6 +17,12 @@ export interface IToken {
   amount: number;
 }
 
+export interface IServerToggle {
+  enchantMute: boolean;
+  randomEvent: boolean;
+  ttVerification: boolean;
+}
+
 export interface IServer {
   serverId: string;
   name: string;
@@ -35,5 +41,6 @@ export interface IServer {
       rules: ITTVerificationRules[];
     };
   };
+  toggle: IServerToggle;
   tokens: IToken[];
 }

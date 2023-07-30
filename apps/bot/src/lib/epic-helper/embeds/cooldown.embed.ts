@@ -4,7 +4,7 @@ import {IUser, IUserReminder} from '@epic-helper/models';
 import {EmbedBuilder, User} from 'discord.js';
 import {_parseCommandString} from '../reminders/message-generator/parse-command-name';
 import {capitalizeFirstLetters} from '@epic-helper/utils';
-import {IToggleUserCheckerReturnType} from '../donor-checker/toggle-checker/user';
+import {IToggleUserCheckerReturnType} from '../toggle-checker/user';
 
 interface ICooldownItem {
   type: ValuesOf<typeof RPG_COMMAND_TYPE>;

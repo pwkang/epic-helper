@@ -7,7 +7,7 @@ import {
 } from '@epic-helper/constants';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {userService} from '../../../../services/database/user.service';
-import toggleUserChecker from '../../../../lib/epic-helper/donor-checker/toggle-checker/user';
+import toggleUserChecker from '../../../../lib/epic-helper/toggle-checker/user';
 
 export default <PrefixCommand>{
   name: 'ehCooldown',

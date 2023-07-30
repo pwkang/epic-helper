@@ -1,6 +1,6 @@
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle, User} from 'discord.js';
 import {userService} from '../../../services/database/user.service';
-import toggleUserChecker from '../donor-checker/toggle-checker/user';
+import toggleUserChecker from '../toggle-checker/user';
 
 type TAnswerType = string | number | boolean;
 
