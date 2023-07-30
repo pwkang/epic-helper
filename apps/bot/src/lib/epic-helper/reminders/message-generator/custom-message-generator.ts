@@ -9,7 +9,7 @@ import {interpolateMessage} from '../../../../utils/message-interpolation';
 import {BOT_CUSTOM_MESSAGE_VARIABLES} from '@epic-helper/constants';
 import {convertNumToPetId} from '@epic-helper/utils';
 import timestampHelper from '../../../discordjs/timestamp';
-import {IToggleUserCheckerReturnType} from '../../donor-checker/toggle-checker/user';
+import {IToggleUserCheckerReturnType} from '../../toggle-checker/user';
 
 interface IGenerateCustomMessage {
   client: Client;

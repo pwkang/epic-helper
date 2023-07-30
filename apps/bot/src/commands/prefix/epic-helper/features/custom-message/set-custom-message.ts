@@ -10,7 +10,7 @@ import {
 import {djsMessageHelper} from '../../../../../lib/discordjs/message';
 import {userService} from '../../../../../services/database/user.service';
 import commandHelper from '../../../../../lib/epic-helper/command-helper';
-import toggleUserChecker from '../../../../../lib/epic-helper/donor-checker/toggle-checker/user';
+import toggleUserChecker from '../../../../../lib/epic-helper/toggle-checker/user';
 
 export default <PrefixCommand>{
   name: 'customMessageSet',

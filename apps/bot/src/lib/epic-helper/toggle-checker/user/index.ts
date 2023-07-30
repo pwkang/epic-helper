@@ -1,5 +1,5 @@
-import {userService} from '../../../../../services/database/user.service';
-import donorChecker from '../../index';
+import {userService} from '../../../../services/database/user.service';
+import donorChecker from '../../donor-checker';
 import {
   _toggleCountdown,
   _toggleDmReminder,

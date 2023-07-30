@@ -10,7 +10,7 @@ import {IMessageContentChecker} from '../../../../types/utils';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
-import toggleUserChecker from '../../../epic-helper/donor-checker/toggle-checker/user';
+import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
 
 const EPIC_ITEM_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.epicItem;
 

@@ -6,7 +6,7 @@ import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import {userPetServices} from '../../../../services/database/user-pet.service';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {generateUserReminderMessage} from '../message-generator/custom-message-generator';
-import toggleUserChecker from '../../donor-checker/toggle-checker/user';
+import toggleUserChecker from '../../toggle-checker/user';
 
 interface IUserPetReminderTimesUp {
   client: Client;

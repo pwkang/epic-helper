@@ -10,7 +10,7 @@ import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown'
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {userStatsService} from '../../../../services/database/user-stats.service';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
-import toggleUserChecker from '../../../epic-helper/donor-checker/toggle-checker/user';
+import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
 
 interface IRpgEpicQuest {
   client: Client;

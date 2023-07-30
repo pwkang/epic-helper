@@ -8,7 +8,7 @@ import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
-import toggleUserChecker from '../../../epic-helper/donor-checker/toggle-checker/user';
+import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
 
 const DAILY_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.daily;
 

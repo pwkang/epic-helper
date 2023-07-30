@@ -8,7 +8,7 @@ import {userService} from '../../../../services/database/user.service';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {generateUserReminderMessage} from '../message-generator/custom-message-generator';
 import {djsUserHelper} from '../../../discordjs/user';
-import toggleUserChecker from '../../donor-checker/toggle-checker/user';
+import toggleUserChecker from '../../toggle-checker/user';
 
 export const userReminderTimesUp = async (client: Client, userId: string) => {
   const userAccount = await userService.getUserAccount(userId);

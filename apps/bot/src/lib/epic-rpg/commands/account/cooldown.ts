@@ -5,7 +5,7 @@ import {calcExtraHuntCdWithPartner} from '../../../epic-helper/reminders/command
 import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {userService} from '../../../../services/database/user.service';
-import toggleUserChecker from '../../../epic-helper/donor-checker/toggle-checker/user';
+import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
 
 const RPG_COMMAND_CATEGORY = {
   daily: ['daily'],

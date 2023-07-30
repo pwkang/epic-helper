@@ -14,7 +14,7 @@ import {userStatsService} from '../../../../services/database/user-stats.service
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {userService} from '../../../../services/database/user.service';
 import {djsMessageHelper} from '../../../discordjs/message';
-import toggleUserChecker from '../../../epic-helper/donor-checker/toggle-checker/user';
+import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
 
 interface IRpgAdventure {
   client: Client;

@@ -14,7 +14,7 @@ import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-cha
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {userStatsService} from '../../../../services/database/user-stats.service';
 import {userService} from '../../../../services/database/user.service';
-import toggleUserChecker from '../../../epic-helper/donor-checker/toggle-checker/user';
+import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
 
 interface IRpgHunt {
   client: Client;
