@@ -23,7 +23,6 @@ export interface IToggleEmbedsInfo {
 
 interface IGetToggleEmbed {
   embedsInfo: IToggleEmbedsInfo[];
-  displayItem: string;
 }
 
 export const renderEmbed = ({embedsInfo}: IGetToggleEmbed): EmbedBuilder => {

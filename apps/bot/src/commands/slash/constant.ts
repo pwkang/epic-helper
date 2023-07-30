@@ -194,6 +194,22 @@ export const SLASH_COMMAND = {
         description: 'Remove Admin Role',
       },
     },
+    toggle: {
+      name: 'toggle',
+      description: 'Toggle server settings',
+      set: {
+        name: 'set',
+        description: 'Update server toggle',
+      },
+      show: {
+        name: 'show',
+        description: 'Show server toggle',
+      },
+      reset: {
+        name: 'reset',
+        description: 'Reset server toggle',
+      },
+    },
   },
   toggle: {
     name: 'toggle',

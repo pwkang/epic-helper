@@ -1,5 +1,5 @@
 import type {IToggleEmbedsInfo} from './toggle.embed';
-import {IGuild, IUserToggle} from '@epic-helper/models';
+import {IGuild, IServer, IServerToggle, IUserToggle} from '@epic-helper/models';
 
 export const donor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
   return [
@@ -519,8 +519,36 @@ const guild = (guildToggle: IGuild['toggle']): IToggleEmbedsInfo[] => {
   ];
 };
 
+const server = (serverToggle: IServerToggle): IToggleEmbedsInfo[] => {
+  return [
+    {
+      id: 'general',
+      title: 'General',
+      inline: true,
+      children: [
+        {
+          label: 'Enchant Mute',
+          value: serverToggle.enchantMute,
+          path: 'toggle.enchantMute',
+        },
+        {
+          label: 'Random event ping',
+          value: serverToggle.randomEvent,
+          path: 'toggle.randomEvent',
+        },
+        {
+          label: 'TT Verification',
+          value: serverToggle.ttVerification,
+          path: 'toggle.ttVerification',
+        },
+      ],
+    },
+  ];
+};
+
 export const toggleDisplayList = {
   donor,
   nonDonor,
   guild,
+  server,
 };

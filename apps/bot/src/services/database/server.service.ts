@@ -535,14 +535,33 @@ interface IClearServerAdminRoles {
 const clearServerAdminRoles = async ({serverId}: IClearServerAdminRoles) => {
   const server = await dbServer.findOneAndUpdate(
     {serverId},
-    {
-      $set: {
-        'settings.admin.rolesId': [],
-      },
-    },
+    {$set: {'settings.admin.rolesId': []}},
     {new: true}
   );
   return server ?? null;
+};
+
+interface IUpdateServerToggle {
+  serverId: string;
+  query: UpdateQuery<IServer>;
+}
+
+const updateServerToggle = async ({serverId, query}: IUpdateServerToggle) => {
+  const updatedServer = await dbServer.findOneAndUpdate({serverId}, query, {new: true});
+  return updatedServer ?? null;
+};
+
+interface IResetToggle {
+  serverId: string;
+}
+
+const resetServerToggle = async ({serverId}: IResetToggle) => {
+  const updatedServer = await dbServer.findOneAndUpdate(
+    {serverId},
+    {$unset: {toggle: ''}},
+    {new: true}
+  );
+  return updatedServer ?? null;
 };
 
 export const serverService = {
@@ -570,4 +589,6 @@ export const serverService = {
   addServerAdminRoles,
   removeServerAdminRoles,
   clearServerAdminRoles,
+  updateServerToggle,
+  resetServerToggle,
 };
