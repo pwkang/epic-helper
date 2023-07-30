@@ -15,6 +15,7 @@ import {
   USER_ACC_OFF_ACTIONS,
   USER_NOT_REGISTERED_ACTIONS,
 } from '@epic-helper/constants';
+import {ICommandPreCheck} from './utils';
 
 declare global {
   export type ValuesOf<T extends Record<string, unknown>> = T[keyof T];
@@ -23,10 +24,7 @@ declare global {
     name: string;
     commands: string[];
     execute: (client: Client, message: Message, args: string[]) => void | Promise<void>;
-    preCheck: {
-      userNotRegistered?: ValuesOf<typeof USER_NOT_REGISTERED_ACTIONS>;
-      userAccOff?: ValuesOf<typeof USER_ACC_OFF_ACTIONS>;
-    };
+    preCheck: ICommandPreCheck;
     type: ValuesOf<typeof PREFIX_COMMAND_TYPE>;
   }
 
@@ -36,10 +34,7 @@ declare global {
     name: string;
     description: string;
     execute: (client: Client, interaction: ChatInputCommandInteraction) => Promise<void>;
-    preCheck: {
-      userNotRegistered?: ValuesOf<typeof USER_NOT_REGISTERED_ACTIONS>;
-      userAccOff?: ValuesOf<typeof USER_ACC_OFF_ACTIONS>;
-    };
+    preCheck: ICommandPreCheck;
   }
 
   interface SlashCommandRoot extends SlashCommandBase {
