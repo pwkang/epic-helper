@@ -6,6 +6,7 @@ import commandHelper from '../../../epic-helper/command-helper';
 import {serverService} from '../../../../services/database/server.service';
 import {djsMessageHelper} from '../../../discordjs/message';
 import embedProvider from '../../../epic-helper/embeds';
+import toggleServerChecker from '../../../epic-helper/toggle-checker/server';
 
 interface IRpgProfile {
   server: Guild;
@@ -82,11 +83,15 @@ const rpgProfileAttachment = async ({server, channelId, client, author}: IRpgPro
     serverId: server.id,
   });
   if (!serverAccount) return;
+  const toggleServer = await toggleServerChecker({
+    serverId: server.id,
+  });
+  if (!toggleServer?.ttVerification) return;
   const ttVerificationSettings = serverAccount.settings.ttVerification;
   if (!ttVerificationSettings) return;
   if (ttVerificationSettings.channelId !== channelId) return;
 
-  djsMessageHelper.send({
+  await djsMessageHelper.send({
     client,
     channelId,
     options: {

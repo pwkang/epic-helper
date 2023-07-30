@@ -5,6 +5,7 @@ import {djsMessageHelper} from '../../../discordjs/message';
 import {BOT_COLOR} from '@epic-helper/constants';
 import {ITTVerificationRules} from '@epic-helper/models';
 import messageFormatter from '../../../discordjs/message-formatter';
+import toggleServerChecker from '../../toggle-checker/server';
 
 interface ICheckAndAssignTTRole {
   client: Client;
@@ -25,6 +26,12 @@ export const _verifyTT = async ({
     serverId: server.id,
   });
   if (!serverAccount) return;
+
+  const toggleServer = await toggleServerChecker({
+    serverId: server.id,
+  });
+  if (!toggleServer?.ttVerification) return;
+
   const ttVerificationSettings = serverAccount.settings.ttVerification;
   if (!ttVerificationSettings) return;
   if (ttVerificationSettings.channelId !== channelId) return;
