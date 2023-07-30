@@ -7,6 +7,7 @@ export default <BotEvent>{
   eventName: Events.MessageCreate,
   once: false,
   execute: async (client, message: Message) => {
+    if (!message.inGuild()) return;
     if (isBotSlashCommand(message) && isNotDeferred(message)) {
       const messages = searchSlashMessages(client, message);
       if (!messages.size) return;
@@ -26,6 +27,8 @@ export default <BotEvent>{
         preCheck: result.command.preCheck,
         author: message.author,
         channelId: message.channelId,
+        server: message.guild,
+        message,
       });
       if (!toExecute) return;
       await result.command.execute(client, message, result.args);

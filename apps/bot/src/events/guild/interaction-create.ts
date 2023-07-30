@@ -5,7 +5,7 @@ export default <BotEvent>{
   eventName: Events.InteractionCreate,
   once: false,
   execute: async (client, interaction: BaseInteraction) => {
-    if (!interaction.guild) return;
+    if (!interaction.inGuild() || !interaction.guild) return;
 
     if (interaction.isChatInputCommand()) {
       const command = searchSlashCommand(client, interaction);
@@ -17,6 +17,8 @@ export default <BotEvent>{
         preCheck: command.preCheck,
         author: interaction.user,
         channelId: interaction.channelId,
+        server: interaction.guild,
+        interaction,
       });
       if (!toExecute) return;
 

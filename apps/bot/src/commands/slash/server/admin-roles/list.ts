@@ -13,6 +13,7 @@ export default <SlashCommand>{
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,
+    isServerAdmin: true,
   },
   execute: async (client, interaction) => {
     if (!interaction.inGuild() || !interaction.guild) return;
