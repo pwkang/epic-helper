@@ -3,6 +3,7 @@ import djsInteractionHelper from '../../../../lib/discordjs/interaction';
 import commandHelper from '../../../../lib/epic-helper/command-helper';
 import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
 import {SLASH_COMMAND} from '../../constant';
+import {getGuildToggleEmbed} from '../../../../lib/epic-helper/command-helper/toggle/type/guild.toggle';
 
 export default <SlashCommand>{
   name: SLASH_COMMAND.guild.toggle.reset.name,
@@ -25,12 +26,12 @@ export default <SlashCommand>{
     if (!interaction.inGuild()) return;
     const guildRole = interaction.options.getRole('role', true);
 
-    const guildAccount = await guildService.findGuild({
+    const toggleGuild = await commandHelper.toggle.guild({
       serverId: interaction.guildId,
       roleId: guildRole.id,
     });
 
-    if (!guildAccount)
+    if (!toggleGuild)
       return djsInteractionHelper.replyInteraction({
         client,
         interaction,
@@ -40,20 +41,13 @@ export default <SlashCommand>{
         },
       });
 
-    const updatedGuildAccount = await guildService.resetToggle({
-      serverId: interaction.guildId,
-      roleId: guildRole.id,
-    });
-    if (!updatedGuildAccount) return;
-    const embed = commandHelper.toggle.getGuildToggleEmbed({
-      guildAccount: updatedGuildAccount,
-    });
+    const messageOptions = await toggleGuild.reset();
+
+    if (!messageOptions) return;
     await djsInteractionHelper.replyInteraction({
       client,
       interaction,
-      options: {
-        embeds: [embed],
-      },
+      options: messageOptions,
     });
   },
 };

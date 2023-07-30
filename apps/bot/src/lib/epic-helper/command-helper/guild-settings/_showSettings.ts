@@ -13,6 +13,7 @@ import {_getGuildSettingsEmbed} from './embed/guild-settings.embed';
 import commandHelper from '../index';
 import messageFormatter from '../../../discordjs/message-formatter';
 import {IGuild} from '@epic-helper/models';
+import {getGuildToggleEmbed} from '../toggle/type/guild.toggle';
 
 export const ITEMS_PER_PAGE = 20;
 
@@ -63,7 +64,7 @@ export const _showSettings = async ({server, type, initialGuildRoleId}: IShowSet
           guildAccount: guilds.find((guild) => guild.roleId === currentGuildRoleId)!,
         });
       case GUILD_SETTINGS_PAGE_TYPE.toggle:
-        return commandHelper.toggle.getGuildToggleEmbed({
+        return getGuildToggleEmbed({
           guildAccount: guilds.find((guild) => guild.roleId === currentGuildRoleId)!,
         });
     }
