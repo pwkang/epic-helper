@@ -16,7 +16,6 @@ import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
 import embedReaders from '../../embed-readers';
 import {generatePetCatchMessageOptions} from '../../utils/pet-catch-cmd';
 import messageFormatter from '../../../discordjs/message-formatter';
-import {createMessageEditedListener} from '../../../../utils/message-edited-listener';
 
 interface IRpgTraining {
   client: Client;

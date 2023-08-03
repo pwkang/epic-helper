@@ -1,9 +1,7 @@
-import {guildService} from '../../../../services/database/guild.service';
 import djsInteractionHelper from '../../../../lib/discordjs/interaction';
 import commandHelper from '../../../../lib/epic-helper/command-helper';
 import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
 import {SLASH_COMMAND} from '../../constant';
-import {getGuildToggleEmbed} from '../../../../lib/epic-helper/command-helper/toggle/type/guild.toggle';
 
 export default <SlashCommand>{
   name: SLASH_COMMAND.guild.toggle.reset.name,

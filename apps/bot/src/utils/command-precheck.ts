@@ -3,9 +3,7 @@ import {
   BaseMessageOptions,
   Client,
   Guild,
-  GuildMember,
   Message,
-  MessageInteraction,
   PermissionsBitField,
   User,
 } from 'discord.js';

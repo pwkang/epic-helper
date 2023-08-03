@@ -1,15 +1,5 @@
 import type {IToggleEmbedsInfo} from './toggle.embed';
-import {renderEmbed} from './toggle.embed';
 import type {UpdateQuery} from 'mongoose';
-import {BaseMessageOptions, Guild, User} from 'discord.js';
-import {toggleDisplayList} from './toggle.list';
-import {IGuild, IServer, IUser, IUserToggle} from '@epic-helper/models';
-import {PREFIX} from '@epic-helper/constants';
-import {userService} from '../../../../services/database/user.service';
-import donorChecker from '../../donor-checker';
-import commandHelper from '../index';
-import {guildService} from '../../../../services/database/guild.service';
-import {serverService} from '../../../../services/database/server.service';
 import {getUserToggle} from './type/user.toggle';
 import {getServerToggle} from './type/server.toggle';
 import {getGuildToggle} from './type/guild.toggle';

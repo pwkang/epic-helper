@@ -10,7 +10,6 @@ import {
 } from 'discord.js';
 import {generateNavigationRow, NAVIGATION_ROW_BUTTONS} from '../../../../utils/pagination-row';
 import {_getGuildSettingsEmbed} from './embed/guild-settings.embed';
-import commandHelper from '../index';
 import messageFormatter from '../../../discordjs/message-formatter';
 import {IGuild} from '@epic-helper/models';
 import {getGuildToggleEmbed} from '../toggle/type/guild.toggle';
