@@ -1,14 +1,9 @@
-import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {
-  rpgPetAdvCancel,
-  rpgPetCancelChecker,
-} from '../../../../lib/epic-rpg/commands/pets/pet-cancel';
-import {djsMessageHelper} from '../../../../lib/discordjs/message';
 import {
   PREFIX_COMMAND_TYPE,
   USER_ACC_OFF_ACTIONS,
   USER_NOT_REGISTERED_ACTIONS,
 } from '@epic-helper/constants';
+import {rpgPetCancel} from '../../../../lib/epic-rpg/commands/pets/pet-cancel';
 
 const args1 = ['pets', 'pet'];
 const args2 = ['adventure', 'adv'];
@@ -29,43 +24,12 @@ export default <PrefixCommand>{
     userAccOff: USER_ACC_OFF_ACTIONS.abort,
   },
   execute: (client, message, args) => {
-    const event = createRpgCommandListener({
-      channelId: message.channel.id,
-      client,
+    rpgPetCancel({
+      message,
+      isSlashCommand: false,
       author: message.author,
-    });
-    if (!event) return;
-    event.on('content', async (content, collected) => {
-      if (
-        rpgPetCancelChecker.isPetSuccessfullyCancelled({
-          message: collected,
-          author: message.author,
-        })
-      ) {
-        const cancelledPetAmount = rpgPetCancelChecker.extractCancelledPetAmount({
-          message: collected,
-        });
-        const options = await rpgPetAdvCancel({
-          message: collected,
-          author: message.author,
-          selectedPets: args.slice(3),
-          amountOfPetCancelled: cancelledPetAmount,
-        });
-        djsMessageHelper.send({
-          client,
-          channelId: message.channel.id,
-          options,
-        });
-        event.stop();
-      }
-      if (
-        rpgPetCancelChecker.isFailToCancelPet({
-          message: collected,
-          author: message.author,
-        })
-      ) {
-        event.stop();
-      }
+      client,
+      selectedPets: args.slice(3),
     });
   },
 };
