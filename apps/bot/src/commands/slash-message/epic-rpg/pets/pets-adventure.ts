@@ -6,19 +6,27 @@ import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import ms from 'ms';
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Message, User} from 'discord.js';
 import {
-  rpgPetAdvCancel,
+  rpgPetAdvCancelSuccess,
   rpgPetCancelChecker,
 } from '../../../../lib/epic-rpg/commands/pets/pet-cancel';
 import {isPetsIdValid} from '@epic-helper/utils';
 import djsInteractionHelper from '../../../../lib/discordjs/interaction';
 import {djsMessageHelper} from '../../../../lib/discordjs/message';
 import timestampHelper from '../../../../lib/discordjs/timestamp';
-import {SLASH_MESSAGE_BOT_TYPE} from '@epic-helper/constants';
+import {
+  SLASH_MESSAGE_BOT_TYPE,
+  USER_ACC_OFF_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS,
+} from '@epic-helper/constants';
 
 export default <SlashMessage>{
   name: 'petsAdventure',
   bot: SLASH_MESSAGE_BOT_TYPE.rpg,
   commandName: ['pets adventure'],
+  preCheck: {
+    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.abort,
+    userAccOff: USER_ACC_OFF_ACTIONS.abort,
+  },
   execute: async (client, message, author) => {
     const event = createRpgCommandListener({
       channelId: message.channel.id,
@@ -51,7 +59,7 @@ export default <SlashMessage>{
           selectedPets: selectedPetsId,
           amountOfPetSent,
         });
-        djsMessageHelper.send({channelId: message.channel.id, client, options});
+        await djsMessageHelper.send({channelId: message.channel.id, client, options});
       }
       if (
         rpgPetCancelChecker.isPetSuccessfullyCancelled({
@@ -69,13 +77,13 @@ export default <SlashMessage>{
           message: collected,
           client,
         });
-        const options = await rpgPetAdvCancel({
+        const options = await rpgPetAdvCancelSuccess({
           message: collected,
           author,
           selectedPets: selectedPetsId,
           amountOfPetCancelled,
         });
-        djsMessageHelper.send({
+        await djsMessageHelper.send({
           channelId: message.channel.id,
           client,
           options,
@@ -111,29 +119,7 @@ const collectSelectedPets = ({
       },
     });
     if (!event) return;
-    event.on('epic', () => {
-      resolve(['epic']);
-      event.stop();
-      return {
-        components: [],
-        content: '**EPIC** selected',
-      };
-    });
-    event.on('ids', async (interaction) => {
-      if (!interaction.isButton()) return {};
-      djsInteractionHelper.updateInteraction({
-        client,
-        interaction,
-        options: {
-          components: [],
-          content: 'Insert IDs',
-        },
-      });
-      const selectedPetsId = await collectSelectedPetsId({client, message, author});
-      resolve(selectedPetsId);
-      return null;
-    });
-    setTimeout(() => {
+    const autoSelectTimeout = setTimeout(() => {
       if (event.isEnded()) return;
       resolve(['epic']);
       event.stop();
@@ -146,6 +132,29 @@ const collectSelectedPets = ({
         },
       });
     }, ms('5s'));
+    event.on('epic', () => {
+      resolve(['epic']);
+      event.stop();
+      return {
+        components: [],
+        content: '**EPIC** selected',
+      };
+    });
+    event.on('ids', async (interaction) => {
+      if (!interaction.isButton()) return {};
+      await djsInteractionHelper.updateInteraction({
+        client,
+        interaction,
+        options: {
+          components: [],
+          content: 'Insert IDs',
+        },
+      });
+      const selectedPetsId = await collectSelectedPetsId({client, message, author});
+      clearTimeout(autoSelectTimeout);
+      resolve(selectedPetsId);
+      return null;
+    });
   });
 };
 
@@ -155,7 +164,7 @@ const collectSelectedPetsId = ({
   author,
 }: ICollectSelectedPets): Promise<string[]> => {
   return new Promise(async (resolve) => {
-    const event = await message.channel.createMessageCollector({
+    const event = message.channel.createMessageCollector({
       filter: (m) => m.author.id === author.id,
       idle: ms('30s'),
     });

@@ -1,14 +1,9 @@
-import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {
-  isNoPetsToClaim,
-  rpgPetClaim,
-  rpgPetClaimChecker,
-} from '../../../../lib/epic-rpg/commands/pets/pet-claim';
 import {
   PREFIX_COMMAND_TYPE,
   USER_ACC_OFF_ACTIONS,
   USER_NOT_REGISTERED_ACTIONS,
 } from '@epic-helper/constants';
+import {rpgPetClaim} from '../../../../lib/epic-rpg/commands/pets/pet-claim';
 
 export default <PrefixCommand>{
   name: 'petClaim',
@@ -18,37 +13,12 @@ export default <PrefixCommand>{
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.abort,
     userAccOff: USER_ACC_OFF_ACTIONS.abort,
   },
-  execute: (client, message) => {
-    const event = createRpgCommandListener({
-      channelId: message.channel.id,
+  execute: async (client, message) => {
+    await rpgPetClaim({
       client,
       author: message.author,
-    });
-    if (!event) return;
-    event.on('content', (content, collected) => {
-      if (
-        isNoPetsToClaim({
-          message: collected,
-          author: message.author,
-        })
-      ) {
-        event.stop();
-      }
-    });
-    event.on('embed', async (embed) => {
-      if (
-        rpgPetClaimChecker.isSuccessfullyClaimedPet({
-          embed,
-          author: message.author,
-        })
-      ) {
-        event.stop();
-        await rpgPetClaim({
-          client,
-          embed,
-          author: message.author,
-        });
-      }
+      message,
+      isSlashCommand: false,
     });
   },
 };

@@ -1,23 +1,23 @@
-import {rpgEpicQuest} from '../../../../lib/epic-rpg/commands/progress/epic-quest';
 import {
   SLASH_MESSAGE_BOT_TYPE,
   USER_ACC_OFF_ACTIONS,
   USER_NOT_REGISTERED_ACTIONS,
 } from '@epic-helper/constants';
+import {rpgPetList} from '../../../../lib/epic-rpg/commands/pets/pet-list';
 
 export default <SlashMessage>{
-  name: 'rpgEpicQuest',
+  name: 'petsList',
   bot: SLASH_MESSAGE_BOT_TYPE.rpg,
-  commandName: ['epic quest'],
+  commandName: ['pets list'],
   preCheck: {
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.abort,
     userAccOff: USER_ACC_OFF_ACTIONS.abort,
   },
   execute: async (client, message, author) => {
-    rpgEpicQuest({
+    await rpgPetList({
+      client,
       author,
       message,
-      client,
       isSlashCommand: true,
     });
   },

@@ -1,16 +1,62 @@
-import {Embed, User} from 'discord.js';
+import {Client, Embed, Message, User} from 'discord.js';
 import ms from 'ms';
 import embedReaders from '../../embed-readers';
 import {userPetServices} from '../../../../services/database/user-pet.service';
 import {RPG_PET_SKILL} from '@epic-helper/constants';
 import {IUserPet} from '@epic-helper/models';
+import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
+import {createMessageEditedListener} from '../../../../utils/message-edited-listener';
 
 interface IRpgPet {
-  embed: Embed;
+  client: Client;
   author: User;
+  message: Message;
+  isSlashCommand: boolean;
 }
 
-export const rpgPetList = async ({author, embed}: IRpgPet) => {
+export const rpgPetList = async ({message, author, isSlashCommand, client}: IRpgPet) => {
+  const event = createRpgCommandListener({
+    author,
+    client,
+    channelId: message.channel.id,
+  });
+  if (!event) return;
+  event.on('embed', async (embed, collected) => {
+    if (isRpgPet({author, embed})) {
+      await rpgPetSuccess({client, author, embed, message: collected});
+      event.stop();
+    }
+  });
+  if (isSlashCommand) event.triggerCollect(message);
+};
+
+interface IRpgPetSuccess {
+  client: Client;
+  embed: Embed;
+  author: User;
+  message: Message;
+}
+
+const rpgPetSuccess = async ({author, embed, message, client}: IRpgPetSuccess) => {
+  await updatePetsFromEmbed({embed, author, client});
+  const event = await createMessageEditedListener({
+    messageId: message.id,
+  });
+  if (!event) return;
+  event.on('edited', async (newMessage) => {
+    if (isRpgPet({author, embed: newMessage.embeds[0]})) {
+      await updatePetsFromEmbed({embed: newMessage.embeds[0], author, client});
+    }
+  });
+};
+
+interface IUpdatePetsFromEmbed {
+  embed: Embed;
+  author: User;
+  client: Client;
+}
+
+const updatePetsFromEmbed = async ({embed, author, client}: IUpdatePetsFromEmbed) => {
   const pets = embedReaders.pets({embed, author});
   const dbPetsList = await userPetServices.getUserPets({
     userId: author.id,
@@ -85,8 +131,4 @@ interface IGetMaxPetId {
 const getMaxPetId = ({embed}: IGetMaxPetId) => {
   const num = embed.description?.split('\n')?.[1]?.split(' ')?.pop()?.split('/')[0];
   return num ? parseInt(num) : 0;
-};
-
-export const rpgPetListChecker = {
-  isRpgPet,
 };

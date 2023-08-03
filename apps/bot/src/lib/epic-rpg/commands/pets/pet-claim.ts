@@ -1,14 +1,47 @@
 import {IMessageContentChecker, IMessageEmbedChecker} from '../../../../types/utils';
-import {Client, Embed, User} from 'discord.js';
+import {Client, Embed, Message, User} from 'discord.js';
 import {userPetServices} from '../../../../services/database/user-pet.service';
+import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 
 interface IRpgPetClaim {
+  client: Client;
+  author: User;
+  message: Message;
+  isSlashCommand: boolean;
+}
+
+export const rpgPetClaim = async ({author, message, client, isSlashCommand}: IRpgPetClaim) => {
+  const event = createRpgCommandListener({
+    channelId: message.channel.id,
+    client,
+    author: message.author,
+  });
+  if (!event) return;
+  event.on('content', (_, collected) => {
+    if (isNoPetsToClaim({message: collected, author})) {
+      event.stop();
+    }
+  });
+  event.on('embed', async (embed) => {
+    if (isSuccessfullyClaimedPet({embed, author})) {
+      event.stop();
+      await rpgPetClaimSuccess({
+        client,
+        embed,
+        author,
+      });
+    }
+  });
+  if (isSlashCommand) event.triggerCollect(message);
+};
+
+interface IRpgPetClaimSuccess {
   embed: Embed;
   author: User;
   client: Client;
 }
 
-export const rpgPetClaim = async ({author}: IRpgPetClaim) => {
+const rpgPetClaimSuccess = async ({embed, author, client}: IRpgPetClaimSuccess) => {
   await userPetServices.claimAllPets({
     userId: author.id,
   });
@@ -18,10 +51,6 @@ const isSuccessfullyClaimedPet = ({embed, author}: IMessageEmbedChecker) =>
   ['Reward summary', 'Pet adventure rewards'].some((str) => embed.title?.includes(str)) &&
   embed.author?.name === `${author.username} — pets`;
 
-export const isNoPetsToClaim = ({message, author}: IMessageContentChecker) =>
+const isNoPetsToClaim = ({message, author}: IMessageContentChecker) =>
   message.content.includes('there are no pet adventure rewards to claim') &&
   message.mentions.has(author.id);
-
-export const rpgPetClaimChecker = {
-  isSuccessfullyClaimedPet,
-};

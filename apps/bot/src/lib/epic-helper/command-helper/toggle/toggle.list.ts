@@ -1,5 +1,5 @@
 import type {IToggleEmbedsInfo} from './toggle.embed';
-import {IGuild, IServer, IServerToggle, IUserToggle} from '@epic-helper/models';
+import {IGuild, IServerToggle, IUserToggle} from '@epic-helper/models';
 
 export const donor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
   return [

@@ -1,5 +1,5 @@
 import {Embed} from 'discord.js';
-import {createJsonBin, typedObjectEntries} from '@epic-helper/utils';
+import {typedObjectEntries} from '@epic-helper/utils';
 import {RPG_WILD_PET_TYPE} from '@epic-helper/constants';
 
 interface IWildPetReader {
