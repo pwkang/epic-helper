@@ -1,5 +1,6 @@
 import {
   BaseInteraction,
+  BaseMessageOptions,
   Client,
   Guild,
   GuildMember,
@@ -58,24 +59,15 @@ export const preCheckCommand = async ({
       !adminRoles.some((role) => userRoles.includes(role)) &&
       !adminUsers.includes(author.id);
     if (isUserNotAdmin) {
-      if (interaction) {
-        await djsInteractionHelper.replyInteraction({
-          client,
-          interaction,
-          options: {
-            content: 'You do not have permission to use this command.',
-            ephemeral: true,
-          },
-        });
-      } else if (message) {
-        await djsMessageHelper.reply({
-          client,
-          message,
-          options: {
-            content: 'You do not have permission to use this command.',
-          },
-        });
-      }
+      await response({
+        client,
+        interaction,
+        message,
+        messageOptions: {
+          content: 'You do not have permission to use this command.',
+        },
+      });
+
       status.isServerAdmin = false;
     }
   }
@@ -92,13 +84,14 @@ export const preCheckCommand = async ({
       case USER_NOT_REGISTERED_ACTIONS.askToRegister:
         status.userNotRegistered = !!userAccount;
         if (!userAccount)
-          await djsMessageHelper.send({
+          await response({
             client,
-            channelId,
-            options: {
+            message,
+            interaction,
+            messageOptions: {
               embeds: [
                 embedProvider.howToRegister({
-                  author: author,
+                  author,
                 }),
               ],
             },
@@ -118,16 +111,40 @@ export const preCheckCommand = async ({
       case USER_ACC_OFF_ACTIONS.askToTurnOn:
         status.userAccOff = !!userAccount && !!userAccount?.config.onOff;
         if (!!userAccount && !userAccount?.config.onOff)
-          await djsMessageHelper.send({
+          await response({
             client,
-            channelId,
-            options: {
+            messageOptions: {
               embeds: [embedProvider.turnOnAccount()],
             },
+            message,
+            interaction,
           });
         break;
     }
   }
 
   return Object.values(status).every((value) => value);
+};
+
+interface IResponse {
+  client: Client;
+  messageOptions: BaseMessageOptions;
+  interaction?: BaseInteraction;
+  message?: Message;
+}
+
+const response = async ({message, interaction, client, messageOptions}: IResponse) => {
+  if (interaction) {
+    await djsInteractionHelper.replyInteraction({
+      client,
+      interaction,
+      options: messageOptions,
+    });
+  } else if (message) {
+    await djsMessageHelper.reply({
+      client,
+      message,
+      options: messageOptions,
+    });
+  }
 };
