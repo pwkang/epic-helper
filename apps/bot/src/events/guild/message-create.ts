@@ -1,6 +1,5 @@
-import {Client, Events, Message, User} from 'discord.js';
+import {Client, Events, Message} from 'discord.js';
 import {DEVS_ID, EPIC_RPG_ID, PREFIX, PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
-import {userService} from '../../services/database/user.service';
 import {preCheckCommand} from '../../utils/command-precheck';
 
 export default <BotEvent>{
@@ -11,12 +10,19 @@ export default <BotEvent>{
     if (isBotSlashCommand(message) && isNotDeferred(message)) {
       const messages = searchSlashMessages(client, message);
       if (!messages.size) return;
-      const toExecute = await preCheckBotSlashCommand({
-        client,
-        author: message.interaction?.user!,
+
+      messages.forEach((cmd) => {
+        const toExecute = preCheckCommand({
+          client,
+          author: message.interaction?.user!,
+          message,
+          channelId: message.channelId,
+          preCheck: cmd.preCheck,
+          server: message.guild,
+        });
+        if (!toExecute) return;
+        cmd.execute(client, message, message.interaction?.user!);
       });
-      if (!toExecute) return;
-      messages.forEach((cmd) => cmd.execute(client, message, message.interaction?.user!));
     }
 
     if (isSentByUser(message)) {
@@ -131,14 +137,3 @@ const isNotDeferred = (message: Message) => !(message.content === '' && !message
 
 const searchBotMatchedCommands = (client: Client, message: Message) =>
   client.botMessages.filter((cmd) => message.author.id === cmd.bot && cmd.match(message));
-
-interface IPreCheckBotSlashCommand {
-  client: Client;
-  author: User;
-}
-
-const preCheckBotSlashCommand = async ({author, client}: IPreCheckBotSlashCommand) => {
-  const userAccount = await userService.getUserAccount(author.id);
-
-  return userAccount?.config.onOff ?? false;
-};

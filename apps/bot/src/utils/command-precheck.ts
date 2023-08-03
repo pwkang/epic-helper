@@ -5,6 +5,7 @@ import {
   Guild,
   GuildMember,
   Message,
+  MessageInteraction,
   PermissionsBitField,
   User,
 } from 'discord.js';

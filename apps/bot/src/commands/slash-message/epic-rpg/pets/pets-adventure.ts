@@ -13,12 +13,20 @@ import {isPetsIdValid} from '@epic-helper/utils';
 import djsInteractionHelper from '../../../../lib/discordjs/interaction';
 import {djsMessageHelper} from '../../../../lib/discordjs/message';
 import timestampHelper from '../../../../lib/discordjs/timestamp';
-import {SLASH_MESSAGE_BOT_TYPE} from '@epic-helper/constants';
+import {
+  SLASH_MESSAGE_BOT_TYPE,
+  USER_ACC_OFF_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS,
+} from '@epic-helper/constants';
 
 export default <SlashMessage>{
   name: 'petsAdventure',
   bot: SLASH_MESSAGE_BOT_TYPE.rpg,
   commandName: ['pets adventure'],
+  preCheck: {
+    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.abort,
+    userAccOff: USER_ACC_OFF_ACTIONS.abort,
+  },
   execute: async (client, message, author) => {
     const event = createRpgCommandListener({
       channelId: message.channel.id,

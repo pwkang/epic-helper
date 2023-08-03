@@ -52,6 +52,7 @@ declare global {
     name: string;
     commandName: string[];
     bot: ValuesOf<typeof SLASH_MESSAGE_BOT_TYPE>;
+    preCheck: ICommandPreCheck;
     execute: (client: Client, message: Message, author: User) => Promise<void>;
   }
 
