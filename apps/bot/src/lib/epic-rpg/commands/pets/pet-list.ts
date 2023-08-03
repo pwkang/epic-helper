@@ -57,7 +57,6 @@ interface IUpdatePetsFromEmbed {
 }
 
 const updatePetsFromEmbed = async ({embed, author, client}: IUpdatePetsFromEmbed) => {
-  console.log('updatePetsFromEmbed');
   const pets = embedReaders.pets({embed, author});
   const dbPetsList = await userPetServices.getUserPets({
     userId: author.id,
