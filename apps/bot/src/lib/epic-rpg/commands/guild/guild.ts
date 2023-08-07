@@ -24,7 +24,7 @@ export const rpgGuild = ({author, client, message, isSlashCommand}: IRpgGuild) =
   event.on('embed', async (embed) => {
     if (isGuildSuccess({author, embed})) {
       const roles = await commandHelper.guild.getUserGuildRoles({
-        client: author.client,
+        client,
         userId: author.id,
         server: message.guild,
       });

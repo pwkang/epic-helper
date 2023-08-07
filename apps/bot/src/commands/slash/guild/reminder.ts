@@ -1,12 +1,11 @@
-import {guildService} from '../../../services/database/guild.service';
-import djsInteractionHelper from '../../../lib/discordjs/interaction';
-import commandHelper from '../../../lib/epic-helper/command-helper';
-import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
 import {SLASH_COMMAND} from '../constant';
+import djsInteractionHelper from '../../../lib/discordjs/interaction';
+import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
+import commandHelper from '../../../lib/epic-helper/command-helper';
 
 export default <SlashCommand>{
-  name: SLASH_COMMAND.guild.set.name,
-  description: SLASH_COMMAND.guild.set.description,
+  name: SLASH_COMMAND.guild.reminder.name,
+  description: SLASH_COMMAND.guild.reminder.description,
   commandName: SLASH_COMMAND.guild.name,
   type: 'subcommand',
   preCheck: {
@@ -42,44 +41,26 @@ export default <SlashCommand>{
   execute: async (client, interaction) => {
     const role = interaction.options.getRole('role', true);
     const channel = interaction.options.getChannel('channel');
-    const targetStealth = interaction.options.getNumber('target-stealth');
+    const targetStealth = interaction.options.getNumber('target-stealth') ?? undefined;
     const upgradeMessage = interaction.options.getString('upgrade-message') ?? undefined;
     const raidMessage = interaction.options.getString('raid-message') ?? undefined;
 
-    const isRoleUsed = await guildService.isRoleUsed({
-      serverId: interaction.guildId!,
+    const configureGuild = await commandHelper.guildSettings.configure({
+      server: interaction.guild!,
       roleId: role.id,
+      author: interaction.user,
+      client,
     });
-    if (!isRoleUsed) {
-      return djsInteractionHelper.replyInteraction({
-        client,
-        interaction,
-        options: {
-          content: `There is no guild with role ${role} setup in this server`,
-          ephemeral: true,
-        },
-      });
-    }
-
-    const updatedGuild = await guildService.updateGuildReminder({
-      channelId: channel?.id,
-      targetStealth: targetStealth === null ? undefined : targetStealth,
-      upgradeMessage,
-      raidMessage,
-      serverId: interaction.guildId!,
-      roleId: role.id,
-    });
-    if (!updatedGuild) return;
     await djsInteractionHelper.replyInteraction({
       client,
       interaction,
-      options: {
-        embeds: [
-          commandHelper.guildSettings.renderGuildSettingsEmbed({
-            guildAccount: updatedGuild!,
-          }),
-        ],
-      },
+      options: await configureGuild.updateGuild({
+        channelId: channel?.id,
+        roleId: role.id,
+        targetStealth,
+        upgradeMessage,
+        raidMessage,
+      }),
     });
   },
 };
