@@ -28,7 +28,7 @@ const canReducedByDonor = {
   hunt: true,
   adventure: true,
   training: true,
-  duel: true,
+  duel: false,
   quest: true,
   working: true,
   farm: true,

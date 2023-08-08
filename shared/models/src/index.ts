@@ -28,5 +28,5 @@ export * from './donor/donor.type';
 export * from './free-donor/free-donor.schema';
 export * from './free-donor/free-donor.type';
 
-export * from './duel-log/duel-log.type';
-export * from './duel-log/duel-log.schema';
+export * from './user-duel/user-duel.type';
+export * from './user-duel/user-duel.schema';

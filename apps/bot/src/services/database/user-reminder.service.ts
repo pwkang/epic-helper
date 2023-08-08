@@ -199,6 +199,28 @@ const saveUserFarmCooldown = async ({
   );
 };
 
+interface ISaveUserDuelCooldown {
+  userId: string;
+  readyAt?: Date;
+}
+
+const saveUserDuelCooldown = async ({userId, readyAt}: ISaveUserDuelCooldown): Promise<void> => {
+  await dbUserReminder.findOneAndUpdate(
+    {
+      userId,
+      type: RPG_COMMAND_TYPE.duel,
+    },
+    {
+      $set: {
+        readyAt,
+      },
+    },
+    {
+      upsert: true,
+    }
+  );
+};
+
 interface ISaveUserDailyCooldown {
   userId: string;
   readyAt?: Date;
@@ -476,6 +498,7 @@ export const userReminderServices = {
   saveUserQuestCooldown,
   saveUserEpicItemCooldown,
   saveUserFarmCooldown,
+  saveUserDuelCooldown,
   saveUserDailyCooldown,
   saveUserWeeklyCooldown,
   saveUserWorkingCooldown,
