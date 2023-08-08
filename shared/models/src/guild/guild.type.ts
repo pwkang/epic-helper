@@ -1,3 +1,22 @@
+export interface IGuildToggle {
+  onOff: boolean;
+  upgraid: {
+    reminder: boolean;
+    sendUpgraidList: boolean; // send the upgraid list after every upgraid
+    allowReserved: boolean;
+  };
+  duel: {
+    log: {
+      all: boolean;
+      duelAdd: boolean;
+      duelUndo: boolean;
+      duelReset: boolean;
+      duelModify: boolean;
+    };
+    refRequired: boolean;
+  };
+}
+
 export interface IGuild {
   serverId: string;
   leaderId: string;
@@ -17,23 +36,5 @@ export interface IGuild {
     };
     readyAt: Date;
   };
-  toggle: {
-    active: boolean;
-    upgraid: {
-      reminder: boolean;
-      sendUpgraidList: boolean; // send the upgraid list after every upgraid
-      allowReserved: boolean;
-    };
-    duel: {
-      log: {
-        active: boolean;
-        duelAdd: boolean;
-        duelUndo: boolean;
-        duelReset: boolean;
-        duelModify: boolean;
-      };
-      linkRequired: boolean;
-      autoReset: boolean;
-    };
-  };
+  toggle: IGuildToggle;
 }

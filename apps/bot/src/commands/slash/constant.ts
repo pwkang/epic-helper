@@ -70,9 +70,9 @@ export const SLASH_COMMAND = {
       name: 'settings',
       description: 'Show guild settings',
     },
-    set: {
-      name: 'set',
-      description: 'Update guild settings',
+    reminder: {
+      name: 'reminder',
+      description: 'Update reminder settings',
     },
     leader: {
       name: 'leader',

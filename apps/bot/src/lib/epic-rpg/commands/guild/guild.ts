@@ -5,6 +5,7 @@ import embedReaders from '../../embed-readers';
 import commandHelper from '../../../epic-helper/command-helper';
 import {djsMessageHelper} from '../../../discordjs/message';
 import {guildService} from '../../../../services/database/guild.service';
+import {toggleGuildChecker} from '../../../epic-helper/toggle-checker/guild';
 
 export interface IRpgGuild {
   client: Client;
@@ -24,7 +25,7 @@ export const rpgGuild = ({author, client, message, isSlashCommand}: IRpgGuild) =
   event.on('embed', async (embed) => {
     if (isGuildSuccess({author, embed})) {
       const roles = await commandHelper.guild.getUserGuildRoles({
-        client: author.client,
+        client,
         userId: author.id,
         server: message.guild,
       });
@@ -68,6 +69,11 @@ const rpgGuildSuccess = async ({
   const guildInfo = embedReaders.guild({
     embed,
   });
+  const guildToggle = await toggleGuildChecker({
+    serverId: server.id,
+    roleId: guildRoleId,
+  });
+
   if (isSlashCommand) {
     // return if guild name is not matched in slash command
     const currentGuild = await guildService.findGuild({
@@ -76,12 +82,19 @@ const rpgGuildSuccess = async ({
     });
     if (currentGuild && currentGuild.info.name !== guildInfo.name) return;
   }
-  const guild = await guildService.registerReminder({
-    readyIn: guildInfo.readyIn,
-    roleId: guildRoleId,
+  const guild = await guildService.findGuild({
     serverId: server.id,
+    roleId: guildRoleId,
   });
   if (!guild) return;
+  if (guildToggle?.upgraid.reminder) {
+    await guildService.registerReminder({
+      readyIn: guildInfo.readyIn,
+      roleId: guildRoleId,
+      serverId: server.id,
+    });
+    if (!guild) return;
+  }
   await guildService.updateGuildInfo({
     serverId: server.id,
     name: guildInfo.name === guild.info.name ? undefined : guildInfo.name,
