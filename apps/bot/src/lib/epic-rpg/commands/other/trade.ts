@@ -11,6 +11,7 @@ interface IRpgSuccess {
 }
 
 export const rpgTrade = ({client, message, author, isSlashCommand}: IRpgSuccess) => {
+  if (!message.inGuild()) return;
   const event = createRpgCommandListener({
     author,
     channelId: message.channelId,

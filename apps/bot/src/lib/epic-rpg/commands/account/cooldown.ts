@@ -45,6 +45,7 @@ interface IRpgCooldown {
 }
 
 export const rpgCooldown = ({client, message, author, isSlashCommand}: IRpgCooldown) => {
+  if (!message.inGuild()) return;
   const event = createRpgCommandListener({
     client,
     channelId: message.channel.id,

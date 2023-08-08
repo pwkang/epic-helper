@@ -23,6 +23,7 @@ interface IRpgFarm {
 }
 
 export function rpgFarm({client, message, author, isSlashCommand}: IRpgFarm) {
+  if (!message.inGuild()) return;
   const event = createRpgCommandListener({
     author,
     client,

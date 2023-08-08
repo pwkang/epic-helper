@@ -24,6 +24,7 @@ interface IRpgHunt {
 }
 
 export function rpgHunt({author, message, client, isSlashCommand}: IRpgHunt) {
+  if (!message.inGuild()) return;
   const event = createRpgCommandListener({
     client,
     channelId: message.channel.id,

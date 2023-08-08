@@ -22,6 +22,7 @@ interface IRpgUseEpicItem {
 }
 
 export function rpgUseEpicItem({author, message, isSlashCommand, client}: IRpgUseEpicItem) {
+  if (!message.inGuild()) return;
   const event = createRpgCommandListener({
     channelId: message.channel.id,
     client,

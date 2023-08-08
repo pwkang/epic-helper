@@ -23,6 +23,7 @@ interface IRpgLootbox {
 }
 
 export function rpgBuyLootbox({client, message, author, isSlashCommand}: IRpgLootbox) {
+  if (!message.inGuild()) return;
   const event = createRpgCommandListener({
     author,
     channelId: message.channel.id,

@@ -24,6 +24,7 @@ interface IRpgAdventure {
 }
 
 export function rpgAdventure({client, message, author, isSlashCommand}: IRpgAdventure) {
+  if (!message.inGuild()) return;
   const event = createRpgCommandListener({
     channelId: message.channel.id,
     author,

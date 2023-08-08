@@ -17,6 +17,7 @@ interface IRpgProfile {
 }
 
 export const rpgProfile = ({client, message, author, isSlashCommand, server}: IRpgProfile) => {
+  if (!message.inGuild()) return;
   const event = createRpgCommandListener({
     client,
     channelId: message.channel.id,

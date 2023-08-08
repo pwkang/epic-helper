@@ -24,6 +24,7 @@ interface IRpgQuest {
 }
 
 export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
+  if (!message.inGuild()) return;
   const event = createRpgCommandListener({
     channelId: message.channel.id,
     client,

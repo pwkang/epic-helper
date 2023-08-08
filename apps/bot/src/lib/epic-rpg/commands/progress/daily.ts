@@ -20,6 +20,7 @@ interface IRpgDaily {
 }
 
 export function rpgDaily({client, message, author, isSlashCommand}: IRpgDaily) {
+  if (!message.inGuild()) return;
   const event = createRpgCommandListener({
     author,
     channelId: message.channel.id,

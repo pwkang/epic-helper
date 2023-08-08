@@ -44,6 +44,7 @@ interface IRpgWorking {
 }
 
 export function rpgWorking({client, message, author, isSlashCommand, workingType}: IRpgWorking) {
+  if (!message.inGuild()) return;
   const event = createRpgCommandListener({
     channelId: message.channel.id,
     client,

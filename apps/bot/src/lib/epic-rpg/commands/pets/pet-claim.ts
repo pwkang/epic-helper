@@ -11,6 +11,7 @@ interface IRpgPetClaim {
 }
 
 export const rpgPetClaim = async ({author, message, client, isSlashCommand}: IRpgPetClaim) => {
+  if (!message.inGuild()) return;
   const event = createRpgCommandListener({
     channelId: message.channel.id,
     client,

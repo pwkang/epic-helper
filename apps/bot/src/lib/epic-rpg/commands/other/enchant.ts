@@ -28,6 +28,7 @@ interface IRpgEnchant {
 }
 
 export function rpgEnchant({client, message, author, isSlashCommand}: IRpgEnchant) {
+  if (!message.inGuild()) return;
   const event = createRpgCommandListener({
     channelId: message.channel.id,
     client,

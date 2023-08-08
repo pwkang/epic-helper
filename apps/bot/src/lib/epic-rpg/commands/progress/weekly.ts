@@ -17,6 +17,7 @@ interface IRpgWeekly {
 }
 
 export function rpgWeekly({client, message, author, isSlashCommand}: IRpgWeekly) {
+  if (!message.inGuild()) return;
   const event = createRpgCommandListener({
     author,
     channelId: message.channel.id,
