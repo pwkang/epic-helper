@@ -16,7 +16,7 @@ interface IToggleGuildChecker {
   roleId: string;
 }
 
-const toggleGuildChecker = async ({roleId, serverId}: IToggleGuildChecker) => {
+export const toggleGuildChecker = async ({roleId, serverId}: IToggleGuildChecker) => {
   const guild = await guildService.findGuild({
     serverId,
     roleId,

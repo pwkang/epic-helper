@@ -6,6 +6,7 @@ import ms from 'ms';
 import {upgraidService} from '../../../../services/database/upgraid.service';
 import {_checkUserGuildRoles, _sendUpgraidResultToGuildChannel} from './_shared';
 import {RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants';
+import {toggleGuildChecker} from '../../../epic-helper/toggle-checker/guild';
 
 interface IRpgGuildRaid {
   client: Client;
@@ -32,19 +33,27 @@ export const rpgGuildRaid = async ({author, message, isSlashCommand, client}: IR
         author,
       });
       if (!roleId) return;
-      await rpgGuildRaidSuccess({
-        author,
-        server: message.guild,
-        guildRoleId: roleId,
-        message,
-      });
-      await _sendUpgraidResultToGuildChannel({
-        guildRoleId: roleId,
-        client,
+      const guildToggle = await toggleGuildChecker({
         serverId: message.guildId!,
-        rpgEmbed: embed,
-        actionChannelId: message.channel.id,
+        roleId,
       });
+      if (guildToggle?.upgraid.reminder) {
+        await rpgGuildRaidSuccess({
+          author,
+          server: message.guild,
+          guildRoleId: roleId,
+          message,
+        });
+      }
+      if (guildToggle?.upgraid.autoSendList) {
+        await _sendUpgraidResultToGuildChannel({
+          guildRoleId: roleId,
+          client,
+          serverId: message.guildId!,
+          rpgEmbed: embed,
+          actionChannelId: message.channel.id,
+        });
+      }
     }
   });
   if (isSlashCommand) event.triggerCollect(message);
