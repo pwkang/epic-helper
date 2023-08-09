@@ -5,6 +5,7 @@ import {redisGuildReminder} from '../redis/guild-reminder.redis';
 import {Client} from 'discord.js';
 
 guildSchema.post('findOneAndUpdate', async (doc: IGuild) => {
+  if (!doc) return;
   if (doc.upgraid.readyAt && doc.upgraid.readyAt > new Date()) {
     await redisGuildReminder.setReminderTime({
       serverId: doc.serverId,
@@ -233,20 +234,33 @@ interface IResetToggle {
 
 const resetToggle = async ({serverId, roleId}: IResetToggle): Promise<IGuild | null> => {
   const guild = await dbGuild.findOneAndUpdate(
-    {
-      serverId,
-      roleId,
-    },
+    {serverId, roleId},
     {
       $unset: {
         toggle: '',
       },
     },
-    {
-      new: true,
-    }
+    {new: true}
   );
   return guild ?? null;
+};
+
+interface IRegisterToGuild {
+  serverId: string;
+  roleId: string;
+  userId: string;
+}
+
+const registerUserToGuild = async ({serverId, roleId, userId}: IRegisterToGuild) => {
+  await dbGuild.findOneAndUpdate({serverId, roleId}, {$addToSet: {usersId: userId}}, {new: true});
+  await dbGuild.findOneAndUpdate(
+    {
+      $or: [{serverId: {$ne: serverId}}, {roleId: {$ne: roleId}}],
+      usersId: {$in: [userId]},
+    },
+    {$pull: {usersId: userId}},
+    {new: true}
+  );
 };
 
 export const guildService = {
@@ -265,4 +279,5 @@ export const guildService = {
   weeklyReset,
   updateToggle,
   resetToggle,
+  registerUserToGuild,
 };

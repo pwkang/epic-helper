@@ -53,4 +53,5 @@ export const guildSchema = new Schema<IGuild>({
       refRequired: {type: Boolean, default: true},
     },
   },
+  usersId: [String],
 });

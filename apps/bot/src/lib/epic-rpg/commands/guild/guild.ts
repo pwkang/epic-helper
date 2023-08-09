@@ -39,12 +39,18 @@ export const rpgGuild = ({author, client, message, isSlashCommand}: IRpgGuild) =
           },
         });
       }
+      const guildRole = roles.first()!;
       rpgGuildSuccess({
         author,
         embed,
         server: message.guild,
-        guildRoleId: roles.first()!.id,
+        guildRoleId: guildRole.id,
         isSlashCommand,
+      });
+      guildService.registerUserToGuild({
+        userId: author.id,
+        roleId: guildRole.id,
+        serverId: message.guild.id,
       });
     }
   });
