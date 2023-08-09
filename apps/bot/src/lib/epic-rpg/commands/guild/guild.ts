@@ -6,6 +6,7 @@ import commandHelper from '../../../epic-helper/command-helper';
 import {djsMessageHelper} from '../../../discordjs/message';
 import {guildService} from '../../../../services/database/guild.service';
 import {toggleGuildChecker} from '../../../epic-helper/toggle-checker/guild';
+import {redisGuildMembers} from '../../../../services/redis/guild-members.redis';
 
 export interface IRpgGuild {
   client: Client;
@@ -24,6 +25,7 @@ export const rpgGuild = ({author, client, message, isSlashCommand}: IRpgGuild) =
   if (!event) return;
   event.on('embed', async (embed) => {
     if (isGuildSuccess({author, embed})) {
+      event.stop();
       const roles = await commandHelper.guild.getUserGuildRoles({
         client,
         userId: author.id,
@@ -47,10 +49,10 @@ export const rpgGuild = ({author, client, message, isSlashCommand}: IRpgGuild) =
         guildRoleId: guildRole.id,
         isSlashCommand,
       });
-      guildService.registerUserToGuild({
+      registerUserToGuild({
         userId: author.id,
-        roleId: guildRole.id,
         serverId: message.guild.id,
+        roleId: guildRole.id,
       });
     }
   });
@@ -101,6 +103,29 @@ const rpgGuildSuccess = async ({embed, server, guildRoleId, isSlashCommand}: IRp
     stealth: guildInfo.stealth === guild.info.stealth ? undefined : guildInfo.stealth,
     level: guildInfo.level === guild.info.level ? undefined : guildInfo.level,
     energy: guildInfo.energy === guild.info.energy ? undefined : guildInfo.energy,
+  });
+};
+
+interface IRegisterUserToGuild {
+  userId: string;
+  serverId: string;
+  roleId: string;
+}
+
+const registerUserToGuild = async ({userId, serverId, roleId}: IRegisterUserToGuild) => {
+  const cached = await redisGuildMembers.getGuildInfo({
+    userId,
+  });
+  if (cached?.guildRoleId === roleId && cached?.serverId === serverId) return;
+  await guildService.registerUserToGuild({
+    userId,
+    serverId,
+    roleId,
+  });
+  await redisGuildMembers.setGuildMember({
+    guildRoleId: roleId,
+    serverId,
+    userId,
   });
 };
 

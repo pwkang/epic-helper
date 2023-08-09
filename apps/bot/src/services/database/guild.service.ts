@@ -252,13 +252,13 @@ interface IRegisterToGuild {
 }
 
 const registerUserToGuild = async ({serverId, roleId, userId}: IRegisterToGuild) => {
-  await dbGuild.findOneAndUpdate({serverId, roleId}, {$addToSet: {usersId: userId}}, {new: true});
+  await dbGuild.findOneAndUpdate({serverId, roleId}, {$addToSet: {membersId: userId}}, {new: true});
   await dbGuild.findOneAndUpdate(
     {
       $or: [{serverId: {$ne: serverId}}, {roleId: {$ne: roleId}}],
-      usersId: {$in: [userId]},
+      membersId: {$in: [userId]},
     },
-    {$pull: {usersId: userId}},
+    {$pull: {membersId: userId}},
     {new: true}
   );
 };

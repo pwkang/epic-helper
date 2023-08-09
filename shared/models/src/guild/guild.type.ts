@@ -40,5 +40,5 @@ export interface IGuild {
     channelId: string;
   };
   toggle: IGuildToggle;
-  usersId: string[];
+  membersId: string[];
 }
