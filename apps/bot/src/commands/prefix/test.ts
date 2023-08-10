@@ -1,6 +1,6 @@
 import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
-import {saveDuelLog} from '../../lib/epic-rpg/commands/progress/duel';
 import {Message} from 'discord.js';
+import commandHelper from '../../lib/epic-helper/command-helper';
 
 export default <PrefixCommand>{
   name: 'test',
@@ -9,11 +9,10 @@ export default <PrefixCommand>{
   preCheck: {},
   execute: async (client, message, args) => {
     const msg = await message.channel.messages.fetch(args[1]);
-    saveDuelLog({
-      embed: msg.embeds[0],
-      resultMessage: msg as Message<true>,
-      user: message.author,
-      targetUser: message.mentions.users.first(),
+    commandHelper.duel.autoAdd({
+      duelMessage: msg as Message<true>,
+      users: [message.author, message.mentions.users.first()!],
+      client,
     });
   },
 };

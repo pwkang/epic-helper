@@ -77,7 +77,7 @@ interface IGetAllGuilds {
 }
 
 const getAllGuilds = async ({serverId}: IGetAllGuilds) => {
-  return dbGuild.find({serverId});
+  return dbGuild.find({serverId}).lean();
 };
 
 const updateGuildReminder = async ({

@@ -5,14 +5,14 @@ export const userDuelSchema = new Schema<IUserDuel>({
   duelAt: Date,
   users: [
     new Schema<IUserDuelUser>({
-      userId: String,
+      userId: {type: String, index: true},
       guildExp: Number,
       isWinner: Boolean,
     }),
   ],
   source: {
-    channelId: String,
-    serverId: String,
-    messageId: String,
+    channelId: {type: String, index: true},
+    serverId: {type: String, index: true},
+    messageId: {type: String, index: true},
   },
 });
