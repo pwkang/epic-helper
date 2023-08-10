@@ -23,5 +23,5 @@ export default function convertMsToHumanReadableString(milliseconds: number) {
     }
   }
 
-  return timeString;
+  return timeString.trim();
 }

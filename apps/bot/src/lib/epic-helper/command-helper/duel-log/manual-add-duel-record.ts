@@ -8,6 +8,7 @@ import messageFormatter from '../../../discordjs/message-formatter';
 import timestampHelper from '../../../discordjs/timestamp';
 import embeds from '../../embeds';
 import convertMsToHumanReadableString from '../../../../utils/convert-ms-to-human-readable-string';
+import {redisServerInfo} from '../../../../services/redis/server-info.redis';
 
 interface IManualAddDuelRecord {
   user: User;
@@ -58,6 +59,12 @@ export const manualAddDuelRecord = async ({
 
   const userDuel = guildDuel.users.find((u) => u.userId === user.id);
 
+  const serverName = source
+    ? await redisServerInfo.getServerInfo({
+        serverId: source?.serverId,
+      })
+    : undefined;
+
   return generateEmbed({
     author: user,
     newTotalExp: userDuel?.totalExp ?? 0,
@@ -65,6 +72,7 @@ export const manualAddDuelRecord = async ({
     newTotalDuel: userDuel?.duelCount ?? 0,
     expGained,
     source,
+    serverName: serverName?.name ?? 'Unknown',
   });
 };
 
@@ -79,6 +87,7 @@ interface IGenerateEmbed {
     channelId: string;
     messageId: string;
   };
+  serverName: string;
 }
 
 const generateEmbed = ({
@@ -88,6 +97,7 @@ const generateEmbed = ({
   newTotalExp,
   newTotalDuel,
   source,
+  serverName,
 }: IGenerateEmbed) => {
   const embed = new EmbedBuilder()
     .setColor(BOT_COLOR.embed)
@@ -103,7 +113,7 @@ const generateEmbed = ({
         channelId: source.channelId,
         messageId: source.messageId,
         serverId: source.serverId,
-      })})`
+      })}) @ **${serverName}**`
     );
   }
   embed.setDescription(description.join('\n'));
