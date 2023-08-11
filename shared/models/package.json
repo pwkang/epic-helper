@@ -5,7 +5,8 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "build:shared": "tsc"
+    "build:shared": "tsc",
+    "type-check": "tsc --noEmit --skipLibCheck"
   },
   "dependencies": {
     "@epic-helper/constants": "workspace:*"

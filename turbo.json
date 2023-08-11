@@ -16,6 +16,8 @@
       "outputs": [
         "dist/**"
       ]
+    },
+    "type-check": {
     }
   }
 }

@@ -15,6 +15,7 @@
     "clean:dist": "find . -name \"dist\" -type d -prune -exec rm -rf '{}' +",
     "build:shared": "turbo run build:shared",
     "build:bot": "turbo run build:bot",
+    "type-check": "turbo run type-check",
     "dev-shard:bot": "npm run build:bot && USE_PINO_PRETTY=true node apps/bot/dist/index.js",
     "start:bot": "node apps/bot/dist/index.js"
   },
@@ -47,6 +48,7 @@
     "@types/ms": "^0.7.31",
     "@types/node": "^20.3.1",
     "@types/node-cron": "^3.0.7",
+    "eslint": "^8.46.0",
     "nodemon": "^3.0.1",
     "prettier": "^2.8.8",
     "ts-node": "^10.9.1",

@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build:shared": "tsc"
+    "build:shared": "tsc",
+    "type-check": "tsc --noEmit --skipLibCheck"
   },
   "dependencies": {
     "readdirp": "^3.6.0"
