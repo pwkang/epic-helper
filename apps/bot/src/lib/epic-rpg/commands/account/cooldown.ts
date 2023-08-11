@@ -78,7 +78,7 @@ const rpgCooldownSuccess = async ({author, embed}: IRpgCooldownSuccess) => {
 
   const fields = embed.fields.flatMap((field) => field.value.split('\n'));
 
-  for (let row of fields) {
+  for (const row of fields) {
     const commandType = searchCommandType(row);
 
     if (isReady(row)) {
@@ -142,7 +142,7 @@ const extractCommandsCooldown = (embedRow: EmbedField['value']) =>
 const searchCommandType = (fieldRow: string) => {
   const commandList = extractCommandsCooldown(fieldRow);
 
-  return Object.entries(RPG_COMMAND_CATEGORY).find(([_, value]) =>
+  return Object.entries(RPG_COMMAND_CATEGORY).find(([, value]) =>
     value.some((command) => commandList.some((name) => name.includes(command)))
   )?.[0] as keyof typeof RPG_COMMAND_CATEGORY;
 };

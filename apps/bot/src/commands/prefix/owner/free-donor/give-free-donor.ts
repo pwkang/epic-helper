@@ -12,7 +12,7 @@ export default <PrefixCommand>{
     const mentionedUsers = message.mentions.users;
     const mentionedUsersId = args.filter((arg) => arg.match(/^(\d{15,})$/));
     let tokenArg, durationArg;
-    for (let arg of args) {
+    for (const arg of args) {
       if (['-token', '-t'].includes(arg)) {
         tokenArg = args[args.indexOf(arg) + 1];
       }

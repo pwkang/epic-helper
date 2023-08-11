@@ -119,10 +119,10 @@ export const _getUserReminderChannelEmbed = ({
     .setThumbnail(author.avatarURL())
     .setDescription(`**Default**: ${messageFormatter.channel(userProfile.channel.all)}`);
 
-  for (let field of cmd) {
+  for (const field of cmd) {
     const fieldName = field.name;
     const channels: string[] = [];
-    for (let item of field.value) {
+    for (const item of field.value) {
       const channel = userProfile.channel[item.type];
       if (channel) {
         channels.push(`**${item.name}**: <#${channel}>`);

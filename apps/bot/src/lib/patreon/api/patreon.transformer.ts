@@ -30,9 +30,9 @@ export const toCampaignInfo = (
 ): ICampaignInfo[] => {
   const campaignInfo: ICampaignInfo[] = [];
 
-  for (let campaign of response.data) {
+  for (const campaign of response.data) {
     const tiers: ITier[] = [];
-    for (let tier of campaign.relationships.tiers.data) {
+    for (const tier of campaign.relationships.tiers.data) {
       const includedTier = response.included.find((i) => i.id === tier.id);
       if (includedTier) {
         tiers.push({
@@ -77,7 +77,7 @@ export const toPatrons = (
   response: Pick<IFetchPatreonCampaignMembersResponse, 'data' | 'included'>
 ): IPatron[] => {
   const patrons: IPatron[] = [];
-  for (let member of response.data) {
+  for (const member of response.data) {
     const userAttributes = response.included.find(
       (i) => i.type === PATREON_INCLUDE_TYPE.user && i.id === member.relationships.user.data.id
     ) as IIncludeItem<IUserAttributes> | undefined;

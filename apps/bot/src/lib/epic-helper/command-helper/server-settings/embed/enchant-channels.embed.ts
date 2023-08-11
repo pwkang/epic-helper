@@ -26,10 +26,10 @@ const _getEnchantChannelsEmbed = ({guild, enchantSettings}: IGetEnchantChannelsE
       name: 'CHANNELS',
       value: enchantSettings.channels.length
         ? enchantSettings.channels
-            .map((channel) => {
-              return `<#${channel.channelId}>`;
-            })
-            .join(', ')
+          .map((channel) => {
+            return `<#${channel.channelId}>`;
+          })
+          .join(', ')
         : '-',
       inline: true,
     },
@@ -48,6 +48,6 @@ const _getEnchantChannelsEmbed = ({guild, enchantSettings}: IGetEnchantChannelsE
 export default _getEnchantChannelsEmbed;
 
 const settings: string[] = [
-  `\`/config server enchant-channels\` - Configure enchant channels`,
-  `\`/config server enchant-mute-duration\` - Configure enchant mute duration`,
+  '`/config server enchant-channels` - Configure enchant channels',
+  '`/config server enchant-mute-duration` - Configure enchant mute duration',
 ];

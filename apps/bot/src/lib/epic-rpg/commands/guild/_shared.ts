@@ -79,5 +79,5 @@ export const _checkUserGuildRoles = async ({
     });
     return null;
   }
-  return roles.first()?.id!;
+  return roles.first()!.id;
 };

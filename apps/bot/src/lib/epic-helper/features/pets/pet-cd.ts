@@ -50,13 +50,13 @@ const generateEmbed = ({author, pets}: IGeneratePetCdEmbed) => {
 
 const generateEmbedFields = (pets: IUserPet[]) => {
   const fields: EmbedField[] = [];
-  for (let pet of pets) {
-    const epic = !!pet.skills.epic ? BOT_EMOJI.petSkill.epic : '';
-    const timeTraveler = !!pet.skills.timeTraveler ? BOT_EMOJI.petSkill.timeTraveler : '';
+  for (const pet of pets) {
+    const epic = pet.skills.epic ? BOT_EMOJI.petSkill.epic : '';
+    const timeTraveler = pet.skills.timeTraveler ? BOT_EMOJI.petSkill.timeTraveler : '';
     const petId = convertNumToPetId(pet.petId);
     const petTier = convertNumberToRoman(pet.tier);
     const petNameKey = Object.entries(RPG_PET_TYPE).find(
-      ([_, value]) => value === pet.name
+      ([, value]) => value === pet.name
     )?.[0] as keyof typeof RPG_PET_TYPE;
     const petEmoji = petNameKey ? BOT_EMOJI.pet[petNameKey] : '';
     const statusText = getStatusText(pet);

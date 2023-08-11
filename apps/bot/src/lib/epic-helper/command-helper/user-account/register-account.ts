@@ -27,17 +27,17 @@ export const _registerAccount = async ({
     };
   } else {
     return {
-      content: `You have already registered!`,
+      content: 'You have already registered!',
     };
   }
 };
 
 const registeredEmbed = new EmbedBuilder()
   .setColor(BOT_COLOR.embed)
-  .setTitle(`Successfully registered your account!`)
+  .setTitle('Successfully registered your account!')
   .addFields(
     {
-      name: `What Next ?`,
+      name: 'What Next ?',
       value: `
         - Use /account donor to select EPIC RPG donor
 - Use ${RPG_CLICKABLE_SLASH_COMMANDS.cd} to register reminder
@@ -55,7 +55,7 @@ const registeredEmbed = new EmbedBuilder()
       inline: true,
     },
     {
-      name: `Need Help ?`,
+      name: 'Need Help ?',
       value: `
         Use ${BOT_CLICKABLE_SLASH_COMMANDS.help} to explore more commands
         Or Join our [support server](${SUPPORT_SERVER_INVITE_LINK})`,

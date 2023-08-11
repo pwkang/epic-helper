@@ -1,4 +1,4 @@
-import {ApplicationCommand, Client, DiscordAPIError, Guild, Routes} from 'discord.js';
+import {ApplicationCommand, Client, Guild, Routes} from 'discord.js';
 import {djsRestClient} from '@epic-helper/services';
 import {logger} from '@epic-helper/utils';
 
@@ -21,7 +21,7 @@ export const _findGuildSlashCommand = async ({
     );
 
     return data as ApplicationCommand;
-  } catch (e: DiscordAPIError | any) {
+  } catch (e: any) {
     logger({
       message: e.rawError.message,
       variant: 'find-guild-slash-command',

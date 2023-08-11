@@ -7,6 +7,8 @@ import {
   RPG_PET_SKILL_TIER,
   RPG_PET_STATUS,
   RPG_PET_TYPE,
+  TSkillTierNumber,
+  TSkillTierStr,
 } from '@epic-helper/constants';
 import {IUserPet} from '@epic-helper/models';
 
@@ -23,13 +25,13 @@ interface IPetInfo {
   id: number;
   status: TPetStatus;
   readyAt?: Date;
-  skill: Record<keyof typeof RPG_PET_SKILL, number>;
+  skill: Record<keyof typeof RPG_PET_SKILL, TSkillTierNumber>;
 }
 
 const petsReader = ({embed, author}: IReadPets) => {
   const pets: IUserPet[] = [];
 
-  for (let field of embed.fields) {
+  for (const field of embed.fields) {
     const petName = getPetName(field.name);
     if (!petName) continue;
     const petId = getPetId(field.name);
@@ -70,16 +72,15 @@ const getPetName = (fieldName: string) => {
 
 const getPetSkills = (fieldValue: string) => {
   const skill: Partial<IPetInfo['skill']> = {};
-  for (let line of fieldValue.split('\n')) {
-    const skillName = Object.entries(RPG_PET_SKILL).find(([_, skill]) =>
+  for (const line of fieldValue.split('\n')) {
+    const skillName = Object.entries(RPG_PET_SKILL).find(([, skill]) =>
       line.includes(`${skill}**`)
     )?.[0] as keyof typeof RPG_PET_SKILL;
     const skillTier = line.match(/\[(SS\+|SS|S|A|B|C|D|E|F)]/)?.[1];
     if (!skillName) continue;
     if (!skillTier) continue;
 
-    skill[skillName] =
-      RPG_PET_SKILL_TIER[skillTier.toLowerCase() as keyof typeof RPG_PET_SKILL_TIER];
+    skill[skillName] = RPG_PET_SKILL_TIER[skillTier.toLowerCase() as TSkillTierStr];
   }
   return skill;
 };
@@ -100,7 +101,7 @@ const getPetReadyAt = (fieldValue: string) => {
     .map((time) => time.replace('**', ''))
     .filter((time) => time !== '');
   if (!timeArr) return null;
-  let duration = timeArr.reduce((acc, time) => {
+  const duration = timeArr.reduce((acc, time) => {
     return acc + ms(time);
   }, 0);
   return new Date(Date.now() + duration);

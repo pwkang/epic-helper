@@ -2,6 +2,7 @@ import {Client, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {RPG_EQUIPMENTS} from '@epic-helper/constants';
 import {userService} from '../../../../services/database/user.service';
+import {typedObjectEntries} from '@epic-helper/utils';
 
 const rubyConsumed = {
   [RPG_EQUIPMENTS.ultraEdgyArmor]: 400,
@@ -38,7 +39,7 @@ interface IRpgForgeSuccess {
 }
 
 const rpgForgeSuccess = async ({content, author}: IRpgForgeSuccess) => {
-  const item = Object.entries(RPG_EQUIPMENTS).find(([_, item]) =>
+  const item = typedObjectEntries(RPG_EQUIPMENTS).find(([, item]) =>
     content.toLowerCase().includes(item)
   )?.[1] as keyof typeof RPG_EQUIPMENTS;
   if (!item) return;

@@ -1,4 +1,3 @@
-import {ButtonStyle} from 'discord.js';
 import {
   paginatePetList,
   PET_LIST_PET_PET_PAGE,

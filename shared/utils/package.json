@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build:shared": "tsc",
-    "type-check": "tsc --noEmit --skipLibCheck"
+    "lint": "tsc --noEmit --skipLibCheck"
   },
   "dependencies": {
     "readdirp": "^3.6.0"

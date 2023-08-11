@@ -56,13 +56,13 @@ interface IUpdatePetsFromEmbed {
   client: Client;
 }
 
-const updatePetsFromEmbed = async ({embed, author, client}: IUpdatePetsFromEmbed) => {
+const updatePetsFromEmbed = async ({embed, author}: IUpdatePetsFromEmbed) => {
   const pets = embedReaders.pets({embed, author});
   const dbPetsList = await userPetServices.getUserPets({
     userId: author.id,
     petsId: pets.map((pet) => pet.petId),
   });
-  for (let newPet of pets) {
+  for (const newPet of pets) {
     const oldPet = dbPetsList.find((dbPet) => dbPet.petId === newPet.petId);
     if (!oldPet) {
       await userPetServices.createUserPet({

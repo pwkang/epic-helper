@@ -17,7 +17,7 @@
         "dist/**"
       ]
     },
-    "type-check": {
+    "lint": {
     }
   }
 }

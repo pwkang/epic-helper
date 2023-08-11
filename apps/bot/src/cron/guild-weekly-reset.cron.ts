@@ -12,7 +12,7 @@ export default <CronJob>{
     const guildReminders = await redisGuildReminder.getAllGuildReminder();
     if (!guildReminders.length) return;
     await guildService.weeklyReset({client});
-    guildReminders.forEach(({guildRoleId, readyAt, serverId}) => {
+    guildReminders.forEach(({guildRoleId, serverId}) => {
       if (!client.guilds.cache.has(serverId)) return;
       guildReminderTimesUp({guildRoleId, serverId, client});
       redisGuildReminder.deleteReminderTime({

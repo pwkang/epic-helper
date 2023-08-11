@@ -117,4 +117,4 @@ interface IIsNotEnoughMoneyToBuyLootbox {
 }
 
 const isNotEnoughMoneyToBuyLootbox = ({content}: IIsNotEnoughMoneyToBuyLootbox) =>
-  content.includes("You don't have enough money");
+  content.includes('You don\'t have enough money');

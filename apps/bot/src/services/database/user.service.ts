@@ -134,7 +134,7 @@ interface IUpdateUserRubyAmount {
 }
 
 const updateUserRubyAmount = async ({ruby, userId, type}: IUpdateUserRubyAmount): Promise<void> => {
-  let query: UpdateQuery<IUser> = {};
+  const query: UpdateQuery<IUser> = {};
   if (type === 'set') {
     query.$set = {
       'items.ruby': ruby,

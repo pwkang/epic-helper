@@ -67,20 +67,8 @@ const RESPONSE_MSG = {
 const getSuccessEmbed = (tier: ValuesOf<typeof RPG_DONOR_TIER>) => {
   const embed = new EmbedBuilder().setColor(BOT_COLOR.embed);
 
-  switch (tier) {
-    case RPG_DONOR_TIER.nonDonor:
-      embed.setTitle('You have set your donor tier to Non-donor');
-      break;
-    case RPG_DONOR_TIER.donor10:
-      embed.setTitle('You have set your donor tier to -10%');
-      break;
-    case RPG_DONOR_TIER.donor20:
-      embed.setTitle('You have set your donor tier to -20%');
-      break;
-    case RPG_DONOR_TIER.donor35:
-      embed.setTitle('You have set your donor tier to -35%');
-      break;
-  }
+  embed.setTitle(RESPONSE_MSG[tier]);
+
   embed.setDescription(
     `If you wish to hunt with your partner's cooldown, you can setup via ${BOT_CLICKABLE_SLASH_COMMANDS.accountDonorPartner}`
   );

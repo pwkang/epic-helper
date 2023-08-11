@@ -15,7 +15,7 @@
     "clean:dist": "find . -name \"dist\" -type d -prune -exec rm -rf '{}' +",
     "build:shared": "turbo run build:shared",
     "build:bot": "turbo run build:bot",
-    "type-check": "turbo run type-check",
+    "lint": "turbo run lint && eslint apps/ --ext .ts",
     "dev-shard:bot": "npm run build:bot && USE_PINO_PRETTY=true node apps/bot/dist/index.js",
     "start:bot": "node apps/bot/dist/index.js"
   },
@@ -29,6 +29,8 @@
   },
   "homepage": "https://github.com/pwkang/epic-helper#readme",
   "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.3.0",
+    "@typescript-eslint/parser": "^6.3.0",
     "axios": "^1.4.0",
     "dayjs": "^1.11.8",
     "discord-hybrid-sharding": "^2.1.3",

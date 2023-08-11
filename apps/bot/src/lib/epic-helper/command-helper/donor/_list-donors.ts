@@ -134,7 +134,7 @@ const buildDonorsEmbed = async ({donors, page, total, client}: IBuildEmbed) => {
     text: `Page ${page + 1}/${Math.ceil(total / PAGE_SIZE)} • total: ${total}`,
   });
 
-  for (let donor of donors) {
+  for (const donor of donors) {
     const user = await fetchUser(client, donor.discord.userId);
     embed.addFields({
       name: donor.discord.userId ?? '-',
@@ -220,8 +220,8 @@ const buildDonorEmbed = async ({donor, userId, client}: IBuildDonorEmbed) => {
       name: 'BOOSTED GUILDS',
       value: boostedServers.length
         ? boostedServers
-            .map((guild, index) => `\`[${index + 1}]\` **${guild.name}** - ${guild.token}`)
-            .join('\n')
+          .map((guild, index) => `\`[${index + 1}]\` **${guild.name}** - ${guild.token}`)
+          .join('\n')
         : '-',
       inline: false,
     }
@@ -236,7 +236,7 @@ const buildDonorEmbed = async ({donor, userId, client}: IBuildDonorEmbed) => {
 const fetchUser = async (client: Client, userId?: string) =>
   userId
     ? await djsUserHelper.getUser({
-        userId,
-        client,
-      })
+      userId,
+      client,
+    })
     : null;

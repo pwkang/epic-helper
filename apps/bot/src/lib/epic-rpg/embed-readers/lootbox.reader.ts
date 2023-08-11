@@ -1,5 +1,6 @@
 import {Embed} from 'discord.js';
 import {RPG_ITEMS} from '@epic-helper/constants';
+import {typedObjectEntries} from '@epic-helper/utils';
 
 export interface IScanLootbox {
   embed: Embed;
@@ -14,8 +15,8 @@ type IInventoryItem = {
 const lootboxReader = ({embed}: IScanLootbox) => {
   const itemsList = embed.fields.flatMap((field) => field.value.split('\n'));
   const items: IInventoryItem = {};
-  for (let row of itemsList) {
-    const itemName = Object.entries(RPG_ITEMS).find(([_, value]) =>
+  for (const row of itemsList) {
+    const itemName = typedObjectEntries(RPG_ITEMS).find(([, value]) =>
       row.toLowerCase().includes(value)
     )?.[0] as ItemName;
     if (!itemName) continue;

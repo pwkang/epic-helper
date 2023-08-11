@@ -1,6 +1,6 @@
 import {Client, EmbedBuilder, User} from 'discord.js';
 import {IUser} from '@epic-helper/models';
-import {BOT_COLOR, BOT_REMINDER_DEFAULT_MESSAGES, PREFIX} from '@epic-helper/constants';
+import {BOT_COLOR, PREFIX} from '@epic-helper/constants';
 import {
   CUSTOM_MESSAGE_PAGE_TYPE,
   CUSTOM_MESSAGE_PAGES,
@@ -58,21 +58,13 @@ export const _getCustomMessageEmbed = ({
               together: false,
             },
           },
-          // @ts-ignore
           userReminder: {
             type,
             userId: author.id,
             readyAt: new Date(Date.now() + ms('1h')),
-            props: {
-              epicItemType: 'epic seed',
-              epicQuest: false,
-              hardMode: false,
-              lootboxType: 'edgy',
-              seedType: 'carrot',
-              together: true,
-              ultraining: true,
-              workingType: 'fish',
-            },
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            props: getReminderProps[type] ?? {},
           },
         });
         embedValue.push(`${currentMessage}`);
@@ -108,14 +100,30 @@ export const _getCustomMessageEmbed = ({
   return embed;
 };
 
-interface IGetCustomMessageSettings {
-  type: keyof typeof BOT_REMINDER_DEFAULT_MESSAGES;
-  customMessage: IUser['customMessage'];
-}
-
-const getCustomMessageSettings = ({customMessage, type}: IGetCustomMessageSettings) => {
-  const userSettings = customMessage[type];
-  const messageDefault = BOT_REMINDER_DEFAULT_MESSAGES[type];
-
-  return userSettings ?? messageDefault ?? '-';
+const getReminderProps = {
+  hunt: {
+    hardMode: false,
+    together: true,
+  },
+  adventure: {
+    hardMode: false,
+  },
+  training: {
+    ultraining: true,
+  },
+  quest: {
+    epicQuest: false,
+  },
+  working: {
+    workingType: 'fish',
+  },
+  farm: {
+    seedType: 'carrot',
+  },
+  epicItem: {
+    epicItemType: 'epic seed',
+  },
+  lootbox: {
+    lootboxType: 'edgy',
+  },
 };

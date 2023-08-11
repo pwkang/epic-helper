@@ -9,5 +9,5 @@ export default <SlashCommand>{
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,
   },
   type: 'command',
-  execute: async (client, interaction) => {},
+  execute: async () => {},
 };

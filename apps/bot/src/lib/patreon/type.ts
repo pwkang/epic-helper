@@ -190,6 +190,7 @@ interface IMemberAttributes {
 }
 
 // Refer to: https://docs.patreon.com/#member
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface IMemberRelationships {
   address?: IAddressAttributes;
   campaign?: ICampaignAttributes;

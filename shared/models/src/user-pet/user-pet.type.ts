@@ -1,4 +1,9 @@
-import {RPG_PET_SKILL, RPG_PET_STATUS, RPG_PET_TYPE} from '@epic-helper/constants';
+import {
+  RPG_PET_SKILL,
+  RPG_PET_STATUS,
+  RPG_PET_TYPE,
+  TSkillTierNumber,
+} from '@epic-helper/constants';
 import {ValuesOf} from '../type';
 
 export interface IUserPet {
@@ -8,5 +13,5 @@ export interface IUserPet {
   tier: number;
   readyAt: Date | null;
   status: ValuesOf<typeof RPG_PET_STATUS>;
-  skills: Partial<Record<keyof typeof RPG_PET_SKILL, number>>;
+  skills: Partial<Record<keyof typeof RPG_PET_SKILL, TSkillTierNumber>>;
 }

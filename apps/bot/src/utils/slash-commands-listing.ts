@@ -13,7 +13,6 @@ interface ISlashCommand {
 }
 
 export const listSlashCommands = async (): Promise<ISlashCommand[]> => {
-  const slashCommands: ISlashCommand[] = [];
   const commands = await importFiles<SlashCommand>({
     options: {fileFilter: '*.ts'},
     path: `./${handlerRoot}/commands/slash`,

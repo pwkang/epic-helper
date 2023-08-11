@@ -122,9 +122,9 @@ const getUserCooldownEmbed = ({
       const cooldown = userReminder.find((c) => c.type === item.type);
       const commandName = cooldown
         ? _parseCommandString({
-            toggleChecker,
-            ...cooldown,
-          }).replace('RPG ', '')
+          toggleChecker,
+          ...cooldown,
+        }).replace('RPG ', '')
         : item.name;
       const readyIn =
         !!cooldown?.readyAt &&

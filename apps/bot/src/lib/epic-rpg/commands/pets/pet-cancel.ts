@@ -125,7 +125,7 @@ const fetchPetsToCancel = async ({selectedPets, userId}: IFetchPetsToCancel) => 
     });
     petsToCancel.push(...availableEpicPets);
   }
-  if (!!nonEpicPetsId.length) {
+  if (nonEpicPetsId.length) {
     const nonEpicPets = await userPetServices.getUserPets({
       userId,
       petsId: nonEpicPetsId

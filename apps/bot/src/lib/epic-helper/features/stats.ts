@@ -12,6 +12,7 @@ import {
   getStartOfThisWeek,
   getStartOfToday,
   getStartOfYesterday,
+  typedObjectEntries,
 } from '@epic-helper/utils';
 import {BOT_COLOR} from '@epic-helper/constants';
 import {IUserStats, USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
@@ -59,7 +60,7 @@ const getThisWeekStats = ({stats, author}: IGetThisWeekStats) => {
       iconURL: author.avatarURL() ?? undefined,
     })
     .setThumbnail(author.avatarURL());
-  for (let [key, value] of Object.entries(weekDays)) {
+  for (const [, value] of Object.entries(weekDays)) {
     const dayStats = stats.find((stat) => stat.statsAt.getTime() === startOfWeek.getTime());
     embed.addFields(generateStatsField(value, dayStats?.rpg));
     startOfWeek.setDate(startOfWeek.getDate() + 1);
@@ -81,7 +82,7 @@ const getLastWeekStats = ({stats, author}: IGetLastWeekStats) => {
       iconURL: author.avatarURL() ?? undefined,
     })
     .setThumbnail(author.avatarURL());
-  for (let [key, value] of Object.entries(weekDays)) {
+  for (const [, value] of Object.entries(weekDays)) {
     const dayStats = stats.find((stat) => stat.statsAt.getTime() === startOfWeek.getTime());
     embed.addFields(generateStatsField(value, dayStats?.rpg));
     startOfWeek.setDate(startOfWeek.getDate() + 1);
@@ -171,7 +172,7 @@ const statsToShow = {
 const generateStatsField = (name: string, stats?: Partial<IUserStats['rpg']>): EmbedField => {
   const row: string[] = [];
 
-  for (let [type, label] of Object.entries(statsToShow) as [keyof typeof statsToShow, string][]) {
+  for (const [type, label] of Object.entries(statsToShow) as [keyof typeof statsToShow, string][]) {
     if (
       [USER_STATS_RPG_COMMAND_TYPE.huntTogether, USER_STATS_RPG_COMMAND_TYPE.ultraining].some(
         (_type) => type === _type
@@ -196,7 +197,7 @@ const generateWeeklyStatsField = (
 ): EmbedField => {
   const row: string[] = [];
 
-  for (let [type, label] of Object.entries(statsToShow) as [keyof typeof statsToShow, string][]) {
+  for (const [type, label] of Object.entries(statsToShow) as [keyof typeof statsToShow, string][]) {
     if (
       [USER_STATS_RPG_COMMAND_TYPE.huntTogether, USER_STATS_RPG_COMMAND_TYPE.ultraining].some(
         (_type) => type === _type
@@ -219,7 +220,7 @@ const generateWeeklyStatsField = (
 const calculateTotal = (stats: IUserStats['rpg'][]): Partial<IUserStats['rpg']> => {
   const avg: Partial<IUserStats['rpg']> = {};
 
-  for (let [type, label] of Object.entries(statsToShow) as [keyof typeof statsToShow, string][]) {
+  for (const [type] of typedObjectEntries(statsToShow)) {
     avg[type] = stats.reduce((acc, stat) => acc + (stat?.[type] ?? 0), 0);
   }
 

@@ -31,7 +31,7 @@ export const _useEpicToken = async ({
   const remainingTokens = totalTokens - usedTokens;
   if (totalTokens === 0) {
     return {
-      content: `You don't have any tokens to boost servers.`,
+      content: 'You don\'t have any tokens to boost servers.',
     };
   }
   if (remainingTokens < token) {

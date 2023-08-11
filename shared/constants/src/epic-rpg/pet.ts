@@ -55,8 +55,8 @@ export const RPG_PET_STATUS = {
   back: 'back',
 } as const;
 
-type TSkillTierStr = 'f' | 'e' | 'd' | 'c' | 'b' | 'a' | 's' | 'ss' | 'ss+';
-type TSkillTierNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+export type TSkillTierStr = 'f' | 'e' | 'd' | 'c' | 'b' | 'a' | 's' | 'ss' | 'ss+';
+export type TSkillTierNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
 export const RPG_PET_SKILL_TIER: Record<TSkillTierStr, TSkillTierNumber> = {
   f: 1,
