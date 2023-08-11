@@ -35,11 +35,11 @@ export function rpgInventory({client, message, author, isSlashCommand, args}: IR
           const options = materialCalculator.isCalcMaterial(args)
             ? materialCalculator.getCalcMaterialMessage({embed, area: calcInfo.area ?? 0, author})
             : sttScoreCalculator.getCalcSTTMessage({
-              embed,
-              area: calcInfo.area ?? 0,
-              author,
-              level: calcInfo?.level ?? 0,
-            });
+                embed,
+                area: calcInfo.area ?? 0,
+                author,
+                level: calcInfo?.level ?? 0,
+              });
 
           djsMessageHelper.send({
             client,

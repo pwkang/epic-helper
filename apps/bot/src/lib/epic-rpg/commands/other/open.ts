@@ -71,4 +71,4 @@ interface IIsNotEnoughLootbox {
 }
 
 const isNotEnoughLootbox = ({content}: IIsNotEnoughLootbox) =>
-  content.includes('you don\'t have that many of this lootbox type');
+  content.includes("you don't have that many of this lootbox type");

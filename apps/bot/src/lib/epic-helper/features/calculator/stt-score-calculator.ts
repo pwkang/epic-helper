@@ -126,8 +126,8 @@ export const getCalcInfo: IGetCalcInfo = (args) => ({
       ? 'top'
       : null
     : Number(args[1]) <= 15 && Number(args[1]) >= 1
-      ? (Number(args[1]) as RpgArea)
-      : null,
+    ? (Number(args[1]) as RpgArea)
+    : null,
   level: isNaN(Number(args[2])) ? null : Number(args[2]),
 });
 

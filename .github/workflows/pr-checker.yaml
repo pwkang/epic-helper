@@ -3,13 +3,9 @@ name: 'Quality & Test'
 on:
   pull_request:
     paths-ignore:
-      - '.vscode/**'
       - '.gitignore'
       - '.prettierrc'
       - '*.md'
-      - '.husky/**'
-      - '.tool-versions'
-      - 'docs/**'
 
   workflow_dispatch:
 
@@ -24,11 +20,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CI: true
-      HUSKY: 0
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [ 18.x ]
 
     steps:
       - name: Checkout Code
@@ -57,6 +52,9 @@ jobs:
 
       - name: Build Shared Packages
         run: pnpm build:shared
+
+      - name: Build Bot
+        run: pnpm build:bot
 
       - name: Run TSC
         run: pnpm type-check

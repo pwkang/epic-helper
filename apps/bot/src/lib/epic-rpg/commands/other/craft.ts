@@ -45,7 +45,7 @@ const rpgCraftSuccess = async ({content, author}: IRpgCraftSuccess) => {
     content.toLowerCase().includes(item)
   )?.[1] as keyof typeof RPG_EQUIPMENTS;
   if (!item) return;
-  
+
   if (Object.keys(rubyConsumed).includes(item)) {
     const _item = item as keyof typeof rubyConsumed;
     let ruby = rubyConsumed[_item];

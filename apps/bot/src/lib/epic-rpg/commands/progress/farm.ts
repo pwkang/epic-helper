@@ -137,7 +137,7 @@ interface IIsSeedNotGrowingUp {
 }
 
 const isSeedNotGrowingUp = ({embed, author}: IIsSeedNotGrowingUp) =>
-  embed.description?.includes('You planted a seed, but for some reason it\'s not growing up') &&
+  embed.description?.includes("You planted a seed, but for some reason it's not growing up") &&
   embed.author?.name === `${author.username} — farm`;
 
 interface IIsFailToPlantAnotherSeed {

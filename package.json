@@ -14,8 +14,11 @@
     "clean:node_modules": "find . -name \"node_modules\" -type d -prune -exec rm -rf '{}' +",
     "clean:dist": "find . -name \"dist\" -type d -prune -exec rm -rf '{}' +",
     "build:shared": "turbo run build:shared",
+    "format": "prettier --write \"apps/**/*.ts\" \"shared/**/*.ts\"",
+    "format:check": "prettier --check \"apps/**/*.ts\" \"shared/**/*.ts\"",
     "build:bot": "turbo run build:bot",
-    "lint": "turbo run lint && eslint apps/ --ext .ts",
+    "lint": "turbo run lint",
+    "type-check": "turbo run type-check",
     "dev-shard:bot": "npm run build:bot && USE_PINO_PRETTY=true node apps/bot/dist/index.js",
     "start:bot": "node apps/bot/dist/index.js"
   },

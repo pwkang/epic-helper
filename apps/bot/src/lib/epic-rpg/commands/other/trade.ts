@@ -91,4 +91,4 @@ interface IIsNotEnoughItems {
 }
 
 const isNotEnoughItems = ({author, message}: IIsNotEnoughItems) =>
-  message.content.includes('you don\'t have enough') && message.mentions.has(author.id);
+  message.content.includes("you don't have enough") && message.mentions.has(author.id);

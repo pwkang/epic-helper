@@ -28,13 +28,13 @@ export const getUserToggle = async ({author}: IGetUserToggle) => {
   function getEmbed(userToggle: IUserToggle) {
     return isDonor
       ? getDonorToggleEmbed({
-        author,
-        userToggle,
-      })
+          author,
+          userToggle,
+        })
       : getNonDonorToggleEmbed({
-        author,
-        userToggle,
-      });
+          author,
+          userToggle,
+        });
   }
 
   async function update({on, off}: IUpdateToggle) {

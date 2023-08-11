@@ -6,7 +6,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build:shared": "tsc",
-    "lint": "tsc --noEmit --skipLibCheck"
+    "type-check": "tsc --noEmit --skipLibCheck",
+    "lint": "eslint src/ --ext .ts --fix"
   },
   "dependencies": {
     "readdirp": "^3.6.0"

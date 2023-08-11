@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "build:shared": "tsc",
-    "lint": "tsc --noEmit --skipLibCheck"
+    "type-check": "tsc --noEmit --skipLibCheck",
+    "lint": "eslint src/ --ext .ts --fix"
   },
   "keywords": [],
   "author": "",
