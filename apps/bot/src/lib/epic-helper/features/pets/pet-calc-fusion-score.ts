@@ -56,7 +56,7 @@ interface ICalcSelectedPetsFusionScoreReturn {
 
 const calcSelectedPetsFusionScore = (pets: IUserPet[]): ICalcSelectedPetsFusionScoreReturn[] => {
   const result: ICalcSelectedPetsFusionScoreReturn[] = [];
-  for (let skill of skillsToFuse) {
+  for (const skill of skillsToFuse) {
     const petsWithSkill = pets.filter((pet) => pet.skills[skill]);
     if (!petsWithSkill.length) continue;
     const totalScore = petsWithSkill.reduce((acc, pet) => acc + pet.skills[skill]!, 0);

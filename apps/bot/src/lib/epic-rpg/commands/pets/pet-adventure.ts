@@ -41,7 +41,7 @@ export const rpgPetAdventure = async ({
     return {
       content:
         `**${amountOfPetSent}** pets were sent to adventure, but found **${petsToSend.length}** available pets to send.\n` +
-        `Type \`rpg pet\` to update and register pet reminder or use \`rpg pet summary\` to register 1 pet reminder`,
+        'Type `rpg pet` to update and register pet reminder or use `rpg pet summary` to register 1 pet reminder',
     };
   }
 
@@ -109,7 +109,7 @@ interface IFetchPetsToSend {
 const fetchPetsToSend = async ({selectedPets, userId}: IFetchPetsToSend) => {
   const nonEpicPetsId = selectedPets.filter((p) => p !== 'epic');
   const petsToSend = [];
-  if (!!nonEpicPetsId.length) {
+  if (nonEpicPetsId.length) {
     const nonEpicPets = await userPetServices.getUserPets({
       userId,
       petsId: nonEpicPetsId.map(convertPetIdToNum),
@@ -277,7 +277,7 @@ const calcAdventureTime = ({pet}: ICalcAdventureTime) => {
 
 const generateResult = (result: ISentResult[]) => {
   const results: string[] = ['Reminding the following pets:'];
-  for (let r of result) {
+  for (const r of result) {
     const petId = convertNumToPetId(r.petId);
     const duration = r.duration ? convertMsToHumanReadableString(r.duration) : '**Ready To Claim**';
     results.push(`\`ID: ${petId}\` - ${duration}`);

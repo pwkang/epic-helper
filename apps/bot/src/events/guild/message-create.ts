@@ -7,21 +7,20 @@ export default <BotEvent>{
   once: false,
   execute: async (client, message: Message) => {
     if (!message.inGuild()) return;
-    if (isBotSlashCommand(message) && isNotDeferred(message)) {
+    if (isBotSlashCommand(message) && isNotDeferred(message) && message.interaction) {
       const messages = searchSlashMessages(client, message);
       if (!messages.size) return;
 
       messages.forEach((cmd) => {
         const toExecute = preCheckCommand({
           client,
-          author: message.interaction?.user!,
+          author: message.interaction!.user,
           message,
-          channelId: message.channelId,
           preCheck: cmd.preCheck,
           server: message.guild,
         });
         if (!toExecute) return;
-        cmd.execute(client, message, message.interaction?.user!);
+        cmd.execute(client, message, message.interaction!.user);
       });
     }
 
@@ -32,7 +31,6 @@ export default <BotEvent>{
         client,
         preCheck: result.command.preCheck,
         author: message.author,
-        channelId: message.channelId,
         server: message.guild,
         message,
       });

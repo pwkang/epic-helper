@@ -88,11 +88,11 @@ const rpgUseEpicItemSuccess = async ({author, type, channelId}: IRpgUseEpicItemS
   });
 };
 
-const isPlantingEpicSeed = ({author, message}: IMessageContentChecker) =>
+const isPlantingEpicSeed = ({message}: IMessageContentChecker) =>
   ['planting the', 'epic seed'].every((word) => message.content.toLowerCase().includes(word));
 
-const isSummoningCoinRain = ({author, message}: IMessageContentChecker) =>
+const isSummoningCoinRain = ({message}: IMessageContentChecker) =>
   ['summoning the', 'coin rain'].every((word) => message.content.toLowerCase().includes(word));
 
-const isPlacingUltraBait = ({author, message}: IMessageContentChecker) =>
+const isPlacingUltraBait = ({message}: IMessageContentChecker) =>
   ['placing the', 'ultra bait'].every((word) => message.content.toLowerCase().includes(word));

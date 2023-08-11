@@ -12,8 +12,9 @@ export const getPatrons = async (
   const data: IFetchPatreonCampaignMembersResponse['data'] = [];
   const included: IFetchPatreonCampaignMembersResponse['included'] = [];
   let nextCursor: string | undefined = undefined;
+  let toLoop = true;
 
-  while (true) {
+  while (toLoop) {
     try {
       const url = patreonUrlGenerator.generateFetchPatreonApiUrl({
         campaignId: PATREON_CAMPAIGN_ID,
@@ -44,7 +45,10 @@ export const getPatrons = async (
       data.push(...responseData);
       included.push(...responseIncluded);
 
-      if (!meta.pagination.cursors.next) break;
+      if (!meta.pagination.cursors.next) {
+        toLoop = false;
+        break;
+      }
       await sleep(2000);
       nextCursor = meta.pagination.cursors.next;
     } catch (e: any) {

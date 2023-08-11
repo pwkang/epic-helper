@@ -108,10 +108,10 @@ export default async function getTrainingAnswer({
 }
 
 function generateRows(list: ITrainingAnswer[], answer: TAnswerType) {
-  let rows: ActionRowBuilder<ButtonBuilder>[] = [];
-  for (let row of chunkInto3(list)) {
-    let actionRow = new ActionRowBuilder<ButtonBuilder>();
-    for (let item of row) {
+  const rows: ActionRowBuilder<ButtonBuilder>[] = [];
+  for (const row of chunkInto3(list)) {
+    const actionRow = new ActionRowBuilder<ButtonBuilder>();
+    for (const item of row) {
       actionRow.addComponents(generateButton(item.label, item.ans === answer));
     }
     rows.push(actionRow);
@@ -130,7 +130,7 @@ function generateButton(label: string, style: boolean) {
 }
 
 function chunkInto3(list: ITrainingAnswer[]): ITrainingAnswer[][] {
-  let rows = [];
+  const rows = [];
   for (let i = 0; i < list.length; i += 3) {
     rows.push(list.slice(i, i + 3));
   }

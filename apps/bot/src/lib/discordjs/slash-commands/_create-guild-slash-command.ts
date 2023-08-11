@@ -1,11 +1,4 @@
-import {
-  ApplicationCommand,
-  Client,
-  DiscordAPIError,
-  Guild,
-  Routes,
-  SlashCommandBuilder,
-} from 'discord.js';
+import {ApplicationCommand, Client, Guild, Routes, SlashCommandBuilder} from 'discord.js';
 import {logger} from '@epic-helper/utils';
 import {djsRestClient} from '@epic-helper/services';
 
@@ -29,7 +22,7 @@ export const _createGuildSlashCommand = async ({
       }
     );
     return data as ApplicationCommand;
-  } catch (e: DiscordAPIError | any) {
+  } catch (e: any) {
     logger({
       message: e.rawError,
       variant: 'create-guild-slash-command',

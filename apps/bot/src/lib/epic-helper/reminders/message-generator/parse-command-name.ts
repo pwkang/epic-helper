@@ -8,16 +8,12 @@ import {
 import {IUserReminder} from '@epic-helper/models';
 import {IToggleUserCheckerReturnType} from '../../toggle-checker/user';
 
-interface IGetDailyCommandStr {}
-
-const getDailyCommandStr = ({}: IGetDailyCommandStr) => {
-  return `RPG DAILY`;
+const getDailyCommandStr = () => {
+  return 'RPG DAILY';
 };
 
-interface IGetWeeklyCommandStr {}
-
-const getWeeklyCommandStr = ({}: IGetWeeklyCommandStr) => {
-  return `RPG WEEKLY`;
+const getWeeklyCommandStr = () => {
+  return 'RPG WEEKLY';
 };
 
 interface IGetHuntCommandStr {
@@ -45,13 +41,11 @@ interface IGetTrainingCommandStr {
 }
 
 const getTrainingCommandStr = ({ultraining}: IGetTrainingCommandStr) => {
-  return ultraining ? `RPG ULTRAINING` : `RPG TRAINING`;
+  return ultraining ? 'RPG ULTRAINING' : 'RPG TRAINING';
 };
 
-interface IGetDuelCommandStr {}
-
-const getDuelCommandStr = ({}: IGetDuelCommandStr) => {
-  return `RPG DUEL`;
+const getDuelCommandStr = () => {
+  return 'RPG DUEL';
 };
 
 interface IGetQuestCommandStr {
@@ -59,7 +53,7 @@ interface IGetQuestCommandStr {
 }
 
 const getQuestCommandStr = ({epicQuest}: IGetQuestCommandStr) => {
-  return epicQuest ? `RPG EPIC QUEST` : `RPG QUEST`;
+  return epicQuest ? 'RPG EPIC QUEST' : 'RPG QUEST';
 };
 
 interface IGetWorkCommandStr {
@@ -78,22 +72,16 @@ const getFarmCommandStr = ({seedType}: IGetFarmCommandStr) => {
   return seedType ? `RPG FARM ${seedType.toUpperCase()}` : 'RPG FARM';
 };
 
-interface IGetHorseCommandStr {}
-
-const getHorseCommandStr = ({}: IGetHorseCommandStr) => {
-  return `RPG HORSE RACE/BREEDING`;
+const getHorseCommandStr = () => {
+  return 'RPG HORSE RACE/BREEDING';
 };
 
-interface IGetArenaCommandStr {}
-
-const GetArenaCommandStr = ({}: IGetArenaCommandStr) => {
-  return `RPG ARENA`;
+const GetArenaCommandStr = () => {
+  return 'RPG ARENA';
 };
 
-interface IGetDungeonCommandStr {}
-
-const GetDungeonCommandStr = ({}: IGetDungeonCommandStr) => {
-  return `RPG DUNGEON`;
+const GetDungeonCommandStr = () => {
+  return 'RPG DUNGEON';
 };
 
 interface IGetLootboxCommandStr {
@@ -104,10 +92,8 @@ const GetLootboxCommandStr = ({lootboxType}: IGetLootboxCommandStr) => {
   return `RPG BUY ${lootboxType?.toUpperCase() || ''} LOOTBOX`;
 };
 
-interface IGetVoteCommandStr {}
-
-const GetVoteCommandStr = ({}: IGetVoteCommandStr) => {
-  return `RPG VOTE`;
+const GetVoteCommandStr = () => {
+  return 'RPG VOTE';
 };
 
 interface IGetEpicItemCommandStr {
@@ -118,10 +104,8 @@ const getEpicItemCommandStr = ({epicItemType}: IGetEpicItemCommandStr) => {
   return `RPG USE ${epicItemType ? epicItemType.toUpperCase() : 'EPIC ITEM'}`;
 };
 
-interface IGetPetCommandStr {}
-
-const getPetCommandStr = ({}: IGetPetCommandStr) => {
-  return `RPG PET CLAIM`;
+const getPetCommandStr = () => {
+  return 'RPG PET CLAIM';
 };
 
 type IGetPetTrainCommandStr = IUserReminder & {
@@ -131,15 +115,15 @@ type IGetPetTrainCommandStr = IUserReminder & {
 export const _parseCommandString = ({props, type, toggleChecker}: IGetPetTrainCommandStr) => {
   switch (type) {
     case RPG_COMMAND_TYPE.daily:
-      return getDailyCommandStr({});
+      return getDailyCommandStr();
     case RPG_COMMAND_TYPE.weekly:
-      return getWeeklyCommandStr({});
+      return getWeeklyCommandStr();
     case RPG_COMMAND_TYPE.lootbox:
       return GetLootboxCommandStr({
         lootboxType: props?.lootboxType,
       });
     case RPG_COMMAND_TYPE.vote:
-      return GetVoteCommandStr({});
+      return GetVoteCommandStr();
     case RPG_COMMAND_TYPE.hunt:
       return getHuntCommandStr({
         hardMode: props?.hardMode,
@@ -155,7 +139,7 @@ export const _parseCommandString = ({props, type, toggleChecker}: IGetPetTrainCo
         ultraining: props?.ultraining,
       });
     case RPG_COMMAND_TYPE.duel:
-      return getDuelCommandStr({});
+      return getDuelCommandStr();
     case RPG_COMMAND_TYPE.quest:
       return getQuestCommandStr({
         epicQuest: props?.epicQuest,
@@ -169,17 +153,17 @@ export const _parseCommandString = ({props, type, toggleChecker}: IGetPetTrainCo
         seedType: props?.seedType,
       });
     case RPG_COMMAND_TYPE.horse:
-      return getHorseCommandStr({});
+      return getHorseCommandStr();
     case RPG_COMMAND_TYPE.arena:
-      return GetArenaCommandStr({});
+      return GetArenaCommandStr();
     case RPG_COMMAND_TYPE.dungeon:
-      return GetDungeonCommandStr({});
+      return GetDungeonCommandStr();
     case RPG_COMMAND_TYPE.epicItem:
       return getEpicItemCommandStr({
         epicItemType: props?.epicItemType,
       });
     case RPG_COMMAND_TYPE.pet:
-      return getPetCommandStr({});
+      return getPetCommandStr();
     default:
       return '';
   }

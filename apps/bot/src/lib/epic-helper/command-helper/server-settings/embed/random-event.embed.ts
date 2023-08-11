@@ -11,7 +11,7 @@ export const _getRandomEventSettingsEmbed = ({serverAccount, guild}: IServerSett
     })
     .setColor(BOT_COLOR.embed);
 
-  for (let [key, label] of typedObjectEntries(RPG_RANDOM_EVENTS_NAME)) {
+  for (const [key, label] of typedObjectEntries(RPG_RANDOM_EVENTS_NAME)) {
     embed.addFields({
       name: label,
       value: serverAccount?.settings.randomEvent[key] ?? '-',

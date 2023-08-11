@@ -134,7 +134,7 @@ const buildDonorsEmbed = async ({donors, page, total, client}: IBuildEmbed) => {
     text: `Page ${page + 1}/${Math.ceil(total / PAGE_SIZE)} • total: ${total}`,
   });
 
-  for (let donor of donors) {
+  for (const donor of donors) {
     const user = await fetchUser(client, donor.discord.userId);
     embed.addFields({
       name: donor.discord.userId ?? '-',

@@ -6,11 +6,11 @@ export interface IGuildReader {
 }
 
 const guildReader = ({embed}: IGuildReader) => {
-  const name = embed.description?.split('**')[1]!;
-  const level = embed.fields?.[0].value.split('\n')[0].match(/\d+/g)?.[0]!;
-  const xp = embed.fields?.[0].value.split('\n')[1].match(/\d+/g)?.[0]!;
-  const energy = embed.fields?.[1].value.split('\n')[0].match(/\d+/g)?.[0]!;
-  const stealth = embed.fields?.[1].value.split('\n')[1].match(/\d+/g)?.[0]!;
+  const name = embed.description?.split('**')[1];
+  const level = embed.fields?.[0].value.split('\n')[0].match(/\d+/g)?.[0] ?? 0;
+  const xp = embed.fields?.[0].value.split('\n')[1].match(/\d+/g)?.[0] ?? 0;
+  const energy = embed.fields?.[1].value.split('\n')[0].match(/\d+/g)?.[0] ?? 0;
+  const stealth = embed.fields?.[1].value.split('\n')[1].match(/\d+/g)?.[0] ?? 0;
   const time = embed.fields?.[1].value.split('\n')[3]?.split('**')[1]?.split(' ') ?? [];
 
   return {
@@ -18,7 +18,7 @@ const guildReader = ({embed}: IGuildReader) => {
     level: Number(level),
     xp: Number(xp),
     stealth: Number(stealth),
-    readyIn: time.reduce((acc, curr, i) => {
+    readyIn: time.reduce((acc, curr) => {
       return acc + ms(curr);
     }, 0),
     energy: Number(energy),

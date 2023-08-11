@@ -3,7 +3,7 @@ import {ValuesOf} from '../type';
 
 export interface IEventCdReduction {
   commandType: ValuesOf<typeof RPG_COMMAND_TYPE>;
-  percentage: Number;
+  percentage: number;
   startDate?: Date;
   endDate?: Date;
 }

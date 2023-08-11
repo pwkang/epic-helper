@@ -445,8 +445,8 @@ const guild = (guildToggle: IGuild['toggle']): IToggleEmbedsInfo[] => {
       children: [
         {
           label: 'Enable / Disable Guild',
-          value: guildToggle.active,
-          path: 'toggle.active',
+          value: guildToggle.onOff,
+          path: 'toggle.onOff',
         },
       ],
     },
@@ -479,8 +479,8 @@ const guild = (guildToggle: IGuild['toggle']): IToggleEmbedsInfo[] => {
       children: [
         {
           label: 'Log the following commands',
-          value: guildToggle.duel.log.active,
-          path: 'toggle.duel.log.active',
+          value: guildToggle.duel.log.all,
+          path: 'toggle.duel.log.all',
           children: [
             {
               label: '`duel add`',
@@ -506,13 +506,8 @@ const guild = (guildToggle: IGuild['toggle']): IToggleEmbedsInfo[] => {
         },
         {
           label: 'Duel result message link is required',
-          value: guildToggle.duel.linkRequired,
-          path: 'toggle.duel.linkRequired',
-        },
-        {
-          label: 'Auto reset on every cycle',
-          value: guildToggle.duel.autoReset,
-          path: 'toggle.duel.autoReset',
+          value: guildToggle.duel.refRequired,
+          path: 'toggle.duel.refRequired',
         },
       ],
     },

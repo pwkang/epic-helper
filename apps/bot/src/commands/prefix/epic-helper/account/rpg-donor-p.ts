@@ -1,4 +1,3 @@
-import {ButtonStyle} from 'discord.js';
 import {djsMessageHelper} from '../../../../lib/discordjs/message';
 import {
   PREFIX_COMMAND_TYPE,

@@ -16,7 +16,6 @@ export default <BotEvent>{
         client,
         preCheck: command.preCheck,
         author: interaction.user,
-        channelId: interaction.channelId,
         server: interaction.guild,
         interaction,
       });

@@ -56,7 +56,7 @@ export function rpgHunt({author, message, client, isSlashCommand}: IRpgHunt) {
         message,
         client,
         options: {
-          content: `You were moved to area 2, remember to go back your area!`,
+          content: 'You were moved to area 2, remember to go back your area!',
         },
       });
     }
@@ -273,7 +273,7 @@ const getHealReminderMsg = ({
         .pop();
     } else if (content.includes('just in time')) {
       //one of the player died
-      let playerSurvived = content
+      const playerSurvived = content
         .split('\n')
         .find((msg) => [author.username, 'remaining HP is'].every((m) => msg.includes(m)));
       if (playerSurvived) {

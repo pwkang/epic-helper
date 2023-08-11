@@ -7,11 +7,7 @@ interface IGetReminderMessageTemplate {
   type: ValuesOf<typeof RPG_COMMAND_TYPE>;
 }
 
-export const getReminderMessageTemplate = ({
-  userAccount,
-  userId,
-  type,
-}: IGetReminderMessageTemplate) => {
+export const getReminderMessageTemplate = ({userAccount, type}: IGetReminderMessageTemplate) => {
   const customMessage = userAccount.customMessage;
   return (
     customMessage[type] ??

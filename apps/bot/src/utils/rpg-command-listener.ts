@@ -147,7 +147,7 @@ export const createRpgCommandListener = ({
 };
 
 function extractCooldown(embed: Embed) {
-  let time = embed.title?.split('**')[1].split(' ') ?? [];
+  const time = embed.title?.split('**')[1].split(' ') ?? [];
   let time_ms = 0;
   time.forEach((t) => {
     time_ms += ms(t);

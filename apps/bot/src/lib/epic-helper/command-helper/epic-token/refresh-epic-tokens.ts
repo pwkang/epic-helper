@@ -31,7 +31,7 @@ export const _syncBoostedServers = async ({userId}: ISyncBoostedServers) => {
 
   let extraTokens = usedToken - totalToken;
   const serversToUnBoost: IServerToUnBoost[] = [];
-  for (let server of boostedServers) {
+  for (const server of boostedServers) {
     if (extraTokens <= 0) break;
     if (server.token <= extraTokens) {
       serversToUnBoost.push({
@@ -47,7 +47,7 @@ export const _syncBoostedServers = async ({userId}: ISyncBoostedServers) => {
       extraTokens = 0;
     }
   }
-  for (let server of serversToUnBoost) {
+  for (const server of serversToUnBoost) {
     await serverService.removeTokens({
       serverId: server.serverId,
       userId,

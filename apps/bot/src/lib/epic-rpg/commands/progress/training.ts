@@ -120,13 +120,7 @@ interface IEncounteringPet {
   wildPetMessage: Message;
 }
 
-const encounteringPet = async ({
-  embed,
-  author,
-  client,
-  channelId,
-  wildPetMessage,
-}: IEncounteringPet) => {
+const encounteringPet = async ({embed, author, client, channelId}: IEncounteringPet) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker?.petCatch) return;
 

@@ -22,7 +22,7 @@ export default <BotMessage>{
       serverId: message.guild.id,
     });
     if (!toggleServer?.randomEvent) return;
-    
+
     const randomEvent = serverProfile.settings.randomEvent;
     if (!randomEvent.lootbox) return;
     await djsMessageHelper.send({

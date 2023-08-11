@@ -3,7 +3,6 @@ import bodyParser from 'body-parser';
 import * as dotenv from 'dotenv';
 import loadRoutes from './handler/routes.handler';
 import {logger} from '@epic-helper/utils';
-import morgan from 'morgan';
 
 dotenv.config();
 

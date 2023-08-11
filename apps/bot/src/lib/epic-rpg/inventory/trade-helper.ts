@@ -1,4 +1,4 @@
-import {IInventoryItem} from '../embed-readers/inventory.reader';
+import {IInventoryItem, TRpgItemName} from '../embed-readers/inventory.reader';
 import {RpgArea} from '../../../types/rpg.types';
 import dismantleHelper from './dismantle-helper';
 import {RPG_TRADE_RATE} from '@epic-helper/constants';
@@ -12,113 +12,108 @@ interface IStartTrading {
 
 export const startTrading = ({startArea, endArea, inventory, tradeTo}: IStartTrading) => {
   const _tradeTo = endArea === 'top' ? 15 : endArea;
-  let newInventory = initTrade(inventory);
+  const newInventory = new InitTrade(inventory);
   if (typeof startArea === 'number') {
     for (let area = startArea; area <= _tradeTo; area++) {
       if (area <= 3) {
-        newInventory = newInventory.dismantleAll(area).tradeC(area).tradeB(area);
+        newInventory.dismantleAll(area).tradeC(area).tradeB(area);
       } else if (area <= 5) {
-        newInventory = newInventory.dismantleAll(area).tradeA(area).tradeE(area).tradeD(area);
+        newInventory.dismantleAll(area).tradeA(area).tradeE(area).tradeD(area);
       } else if (area <= 7) {
-        newInventory = newInventory.dismantleAll(area).tradeC(area).tradeA(area).tradeE(area);
+        newInventory.dismantleAll(area).tradeC(area).tradeA(area).tradeE(area);
       } else if (area <= 8) {
-        newInventory = newInventory.dismantleAll(area).tradeE(area).tradeA(area).tradeD(area);
+        newInventory.dismantleAll(area).tradeE(area).tradeA(area).tradeD(area);
       } else if (area <= 9) {
-        newInventory = newInventory.dismantleAll(area).tradeE(area).tradeC(area).tradeB(area);
+        newInventory.dismantleAll(area).tradeE(area).tradeC(area).tradeB(area);
       } else if (area <= 15) {
-        newInventory = newInventory.dismantleAll(area).tradeA(area).tradeE(area).tradeC(area);
+        newInventory.dismantleAll(area).tradeA(area).tradeE(area).tradeC(area);
       }
     }
   }
   switch (tradeTo) {
     case 'normieFish':
-      newInventory = newInventory.tradeE(endArea).tradeC(endArea).tradeB(endArea);
+      newInventory.tradeE(endArea).tradeC(endArea).tradeB(endArea);
       break;
     case 'woodenLog':
-      newInventory = newInventory.tradeA(endArea).tradeC(endArea).tradeE(endArea);
+      newInventory.tradeA(endArea).tradeC(endArea).tradeE(endArea);
       break;
     case 'apple':
-      newInventory = newInventory.tradeA(endArea).tradeE(endArea).tradeD(endArea);
+      newInventory.tradeA(endArea).tradeE(endArea).tradeD(endArea);
       break;
     case 'ruby':
-      newInventory = newInventory.tradeA(endArea).tradeC(endArea).tradeF(endArea);
+      newInventory.tradeA(endArea).tradeC(endArea).tradeF(endArea);
       break;
   }
-  return newInventory;
+  return newInventory.end();
 };
 
-interface IInitTradeReturn extends IInventoryItem {
-  tradeA: (area: RpgArea) => IInitTradeReturn;
-  tradeB: (area: RpgArea) => IInitTradeReturn;
-  tradeC: (area: RpgArea) => IInitTradeReturn;
-  tradeD: (area: RpgArea) => IInitTradeReturn;
-  tradeE: (area: RpgArea) => IInitTradeReturn;
-  tradeF: (area: RpgArea) => IInitTradeReturn;
+class InitTrade {
+  private inventory: IInventoryItem;
 
-  dismantleAll(area: RpgArea): IInitTradeReturn;
-}
+  constructor(inventory: IInventoryItem) {
+    this.inventory = {
+      ...inventory,
+    };
+  }
 
-function initTrade(inventory: IInventoryItem) {
-  return <IInitTradeReturn>{
-    ...inventory,
-    tradeA: function (area) {
-      const tradeRate = RPG_TRADE_RATE[area]?.tradeA;
-      if (!tradeRate) return this;
-      const {normieFish, woodenLog} = trade(this, 'normieFish', 'woodenLog', tradeRate);
-      this.normieFish = normieFish;
-      this.woodenLog = woodenLog;
-      return this;
-    },
-    tradeB: function (area) {
-      const tradeRate = RPG_TRADE_RATE[area]?.tradeB;
-      if (!tradeRate) return this;
-      const {woodenLog, normieFish} = trade(this, 'woodenLog', 'normieFish', tradeRate);
-      this.woodenLog = woodenLog;
-      this.normieFish = normieFish;
-      return this;
-    },
-    tradeC: function (area) {
-      const tradeRate = RPG_TRADE_RATE[area]?.tradeC;
-      if (!tradeRate) return this;
-      const {apple, woodenLog} = trade(this, 'apple', 'woodenLog', tradeRate);
-      this.apple = apple;
-      this.woodenLog = woodenLog;
-      return this;
-    },
-    tradeD: function (area) {
-      const tradeRate = RPG_TRADE_RATE[area]?.tradeD;
-      if (!tradeRate) return this;
-      const {woodenLog, apple} = trade(this, 'woodenLog', 'apple', tradeRate);
-      this.woodenLog = woodenLog;
-      this.apple = apple;
-      return this;
-    },
-    tradeE: function (area) {
-      const tradeRate = RPG_TRADE_RATE[area]?.tradeE;
-      if (!tradeRate) return this;
-      const {ruby, woodenLog} = trade(this, 'ruby', 'woodenLog', tradeRate);
-      this.ruby = ruby;
-      this.woodenLog = woodenLog;
-      return this;
-    },
-    tradeF: function (area) {
-      const tradeRate = RPG_TRADE_RATE[area]?.tradeF;
-      if (!tradeRate) return this;
-      const {woodenLog, ruby} = trade(this, 'woodenLog', 'ruby', tradeRate);
-      this.woodenLog = woodenLog;
-      this.ruby = ruby;
-      return this;
-    },
-    dismantleAll: function (area) {
-      return {
-        ...this,
-        ...dismantleHelper.dismantleRecommend(this, area),
-      };
-    },
-    end: function () {
-      return this;
-    },
-  };
+  tradeA(area: RpgArea) {
+    const tradeRate = RPG_TRADE_RATE[area]?.tradeA;
+    if (!tradeRate) return this;
+    this.trade('normieFish', 'woodenLog', tradeRate);
+    return this;
+  }
+
+  tradeB(area: RpgArea) {
+    const tradeRate = RPG_TRADE_RATE[area]?.tradeB;
+    if (!tradeRate) return this;
+    this.trade('woodenLog', 'normieFish', tradeRate);
+    return this;
+  }
+
+  tradeC(area: RpgArea) {
+    const tradeRate = RPG_TRADE_RATE[area]?.tradeC;
+    if (!tradeRate) return this;
+    this.trade('apple', 'woodenLog', tradeRate);
+    return this;
+  }
+
+  tradeD(area: RpgArea) {
+    const tradeRate = RPG_TRADE_RATE[area]?.tradeD;
+    if (!tradeRate) return this;
+    this.trade('woodenLog', 'apple', tradeRate);
+    return this;
+  }
+
+  tradeE(area: RpgArea) {
+    const tradeRate = RPG_TRADE_RATE[area]?.tradeE;
+    if (!tradeRate) return this;
+    this.trade('ruby', 'woodenLog', tradeRate);
+    return this;
+  }
+
+  tradeF(area: RpgArea) {
+    const tradeRate = RPG_TRADE_RATE[area]?.tradeF;
+    if (!tradeRate) return this;
+    this.trade('woodenLog', 'ruby', tradeRate);
+    return this;
+  }
+
+  dismantleAll(area: RpgArea) {
+    this.inventory = dismantleHelper.dismantleRecommend(this.inventory, area);
+    return this;
+  }
+
+  trade(fromItem: TRpgItemName, toItem: TRpgItemName, tradeRate: number) {
+    const fromItemAmount = this.inventory[fromItem] ?? 0;
+    const toItemAmount = this.inventory[toItem] ?? 0;
+    const tradedAmount = Math.floor(fromItemAmount * tradeRate);
+    this.inventory[toItem] = toItemAmount + tradedAmount;
+    this.inventory[fromItem] = fromItemAmount - tradedAmount / tradeRate;
+  }
+
+  end() {
+    return this.inventory;
+  }
 }
 
 /**
@@ -127,23 +122,23 @@ function initTrade(inventory: IInventoryItem) {
  *  ==========================================
  */
 
-const trade = <T, X extends keyof IInventoryItem, Y extends keyof IInventoryItem>(
-  inventory: IInventoryItem,
-  fromItem: X,
-  toItem: Y,
-  tradeRate: number
-): Record<X | Y, number> => {
-  const fromItemAmount = inventory[fromItem] ?? 0;
-  const toItemAmount = inventory[toItem] ?? 0;
-  const tradedAmount = Math.floor(fromItemAmount * tradeRate);
-  inventory[toItem] = toItemAmount + tradedAmount;
-  inventory[fromItem] = fromItemAmount - tradedAmount / tradeRate;
-  return {
-    [fromItem]: inventory[fromItem],
-    [toItem]: inventory[toItem],
-  } as Record<X | Y, number>;
-};
-
+// const trade = <T, X extends keyof IInventoryItem, Y extends keyof IInventoryItem>(
+//   inventory: IInventoryItem,
+//   fromItem: X,
+//   toItem: Y,
+//   tradeRate: number
+// ): Record<X | Y, number> => {
+//   const fromItemAmount = inventory[fromItem] ?? 0;
+//   const toItemAmount = inventory[toItem] ?? 0;
+//   const tradedAmount = Math.floor(fromItemAmount * tradeRate);
+//   inventory[toItem] = toItemAmount + tradedAmount;
+//   inventory[fromItem] = fromItemAmount - tradedAmount / tradeRate;
+//   return {
+//     [fromItem]: inventory[fromItem],
+//     [toItem]: inventory[toItem],
+//   } as Record<X | Y, number>;
+// };
+//
 const tradeHelper = {
   startTrading,
 };

@@ -61,8 +61,11 @@ export const rpgGuildUpgrade = async ({
       }
     }
   });
-  event.on('content', async (content, collected) => {
-    if (isUserDontHaveGuild({author, message}) || isGuildCantBeUpgraded({author, message})) {
+  event.on('content', async (_, collected) => {
+    if (
+      isUserDontHaveGuild({author, message: collected}) ||
+      isGuildCantBeUpgraded({author, message: collected})
+    ) {
       event.stop();
     }
   });
@@ -99,7 +102,7 @@ const rpgGuildUpgradeSuccess = async ({
   });
 };
 
-const isGuildUpgradeSuccess = ({author, embed}: IMessageEmbedChecker) =>
+const isGuildUpgradeSuccess = ({embed}: IMessageEmbedChecker) =>
   ['Guild successfully upgraded', 'Guild upgrade failed!'].some((msg) =>
     embed.description?.includes(msg)
   );

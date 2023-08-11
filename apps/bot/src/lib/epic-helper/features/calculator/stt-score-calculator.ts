@@ -4,6 +4,7 @@ import tradeHelper from '../../../epic-rpg/inventory/trade-helper';
 import dismantleHelper from '../../../epic-rpg/inventory/dismantle-helper';
 import embedReaders from '../../../epic-rpg/embed-readers';
 import {BOT_COLOR, BOT_EMOJI, RPG_STT_SCORE} from '@epic-helper/constants';
+import {typedObjectEntries} from '@epic-helper/utils';
 
 interface ICalcSttOptions {
   embed: Embed;
@@ -32,15 +33,17 @@ export const getCalcSTTMessage: TCalcFunc = ({embed, area, level, author}) => {
   const score: ICalcSTTScore = {
     level: level * RPG_STT_SCORE.level,
   };
-  for (const [key, rate] of Object.entries(RPG_STT_SCORE) as [SttItems, number][]) {
+  for (const [key, rate] of typedObjectEntries(RPG_STT_SCORE)) {
     if (key === 'level') {
+      // skip
     } else if (key === 'stats') {
+      // skip
     } else if (key in dismantleAll) {
       score[key] = Math.ceil((dismantleAll[key] ?? 0) * rate);
     }
   }
   let total = 0;
-  for (let [, value] of Object.entries(score)) {
+  for (const [, value] of Object.entries(score)) {
     total += value ?? 0;
   }
 

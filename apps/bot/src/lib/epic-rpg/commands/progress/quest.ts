@@ -144,7 +144,7 @@ export const showArenaCooldown = async ({client, author, channelId}: IShowArenaC
       })}`
     );
   } else {
-    embed.setDescription(`Your **Arena** command is ready!`);
+    embed.setDescription('Your **Arena** command is ready!');
   }
   await djsMessageHelper.send({
     options: {
@@ -178,7 +178,7 @@ export const showMinibossCooldown = async ({client, author, channelId}: IShowMin
       })}`
     );
   } else {
-    embed.setDescription(`Your **Miniboss** command is ready!`);
+    embed.setDescription('Your **Miniboss** command is ready!');
   }
   await djsMessageHelper.send({
     options: {

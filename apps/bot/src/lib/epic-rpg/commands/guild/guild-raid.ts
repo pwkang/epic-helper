@@ -56,6 +56,11 @@ export const rpgGuildRaid = async ({author, message, isSlashCommand, client}: IR
       }
     }
   });
+  event.on('content', async (_, collected) => {
+    if (!isUserDontHaveGuild({author, message: collected})) {
+      event.stop();
+    }
+  });
   if (isSlashCommand) event.triggerCollect(message);
 };
 

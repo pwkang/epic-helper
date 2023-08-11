@@ -41,7 +41,7 @@ interface IRpgPetClaimSuccess {
   client: Client;
 }
 
-const rpgPetClaimSuccess = async ({embed, author, client}: IRpgPetClaimSuccess) => {
+const rpgPetClaimSuccess = async ({author}: IRpgPetClaimSuccess) => {
   await userPetServices.claimAllPets({
     userId: author.id,
   });

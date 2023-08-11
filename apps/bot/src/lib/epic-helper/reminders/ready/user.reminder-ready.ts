@@ -18,7 +18,7 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
   if (!toggleChecker) return;
 
   const readyCommands = await userReminderServices.findUserReadyCommands(userId);
-  for (let command of readyCommands) {
+  for (const command of readyCommands) {
     if (command.readyAt && Date.now() - command.readyAt.getTime() > ms('5s')) {
       await userReminderServices.updateRemindedCooldowns({
         userId: userAccount.userId,

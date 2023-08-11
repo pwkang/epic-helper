@@ -4,7 +4,7 @@ import {RpgArea} from '../../../types/rpg.types';
 type IDismantleEverything = (inventory: IInventoryItem, currentArea?: RpgArea) => IInventoryItem;
 
 const dismantleRecommend: IDismantleEverything = (inventory, currentArea) => {
-  const newInventory = dismantleHelper.initDismantle(inventory);
+  const newInventory = new InitDismantle(inventory);
 
   if (typeof currentArea === 'number' && currentArea) {
     if (currentArea <= 3) {
@@ -63,88 +63,90 @@ const dismantleRecommend: IDismantleEverything = (inventory, currentArea) => {
       .dismantleGoldenFish()
       .dismantleBanana();
   }
-  return {
-    ...inventory,
-    ...newInventory,
-  };
+  return newInventory.end();
 };
 
-interface IInitDismantleReturn extends IInventoryItem {
-  dismantleGoldenFish: () => IInitDismantleReturn;
-  dismantleEpicFish: () => IInitDismantleReturn;
-  dismantleEpicLog: () => IInitDismantleReturn;
-  dismantleSuperLog: () => IInitDismantleReturn;
-  dismantleMegaLog: () => IInitDismantleReturn;
-  dismantleHyperLog: () => IInitDismantleReturn;
-  dismantleUltraLog: () => IInitDismantleReturn;
-  dismantleBanana: () => IInitDismantleReturn;
+class InitDismantle {
+  private inventory: IInventoryItem;
+
+  constructor(inventory: IInventoryItem) {
+    this.inventory = {
+      ...inventory,
+    };
+  }
+
+  dismantleGoldenFish() {
+    this.inventory.goldenFish = this.inventory.goldenFish ?? 0;
+    this.inventory.normieFish = this.inventory.normieFish ?? 0;
+    this.inventory.normieFish += this.inventory.goldenFish * 12;
+    this.inventory.goldenFish = 0;
+    return this;
+  }
+
+  dismantleEpicFish() {
+    this.inventory.goldenFish = this.inventory.goldenFish ?? 0;
+    this.inventory.epicFish = this.inventory.epicFish ?? 0;
+    this.inventory.goldenFish += this.inventory.epicFish * 80;
+    this.inventory.epicFish = 0;
+    return this;
+  }
+
+  dismantleUltraLog() {
+    this.inventory.ultraLog = this.inventory.ultraLog ?? 0;
+    this.inventory.hyperLog = this.inventory.hyperLog ?? 0;
+    this.inventory.hyperLog += this.inventory.ultraLog * 8;
+    this.inventory.ultraLog = 0;
+    return this;
+  }
+
+  dismantleHyperLog() {
+    this.inventory.hyperLog = this.inventory.hyperLog ?? 0;
+    this.inventory.megaLog = this.inventory.megaLog ?? 0;
+    this.inventory.megaLog += this.inventory.hyperLog * 8;
+    this.inventory.hyperLog = 0;
+    return this;
+  }
+
+  dismantleMegaLog() {
+    this.inventory.megaLog = this.inventory.megaLog ?? 0;
+    this.inventory.superLog = this.inventory.superLog ?? 0;
+    this.inventory.superLog += this.inventory.megaLog * 8;
+    this.inventory.megaLog = 0;
+    return this;
+  }
+
+  dismantleSuperLog() {
+    this.inventory.superLog = this.inventory.superLog ?? 0;
+    this.inventory.epicLog = this.inventory.epicLog ?? 0;
+    this.inventory.epicLog += this.inventory.superLog * 8;
+    this.inventory.superLog = 0;
+    return this;
+  }
+
+  dismantleEpicLog() {
+    this.inventory.epicLog = this.inventory.epicLog ?? 0;
+    this.inventory.woodenLog = this.inventory.woodenLog ?? 0;
+    this.inventory.woodenLog += this.inventory.epicLog * 20;
+    this.inventory.epicLog = 0;
+    return this;
+  }
+
+  dismantleBanana() {
+    this.inventory.banana = this.inventory.banana ?? 0;
+    this.inventory.apple = this.inventory.apple ?? 0;
+    this.inventory.apple += this.inventory.banana * 12;
+    this.inventory.banana = 0;
+    return this;
+  }
+
+  end() {
+    return this.inventory;
+  }
 }
-
-const initDismantle = (inventory: IInventoryItem) => {
-  return <IInitDismantleReturn>{
-    ...inventory,
-    dismantleGoldenFish: function () {
-      this.goldenFish = this.goldenFish ?? 0;
-      this.normieFish = this.normieFish ?? 0;
-      this.normieFish += this.goldenFish * 12;
-      this.goldenFish = 0;
-      return this;
-    },
-    dismantleEpicFish: function () {
-      this.goldenFish = this.goldenFish ?? 0;
-      this.epicFish = this.epicFish ?? 0;
-      this.goldenFish += this.epicFish * 80;
-      this.epicFish = 0;
-      return this;
-    },
-    dismantleUltraLog: function () {
-      this.ultraLog = this.ultraLog ?? 0;
-      this.hyperLog = this.hyperLog ?? 0;
-      this.hyperLog += this.ultraLog * 8;
-      this.ultraLog = 0;
-      return this;
-    },
-    dismantleHyperLog: function () {
-      this.hyperLog = this.hyperLog ?? 0;
-      this.megaLog = this.megaLog ?? 0;
-      this.megaLog += this.hyperLog * 8;
-      this.hyperLog = 0;
-      return this;
-    },
-    dismantleMegaLog: function () {
-      this.megaLog = this.megaLog ?? 0;
-      this.superLog = this.superLog ?? 0;
-      this.superLog += this.megaLog * 8;
-      this.megaLog = 0;
-      return this;
-    },
-    dismantleSuperLog: function () {
-      this.superLog = this.superLog ?? 0;
-      this.epicLog = this.epicLog ?? 0;
-      this.epicLog += this.superLog * 8;
-      this.superLog = 0;
-      return this;
-    },
-    dismantleEpicLog: function () {
-      this.epicLog = this.epicLog ?? 0;
-      this.woodenLog = this.woodenLog ?? 0;
-      this.woodenLog += this.epicLog * 20;
-      this.epicLog = 0;
-      return this;
-    },
-    dismantleBanana: function () {
-      this.banana = this.banana ?? 0;
-      this.apple = this.apple ?? 0;
-      this.apple += this.banana * 12;
-      this.banana = 0;
-      return this;
-    },
-  };
-};
 
 const dismantleHelper = {
   dismantleRecommend,
-  initDismantle,
+  InitDismantle,
 };
 
 export default dismantleHelper;

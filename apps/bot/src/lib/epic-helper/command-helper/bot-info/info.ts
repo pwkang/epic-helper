@@ -47,7 +47,7 @@ export const _info = async ({client, server}: IInfo): Promise<EmbedBuilder> => {
 
 const getTotalGuilds = async (client: Client): Promise<number> => {
   if (client.cluster) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       client.cluster
         ?.broadcastEval((client) => client.guilds.cache.size)
         .then((result) => {

@@ -53,6 +53,7 @@ export default <SlashMessage>{
           message: collected,
           client,
         });
+        if (!selectedPetsId) return;
         const options = await rpgPetAdventure({
           message: collected,
           author,
@@ -77,6 +78,7 @@ export default <SlashMessage>{
           message: collected,
           client,
         });
+        if (!selectedPetsId) return;
         const options = await rpgPetAdvCancelSuccess({
           message: collected,
           author,
@@ -100,25 +102,27 @@ interface ICollectSelectedPets {
   author: User;
 }
 
-const collectSelectedPets = ({
+const collectSelectedPets = async ({
   client,
   message,
   author,
-}: ICollectSelectedPets): Promise<string[]> => {
-  return new Promise(async (resolve) => {
-    const readyIn = timestampHelper.relative({
-      time: new Date(Date.now() + ms('5s')),
-    });
-    const event = await djsMessageHelper.interactiveSend({
-      client,
-      channelId: message.channel.id,
-      options: {
-        content: `Select EPIC or insert IDs to select pets
-**EPIC** will be auto select if no response ${readyIn}`,
-        components: [row],
-      },
-    });
-    if (!event) return;
+}: ICollectSelectedPets): Promise<string[] | null> => {
+  const readyIn = timestampHelper.relative({
+    time: new Date(Date.now() + ms('5s')),
+  });
+  const event = await djsMessageHelper.interactiveSend({
+    client,
+    channelId: message.channel.id,
+    options: {
+      content: [
+        'Select EPIC or insert IDs to select pets',
+        `**EPIC** will be auto select if no response ${readyIn}`,
+      ].join('\n'),
+      components: [row],
+    },
+  });
+  if (!event) return null;
+  return new Promise((resolve) => {
     const autoSelectTimeout = setTimeout(() => {
       if (event.isEnded()) return;
       resolve(['epic']);
@@ -158,12 +162,8 @@ const collectSelectedPets = ({
   });
 };
 
-const collectSelectedPetsId = ({
-  client,
-  message,
-  author,
-}: ICollectSelectedPets): Promise<string[]> => {
-  return new Promise(async (resolve) => {
+const collectSelectedPetsId = ({message, author}: ICollectSelectedPets): Promise<string[]> => {
+  return new Promise((resolve) => {
     const event = message.channel.createMessageCollector({
       filter: (m) => m.author.id === author.id,
       idle: ms('30s'),

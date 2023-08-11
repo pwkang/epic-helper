@@ -43,7 +43,7 @@ export const rpgGuild = ({author, client, message, isSlashCommand}: IRpgGuild) =
         author,
         embed,
         server: message.guild,
-        guildRoleId: roles.first()?.id!,
+        guildRoleId: roles.first()!.id,
         isSlashCommand,
       });
     }
@@ -59,13 +59,7 @@ interface IRpgGuildSuccess {
   isSlashCommand?: boolean;
 }
 
-const rpgGuildSuccess = async ({
-  author,
-  embed,
-  server,
-  guildRoleId,
-  isSlashCommand,
-}: IRpgGuildSuccess) => {
+const rpgGuildSuccess = async ({embed, server, guildRoleId, isSlashCommand}: IRpgGuildSuccess) => {
   const guildInfo = embedReaders.guild({
     embed,
   });
@@ -104,5 +98,5 @@ const rpgGuildSuccess = async ({
   });
 };
 
-const isGuildSuccess = ({author, embed}: IMessageEmbedChecker) =>
+const isGuildSuccess = ({embed}: IMessageEmbedChecker) =>
   embed.footer?.text.includes('Your guild was raided');

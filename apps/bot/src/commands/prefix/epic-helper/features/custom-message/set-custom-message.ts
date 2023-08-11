@@ -40,7 +40,7 @@ export default <PrefixCommand>{
         client,
         message,
         options: {
-          content: `Please provide a message`,
+          content: 'Please provide a message',
         },
       });
     }

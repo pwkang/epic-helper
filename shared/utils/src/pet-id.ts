@@ -5,7 +5,7 @@
  * ================================
  */
 
-let base = 27;
+const base = 27;
 
 export const convertPetIdToNum = (petId: string) => {
   petId = petId.toLowerCase();
@@ -22,7 +22,7 @@ export const convertPetIdToNum = (petId: string) => {
 
   let petIdNum = 0;
   for (let i = 0; i < arr.length; i++) {
-    let str = arr[i];
+    const str = arr[i];
     let num = 0;
     if (str === 'lmao') {
       num = 27;

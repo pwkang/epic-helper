@@ -20,7 +20,6 @@ type IPreCheckCommand = {
   client: Client;
   preCheck: ICommandPreCheck;
   author: User;
-  channelId: string;
   server: Guild;
   interaction?: BaseInteraction;
   message?: Message;
@@ -29,7 +28,6 @@ type IPreCheckCommand = {
 export const preCheckCommand = async ({
   preCheck,
   author,
-  channelId,
   client,
   server,
   interaction,

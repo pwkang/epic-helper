@@ -120,7 +120,7 @@ const buildFreeDonorsEmbed = async ({freeDonors, page, total, client}: IBuildEmb
     text: `Page ${page + 1}/${Math.ceil(total / PAGE_SIZE)} • total: ${total}`,
   });
 
-  for (let donor of freeDonors) {
+  for (const donor of freeDonors) {
     const user = await fetchUser(client, donor.discordId);
     embed.addFields({
       name: donor.discordId ?? '-',

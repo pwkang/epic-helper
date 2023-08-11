@@ -70,12 +70,12 @@ export const _configureGuild = async ({author, server, client, roleId}: IConfigu
   const deleteGuild = async (): Promise<BaseMessageOptions> => {
     if (!isServerAdmin) {
       return {
-        content: `You do not have permission to delete this guild.`,
+        content: 'You do not have permission to delete this guild.',
       };
     }
     if (!roleUsed) {
       return {
-        content: `There is no guild with this role.`,
+        content: 'There is no guild with this role.',
       };
     }
     return {
@@ -121,12 +121,12 @@ export const _configureGuild = async ({author, server, client, roleId}: IConfigu
   const setLeader = async ({leader}: ISetLeader): Promise<BaseMessageOptions> => {
     if (!roleUsed) {
       return {
-        content: `There is no guild with this role.`,
+        content: 'There is no guild with this role.',
       };
     }
     if (!isGuildLeader && !isServerAdmin) {
       return {
-        content: `You do not have permission to use this command.`,
+        content: 'You do not have permission to use this command.',
       };
     }
     const updatedGuild = await guildService.updateLeader({
@@ -137,7 +137,7 @@ export const _configureGuild = async ({author, server, client, roleId}: IConfigu
 
     if (!updatedGuild) {
       return {
-        content: `There is no guild with this role.`,
+        content: 'There is no guild with this role.',
       };
     }
     return {
@@ -152,12 +152,12 @@ export const _configureGuild = async ({author, server, client, roleId}: IConfigu
   const setupNewGuild = async ({leader}: ISetupNewGuild): Promise<BaseMessageOptions> => {
     if (!isServerAdmin) {
       return {
-        content: `You do not have permission to setup a new guild.`,
+        content: 'You do not have permission to setup a new guild.',
       };
     }
     if (roleUsed) {
       return {
-        content: `This role is already used by another guild.`,
+        content: 'This role is already used by another guild.',
       };
     }
     const newGuild = await guildService.registerGuild({
@@ -183,12 +183,12 @@ export const _configureGuild = async ({author, server, client, roleId}: IConfigu
   }: IUpdateGuild): Promise<BaseMessageOptions> => {
     if (!isGuildLeader && !isServerAdmin) {
       return {
-        content: `You do not have permission to use this command.`,
+        content: 'You do not have permission to use this command.',
       };
     }
     if (!roleUsed) {
       return {
-        content: `There is no guild with this role.`,
+        content: 'There is no guild with this role.',
       };
     }
 
@@ -203,7 +203,7 @@ export const _configureGuild = async ({author, server, client, roleId}: IConfigu
 
     if (!updatedGuild) {
       return {
-        content: `There is no guild with this role.`,
+        content: 'There is no guild with this role.',
       };
     }
 
@@ -219,12 +219,12 @@ export const _configureGuild = async ({author, server, client, roleId}: IConfigu
   const updateToggle = async ({on, off}: IUpdateToggle): Promise<BaseMessageOptions> => {
     if (!isGuildLeader && !isServerAdmin) {
       return {
-        content: `You do not have permission to use this command.`,
+        content: 'You do not have permission to use this command.',
       };
     }
     if (!roleUsed) {
       return {
-        content: `There is no guild with this role.`,
+        content: 'There is no guild with this role.',
       };
     }
 
@@ -251,12 +251,12 @@ export const _configureGuild = async ({author, server, client, roleId}: IConfigu
   const resetToggle = async (): Promise<BaseMessageOptions> => {
     if (!isGuildLeader && !isServerAdmin) {
       return {
-        content: `You do not have permission to use this command.`,
+        content: 'You do not have permission to use this command.',
       };
     }
     if (!roleUsed) {
       return {
-        content: `There is no guild with this role.`,
+        content: 'There is no guild with this role.',
       };
     }
 

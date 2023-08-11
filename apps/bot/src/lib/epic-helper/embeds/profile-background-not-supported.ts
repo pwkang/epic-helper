@@ -8,6 +8,10 @@ interface IProfileBackgroundNotSupported {
 const _profileBackgroundNotSupported = ({author}: IProfileBackgroundNotSupported) => {
   return new EmbedBuilder()
     .setColor(BOT_COLOR.embed)
+    .setAuthor({
+      name: author.username,
+      iconURL: author.avatarURL() ?? undefined,
+    })
     .setDescription(
       'Profile background is not supported yet.\n' +
         `Use ${RPG_CLICKABLE_SLASH_COMMANDS.progress} instead.`

@@ -93,7 +93,7 @@ interface IGetEmbed {
   removedRole: ITTVerificationRules[];
 }
 
-const getEmbed = ({server, author, addedRole, removedRole}: IGetEmbed) => {
+const getEmbed = ({author, addedRole, removedRole}: IGetEmbed) => {
   const embed = new EmbedBuilder().setColor(BOT_COLOR.embed).setAuthor({
     name: author.username,
     iconURL: author.avatarURL() || undefined,

@@ -113,10 +113,11 @@ const getComponents = (commands: ICmd[]) => {
 const MAX_CLICKS = 6;
 
 const getCommands = (hunger: number, happiness: number, clicked: number) => {
-  let feedAmount = getFeedTimes(hunger);
+  const feedAmount = getFeedTimes(hunger);
   let patAmount = getPatTimes(happiness, MAX_CLICKS - clicked - feedAmount);
   const list: ICmd[] = [];
-  while (1) {
+  let loop = true;
+  while (loop) {
     const percentage = generatePercentage(hunger, happiness, feedAmount, patAmount);
     if (percentage.min === 100 && list[0]?.isMax) {
       list.pop();
@@ -130,6 +131,7 @@ const getCommands = (hunger: number, happiness: number, clicked: number) => {
       isMax: percentage.min === 100,
     });
     if (percentage.min !== 100 || !patAmount) {
+      loop = false;
       break;
     }
     patAmount--;

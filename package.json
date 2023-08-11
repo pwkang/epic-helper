@@ -14,7 +14,11 @@
     "clean:node_modules": "find . -name \"node_modules\" -type d -prune -exec rm -rf '{}' +",
     "clean:dist": "find . -name \"dist\" -type d -prune -exec rm -rf '{}' +",
     "build:shared": "turbo run build:shared",
+    "format": "prettier --write \"apps/**/*.ts\" \"shared/**/*.ts\"",
+    "format:check": "prettier --check \"apps/**/*.ts\" \"shared/**/*.ts\"",
     "build:bot": "turbo run build:bot",
+    "lint": "turbo run lint",
+    "type-check": "turbo run type-check",
     "dev-shard:bot": "npm run build:bot && USE_PINO_PRETTY=true node apps/bot/dist/index.js",
     "start:bot": "node apps/bot/dist/index.js"
   },
@@ -28,6 +32,8 @@
   },
   "homepage": "https://github.com/pwkang/epic-helper#readme",
   "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.3.0",
+    "@typescript-eslint/parser": "^6.3.0",
     "axios": "^1.4.0",
     "dayjs": "^1.11.8",
     "discord-hybrid-sharding": "^2.1.3",
@@ -47,6 +53,7 @@
     "@types/ms": "^0.7.31",
     "@types/node": "^20.3.1",
     "@types/node-cron": "^3.0.7",
+    "eslint": "^8.46.0",
     "nodemon": "^3.0.1",
     "prettier": "^2.8.8",
     "ts-node": "^10.9.1",

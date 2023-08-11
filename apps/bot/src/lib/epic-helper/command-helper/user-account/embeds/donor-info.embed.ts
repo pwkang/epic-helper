@@ -51,7 +51,7 @@ export const _getDonorInfoEmbed = ({
 
   if (boostedServers.length) {
     embed.addFields({
-      name: `Boosted servers`,
+      name: 'Boosted servers',
       value: boostedServers
         .map((server, index) => `\`[${index + 1}]\` **${server.name}** - ${server.token} boosts`)
         .join('\n'),

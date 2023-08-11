@@ -1,4 +1,4 @@
-import {Client, DiscordAPIError, Guild, Routes} from 'discord.js';
+import {Client, Guild, Routes} from 'discord.js';
 import {logger} from '@epic-helper/utils';
 import {djsRestClient} from '@epic-helper/services';
 
@@ -18,7 +18,7 @@ export const _deleteGuildSlashCommand = async ({
     await djsRestClient.delete(
       Routes.applicationGuildCommand(client.user.id!, guild.id, commandId)
     );
-  } catch (e: DiscordAPIError | any) {
+  } catch (e: any) {
     logger({
       message: e.rawError.message,
       variant: 'delete-guild-slash-command',

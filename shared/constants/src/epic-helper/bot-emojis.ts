@@ -119,6 +119,7 @@ export const BOT_EMOJI = {
     lucky: '<:lucky:1108800511890702386>',
     clever: '<:clever:1108800515069988864>',
     ascended: '<:ascended:1108800517980823642>',
+    perfect: '<:perfect:1139479450308849756>',
     master: '<:master:1110960150841397289>',
   },
 } as const;

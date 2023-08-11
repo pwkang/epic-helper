@@ -4,7 +4,6 @@ import {
   USER_ACC_OFF_ACTIONS,
   USER_NOT_REGISTERED_ACTIONS,
 } from '@epic-helper/constants';
-import {ButtonStyle} from 'discord.js';
 import commandHelper from '../../../../lib/epic-helper/command-helper';
 
 export default <PrefixCommand>{
