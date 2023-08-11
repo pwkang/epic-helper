@@ -53,5 +53,8 @@ export const guildSchema = new Schema<IGuild>({
       refRequired: {type: Boolean, default: true},
     },
   },
+  duel: {
+    channelId: String,
+  },
   membersId: [String],
 });

@@ -9,6 +9,7 @@ import timestampHelper from '../../../discordjs/timestamp';
 import embeds from '../../embeds';
 import convertMsToHumanReadableString from '../../../../utils/convert-ms-to-human-readable-string';
 import {redisServerInfo} from '../../../../services/redis/server-info.redis';
+import {sendDuelLog} from './send-duel-log';
 
 interface IManualAddDuelRecord {
   user: User;
@@ -65,7 +66,7 @@ export const manualAddDuelRecord = async ({
       })
     : undefined;
 
-  return generateEmbed({
+  const embed = generateEmbed({
     author: user,
     newTotalExp: userDuel?.totalExp ?? 0,
     lastDuel: latestLog?.duelAt,
@@ -74,6 +75,13 @@ export const manualAddDuelRecord = async ({
     source,
     serverName: serverName?.name ?? 'Unknown',
   });
+  sendDuelLog({
+    client,
+    embed,
+    roleId: guildInfo.guildRoleId,
+    serverId: guildInfo.serverId,
+  });
+  return embed;
 };
 
 interface IGenerateEmbed {

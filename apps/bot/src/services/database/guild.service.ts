@@ -3,6 +3,7 @@ import {guildSchema, type IGuild} from '@epic-helper/models';
 import {UpdateQuery} from 'mongoose';
 import {redisGuildReminder} from '../redis/guild-reminder.redis';
 import {Client} from 'discord.js';
+import {toGuild, toGuilds} from '../transformer/guild.transformer';
 
 guildSchema.post('findOneAndUpdate', async (doc: IGuild) => {
   if (!doc) return;
@@ -52,7 +53,8 @@ interface IFindGuild {
 }
 
 const findGuild = async ({serverId, roleId}: IFindGuild) => {
-  return dbGuild.findOne({serverId, roleId});
+  const guild = await dbGuild.findOne({serverId, roleId}).lean();
+  return guild ? toGuild(guild) : null;
 };
 
 interface IFindFirstGuild {
@@ -60,7 +62,8 @@ interface IFindFirstGuild {
 }
 
 const findFirstGuild = async ({serverId}: IFindFirstGuild) => {
-  return dbGuild.findOne({serverId});
+  const guild = await dbGuild.findOne({serverId}).lean();
+  return guild ? toGuild(guild) : null;
 };
 
 interface IUpdateGuildReminder {
@@ -77,7 +80,9 @@ interface IGetAllGuilds {
 }
 
 const getAllGuilds = async ({serverId}: IGetAllGuilds) => {
-  return dbGuild.find({serverId}).lean();
+  // return dbGuild.find({serverId}).lean();
+  const guilds = await dbGuild.find({serverId}).lean();
+  return toGuilds(guilds);
 };
 
 const updateGuildReminder = async ({
@@ -108,9 +113,11 @@ const updateGuildReminder = async ({
     updateQuery.$set!['upgraid.message.raid'] = raidMessage;
   }
 
-  return dbGuild.findOneAndUpdate({serverId, roleId}, updateQuery, {
+  const guild = await dbGuild.findOneAndUpdate({serverId, roleId}, updateQuery, {
     new: true,
+    lean: true,
   });
+  return guild ? toGuild(guild) : null;
 };
 
 interface ICalcTotalGuild {
@@ -137,7 +144,12 @@ interface IUpdateLeader {
 }
 
 const updateLeader = async ({serverId, roleId, leaderId}: IUpdateLeader) => {
-  return dbGuild.findOneAndUpdate({serverId, roleId}, {$set: {leaderId}}, {new: true});
+  const guild = await dbGuild.findOneAndUpdate(
+    {serverId, roleId},
+    {$set: {leaderId}},
+    {new: true, lean: true}
+  );
+  return guild ? toGuild(guild) : null;
 };
 
 interface IGetAllGuildRoles {
@@ -145,7 +157,8 @@ interface IGetAllGuildRoles {
 }
 
 const getAllGuildRoles = async ({serverId}: IGetAllGuildRoles) => {
-  return dbGuild.find({serverId}).select('roleId');
+  const guild = await dbGuild.find({serverId}).select('roleId').lean();
+  return guild.map((guild) => guild.roleId);
 };
 
 interface IRegisterReminder {
@@ -166,7 +179,8 @@ const registerReminder = async ({serverId, roleId, readyIn}: IRegisterReminder) 
     };
   }
 
-  return dbGuild.findOneAndUpdate({serverId, roleId}, query, {new: true});
+  const guild = await dbGuild.findOneAndUpdate({serverId, roleId}, query, {new: true, lean: true});
+  return guild ? toGuild(guild) : null;
 };
 
 interface IUpdateGuildInfo {
@@ -186,7 +200,8 @@ const updateGuildInfo = async ({serverId, name, stealth, level, energy}: IUpdate
   if (level !== undefined) query.$set!['info.level'] = level;
   if (energy !== undefined) query.$set!['info.energy'] = energy;
   if (Object.keys(query.$set!).length === 0) return Promise.resolve(null);
-  return dbGuild.findOneAndUpdate({serverId}, query, {new: true});
+  const guild = await dbGuild.findOneAndUpdate({serverId}, query, {new: true, lean: true});
+  return guild ? toGuild(guild) : null;
 };
 
 interface IWeeklyReset {
@@ -222,9 +237,10 @@ const updateToggle = async ({serverId, roleId, query}: IUpdateToggle): Promise<I
     query,
     {
       new: true,
+      lean: true,
     }
   );
-  return guild ?? null;
+  return guild ? toGuild(guild) : null;
 };
 
 interface IResetToggle {
@@ -240,9 +256,12 @@ const resetToggle = async ({serverId, roleId}: IResetToggle): Promise<IGuild | n
         toggle: '',
       },
     },
-    {new: true}
+    {
+      new: true,
+      lean: true,
+    }
   );
-  return guild ?? null;
+  return guild ? toGuild(guild) : null;
 };
 
 interface IRegisterToGuild {
