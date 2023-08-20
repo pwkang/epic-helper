@@ -41,6 +41,16 @@ export const _getGuildSettingsEmbed = ({guildAccount}: IGetGuildReminderEmbed): 
           }`,
         ].join('\n'),
         inline: false,
+      },
+      {
+        name: '📜 DUEL LOG',
+        value: [
+          `**Channel:** ${
+            guildAccount.duel.channelId
+              ? messageFormatter.channel(guildAccount.duel.channelId)
+              : '-'
+          }`,
+        ].join('\n'),
       }
     );
 

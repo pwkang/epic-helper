@@ -48,6 +48,10 @@ interface IDeleteGuildConfirmation {
   interaction: BaseInteraction | StringSelectMenuInteraction;
 }
 
+interface IUpdateDuelLog {
+  channelId?: string;
+}
+
 interface IUpdateToggle {
   on?: string;
   off?: string;
@@ -274,6 +278,32 @@ export const _configureGuild = async ({author, server, client, roleId}: IConfigu
     };
   };
 
+  const updateDuelLog = async ({channelId}: IUpdateDuelLog): Promise<BaseMessageOptions> => {
+    if (!isGuildLeader && !isServerAdmin) {
+      return {
+        content: 'You do not have permission to use this command.',
+      };
+    }
+    if (!roleUsed) {
+      return {
+        content: 'There is no guild with this role.',
+      };
+    }
+    const updatedGuild = await guildService.updateDuelLog({
+      serverId: server.id,
+      roleId,
+      channelId,
+    });
+    if (!updatedGuild) return {};
+    return {
+      embeds: [
+        _getGuildSettingsEmbed({
+          guildAccount: updatedGuild,
+        }),
+      ],
+    };
+  };
+
   return {
     deleteGuild,
     deleteGuildConfirmation,
@@ -282,6 +312,7 @@ export const _configureGuild = async ({author, server, client, roleId}: IConfigu
     updateGuild,
     updateToggle,
     resetToggle,
+    updateDuelLog,
   };
 };
 

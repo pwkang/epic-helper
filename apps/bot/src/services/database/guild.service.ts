@@ -282,6 +282,21 @@ const registerUserToGuild = async ({serverId, roleId, userId}: IRegisterToGuild)
   );
 };
 
+interface IUpdateDuelLog {
+  serverId: string;
+  roleId: string;
+  channelId?: string;
+}
+
+const updateDuelLog = async ({serverId, roleId, channelId}: IUpdateDuelLog) => {
+  const query: UpdateQuery<IGuild> = {
+    $set: {},
+  };
+  if (channelId) query.$set!['duel.channelId'] = channelId;
+  const updated = await dbGuild.findOneAndUpdate({serverId, roleId}, query, {new: true});
+  return updated ? toGuild(updated) : null;
+};
+
 export const guildService = {
   registerGuild,
   isRoleUsed,
@@ -299,4 +314,5 @@ export const guildService = {
   updateToggle,
   resetToggle,
   registerUserToGuild,
+  updateDuelLog,
 };

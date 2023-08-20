@@ -74,6 +74,10 @@ export const SLASH_COMMAND = {
       name: 'reminder',
       description: 'Update reminder settings',
     },
+    duel: {
+      name: 'duel',
+      description: 'Update Duel Log settings',
+    },
     leader: {
       name: 'leader',
       description: 'Leader of the guild, can modify guild settings without admin permission',

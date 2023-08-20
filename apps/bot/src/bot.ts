@@ -36,7 +36,7 @@ if (environment === 'production') {
 }
 
 Promise.all([loadCommands(client), loadBotEvents(client), loadRedis(), loadCronJob(client)]).then(
-  async () => {
+  () => {
     logger({
       message: 'All handlers loaded, connecting to Discord...',
       clusterId: client.cluster?.id,
