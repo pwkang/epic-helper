@@ -1,11 +1,9 @@
-import embedReaders from '../../../epic-rpg/embed-readers';
 import {userDuelService} from '../../../../services/database/user-duel.service';
-import {BaseMessageOptions, Client, EmbedBuilder, Message, User} from 'discord.js';
+import {Client, EmbedBuilder, User} from 'discord.js';
 import {guildDuelService} from '../../../../services/database/guild-duel.service';
 import {redisGuildMembers} from '../../../../services/redis/guild-members.redis';
 import {BOT_COLOR} from '@epic-helper/constants';
 import messageFormatter from '../../../discordjs/message-formatter';
-import timestampHelper from '../../../discordjs/timestamp';
 import embeds from '../../embeds';
 import convertMsToHumanReadableString from '../../../../utils/convert-ms-to-human-readable-string';
 import {redisServerInfo} from '../../../../services/redis/server-info.redis';
@@ -61,9 +59,7 @@ export const manualAddDuelRecord = async ({
   const userDuel = guildDuel.users.find((u) => u.userId === user.id);
 
   const serverName = source
-    ? await redisServerInfo.getServerInfo({
-        serverId: source?.serverId,
-      })
+    ? await redisServerInfo.getServerInfo({serverId: source?.serverId})
     : undefined;
 
   const embed = generateEmbed({

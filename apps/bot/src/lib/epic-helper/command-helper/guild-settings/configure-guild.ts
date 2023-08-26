@@ -57,6 +57,12 @@ interface IUpdateToggle {
   off?: string;
 }
 
+interface IModifyUserDuel {
+  userId: string;
+  expGained: number;
+  count: number;
+}
+
 export const _configureGuild = async ({author, server, client, roleId}: IConfigureGuild) => {
   const guildAccount = await guildService.findGuild({
     roleId,
@@ -304,6 +310,20 @@ export const _configureGuild = async ({author, server, client, roleId}: IConfigu
     };
   };
 
+  const modifyUserDuel = async ({}: IModifyUserDuel): Promise<BaseMessageOptions> => {
+    if (!isGuildLeader && !isServerAdmin) {
+      return {
+        content: 'You do not have permission to use this command.',
+      };
+    }
+    if (!roleUsed) {
+      return {
+        content: 'There is no guild with this role.',
+      };
+    }
+    return {};
+  };
+
   return {
     deleteGuild,
     deleteGuildConfirmation,
@@ -313,6 +333,7 @@ export const _configureGuild = async ({author, server, client, roleId}: IConfigu
     updateToggle,
     resetToggle,
     updateDuelLog,
+    modifyUserDuel,
   };
 };
 

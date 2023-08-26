@@ -19,7 +19,7 @@ export const _showDuelLog = async ({server}: IShowDuelLog) => {
   const guilds = await guildService.getAllGuilds({
     serverId: server.id,
   });
-  let currentGuild = guilds[0];
+  const currentGuild = guilds[0];
 
   const render = (): BaseMessageOptions => {
     if (!currentGuild)
@@ -59,14 +59,14 @@ const generateEmbed = ({duelLogs, guild}: IGenerateEmbed) => {
       name: cycle.label,
       value: cycle.logs
         ? cycle.logs.users
-            .sort((a, b) => b.totalExp - a.totalExp)
-            .map(
-              (user, index) =>
-                `\`[${index + 1}]\` ${messageFormatter.user(user.userId)} \`${user.totalExp} XP | ${
-                  user.duelCount
-                } duels\``
-            )
-            .join('\n')
+          .sort((a, b) => b.totalExp - a.totalExp)
+          .map(
+            (user, index) =>
+              `\`[${index + 1}]\` ${messageFormatter.user(user.userId)} \`${user.totalExp} XP | ${
+                user.duelCount
+              } duels\``
+          )
+          .join('\n')
         : 'None',
       inline: true,
     });

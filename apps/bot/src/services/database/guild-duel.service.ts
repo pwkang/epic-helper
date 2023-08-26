@@ -75,7 +75,67 @@ const getLastTwoWeeksGuildsDuelLogs = async ({serverId}: IGetLastTwoWeeksGuildsD
   return guildsDuelLogs ?? [];
 };
 
+interface IModifyUserDuel {
+  userId: string;
+  serverId: string;
+  roleId: string;
+  expGained: number;
+  duelCount: number;
+}
+
+const modifyUserDuel = async ({
+  userId,
+  serverId,
+  roleId,
+  expGained,
+  duelCount,
+}: IModifyUserDuel) => {
+  const currentLog = await dbGuildDuel.findOne({
+    serverId,
+    guildRoleId: roleId,
+    weekAt: getGuildWeek(),
+  });
+  const isUserExists = currentLog?.users.some((user) => user.userId === userId);
+  let query = {};
+  const arrayFilters: {[p: string]: any}[] = [];
+  if (isUserExists) {
+    query = {
+      $set: {
+        'users.$[user].totalExp': expGained,
+        'users.$[user].duelCount': duelCount,
+      },
+    };
+    arrayFilters.push({
+      'user.userId': userId,
+    });
+  } else {
+    query = {
+      $push: {
+        users: {
+          userId,
+          totalExp: expGained,
+          duelCount,
+        },
+      },
+    };
+  }
+  const updatedDuel = await dbGuildDuel.findOneAndUpdate(
+    {
+      guildRoleId: roleId,
+      serverId,
+      weekAt: getGuildWeek(),
+    },
+    query,
+    {
+      upsert: true,
+      arrayFilters,
+    }
+  );
+  return updatedDuel ?? null;
+};
+
 export const guildDuelService = {
   addLog,
   getLastTwoWeeksGuildsDuelLogs,
+  modifyUserDuel,
 };
