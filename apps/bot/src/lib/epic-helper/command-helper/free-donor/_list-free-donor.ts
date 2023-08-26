@@ -12,7 +12,7 @@ import {IFreeDonor} from '@epic-helper/models';
 import messageFormatter from '../../../discordjs/message-formatter';
 import {djsUserHelper} from '../../../discordjs/user';
 import timestampHelper from '../../../discordjs/timestamp';
-import {generateNavigationRow, NAVIGATION_ROW_BUTTONS} from '../../../../utils/pagination-row';
+import {generateNavigationRow} from '../../../../utils/pagination-row';
 import freeDonorService from '../../../../services/database/free-donor.service';
 import {serverService} from '../../../../services/database/server.service';
 
@@ -80,21 +80,7 @@ export const _listFreeDonors = ({client}: IListFreeDonors) => {
     interaction: BaseInteraction | StringSelectMenuInteraction
   ): Promise<BaseMessageOptions | null> => {
     if (interaction.isButton()) {
-      const customId = interaction.customId as ValuesOf<typeof NAVIGATION_ROW_BUTTONS>;
-      switch (customId) {
-        case NAVIGATION_ROW_BUTTONS.first:
-          page = 0;
-          break;
-        case NAVIGATION_ROW_BUTTONS.prev:
-          page--;
-          break;
-        case NAVIGATION_ROW_BUTTONS.next:
-          page++;
-          break;
-        case NAVIGATION_ROW_BUTTONS.last:
-          page = Math.ceil(total / PAGE_SIZE) - 1;
-          break;
-      }
+      page = Number(interaction.customId);
     }
     if (interaction.isUserSelectMenu()) {
       userId = interaction.values[0];
@@ -186,8 +172,8 @@ const buildFreeDonorEmbed = async ({freeDonor, userId, client}: IBuildDonorEmbed
       name: 'BOOSTED GUILDS',
       value: boostedGuilds.length
         ? boostedGuilds
-            .map((guild, index) => `\`[${index + 1}]\` **${guild.name}**- ${guild.token}`)
-            .join('\n')
+          .map((guild, index) => `\`[${index + 1}]\` **${guild.name}**- ${guild.token}`)
+          .join('\n')
         : '-',
       inline: false,
     }
@@ -202,7 +188,7 @@ const buildFreeDonorEmbed = async ({freeDonor, userId, client}: IBuildDonorEmbed
 const fetchUser = async (client: Client, userId?: string) =>
   userId
     ? await djsUserHelper.getUser({
-        userId,
-        client,
-      })
+      userId,
+      client,
+    })
     : null;

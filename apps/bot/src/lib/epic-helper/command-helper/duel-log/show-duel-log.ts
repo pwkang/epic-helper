@@ -1,4 +1,10 @@
-import {BaseMessageOptions, EmbedBuilder, Guild} from 'discord.js';
+import {
+  BaseInteraction,
+  BaseMessageOptions,
+  EmbedBuilder,
+  Guild,
+  StringSelectMenuInteraction,
+} from 'discord.js';
 import {guildDuelService} from '../../../../services/database/guild-duel.service';
 import {guildService} from '../../../../services/database/guild.service';
 import {IGuildDuel} from '@epic-helper/models/dist/guild-duel/guild-duel.type';
@@ -7,6 +13,7 @@ import {IGuild} from '@epic-helper/models';
 import {getGuildWeek} from '@epic-helper/utils';
 import ms from 'ms';
 import messageFormatter from '../../../discordjs/message-formatter';
+import {guildSelectorHelper} from '../../../../utils/guild-selector';
 
 interface IShowDuelLog {
   server: Guild;
@@ -19,21 +26,44 @@ export const _showDuelLog = async ({server}: IShowDuelLog) => {
   const guilds = await guildService.getAllGuilds({
     serverId: server.id,
   });
-  const currentGuild = guilds[0];
+  const guildSelector = guildSelectorHelper({
+    guilds,
+    server,
+    currentGuildRoleId: guilds[0]?.roleId,
+  });
 
   const render = (): BaseMessageOptions => {
-    if (!currentGuild)
+    const guild = guilds.find((guild) => guild.roleId === guildSelector.getGuildId());
+    if (!guild)
       return {
         content: 'No guilds found',
       };
 
     return {
-      embeds: [generateEmbed({duelLogs, guild: currentGuild})],
+      embeds: [generateEmbed({duelLogs, guild})],
+      components: guildSelector.getSelector(),
+    };
+  };
+
+  const replyInteraction = ({interaction}: IReplyInteraction): BaseMessageOptions => {
+    guildSelector.readInteraction({
+      interaction,
+    });
+    const guild = guilds.find((guild) => guild.roleId === guildSelector.getGuildId());
+    if (!guild)
+      return {
+        content: 'No guilds found',
+      };
+
+    return {
+      embeds: [generateEmbed({duelLogs, guild})],
+      components: guildSelector.getSelector(),
     };
   };
 
   return {
     render,
+    replyInteraction,
   };
 };
 
@@ -44,15 +74,21 @@ interface IGenerateEmbed {
 
 const generateEmbed = ({duelLogs, guild}: IGenerateEmbed) => {
   const embed = new EmbedBuilder().setColor(BOT_COLOR.embed).setAuthor({
-    name: guild.info.name + ' - Duel List',
+    name: guild.info.name ? `${guild.info.name} - Duel List` : 'Duel List',
   });
   const currentCycle = {
     label: 'Current Cycle',
-    logs: duelLogs.find((log) => log.weekAt.getTime() === getGuildWeek().getTime()),
+    logs: duelLogs.find(
+      (log) => log.guildRoleId === guild.roleId && log.weekAt.getTime() === getGuildWeek().getTime()
+    ),
   };
   const previousCycle = {
     label: 'Previous Cycle',
-    logs: duelLogs.find((log) => log.weekAt.getTime() == getGuildWeek().getTime() - ms('7d')),
+    logs: duelLogs.find(
+      (log) =>
+        log.guildRoleId === guild.roleId &&
+        log.weekAt.getTime() == getGuildWeek().getTime() - ms('7d')
+    ),
   };
   [currentCycle, previousCycle].forEach((cycle) => {
     embed.addFields({
@@ -74,3 +110,7 @@ const generateEmbed = ({duelLogs, guild}: IGenerateEmbed) => {
 
   return embed;
 };
+
+interface IReplyInteraction {
+  interaction: BaseInteraction | StringSelectMenuInteraction;
+}

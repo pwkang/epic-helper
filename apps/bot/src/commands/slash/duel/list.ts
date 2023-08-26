@@ -18,11 +18,17 @@ export default <SlashCommand>{
     const duelLog = await commandHelper.duel.view({
       server: interaction.guild,
     });
-    await djsInteractionHelper.replyInteraction({
+    const event = await djsInteractionHelper.replyInteraction({
       client,
       interaction,
       interactive: true,
       options: duelLog.render(),
+    });
+    if (!event) return;
+    event.every((interaction) => {
+      return duelLog.replyInteraction({
+        interaction,
+      });
     });
   },
 };

@@ -14,7 +14,7 @@ import {IDonor} from '@epic-helper/models';
 import messageFormatter from '../../../discordjs/message-formatter';
 import {djsUserHelper} from '../../../discordjs/user';
 import timestampHelper from '../../../discordjs/timestamp';
-import {generateNavigationRow, NAVIGATION_ROW_BUTTONS} from '../../../../utils/pagination-row';
+import {generateNavigationRow} from '../../../../utils/pagination-row';
 import {capitalizeFirstLetters, typedObjectEntries} from '@epic-helper/utils';
 import {serverService} from '../../../../services/database/server.service';
 
@@ -94,21 +94,7 @@ export const _listDonors = ({client}: IListDonors) => {
       userId = undefined;
     }
     if (interaction.isButton()) {
-      const customId = interaction.customId as ValuesOf<typeof NAVIGATION_ROW_BUTTONS>;
-      switch (customId) {
-        case NAVIGATION_ROW_BUTTONS.first:
-          page = 0;
-          break;
-        case NAVIGATION_ROW_BUTTONS.prev:
-          page--;
-          break;
-        case NAVIGATION_ROW_BUTTONS.next:
-          page++;
-          break;
-        case NAVIGATION_ROW_BUTTONS.last:
-          page = Math.ceil(total / PAGE_SIZE) - 1;
-          break;
-      }
+      page = Number(interaction.customId);
     }
     if (interaction.isUserSelectMenu()) {
       userId = interaction.values[0];
@@ -220,8 +206,8 @@ const buildDonorEmbed = async ({donor, userId, client}: IBuildDonorEmbed) => {
       name: 'BOOSTED GUILDS',
       value: boostedServers.length
         ? boostedServers
-            .map((guild, index) => `\`[${index + 1}]\` **${guild.name}** - ${guild.token}`)
-            .join('\n')
+          .map((guild, index) => `\`[${index + 1}]\` **${guild.name}** - ${guild.token}`)
+          .join('\n')
         : '-',
       inline: false,
     }
@@ -236,7 +222,7 @@ const buildDonorEmbed = async ({donor, userId, client}: IBuildDonorEmbed) => {
 const fetchUser = async (client: Client, userId?: string) =>
   userId
     ? await djsUserHelper.getUser({
-        userId,
-        client,
-      })
+      userId,
+      client,
+    })
     : null;
