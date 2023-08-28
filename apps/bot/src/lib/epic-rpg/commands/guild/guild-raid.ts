@@ -98,5 +98,5 @@ const isGuildRaidSuccess = ({author, embed}: IMessageEmbedChecker) =>
   [author.username, 'RAIDED'].every((msg) => embed.description?.includes(msg));
 
 const isUserDontHaveGuild = ({author, message}: IMessageContentChecker) =>
-  ["you don't have a guild", 'not in a guild'].some((msg) => message.content.includes(msg)) &&
+  ['you don\'t have a guild', 'not in a guild'].some((msg) => message.content.includes(msg)) &&
   message.mentions.users.has(author.id);

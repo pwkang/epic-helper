@@ -108,7 +108,7 @@ const isGuildUpgradeSuccess = ({embed}: IMessageEmbedChecker) =>
   );
 
 const isUserDontHaveGuild = ({author, message}: IMessageContentChecker) =>
-  ["you don't have a guild", 'not in a guild'].some((msg) => message.content.includes(msg)) &&
+  ['you don\'t have a guild', 'not in a guild'].some((msg) => message.content.includes(msg)) &&
   message.mentions.users.has(author.id);
 
 const isGuildCantBeUpgraded = ({author, message}: IMessageContentChecker) =>

@@ -47,16 +47,16 @@ export default <PrefixCommand>{
           channelId: message.channel.id,
           options: materialCalculator.isCalcMaterial(args)
             ? materialCalculator.getCalcMaterialMessage({
-                embed,
-                area: calcInfo.area ?? 0,
-                author: message.author,
-              })
+              embed,
+              area: calcInfo.area ?? 0,
+              author: message.author,
+            })
             : sttScoreCalculator.getCalcSTTMessage({
-                embed,
-                area: calcInfo.area ?? 0,
-                author: message.author,
-                level: calcInfo.level ?? 0,
-              }),
+              embed,
+              area: calcInfo.area ?? 0,
+              author: message.author,
+              level: calcInfo.level ?? 0,
+            }),
         });
       }
     });

@@ -14,9 +14,9 @@ export const sendDuelLog = async ({embed, serverId, roleId, client}: ISendDuelLo
     roleId,
     serverId,
   });
-  if (!guild?.upgraid.channelId) return;
+  const logChannel = guild?.duel?.channelId;
 
-  const logChannel = guild.duel.channelId;
+  if (!logChannel) return;
 
   await djsMessageHelper.send({
     client,

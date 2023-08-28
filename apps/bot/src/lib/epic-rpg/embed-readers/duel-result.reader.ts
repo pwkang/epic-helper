@@ -7,14 +7,14 @@ interface IDuelResultReader {
 }
 
 const duelResultReader = ({embed, users}: IDuelResultReader) => {
-  const winner = users.find((user) => embed.fields[0].name === `**${user.username}** won!`)!;
+  const winner = users.find((user) => embed.fields[0].name === `**${user.username}** won!`);
   const exp: IUserDuelUser[] = [];
-  for (let user of users) {
+  for (const user of users) {
     const regex = new RegExp(`\\*\\*${user.username}\\*\\*'s guild got (\\d) XP`);
     const expGained = embed.fields[0].value.match(regex)?.[1];
     exp.push({
       userId: user.id,
-      isWinner: user.id === winner.id,
+      isWinner: user.id === winner?.id,
       guildExp: expGained ? parseInt(expGained) : 0,
     });
   }

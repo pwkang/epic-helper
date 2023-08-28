@@ -1,4 +1,3 @@
-import {rpgHunt} from '../../../../lib/epic-rpg/commands/progress/hunt';
 import {
   PREFIX_COMMAND_TYPE,
   USER_ACC_OFF_ACTIONS,

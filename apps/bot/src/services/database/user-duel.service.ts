@@ -16,7 +16,7 @@ interface IAddLog {
 const addLog = async ({duelAt, users, source}: IAddLog) => {
   const log = source && (await findLogBySource(source));
   if (log) {
-    for (let user of users) {
+    for (const user of users) {
       if (log.users.some((logUser) => logUser.userId === user.userId)) continue;
       log.users.push(user);
     }
