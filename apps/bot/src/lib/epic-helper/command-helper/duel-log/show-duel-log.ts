@@ -93,7 +93,7 @@ const generateEmbed = ({duelLogs, guild}: IGenerateEmbed) => {
   [currentCycle, previousCycle].forEach((cycle) => {
     embed.addFields({
       name: cycle.label,
-      value: cycle.logs
+      value: cycle.logs?.users?.length
         ? cycle.logs.users
           .sort((a, b) => b.totalExp - a.totalExp)
           .map(
