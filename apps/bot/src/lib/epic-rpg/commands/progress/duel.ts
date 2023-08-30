@@ -9,8 +9,6 @@ import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-cha
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
-import embedReaders from '../../embed-readers';
-import {userDuelService} from '../../../../services/database/user-duel.service';
 import commandHelper from '../../../epic-helper/command-helper';
 import {userService} from '../../../../services/database/user.service';
 
