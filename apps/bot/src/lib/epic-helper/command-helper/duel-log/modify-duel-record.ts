@@ -1,6 +1,8 @@
-import {BaseMessageOptions, Client, Guild, User} from 'discord.js';
+import {BaseMessageOptions, Client, EmbedBuilder, Guild, User} from 'discord.js';
 import commandHelper from '../index';
 import {guildDuelService} from '../../../../services/database/guild-duel.service';
+import {BOT_COLOR} from '@epic-helper/constants';
+import messageFormatter from '../../../discordjs/message-formatter';
 
 interface IModifyDuelRecord {
   client: Client;
@@ -24,7 +26,7 @@ export const modifyDuelRecord = async ({
   });
   if (!userRoles?.size) {
     return {
-      content: `${user.username} is not in any guild.`,
+      embeds: [getNotInGuildEmbed(user)],
     };
   }
   if (userRoles.size > 1) {
@@ -45,3 +47,8 @@ export const modifyDuelRecord = async ({
     content: 'Successfully modified duel record.',
   };
 };
+
+const getNotInGuildEmbed = (user: User) =>
+  new EmbedBuilder()
+    .setColor(BOT_COLOR.embed)
+    .setDescription(`${messageFormatter.user(user.id)} is not in any guild.`);

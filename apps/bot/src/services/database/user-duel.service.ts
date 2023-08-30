@@ -1,5 +1,6 @@
 import {mongoClient} from '@epic-helper/services';
 import {IUserDuelUser, userDuelSchema} from '@epic-helper/models';
+import {getGuildWeek} from '@epic-helper/utils';
 
 const dbUserDuel = mongoClient.model('user-duel', userDuelSchema);
 
@@ -53,6 +54,9 @@ const findLatestLog = async ({userId}: IFindLatestLog) => {
   const log = await dbUserDuel.findOne(
     {
       'users.userId': userId,
+      duelAt: {
+        $gte: getGuildWeek(),
+      },
     },
     null,
     {
@@ -64,8 +68,24 @@ const findLatestLog = async ({userId}: IFindLatestLog) => {
   return log ?? null;
 };
 
+interface IUndoDuelRecord {
+  userId: string;
+}
+
+const undoDuelRecord = async ({userId}: IUndoDuelRecord) => {
+  const log = await findLatestLog({userId});
+  if (!log) return null;
+  const user = log.users.find((u) => u.userId === userId);
+  if (!user) return null;
+  const expGained = user.guildExp;
+  log.users = log.users.filter((u) => u.userId !== userId);
+  await log.save();
+  return expGained;
+};
+
 export const userDuelService = {
   addLog,
   findLogBySource,
   findLatestLog,
+  undoDuelRecord,
 };

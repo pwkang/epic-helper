@@ -12,6 +12,7 @@ import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
 import embedReaders from '../../embed-readers';
 import {userDuelService} from '../../../../services/database/user-duel.service';
 import commandHelper from '../../../epic-helper/command-helper';
+import {userService} from '../../../../services/database/user.service';
 
 const DUEL_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.duel;
 
@@ -75,7 +76,9 @@ interface IRpgDuelSuccess {
   embed: Embed;
 }
 
-const rpgDuelSuccess = async ({author, channelId, client, embed}: IRpgDuelSuccess) => {
+const rpgDuelSuccess = async ({author, channelId}: IRpgDuelSuccess) => {
+  const isUserAccountOn = await userService.isUserAccountOn({userId: author.id});
+  if (!isUserAccountOn) return;
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker) return;
 

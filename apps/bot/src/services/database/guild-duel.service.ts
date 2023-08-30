@@ -165,9 +165,51 @@ const resetGuildDuel = async ({serverId, roleId}: IResetGuildDuel) => {
   return updatedDuel ?? null;
 };
 
+interface IUndoUserDuel {
+  userId: string;
+  serverId: string;
+  roleId: string;
+  expGained: number;
+}
+
+const undoUserDuel = async ({userId, serverId, roleId, expGained}: IUndoUserDuel) => {
+  const currentLog = await dbGuildDuel.findOne({
+    serverId,
+    guildRoleId: roleId,
+    weekAt: getGuildWeek(),
+  });
+  if (!currentLog) return null;
+  const user = currentLog.users.find((u) => u.userId === userId);
+  if (!user) return null;
+  const updatedDuel = await dbGuildDuel.findOneAndUpdate(
+    {
+      guildRoleId: roleId,
+      serverId,
+      weekAt: getGuildWeek(),
+    },
+    {
+      $set: {
+        'users.$[user].totalExp': Math.max(0, user.totalExp - expGained),
+        'users.$[user].duelCount': Math.max(0, user.duelCount - 1),
+      },
+    },
+    {
+      upsert: true,
+      arrayFilters: [
+        {
+          'user.userId': userId,
+        },
+      ],
+      new: true,
+    }
+  );
+  return updatedDuel ?? null;
+};
+
 export const guildDuelService = {
   addLog,
   getLastTwoWeeksGuildsDuelLogs,
   modifyUserDuel,
   resetGuildDuel,
+  undoUserDuel,
 };

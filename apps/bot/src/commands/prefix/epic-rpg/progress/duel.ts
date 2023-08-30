@@ -10,8 +10,8 @@ export default <PrefixCommand>{
   commands: ['duel'],
   type: PREFIX_COMMAND_TYPE.rpg,
   preCheck: {
-    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.abort,
-    userAccOff: USER_ACC_OFF_ACTIONS.abort,
+    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,
+    userAccOff: USER_ACC_OFF_ACTIONS.skip,
   },
   execute: async (client, message) => {
     rpgDuel({

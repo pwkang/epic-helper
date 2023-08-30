@@ -465,6 +465,22 @@ const resetUserCustomMessage = async ({userId}: IResetUserCustomMessage): Promis
   return user ?? null;
 };
 
+interface IIsUserAccountOn {
+  userId: string;
+}
+
+const isUserAccountOn = async ({userId}: IIsUserAccountOn): Promise<boolean> => {
+  const user = await dbUser.findOne(
+    {
+      userId,
+    },
+    {
+      'config.onOff': 1,
+    }
+  );
+  return user?.config.onOff ?? false;
+};
+
 export const userService = {
   registerUserAccount,
   userAccountOn,
@@ -492,4 +508,5 @@ export const userService = {
   getUserCustomMessage,
   resetUserCustomMessage,
   updateUserCustomMessage,
+  isUserAccountOn,
 };
