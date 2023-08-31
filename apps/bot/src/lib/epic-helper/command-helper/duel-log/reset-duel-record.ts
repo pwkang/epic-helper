@@ -6,29 +6,48 @@ import {
   ButtonStyle,
   Client,
   EmbedBuilder,
+  Guild,
   User,
 } from 'discord.js';
 import {guildService} from '../../../../services/database/guild.service';
 import {BOT_COLOR} from '@epic-helper/constants';
 import messageFormatter from '../../../discordjs/message-formatter';
 import {guildDuelService} from '../../../../services/database/guild-duel.service';
+import {userChecker} from '../../user-checker';
 
 interface IResetDuelRecord {
   client: Client;
-  serverId: string;
+  server: Guild;
   roleId: string;
   author: User;
 }
 
-export const _resetDuelRecord = async ({roleId, serverId}: IResetDuelRecord) => {
+export const _resetDuelRecord = async ({roleId, server, author, client}: IResetDuelRecord) => {
   const guildAccount = await guildService.findGuild({
     roleId,
-    serverId,
+    serverId: server.id,
   });
+  const isServerAdmin = await userChecker.isServerAdmin({client, server, userId: author.id});
+  const isGuildLeader = await userChecker.isGuildLeader({
+    userId: author.id,
+    serverId: server.id,
+    guildRoleId: roleId,
+  });
+
   const render = () => {
     if (!guildAccount) {
       return {
         content: 'There is no guild with this role',
+      };
+    }
+    if (!isServerAdmin) {
+      return {
+        content: 'You do not have permission to modify duel record.',
+      };
+    }
+    if (!isGuildLeader) {
+      return {
+        content: 'Nice try... You are not the guild leader',
       };
     }
     return generateConfirmationOptions({roleId});
@@ -44,7 +63,7 @@ export const _resetDuelRecord = async ({roleId, serverId}: IResetDuelRecord) => 
     switch (customId) {
       case 'yes':
         await guildDuelService.resetGuildDuel({
-          serverId,
+          serverId: server.id,
           roleId,
         });
         return generateResultOptions(true, roleId);

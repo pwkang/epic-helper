@@ -20,12 +20,13 @@ export default <SlashCommand>{
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,
   },
   execute: async (client, interaction) => {
+    if (!interaction.guild) return;
     const role = interaction.options.getRole('role', true);
     const resetDuelLog = await commandHelper.duel.reset({
       author: interaction.user,
       client,
       roleId: role.id,
-      serverId: interaction.guild!.id,
+      server: interaction.guild,
     });
     const event = await djsInteractionHelper.replyInteraction({
       client,
