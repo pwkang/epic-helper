@@ -47,6 +47,7 @@ export default <SlashCommand>{
       hasWon: result === 'win',
       user: interaction.user,
       source: messageSource ?? undefined,
+      commandChannelId: interaction.channelId,
     });
     await djsInteractionHelper.replyInteraction({
       client,

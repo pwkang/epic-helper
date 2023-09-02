@@ -2,6 +2,10 @@ export interface IUserDuelUser {
   userId: string;
   guildExp: number;
   isWinner: boolean;
+  reportGuild?: {
+    serverId: string;
+    guildRoleId: string;
+  };
 }
 
 export interface IUserDuel {

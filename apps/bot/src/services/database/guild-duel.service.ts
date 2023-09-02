@@ -10,9 +10,10 @@ interface IAddLog {
   serverId: string;
   roleId: string;
   expGained: number;
+  isUpdate: boolean;
 }
 
-const addLog = async ({expGained, roleId, userId, serverId}: IAddLog) => {
+const addLog = async ({expGained, roleId, userId, serverId, isUpdate}: IAddLog) => {
   const currentLog = await dbGuildDuel
     .findOne({
       serverId,
@@ -26,7 +27,7 @@ const addLog = async ({expGained, roleId, userId, serverId}: IAddLog) => {
     query = {
       $inc: {
         'users.$[user].totalExp': expGained,
-        'users.$[user].duelCount': 1,
+        'users.$[user].duelCount': isUpdate ? 0 : 1,
       },
     };
     arrayFilters.push({

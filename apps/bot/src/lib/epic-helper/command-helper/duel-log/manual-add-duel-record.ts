@@ -11,6 +11,7 @@ interface IManualAddDuelRecord {
     channelId: string;
     messageId: string;
   };
+  commandChannelId: string;
 }
 
 export const manualAddDuelRecord = async ({
@@ -19,6 +20,7 @@ export const manualAddDuelRecord = async ({
   expGained,
   client,
   hasWon,
+  commandChannelId,
 }: IManualAddDuelRecord): Promise<EmbedBuilder> => {
   return await registerUserDuelLog({
     client,
@@ -26,5 +28,6 @@ export const manualAddDuelRecord = async ({
     expGained,
     author: user,
     isWinner: hasWon,
+    commandChannelId,
   });
 };

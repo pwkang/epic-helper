@@ -45,7 +45,7 @@ export const _resetDuelRecord = async ({roleId, server, author, client}: IResetD
         content: 'You do not have permission to modify duel record.',
       };
     }
-    if (!isGuildLeader) {
+    if (!isServerAdmin && !isGuildLeader) {
       return {
         content: 'Nice try... You are not the guild leader',
       };

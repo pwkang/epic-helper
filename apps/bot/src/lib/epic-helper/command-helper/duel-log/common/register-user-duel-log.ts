@@ -4,8 +4,11 @@ import embeds from '../../../embeds';
 import {redisServerInfo} from '../../../../../services/redis/server-info.redis';
 import {generateDuelLogEmbed} from '../embeds/duel-log';
 import {sendDuelLog} from '../send-duel-log';
-import {Client, User} from 'discord.js';
+import {Client, EmbedBuilder, User} from 'discord.js';
 import {redisGuildMembers} from '../../../../../services/redis/guild-members.redis';
+import {toggleGuildChecker} from '../../../toggle-checker/guild';
+import {BOT_COLOR} from '@epic-helper/constants';
+import {guildService} from '../../../../../services/database/guild.service';
 
 interface IRegisterUserDuel {
   author: User;
@@ -17,6 +20,7 @@ interface IRegisterUserDuel {
   };
   isWinner: boolean;
   client: Client;
+  commandChannelId?: string;
 }
 
 export const registerUserDuelLog = async ({
@@ -25,31 +29,42 @@ export const registerUserDuelLog = async ({
   author,
   isWinner,
   client,
+  commandChannelId,
 }: IRegisterUserDuel) => {
   const guildInfo = await redisGuildMembers.getGuildInfo({
     userId: author.id,
   });
   if (!guildInfo) return embeds.notInGuild();
+  const toggleGuild = await toggleGuildChecker({
+    roleId: guildInfo.guildRoleId,
+    serverId: guildInfo.serverId,
+  });
+  if (toggleGuild?.duel.refRequired && !source?.messageId) {
+    return refRequiredEmbed;
+  }
   const latestLog = await userDuelService.findLatestLog({
     userId: author.id,
   });
-  await userDuelService.addLog({
+  const result = await userDuelService.addLog({
     duelAt: new Date(),
     source,
-    users: [
-      {
-        userId: author.id,
-        guildExp: expGained,
-        isWinner,
+    user: {
+      userId: author.id,
+      guildExp: expGained,
+      isWinner,
+      reportGuild: {
+        serverId: guildInfo.serverId,
+        guildRoleId: guildInfo.guildRoleId,
       },
-    ],
+    },
   });
 
   const guildDuel = await guildDuelService.addLog({
     userId: author.id,
     serverId: guildInfo.serverId,
-    expGained: expGained,
+    expGained: result.expGained,
     roleId: guildInfo.guildRoleId,
+    isUpdate: result.isExists,
   });
 
   if (!guildDuel) return embeds.notInGuild();
@@ -65,15 +80,29 @@ export const registerUserDuelLog = async ({
     newTotalExp: userDuel?.totalExp ?? 0,
     lastDuel: latestLog?.duelAt,
     newTotalDuel: userDuel?.duelCount ?? 0,
-    expGained,
+    expGained: result.expGained,
     source,
     serverName: serverName?.name ?? 'Unknown',
+    isExists: result.isExists,
   });
-  await sendDuelLog({
-    client,
-    embed,
+
+  const guild = await guildService.findGuild({
     roleId: guildInfo.guildRoleId,
     serverId: guildInfo.serverId,
   });
+  const logChannel = guild?.duel?.channelId;
+
+  if (logChannel && commandChannelId !== logChannel) {
+    await sendDuelLog({
+      client,
+      embed,
+      roleId: guildInfo.guildRoleId,
+      serverId: guildInfo.serverId,
+    });
+  }
   return embed;
 };
+
+const refRequiredEmbed = new EmbedBuilder()
+  .setColor(BOT_COLOR.embed)
+  .setDescription('Duel message link is required');

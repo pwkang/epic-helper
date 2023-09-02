@@ -8,6 +8,12 @@ export const userDuelSchema = new Schema<IUserDuel>({
       userId: {type: String, index: true},
       guildExp: Number,
       isWinner: Boolean,
+      reportGuild: {
+        type: {
+          guildRoleId: String,
+          serverId: String,
+        },
+      },
     }),
   ],
   source: {

@@ -1,9 +1,11 @@
 import {
   BaseInteraction,
   BaseMessageOptions,
+  Client,
   EmbedBuilder,
   Guild,
   StringSelectMenuInteraction,
+  User,
 } from 'discord.js';
 import {guildDuelService} from '../../../../services/database/guild-duel.service';
 import {guildService} from '../../../../services/database/guild.service';
@@ -14,26 +16,56 @@ import {getGuildWeek} from '@epic-helper/utils';
 import ms from 'ms';
 import messageFormatter from '../../../discordjs/message-formatter';
 import {guildSelectorHelper} from '../../../../utils/guild-selector';
+import {userChecker} from '../../user-checker';
+import {djsMemberHelper} from '../../../discordjs/member';
 
 interface IShowDuelLog {
+  author: User;
   server: Guild;
+  client: Client;
 }
 
-export const _showDuelLog = async ({server}: IShowDuelLog) => {
+export const _showDuelLog = async ({server, client, author}: IShowDuelLog) => {
   const duelLogs = await guildDuelService.getLastTwoWeeksGuildsDuelLogs({
     serverId: server.id,
   });
   const guilds = await guildService.getAllGuilds({
     serverId: server.id,
   });
-  const guildSelector = guildSelectorHelper({
-    guilds,
+  const isServerAdmin = await userChecker.isServerAdmin({
+    client,
     server,
-    currentGuildRoleId: guilds[0]?.roleId,
+    userId: author.id,
+  });
+  const member = await djsMemberHelper.getMember({
+    userId: author.id,
+    serverId: server.id,
+    client,
+  });
+  const filteredGuilds = guilds.filter((guild) => {
+    if (isServerAdmin) return true;
+    if (guild.leaderId === author.id) return true;
+    return (
+      member &&
+      userChecker.isGuildMember({
+        guild,
+        member,
+      })
+    );
+  });
+  const guildSelector = guildSelectorHelper({
+    guilds: filteredGuilds,
+    server,
+    currentGuildRoleId: filteredGuilds[0]?.roleId,
   });
 
   const render = (): BaseMessageOptions => {
-    const guild = guilds.find((guild) => guild.roleId === guildSelector.getGuildId());
+    if (!filteredGuilds.length && guilds.length) {
+      return {
+        content: 'You do not have permissions to access this command',
+      };
+    }
+    const guild = filteredGuilds.find((guild) => guild.roleId === guildSelector.getGuildId());
     if (!guild)
       return {
         content: 'No guilds found',
@@ -49,7 +81,7 @@ export const _showDuelLog = async ({server}: IShowDuelLog) => {
     guildSelector.readInteraction({
       interaction,
     });
-    const guild = guilds.find((guild) => guild.roleId === guildSelector.getGuildId());
+    const guild = filteredGuilds.find((guild) => guild.roleId === guildSelector.getGuildId());
     if (!guild)
       return {
         content: 'No guilds found',

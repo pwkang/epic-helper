@@ -15,6 +15,7 @@ interface IGenerateEmbed {
     messageId: string;
   };
   serverName: string;
+  isExists?: boolean;
 }
 
 export const generateDuelLogEmbed = ({
@@ -25,14 +26,17 @@ export const generateDuelLogEmbed = ({
   newTotalDuel,
   source,
   serverName,
+  isExists,
 }: IGenerateEmbed) => {
-  const embed = new EmbedBuilder()
-    .setColor(BOT_COLOR.embed)
-    .setAuthor({
-      name: author.username,
-      iconURL: author.displayAvatarURL(),
-    })
-    .setTitle(`Added ${expGained} XP`);
+  const embed = new EmbedBuilder().setColor(BOT_COLOR.embed).setAuthor({
+    name: author.username,
+    iconURL: author.displayAvatarURL(),
+  });
+  if (isExists) {
+    embed.setTitle(`Updated ${expGained} XP`);
+  } else {
+    embed.setTitle(`Added ${expGained} XP`);
+  }
   const description = [`**New:** \`${newTotalExp} XP | ${newTotalDuel} duels\``];
   if (source) {
     description.push(

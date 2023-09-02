@@ -64,7 +64,7 @@ export const SLASH_COMMAND = {
     description: 'Guild settings',
     setup: {
       name: 'setup',
-      description: 'Setup a new the guild',
+      description: 'Setup a new guild',
     },
     settings: {
       name: 'settings',

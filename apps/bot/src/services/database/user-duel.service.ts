@@ -5,7 +5,7 @@ import {getGuildWeek} from '@epic-helper/utils';
 const dbUserDuel = mongoClient.model('user-duel', userDuelSchema);
 
 interface IAddLog {
-  users: IUserDuelUser[];
+  user: IUserDuelUser;
   source?: {
     serverId: string;
     channelId: string;
@@ -14,21 +14,40 @@ interface IAddLog {
   duelAt?: Date;
 }
 
-const addLog = async ({duelAt, users, source}: IAddLog) => {
-  const log = source && (await findLogBySource(source));
-  if (log) {
-    for (const user of users) {
-      if (log.users.some((logUser) => logUser.userId === user.userId)) continue;
-      log.users.push(user);
-    }
-    await log.save();
-    return;
+const addLog = async ({duelAt, user, source}: IAddLog) => {
+  const log = !!source && (await findLogBySource(source));
+  if (!log) {
+    await dbUserDuel.create({
+      source,
+      duelAt: duelAt ?? new Date(),
+      users: [user],
+    });
+    return {
+      isExists: false,
+      expGained: user.guildExp,
+    };
   }
-  await dbUserDuel.create({
-    source,
-    duelAt: duelAt ?? new Date(),
-    users,
+  if (!log.users.some((logUser) => logUser.userId === user.userId)) {
+    log.users.push(user);
+    await log.save();
+    return {
+      isExists: false,
+      expGained: user.guildExp,
+    };
+  }
+  const prevRecord = log.users.find((logUser) => logUser.userId === user.userId)?.guildExp ?? 0;
+  const expGained = user.guildExp - prevRecord;
+  log.users = log.users.map((logUser) => {
+    if (logUser.userId === user.userId) {
+      logUser.guildExp = user.guildExp;
+    }
+    return logUser;
   });
+  await log.save();
+  return {
+    isExists: true,
+    expGained,
+  };
 };
 
 interface IFindLogBySource {
@@ -80,7 +99,10 @@ const undoDuelRecord = async ({userId}: IUndoDuelRecord) => {
   const expGained = user.guildExp;
   log.users = log.users.filter((u) => u.userId !== userId);
   await log.save();
-  return expGained;
+  return {
+    expRemoved: expGained,
+    reportGuild: user.reportGuild,
+  };
 };
 
 export const userDuelService = {

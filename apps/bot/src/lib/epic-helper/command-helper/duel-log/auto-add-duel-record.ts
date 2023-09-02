@@ -27,6 +27,7 @@ export const autoAddDuelRecord = async ({users, duelMessage, client}: IAddDuelRe
       },
       author,
       isWinner: user.isWinner,
+      commandChannelId: duelMessage.channel.id,
     });
   }
 };

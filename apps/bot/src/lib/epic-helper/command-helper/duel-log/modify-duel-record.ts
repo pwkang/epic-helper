@@ -48,7 +48,7 @@ export const modifyDuelRecord = async ({
     guildRoleId: userRoles.first()!.id,
     userId: author.id,
   });
-  if (!isGuildLeader) {
+  if (!isServerAdmin && !isGuildLeader) {
     return {
       content: 'Nice try... You are not the guild leader',
     };

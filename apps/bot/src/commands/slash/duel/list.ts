@@ -17,6 +17,8 @@ export default <SlashCommand>{
     if (!interaction.guild) return;
     const duelLog = await commandHelper.duel.view({
       server: interaction.guild,
+      author: interaction.user,
+      client,
     });
     const event = await djsInteractionHelper.replyInteraction({
       client,
