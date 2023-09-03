@@ -7,16 +7,23 @@ interface ISendDuelLog {
   serverId: string;
   roleId: string;
   client: Client;
+  ignoreChannel?: string;
 }
 
-export const sendDuelLog = async ({embed, serverId, roleId, client}: ISendDuelLog) => {
+export const sendDuelLog = async ({
+  embed,
+  serverId,
+  roleId,
+  client,
+  ignoreChannel,
+}: ISendDuelLog) => {
   const guild = await guildService.findGuild({
     roleId,
     serverId,
   });
   const logChannel = guild?.duel?.channelId;
 
-  if (!logChannel) return;
+  if (!logChannel || logChannel === ignoreChannel) return;
 
   await djsMessageHelper.send({
     client,

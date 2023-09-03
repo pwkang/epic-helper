@@ -135,6 +135,23 @@ const modifyUserDuel = async ({
   return updatedDuel ?? null;
 };
 
+interface IFindUserCurrentRecord {
+  userId: string;
+  serverId: string;
+  roleId: string;
+}
+
+const findUserCurrentRecord = async ({userId, serverId, roleId}: IFindUserCurrentRecord) => {
+  const currentLog = await dbGuildDuel.findOne({
+    serverId,
+    guildRoleId: roleId,
+    weekAt: getGuildWeek(),
+  });
+  if (!currentLog) return null;
+  const user = currentLog.users.find((u) => u.userId === userId);
+  return user ?? null;
+};
+
 interface IResetGuildDuel {
   serverId: string;
   roleId: string;
@@ -213,4 +230,5 @@ export const guildDuelService = {
   modifyUserDuel,
   resetGuildDuel,
   undoUserDuel,
+  findUserCurrentRecord,
 };

@@ -66,9 +66,17 @@ export const _resetDuelRecord = async ({roleId, server, author, client}: IResetD
           serverId: server.id,
           roleId,
         });
-        return generateResultOptions(true, roleId);
+        return generateResultOptions({
+          deleted: true,
+          roleId,
+          author,
+        });
       case 'no':
-        return generateResultOptions(false, roleId);
+        return generateResultOptions({
+          deleted: false,
+          roleId,
+          author,
+        });
     }
     return null;
   };
@@ -99,10 +107,21 @@ const generateConfirmationOptions = ({roleId}: IGenerateConfirmationEmbed): Base
   };
 };
 
-const generateResultOptions = (deleted: boolean, roleId: string): BaseMessageOptions => {
+interface IGenerateResultOptions {
+  deleted: boolean;
+  roleId: string;
+  author: User;
+}
+
+const generateResultOptions = ({
+  roleId,
+  deleted,
+  author,
+}: IGenerateResultOptions): BaseMessageOptions => {
   const embed = new EmbedBuilder().setColor(BOT_COLOR.embed);
   if (deleted) {
     embed.setDescription(`Successfully reset duel record for ${messageFormatter.role(roleId)}`);
+    embed.setFooter({text: `Reset by ${author.username}`});
   } else {
     embed.setDescription('Cancelled');
   }

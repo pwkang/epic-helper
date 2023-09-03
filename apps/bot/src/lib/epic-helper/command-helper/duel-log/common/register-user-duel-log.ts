@@ -8,7 +8,6 @@ import {Client, EmbedBuilder, User} from 'discord.js';
 import {redisGuildMembers} from '../../../../../services/redis/guild-members.redis';
 import {toggleGuildChecker} from '../../../toggle-checker/guild';
 import {BOT_COLOR} from '@epic-helper/constants';
-import {guildService} from '../../../../../services/database/guild.service';
 
 interface IRegisterUserDuel {
   author: User;
@@ -86,20 +85,14 @@ export const registerUserDuelLog = async ({
     isExists: result.isExists,
   });
 
-  const guild = await guildService.findGuild({
+  await sendDuelLog({
+    client,
+    embed,
     roleId: guildInfo.guildRoleId,
     serverId: guildInfo.serverId,
+    ignoreChannel: commandChannelId,
   });
-  const logChannel = guild?.duel?.channelId;
 
-  if (logChannel && commandChannelId !== logChannel) {
-    await sendDuelLog({
-      client,
-      embed,
-      roleId: guildInfo.guildRoleId,
-      serverId: guildInfo.serverId,
-    });
-  }
   return embed;
 };
 

@@ -1,13 +1,16 @@
-import {EmbedBuilder, User} from 'discord.js';
+import {Client, EmbedBuilder, User} from 'discord.js';
 import {userDuelService} from '../../../../services/database/user-duel.service';
 import {BOT_COLOR} from '@epic-helper/constants';
 import {guildDuelService} from '../../../../services/database/guild-duel.service';
+import {sendDuelLog} from './send-duel-log';
 
 interface IUndoDuelRecord {
   user: User;
+  client: Client;
+  commandChannelId?: string;
 }
 
-export const _undoDuelRecord = async ({user}: IUndoDuelRecord) => {
+export const _undoDuelRecord = async ({user, client, commandChannelId}: IUndoDuelRecord) => {
   const result = await userDuelService.undoDuelRecord({
     userId: user.id,
   });
@@ -18,6 +21,13 @@ export const _undoDuelRecord = async ({user}: IUndoDuelRecord) => {
       userId: user.id,
       expGained: result.expRemoved,
       roleId: result.reportGuild.guildRoleId,
+    });
+    sendDuelLog({
+      roleId: result.reportGuild.guildRoleId,
+      serverId: result.reportGuild.serverId,
+      embed: getUndoEmbed({author: user}),
+      client,
+      ignoreChannel: commandChannelId,
     });
   }
   return successEmbed;
@@ -30,3 +40,13 @@ const noRecordEmbed = new EmbedBuilder()
 const successEmbed = new EmbedBuilder()
   .setColor(BOT_COLOR.embed)
   .setDescription('Successfully undo duel record');
+
+interface IGetUndoEmbed {
+  author: User;
+}
+
+const getUndoEmbed = ({author}: IGetUndoEmbed) => {
+  return new EmbedBuilder()
+    .setColor(BOT_COLOR.embed)
+    .setDescription(`${author.username} has undo a duel record`);
+};

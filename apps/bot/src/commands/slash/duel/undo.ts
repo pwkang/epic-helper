@@ -17,6 +17,8 @@ export default <SlashCommand>{
     if (!interaction.inGuild() || !interaction.guild) return;
     const embed = await commandHelper.duel.undo({
       user: interaction.user,
+      client,
+      commandChannelId: interaction.channelId,
     });
     await djsInteractionHelper.replyInteraction({
       client,

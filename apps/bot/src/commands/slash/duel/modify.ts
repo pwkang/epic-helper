@@ -35,6 +35,7 @@ export default <SlashCommand>{
       user,
       server: interaction.guild,
       author: interaction.user,
+      commandChannelId: interaction.channelId,
     });
     await djsInteractionHelper.replyInteraction({
       client,
