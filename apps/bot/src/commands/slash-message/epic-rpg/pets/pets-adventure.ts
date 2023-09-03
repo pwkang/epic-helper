@@ -28,6 +28,7 @@ export default <SlashMessage>{
     userAccOff: USER_ACC_OFF_ACTIONS.abort,
   },
   execute: async (client, message, author) => {
+    if (!message.inGuild()) return;
     const event = createRpgCommandListener({
       channelId: message.channel.id,
       client,

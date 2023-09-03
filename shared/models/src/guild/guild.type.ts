@@ -36,5 +36,9 @@ export interface IGuild {
     };
     readyAt: Date;
   };
+  duel: {
+    channelId: string;
+  };
   toggle: IGuildToggle;
+  membersId: string[];
 }

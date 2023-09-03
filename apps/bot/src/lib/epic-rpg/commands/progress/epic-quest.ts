@@ -20,6 +20,7 @@ interface IRpgEpicQuest {
 }
 
 export function rpgEpicQuest({client, message, author, isSlashCommand}: IRpgEpicQuest) {
+  if (!message.inGuild()) return;
   const event = createRpgCommandListener({
     author,
     client,

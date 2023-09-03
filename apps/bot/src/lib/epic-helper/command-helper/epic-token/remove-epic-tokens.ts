@@ -6,7 +6,7 @@ import {
   EmbedBuilder,
   StringSelectMenuBuilder,
 } from 'discord.js';
-import {generateNavigationRow, NAVIGATION_ROW_BUTTONS} from '../../../../utils/pagination-row';
+import {generateNavigationRow} from '../../../../utils/pagination-row';
 import {BOT_COLOR} from '@epic-helper/constants';
 
 const SERVERS_PER_PAGE = 1;
@@ -46,25 +46,8 @@ export const _removeEpicTokens = async ({userId}: IRemoveEpicTokens) => {
         components: [],
       };
     }
-    if (
-      interaction.isButton() &&
-      Object.values(NAVIGATION_ROW_BUTTONS).some((type) => type === interaction.customId)
-    ) {
-      const customId = interaction.customId as ValuesOf<typeof NAVIGATION_ROW_BUTTONS>;
-      switch (customId) {
-        case NAVIGATION_ROW_BUTTONS.first:
-          page = 0;
-          break;
-        case NAVIGATION_ROW_BUTTONS.prev:
-          page--;
-          break;
-        case NAVIGATION_ROW_BUTTONS.next:
-          page++;
-          break;
-        case NAVIGATION_ROW_BUTTONS.last:
-          page = Math.ceil(boostedServers.length / SERVERS_PER_PAGE) - 1;
-          break;
-      }
+    if (interaction.isButton()) {
+      page = Number(interaction.customId);
       return render();
     }
     return null;

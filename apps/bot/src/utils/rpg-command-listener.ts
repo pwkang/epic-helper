@@ -12,10 +12,10 @@ interface IRpgCommandListener {
 }
 
 type TEventTypes = {
-  embed: [Embed, Message];
-  content: [Message['content'], Message];
+  embed: [Embed, Message<true>];
+  content: [Message['content'], Message<true>];
   cooldown: [number];
-  attachments: [Message['attachments'], Message];
+  attachments: [Message['attachments'], Message<true>];
 };
 
 type TExtraProps = {
@@ -23,7 +23,7 @@ type TExtraProps = {
   pendingAnswer: () => void;
   answered: () => void;
   resetTimer: (ms: number) => void;
-  triggerCollect: (message: Message) => void;
+  triggerCollect: (message: Message<true>) => void;
 };
 
 const filter = (m: Message) => m.author.id === EPIC_RPG_ID;
@@ -37,11 +37,11 @@ export const createRpgCommandListener = ({
   const channel = client.channels.cache.get(channelId);
   if (!channel) return;
   let collector: MessageCollector | undefined;
-  if (channel instanceof TextChannel) {
+  if (channel instanceof TextChannel && !!channel.guild) {
     // const textChannel
     collector = channel.createMessageCollector({time: 15000, filter});
   }
-  if (!collector) return;
+  if (!collector || !(channel instanceof TextChannel)) return;
   const event = new TypedEventEmitter<TEventTypes>() as TypedEventEmitter<TEventTypes> &
     TExtraProps;
   let police = false;
@@ -64,20 +64,18 @@ export const createRpgCommandListener = ({
     collector?.resetTimer({time: ms});
   };
 
-  event.triggerCollect = (message: Message) => {
+  event.triggerCollect = (message: Message<true>) => {
     messageCollected(message);
   };
 
-  collector.on('collect', messageCollected);
-
-  async function messageCollected(collected: Message) {
+  const messageCollected = async (collected: Message<true>) => {
     if (
       isSlashCommand({collected, author}) &&
       collected.content === '' &&
       collected.embeds.length === 0
     ) {
       await sleep(1000);
-      collected = collector?.channel.messages.cache.get(collected.id) as Message;
+      collected = channel.messages.cache.get(collected.id)!;
     }
 
     if (collected.embeds.length) {
@@ -141,7 +139,12 @@ export const createRpgCommandListener = ({
     if (collected.attachments.size) {
       event.emit('attachments', collected.attachments, collected);
     }
-  }
+  };
+
+  collector.on('collect', (collected) => {
+    if (!collected?.inGuild()) return;
+    messageCollected(collected);
+  });
 
   return event;
 };

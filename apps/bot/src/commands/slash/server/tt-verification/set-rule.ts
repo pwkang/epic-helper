@@ -43,7 +43,6 @@ export default <SlashCommand>{
     const minTT = interaction.options.getNumber('min-tt', true);
     const maxTT = interaction.options.getNumber('max-tt') ?? undefined;
     const message = interaction.options.getString('message') ?? undefined;
-    console.log({role, minTT, maxTT, message});
     const ttVerification = await commandHelper.serverSettings.ttVerification({
       server: interaction.guild,
     });

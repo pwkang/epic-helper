@@ -1,6 +1,6 @@
 import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
-import embedReaders from '../../lib/epic-rpg/embed-readers';
-import {generatePetCatchMessageOptions} from '../../lib/epic-rpg/utils/pet-catch-cmd';
+import {Message} from 'discord.js';
+import commandHelper from '../../lib/epic-helper/command-helper';
 
 export default <PrefixCommand>{
   name: 'test',
@@ -9,11 +9,10 @@ export default <PrefixCommand>{
   preCheck: {},
   execute: async (client, message, args) => {
     const msg = await message.channel.messages.fetch(args[1]);
-    const info = embedReaders.wildPet({
-      embed: msg.embeds[0],
+    commandHelper.duel.autoAdd({
+      duelMessage: msg as Message<true>,
+      users: [message.author, message.mentions.users.first()!],
+      client,
     });
-    const result = generatePetCatchMessageOptions({info});
-    console.log(result);
-    await message.channel.send(result);
   },
 };

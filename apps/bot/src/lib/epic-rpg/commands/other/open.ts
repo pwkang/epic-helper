@@ -11,6 +11,7 @@ interface IRpgOpenLootbox {
 }
 
 export function rpgOpenLootbox({client, message, author, isSlashCommand}: IRpgOpenLootbox) {
+  if (!message.inGuild()) return;
   const event = createRpgCommandListener({
     author,
     client,

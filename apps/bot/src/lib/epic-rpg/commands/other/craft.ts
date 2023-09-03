@@ -18,6 +18,7 @@ interface IRpgCraft {
 }
 
 export function rpgCraft({client, message, author, isSlashCommand}: IRpgCraft) {
+  if (!message.inGuild()) return;
   const event = createRpgCommandListener({
     channelId: message.channel.id,
     client,

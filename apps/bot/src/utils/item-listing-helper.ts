@@ -45,38 +45,30 @@ export const itemListingHelper = async ({
     options: pageOptions,
   });
   if (!event) return;
-  const events = {
-    [NAVIGATION_ROW_BUTTONS.first]: () => {
-      page = 0;
-    },
-    [NAVIGATION_ROW_BUTTONS.prev]: () => page--,
-    [NAVIGATION_ROW_BUTTONS.next]: () => page++,
-    [NAVIGATION_ROW_BUTTONS.last]: () => (page = Math.floor(totalItems / itemsPerPage)),
-  };
-  for (const [key, fn] of Object.entries(events)) {
-    event.on(key, () => {
-      fn();
-      return createPage({
+  event.every((interaction) => {
+    if (!interaction.isButton()) return null;
+
+    if (interaction.customId === NAVIGATION_ROW_BUTTONS.all) {
+      showAllItems({
+        channelId,
+        client,
+        totalItems,
         embedFn,
         itemsPerPage,
-        page,
-        totalItems,
       });
-    });
-  }
-  event.on(NAVIGATION_ROW_BUTTONS.all, async () => {
-    showAllItems({
-      channelId,
-      client,
-      totalItems,
+      return {
+        content: '‍',
+        embeds: [],
+        components: [],
+      };
+    }
+    page = Number(interaction.customId);
+    return createPage({
       embedFn,
       itemsPerPage,
+      page,
+      totalItems,
     });
-    return {
-      content: '‍',
-      embeds: [],
-      components: [],
-    };
   });
 };
 

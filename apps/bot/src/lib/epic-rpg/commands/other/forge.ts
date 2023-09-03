@@ -16,6 +16,7 @@ interface IRpgForge {
 }
 
 export const rpgForge = ({client, message, author, isSlashCommand}: IRpgForge) => {
+  if (!message.inGuild()) return;
   const event = createRpgCommandListener({
     channelId: message.channel.id,
     client,

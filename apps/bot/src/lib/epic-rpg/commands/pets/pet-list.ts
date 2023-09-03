@@ -15,6 +15,7 @@ interface IRpgPet {
 }
 
 export const rpgPetList = async ({message, author, isSlashCommand, client}: IRpgPet) => {
+  if (!message.inGuild()) return;
   const event = createRpgCommandListener({
     author,
     client,

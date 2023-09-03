@@ -64,7 +64,7 @@ export const SLASH_COMMAND = {
     description: 'Guild settings',
     setup: {
       name: 'setup',
-      description: 'Setup a new the guild',
+      description: 'Setup a new guild',
     },
     settings: {
       name: 'settings',
@@ -73,6 +73,10 @@ export const SLASH_COMMAND = {
     reminder: {
       name: 'reminder',
       description: 'Update reminder settings',
+    },
+    duel: {
+      name: 'duel',
+      description: 'Update Duel Log settings',
     },
     leader: {
       name: 'leader',
@@ -225,6 +229,30 @@ export const SLASH_COMMAND = {
     reset: {
       name: 'reset',
       description: 'Reset personal toggle settings',
+    },
+  },
+  duel: {
+    name: 'rrduel',
+    description: 'Duel reports commands',
+    add: {
+      name: 'add',
+      description: 'Submit a new duel report to your guild',
+    },
+    list: {
+      name: 'list',
+      description: 'List all duel reports of your guild',
+    },
+    undo: {
+      name: 'undo',
+      description: 'Undo your last duel report',
+    },
+    modify: {
+      name: 'modify',
+      description: 'Modify the duel record of a user',
+    },
+    reset: {
+      name: 'reset',
+      description: 'Reset the duel reports of a guild',
     },
   },
   stats: {
