@@ -5,6 +5,8 @@ import {IUser} from '@epic-helper/models';
 export interface IGetUserSettingsEmbed {
   author: User;
   userProfile: IUser;
+  guildName?: string;
+  guildServerName?: string;
 }
 
 interface IHelperSettings {
@@ -19,7 +21,12 @@ const DONOR_DISPLAY = {
   donor35: '35%',
 } as const;
 
-export const _getUserSettingsEmbed = ({userProfile, author}: IGetUserSettingsEmbed) => {
+export const _getUserSettingsEmbed = ({
+  userProfile,
+  author,
+  guildServerName,
+  guildName,
+}: IGetUserSettingsEmbed) => {
   const embed = new EmbedBuilder()
     .setAuthor({
       name: `${author.username}'s settings`,
@@ -76,6 +83,12 @@ export const _getUserSettingsEmbed = ({userProfile, author}: IGetUserSettingsEmb
     helperSettings.push({
       icon: '💈',
       value: `Reminder send to <#${userProfile.channel.all}>`,
+    });
+
+  if (guildName && guildServerName)
+    helperSettings.push({
+      icon: '🏰',
+      value: `Guild: **${guildName}** @ ${guildServerName}`,
     });
 
   embed.addFields({

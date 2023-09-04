@@ -4,6 +4,7 @@ import {UpdateQuery} from 'mongoose';
 import {redisGuildReminder} from '../redis/guild-reminder.redis';
 import {Client} from 'discord.js';
 import {toGuild, toGuilds} from '../transformer/guild.transformer';
+import {redisGuildMembers} from '../redis/guild-members.redis';
 
 guildSchema.post('findOneAndUpdate', async (doc: IGuild) => {
   if (!doc) return;
@@ -280,6 +281,12 @@ const registerUserToGuild = async ({serverId, roleId, userId}: IRegisterToGuild)
     {$pull: {membersId: userId}},
     {new: true}
   );
+
+  await redisGuildMembers.setGuildMember({
+    guildRoleId: roleId,
+    serverId,
+    userId,
+  });
 };
 
 interface IUpdateDuelLog {
@@ -295,6 +302,32 @@ const updateDuelLog = async ({serverId, roleId, channelId}: IUpdateDuelLog) => {
   if (channelId) query.$set!['duel.channelId'] = channelId;
   const updated = await dbGuild.findOneAndUpdate({serverId, roleId}, query, {new: true});
   return updated ? toGuild(updated) : null;
+};
+
+interface IFindUserGuild {
+  userId: string;
+}
+
+const findUserGuild = async ({userId}: IFindUserGuild) => {
+  const cachedGuild = await redisGuildMembers.getGuildInfo({
+    userId,
+  });
+  if (!cachedGuild) {
+    const guild = await dbGuild.findOne({membersId: userId}).lean();
+    if (!guild) return null;
+
+    await redisGuildMembers.setGuildMember({
+      guildRoleId: guild.roleId,
+      serverId: guild.serverId,
+      userId,
+    });
+    return toGuild(guild);
+  }
+  const guild = await findGuild({
+    serverId: cachedGuild.serverId,
+    roleId: cachedGuild.guildRoleId,
+  });
+  return guild ? toGuild(guild) : null;
 };
 
 export const guildService = {
@@ -315,4 +348,5 @@ export const guildService = {
   resetToggle,
   registerUserToGuild,
   updateDuelLog,
+  findUserGuild,
 };

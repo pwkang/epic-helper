@@ -6,7 +6,6 @@ import commandHelper from '../../../epic-helper/command-helper';
 import {djsMessageHelper} from '../../../discordjs/message';
 import {guildService} from '../../../../services/database/guild.service';
 import {toggleGuildChecker} from '../../../epic-helper/toggle-checker/guild';
-import {redisGuildMembers} from '../../../../services/redis/guild-members.redis';
 
 export interface IRpgGuild {
   client: Client;
@@ -113,19 +112,14 @@ interface IRegisterUserToGuild {
 }
 
 const registerUserToGuild = async ({userId, serverId, roleId}: IRegisterUserToGuild) => {
-  const cached = await redisGuildMembers.getGuildInfo({
+  const cached = await guildService.findUserGuild({
     userId,
   });
-  if (cached?.guildRoleId === roleId && cached?.serverId === serverId) return;
+  if (cached?.roleId === roleId && cached?.serverId === serverId) return;
   await guildService.registerUserToGuild({
     userId,
     serverId,
     roleId,
-  });
-  await redisGuildMembers.setGuildMember({
-    guildRoleId: roleId,
-    serverId,
-    userId,
   });
 };
 
