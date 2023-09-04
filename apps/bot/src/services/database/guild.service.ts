@@ -186,13 +186,21 @@ const registerReminder = async ({serverId, roleId, readyIn}: IRegisterReminder) 
 
 interface IUpdateGuildInfo {
   serverId: string;
+  roleId: string;
   name?: string;
   stealth?: number;
   level?: number;
   energy?: number;
 }
 
-const updateGuildInfo = async ({serverId, name, stealth, level, energy}: IUpdateGuildInfo) => {
+const updateGuildInfo = async ({
+  serverId,
+  name,
+  stealth,
+  level,
+  energy,
+  roleId,
+}: IUpdateGuildInfo) => {
   const query: UpdateQuery<IGuild> = {
     $set: {},
   };
@@ -201,7 +209,7 @@ const updateGuildInfo = async ({serverId, name, stealth, level, energy}: IUpdate
   if (level !== undefined) query.$set!['info.level'] = level;
   if (energy !== undefined) query.$set!['info.energy'] = energy;
   if (Object.keys(query.$set!).length === 0) return Promise.resolve(null);
-  const guild = await dbGuild.findOneAndUpdate({serverId}, query, {new: true, lean: true});
+  const guild = await dbGuild.findOneAndUpdate({serverId, roleId}, query, {new: true, lean: true});
   return guild ? toGuild(guild) : null;
 };
 

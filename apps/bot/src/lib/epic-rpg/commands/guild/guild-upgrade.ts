@@ -4,7 +4,7 @@ import {IMessageContentChecker, IMessageEmbedChecker} from '../../../../types/ut
 import {guildService} from '../../../../services/database/guild.service';
 import ms from 'ms';
 import {upgraidService} from '../../../../services/database/upgraid.service';
-import {_checkUserGuildRoles, _sendUpgraidResultToGuildChannel} from './_shared';
+import {_sendUpgraidResultToGuildChannel, verifyGuild} from './_shared';
 import {RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants';
 import {toggleGuildChecker} from '../../../epic-helper/toggle-checker/guild';
 
@@ -29,34 +29,35 @@ export const rpgGuildUpgrade = async ({
     commandType: RPG_COOLDOWN_EMBED_TYPE.guild,
   });
   if (!event) return;
-  event.on('embed', async (embed) => {
+  event.on('embed', async (embed, collected) => {
     if (isGuildUpgradeSuccess({author, embed})) {
-      const roleId = await _checkUserGuildRoles({
-        channelId: message.channel.id,
-        server: message.guild,
-        client,
+      const userGuild = await verifyGuild({
         author,
+        client,
+        server: message.guild,
+        channelId: message.channel.id,
       });
-      if (!roleId) return;
+      if (!userGuild) return;
       const guildToggle = await toggleGuildChecker({
-        serverId: message.guildId!,
-        roleId,
+        serverId: userGuild.serverId,
+        roleId: userGuild.roleId,
       });
       if (guildToggle?.upgraid.reminder) {
         await rpgGuildUpgradeSuccess({
           author,
-          server: message.guild,
-          guildRoleId: roleId,
-          message,
+          guildRoleId: userGuild.roleId,
+          guildServerId: userGuild.serverId,
+          message: collected,
         });
       }
       if (guildToggle?.upgraid.autoSendList) {
         await _sendUpgraidResultToGuildChannel({
-          guildRoleId: roleId,
+          guildRoleId: userGuild.roleId,
           client,
-          serverId: message.guildId!,
+          guildServerId: userGuild.serverId,
           rpgEmbed: embed,
           actionChannelId: message.channel.id,
+          author,
         });
       }
     }
@@ -74,25 +75,25 @@ export const rpgGuildUpgrade = async ({
 
 interface IRpgGuildUpgradeSuccess {
   author: User;
-  server: Guild;
   guildRoleId: string;
+  guildServerId: string;
   message: Message;
 }
 
 const rpgGuildUpgradeSuccess = async ({
   guildRoleId,
-  server,
   author,
+  guildServerId,
   message,
 }: IRpgGuildUpgradeSuccess): Promise<void> => {
   await guildService.registerReminder({
     readyIn: ms('2h'),
     roleId: guildRoleId,
-    serverId: server.id,
+    serverId: guildServerId,
   });
   await upgraidService.addRecord({
     guildRoleId,
-    serverId: server.id,
+    serverId: guildServerId,
     userId: author.id,
     commandType: 'upgrade',
     upgraidAt: new Date(),
@@ -108,7 +109,7 @@ const isGuildUpgradeSuccess = ({embed}: IMessageEmbedChecker) =>
   );
 
 const isUserDontHaveGuild = ({author, message}: IMessageContentChecker) =>
-  ["you don't have a guild", 'not in a guild'].some((msg) => message.content.includes(msg)) &&
+  ['you don\'t have a guild', 'not in a guild'].some((msg) => message.content.includes(msg)) &&
   message.mentions.users.has(author.id);
 
 const isGuildCantBeUpgraded = ({author, message}: IMessageContentChecker) =>

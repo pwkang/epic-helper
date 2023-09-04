@@ -6,26 +6,28 @@ import {djsMessageHelper} from '../../../discordjs/message';
 import commandHelper from '../../../epic-helper/command-helper';
 
 interface ISendRecordsToGuildChannel {
-  serverId: string;
+  guildServerId: string;
   guildRoleId: string;
   client: Client;
   rpgEmbed: Embed;
   actionChannelId: string;
+  author: User;
 }
 
 export const _sendUpgraidResultToGuildChannel = async ({
-  serverId,
+  guildServerId,
   guildRoleId,
   client,
   rpgEmbed,
   actionChannelId,
+  author,
 }: ISendRecordsToGuildChannel) => {
   const upgraid = await upgraidService.findCurrentUpgraid({
-    serverId,
+    serverId: guildServerId,
     guildRoleId,
   });
   const guild = await guildService.findGuild({
-    serverId,
+    serverId: guildServerId,
     roleId: guildRoleId,
   });
   if (!upgraid || !guild) return;
@@ -37,7 +39,11 @@ export const _sendUpgraidResultToGuildChannel = async ({
   const embeds: EmbedBuilder[] = [];
 
   if (actionChannelId !== guild.upgraid.channelId) {
-    embeds.push(EmbedBuilder.from(rpgEmbed));
+    const duplicatedEmbed = EmbedBuilder.from(rpgEmbed);
+    duplicatedEmbed.setFooter({
+      text: `By ${author.username}`,
+    });
+    embeds.push(duplicatedEmbed);
   }
   embeds.push(upgraidEmbed);
 
@@ -50,26 +56,24 @@ export const _sendUpgraidResultToGuildChannel = async ({
   });
 };
 
-interface ICheckUserGuildRoles {
+interface IVerifyGuild {
   client: Client;
-  author: User;
   server: Guild;
+  author: User;
   channelId: string;
 }
 
-export const _checkUserGuildRoles = async ({
-  client,
-  author,
-  server,
-  channelId,
-}: ICheckUserGuildRoles) => {
+export const verifyGuild = async ({author, client, server, channelId}: IVerifyGuild) => {
   const roles = await commandHelper.guild.getUserGuildRoles({
     client,
     userId: author.id,
     server,
   });
-  if (!roles || !roles.size) return;
-  if (roles.size > 1) {
+  const userGuild = await guildService.findUserGuild({
+    userId: author.id,
+  });
+
+  if (roles && roles.size > 1) {
     await djsMessageHelper.send({
       channelId,
       client,
@@ -79,5 +83,42 @@ export const _checkUserGuildRoles = async ({
     });
     return null;
   }
-  return roles.first()!.id;
+
+  if (roles?.size === 1) {
+    const guildRole = roles.first()!;
+    const guild = await guildService.findGuild({
+      serverId: server.id,
+      roleId: guildRole.id,
+    });
+
+    if (userGuild?.roleId !== guildRole.id)
+      await guildService.registerUserToGuild({
+        userId: author.id,
+        serverId: server.id,
+        roleId: guildRole.id,
+      });
+
+    if (guild) return guild;
+  }
+
+  return userGuild ?? null;
+};
+
+interface IRegisterUserToGuild {
+  userId: string;
+  serverId: string;
+  roleId: string;
+}
+
+const registerUserToGuild = async ({userId, serverId, roleId}: IRegisterUserToGuild) => {
+  const cached = await guildService.findUserGuild({
+    userId,
+  });
+  console.log(cached?.roleId === roleId, cached?.serverId === serverId);
+  if (cached?.roleId === roleId && cached?.serverId === serverId) return;
+  await guildService.registerUserToGuild({
+    userId,
+    serverId,
+    roleId,
+  });
 };
