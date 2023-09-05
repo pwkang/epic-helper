@@ -101,6 +101,15 @@ export const verifyGuild = async ({author, client, server, channelId}: IVerifyGu
     if (guild) return guild;
   }
 
+  if (userGuild && userGuild.serverId === server.id && !roles?.size) {
+    await guildService.removeUserFromGuild({
+      serverId: server.id,
+      roleId: userGuild.roleId,
+      userId: author.id,
+    });
+    return null;
+  }
+
   return userGuild ?? null;
 };
 
