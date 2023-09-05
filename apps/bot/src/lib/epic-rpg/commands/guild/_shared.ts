@@ -112,22 +112,3 @@ export const verifyGuild = async ({author, client, server, channelId}: IVerifyGu
 
   return userGuild ?? null;
 };
-
-interface IRegisterUserToGuild {
-  userId: string;
-  serverId: string;
-  roleId: string;
-}
-
-const registerUserToGuild = async ({userId, serverId, roleId}: IRegisterUserToGuild) => {
-  const cached = await guildService.findUserGuild({
-    userId,
-  });
-  console.log(cached?.roleId === roleId, cached?.serverId === serverId);
-  if (cached?.roleId === roleId && cached?.serverId === serverId) return;
-  await guildService.registerUserToGuild({
-    userId,
-    serverId,
-    roleId,
-  });
-};
