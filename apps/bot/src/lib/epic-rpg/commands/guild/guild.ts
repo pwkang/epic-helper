@@ -5,6 +5,7 @@ import embedReaders from '../../embed-readers';
 import {guildService} from '../../../../services/database/guild.service';
 import {toggleGuildChecker} from '../../../epic-helper/toggle-checker/guild';
 import {verifyGuild} from './_shared';
+import {djsMessageHelper} from '../../../discordjs/message';
 
 export interface IRpgGuild {
   client: Client;
@@ -24,12 +25,22 @@ export const rpgGuild = ({author, client, message, isSlashCommand}: IRpgGuild) =
   event.on('embed', async (embed) => {
     if (isGuildSuccess({author, embed})) {
       event.stop();
-      const userGuild = await verifyGuild({
-        author,
+      const result = await verifyGuild({
         client,
-        channelId: message.channel.id,
         server: message.guild,
+        userId: author.id,
       });
+      if (result.errorEmbed) {
+        await djsMessageHelper.send({
+          client,
+          channelId: message.channel.id,
+          options: {
+            embeds: [result.errorEmbed],
+          },
+        });
+        return;
+      }
+      const userGuild = result.guild;
       if (!userGuild) return;
       await rpgGuildSuccess({
         author,

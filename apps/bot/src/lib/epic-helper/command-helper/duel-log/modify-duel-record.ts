@@ -1,5 +1,4 @@
 import {BaseMessageOptions, Client, EmbedBuilder, Guild, User} from 'discord.js';
-import commandHelper from '../index';
 import {guildDuelService} from '../../../../services/database/guild-duel.service';
 import {BOT_COLOR} from '@epic-helper/constants';
 import messageFormatter from '../../../discordjs/message-formatter';
@@ -8,6 +7,7 @@ import {toggleGuildChecker} from '../../toggle-checker/guild';
 import {sendDuelLog} from './send-duel-log';
 import {IGuild} from '@epic-helper/models';
 import {guildService} from '../../../../services/database/guild.service';
+import {verifyGuild} from '../../../epic-rpg/commands/guild/_shared';
 
 interface IModifyDuelRecord {
   client: Client;
@@ -28,42 +28,41 @@ export const modifyDuelRecord = async ({
   author,
   commandChannelId,
 }: IModifyDuelRecord): Promise<BaseMessageOptions> => {
-  const isServerAdmin = await userChecker.isServerAdmin({client, server, userId: author.id});
-  if (!isServerAdmin) {
-    return {
-      content: 'You do not have permission to modify duel record.',
-    };
-  }
-  const userRoles = await commandHelper.guild.getUserGuildRoles({
+  const result = await verifyGuild({
     client,
     userId: user.id,
     server,
   });
-  if (!userRoles?.size) {
+  if (result.errorEmbed) {
+    return {
+      embeds: [result.errorEmbed],
+    };
+  }
+  const userGuild = result.guild;
+  if (!userGuild) {
     return {
       embeds: [getNotInGuildEmbed(user)],
     };
   }
-  if (userRoles.size > 1) {
-    return {
-      embeds: [commandHelper.guild.renderMultipleGuildEmbed(userRoles)],
-    };
-  }
-  const guildRole = userRoles.first()!;
+  const isServerAdmin = await userChecker.isServerAdmin({
+    client,
+    serverId: userGuild.serverId,
+    userId: author.id,
+  });
   const isGuildLeader = await userChecker.isGuildLeader({
-    serverId: server.id,
-    guildRoleId: guildRole.id,
+    serverId: userGuild.serverId,
+    guildRoleId: userGuild.roleId,
     userId: author.id,
   });
   if (!isServerAdmin && !isGuildLeader) {
     return {
-      content: 'Nice try... You are not the guild leader',
+      content: 'Nice try... You are not the guild leader or server admin',
     };
   }
 
   const guild = await guildService.findGuild({
-    roleId: guildRole.id,
-    serverId: server.id,
+    roleId: userGuild.roleId,
+    serverId: userGuild.serverId,
   });
 
   if (!guild) {
@@ -74,8 +73,8 @@ export const modifyDuelRecord = async ({
 
   const currentLog = await guildDuelService.findUserCurrentRecord({
     userId: user.id,
-    roleId: guildRole.id,
-    serverId: server.id,
+    roleId: userGuild.roleId,
+    serverId: userGuild.serverId,
   });
   const prev = {
     count: currentLog?.duelCount ?? 0,
@@ -90,15 +89,15 @@ export const modifyDuelRecord = async ({
   });
 
   const toggleGuild = await toggleGuildChecker({
-    roleId: guildRole.id,
-    serverId: server.id,
+    roleId: userGuild.roleId,
+    serverId: userGuild.serverId,
   });
 
   if (toggleGuild?.duel.log.duelModify) {
     sendDuelLog({
       client,
-      roleId: guildRole.id,
-      serverId: server.id,
+      roleId: userGuild.roleId,
+      serverId: userGuild.serverId,
       embed: modifiedEmbed,
       ignoreChannel: commandChannelId,
     });
@@ -106,8 +105,8 @@ export const modifyDuelRecord = async ({
 
   await guildDuelService.modifyUserDuel({
     userId: user.id,
-    roleId: guildRole.id,
-    serverId: server.id,
+    roleId: userGuild.roleId,
+    serverId: userGuild.serverId,
     duelCount: count,
     expGained: exp,
   });

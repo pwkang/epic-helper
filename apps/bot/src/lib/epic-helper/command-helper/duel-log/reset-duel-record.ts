@@ -27,7 +27,11 @@ export const _resetDuelRecord = async ({roleId, server, author, client}: IResetD
     roleId,
     serverId: server.id,
   });
-  const isServerAdmin = await userChecker.isServerAdmin({client, server, userId: author.id});
+  const isServerAdmin = await userChecker.isServerAdmin({
+    client,
+    serverId: server.id,
+    userId: author.id,
+  });
   const isGuildLeader = await userChecker.isGuildLeader({
     userId: author.id,
     serverId: server.id,

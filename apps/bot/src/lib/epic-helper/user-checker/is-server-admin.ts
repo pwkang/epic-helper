@@ -1,10 +1,10 @@
-import {Client, Guild, PermissionsBitField} from 'discord.js';
+import {Client, PermissionsBitField} from 'discord.js';
 import {djsMemberHelper} from '../../discordjs/member';
 import {serverService} from '../../../services/database/server.service';
 
 interface IIsServerAdmin {
   client: Client;
-  server: Guild;
+  serverId: string;
   userId: string;
 }
 
@@ -13,16 +13,16 @@ const PERMISSIONS = [
   PermissionsBitField.Flags.Administrator,
 ];
 
-export const _isServerAdmin = async ({server, client, userId}: IIsServerAdmin) => {
+export const _isServerAdmin = async ({serverId, client, userId}: IIsServerAdmin) => {
   const member = await djsMemberHelper.getMember({
     client,
-    serverId: server.id,
+    serverId,
     userId,
   });
   if (!member) return false;
   const hasPermission = member.permissions.any(PERMISSIONS);
   if (hasPermission) return true;
-  const serverAccount = await serverService.findServerById(server.id);
+  const serverAccount = await serverService.findServerById(serverId);
   if (!serverAccount) return false;
   const memberRoles = member.roles.cache.map((role) => role.id);
   return (

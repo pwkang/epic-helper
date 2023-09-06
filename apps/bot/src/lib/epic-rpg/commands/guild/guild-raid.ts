@@ -7,6 +7,7 @@ import {upgraidService} from '../../../../services/database/upgraid.service';
 import {_sendUpgraidResultToGuildChannel, verifyGuild} from './_shared';
 import {RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants';
 import {toggleGuildChecker} from '../../../epic-helper/toggle-checker/guild';
+import {djsMessageHelper} from '../../../discordjs/message';
 
 interface IRpgGuildRaid {
   client: Client;
@@ -26,12 +27,23 @@ export const rpgGuildRaid = async ({author, message, isSlashCommand, client}: IR
   if (!event) return;
   event.on('embed', async (embed, collected) => {
     if (isGuildRaidSuccess({author, embed})) {
-      const userGuild = await verifyGuild({
-        author,
+      event.stop();
+      const result = await verifyGuild({
         client,
         server: message.guild,
-        channelId: message.channel.id,
+        userId: author.id,
       });
+      if (result.errorEmbed) {
+        await djsMessageHelper.send({
+          channelId: message.channel.id,
+          options: {
+            embeds: [result.errorEmbed],
+          },
+          client,
+        });
+        return;
+      }
+      const userGuild = result.guild;
       if (!userGuild) return;
       const guildToggle = await toggleGuildChecker({
         serverId: userGuild.serverId,
