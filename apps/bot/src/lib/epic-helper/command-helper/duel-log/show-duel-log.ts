@@ -34,7 +34,7 @@ export const _showDuelLog = async ({server, client, author}: IShowDuelLog) => {
   });
   const isServerAdmin = await userChecker.isServerAdmin({
     client,
-    server,
+    serverId: server.id,
     userId: author.id,
   });
   const member = await djsMemberHelper.getMember({
@@ -127,14 +127,14 @@ const generateEmbed = ({duelLogs, guild}: IGenerateEmbed) => {
       name: cycle.label,
       value: cycle.logs?.users?.length
         ? cycle.logs.users
-            .sort((a, b) => b.totalExp - a.totalExp)
-            .map(
-              (user, index) =>
-                `\`[${index + 1}]\` ${messageFormatter.user(user.userId)} \`${user.totalExp} XP | ${
-                  user.duelCount
-                } duels\``
-            )
-            .join('\n')
+          .sort((a, b) => b.totalExp - a.totalExp)
+          .map(
+            (user, index) =>
+              `\`[${index + 1}]\` ${messageFormatter.user(user.userId)} \`${user.totalExp} XP | ${
+                user.duelCount
+              } duels\``
+          )
+          .join('\n')
         : 'None',
       inline: true,
     });

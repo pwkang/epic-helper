@@ -4,28 +4,32 @@ import {guildService} from '../../../../services/database/guild.service';
 import {_renderThisWeekUpgraidListEmbed} from '../../../epic-helper/command-helper/guild/embed/this-week-upgraid-list';
 import {djsMessageHelper} from '../../../discordjs/message';
 import commandHelper from '../../../epic-helper/command-helper';
+import {IGuild} from '@epic-helper/models';
+import {djsMemberHelper} from '../../../discordjs/member';
 
 interface ISendRecordsToGuildChannel {
-  serverId: string;
+  guildServerId: string;
   guildRoleId: string;
   client: Client;
   rpgEmbed: Embed;
   actionChannelId: string;
+  author: User;
 }
 
 export const _sendUpgraidResultToGuildChannel = async ({
-  serverId,
+  guildServerId,
   guildRoleId,
   client,
   rpgEmbed,
   actionChannelId,
+  author,
 }: ISendRecordsToGuildChannel) => {
   const upgraid = await upgraidService.findCurrentUpgraid({
-    serverId,
+    serverId: guildServerId,
     guildRoleId,
   });
   const guild = await guildService.findGuild({
-    serverId,
+    serverId: guildServerId,
     roleId: guildRoleId,
   });
   if (!upgraid || !guild) return;
@@ -37,7 +41,11 @@ export const _sendUpgraidResultToGuildChannel = async ({
   const embeds: EmbedBuilder[] = [];
 
   if (actionChannelId !== guild.upgraid.channelId) {
-    embeds.push(EmbedBuilder.from(rpgEmbed));
+    const duplicatedEmbed = EmbedBuilder.from(rpgEmbed);
+    duplicatedEmbed.setFooter({
+      text: `By ${author.username}`,
+    });
+    embeds.push(duplicatedEmbed);
   }
   embeds.push(upgraidEmbed);
 
@@ -50,34 +58,71 @@ export const _sendUpgraidResultToGuildChannel = async ({
   });
 };
 
-interface ICheckUserGuildRoles {
+interface IVerifyGuild {
   client: Client;
-  author: User;
   server: Guild;
-  channelId: string;
+  userId: string;
 }
 
-export const _checkUserGuildRoles = async ({
-  client,
-  author,
-  server,
-  channelId,
-}: ICheckUserGuildRoles) => {
-  const roles = await commandHelper.guild.getUserGuildRoles({
+export const verifyGuild = async ({userId, client, server}: IVerifyGuild) => {
+  const roles = await getUserGuildRoles({
     client,
-    userId: author.id,
+    userId,
     server,
   });
-  if (!roles || !roles.size) return;
-  if (roles.size > 1) {
-    await djsMessageHelper.send({
-      channelId,
-      client,
-      options: {
-        embeds: [commandHelper.guild.renderMultipleGuildEmbed(roles)],
-      },
+  const userGuild = await guildService.findUserGuild({
+    userId,
+  });
+  let finalGuild: IGuild | null = userGuild;
+  let embed: EmbedBuilder | null = null;
+
+  if (roles && roles.size > 1) {
+    embed = commandHelper.guild.renderMultipleGuildEmbed(roles);
+  } else if (roles?.size === 1) {
+    const guildRole = roles.first()!;
+    const guild = await guildService.findGuild({
+      serverId: server.id,
+      roleId: guildRole.id,
     });
-    return null;
+
+    if (userGuild?.roleId !== guildRole.id)
+      await guildService.registerUserToGuild({
+        userId,
+        serverId: server.id,
+        roleId: guildRole.id,
+      });
+    if (guild) finalGuild = guild;
   }
-  return roles.first()!.id;
+
+  if (userGuild && userGuild.serverId === server.id && !roles?.size) {
+    await guildService.removeUserFromGuild({
+      serverId: server.id,
+      roleId: userGuild.roleId,
+      userId,
+    });
+  }
+
+  return {
+    guild: finalGuild,
+    errorEmbed: embed,
+  };
+};
+
+export interface IGetUserGuildRoles {
+  client: Client;
+  server: Guild;
+  userId: string;
+}
+
+export const getUserGuildRoles = async ({server, userId, client}: IGetUserGuildRoles) => {
+  const serverMember = await djsMemberHelper.getMember({
+    serverId: server.id,
+    client,
+    userId,
+  });
+  if (!serverMember) return null;
+  const guildRoles = await guildService.getAllGuildRoles({serverId: server.id});
+  return serverMember.roles.cache.filter((userRole) =>
+    guildRoles.some((guildRole) => userRole.id === guildRole)
+  );
 };

@@ -4,9 +4,10 @@ import {IMessageContentChecker, IMessageEmbedChecker} from '../../../../types/ut
 import {guildService} from '../../../../services/database/guild.service';
 import ms from 'ms';
 import {upgraidService} from '../../../../services/database/upgraid.service';
-import {_checkUserGuildRoles, _sendUpgraidResultToGuildChannel} from './_shared';
+import {_sendUpgraidResultToGuildChannel, verifyGuild} from './_shared';
 import {RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants';
 import {toggleGuildChecker} from '../../../epic-helper/toggle-checker/guild';
+import {djsMessageHelper} from '../../../discordjs/message';
 
 interface IRpgGuildRaid {
   client: Client;
@@ -24,34 +25,46 @@ export const rpgGuildRaid = async ({author, message, isSlashCommand, client}: IR
     commandType: RPG_COOLDOWN_EMBED_TYPE.guild,
   });
   if (!event) return;
-  event.on('embed', async (embed) => {
+  event.on('embed', async (embed, collected) => {
     if (isGuildRaidSuccess({author, embed})) {
-      const roleId = await _checkUserGuildRoles({
-        channelId: message.channel.id,
-        server: message.guild,
+      event.stop();
+      const result = await verifyGuild({
         client,
-        author,
+        server: message.guild,
+        userId: author.id,
       });
-      if (!roleId) return;
+      if (result.errorEmbed) {
+        await djsMessageHelper.send({
+          channelId: message.channel.id,
+          options: {
+            embeds: [result.errorEmbed],
+          },
+          client,
+        });
+        return;
+      }
+      const userGuild = result.guild;
+      if (!userGuild) return;
       const guildToggle = await toggleGuildChecker({
-        serverId: message.guildId!,
-        roleId,
+        serverId: userGuild.serverId,
+        roleId: userGuild.roleId,
       });
       if (guildToggle?.upgraid.reminder) {
         await rpgGuildRaidSuccess({
           author,
-          server: message.guild,
-          guildRoleId: roleId,
-          message,
+          guildRoleId: userGuild.roleId,
+          guildServerId: userGuild.serverId,
+          message: collected,
         });
       }
       if (guildToggle?.upgraid.autoSendList) {
         await _sendUpgraidResultToGuildChannel({
-          guildRoleId: roleId,
+          guildRoleId: userGuild.roleId,
           client,
-          serverId: message.guildId!,
+          guildServerId: userGuild.serverId,
           rpgEmbed: embed,
           actionChannelId: message.channel.id,
+          author,
         });
       }
     }
@@ -66,21 +79,21 @@ export const rpgGuildRaid = async ({author, message, isSlashCommand, client}: IR
 
 interface IRpgGuildRaidSuccess {
   author: User;
-  server: Guild;
   guildRoleId: string;
+  guildServerId: string;
   message: Message;
 }
 
 export const rpgGuildRaidSuccess = async ({
   guildRoleId,
-  server,
+  guildServerId,
   author,
   message,
 }: IRpgGuildRaidSuccess): Promise<void> => {
   await guildService.registerReminder({
     readyIn: ms('2h'),
     roleId: guildRoleId,
-    serverId: server.id,
+    serverId: guildServerId,
   });
   await upgraidService.addRecord({
     guildRoleId,
@@ -89,7 +102,7 @@ export const rpgGuildRaidSuccess = async ({
     actionMessageId: message.id,
     actionServerId: message.guildId!,
     actionChannelId: message.channel.id,
-    serverId: server.id,
+    serverId: guildServerId,
     upgraidAt: new Date(),
   });
 };
@@ -98,5 +111,5 @@ const isGuildRaidSuccess = ({author, embed}: IMessageEmbedChecker) =>
   [author.username, 'RAIDED'].every((msg) => embed.description?.includes(msg));
 
 const isUserDontHaveGuild = ({author, message}: IMessageContentChecker) =>
-  ["you don't have a guild", 'not in a guild'].some((msg) => message.content.includes(msg)) &&
+  ['you don\'t have a guild', 'not in a guild'].some((msg) => message.content.includes(msg)) &&
   message.mentions.users.has(author.id);

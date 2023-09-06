@@ -1,12 +1,11 @@
-import {Client, Embed, Guild, Message, User} from 'discord.js';
+import {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {IMessageEmbedChecker} from '../../../../types/utils';
 import embedReaders from '../../embed-readers';
-import commandHelper from '../../../epic-helper/command-helper';
-import {djsMessageHelper} from '../../../discordjs/message';
 import {guildService} from '../../../../services/database/guild.service';
 import {toggleGuildChecker} from '../../../epic-helper/toggle-checker/guild';
-import {redisGuildMembers} from '../../../../services/redis/guild-members.redis';
+import {verifyGuild} from './_shared';
+import {djsMessageHelper} from '../../../discordjs/message';
 
 export interface IRpgGuild {
   client: Client;
@@ -26,33 +25,29 @@ export const rpgGuild = ({author, client, message, isSlashCommand}: IRpgGuild) =
   event.on('embed', async (embed) => {
     if (isGuildSuccess({author, embed})) {
       event.stop();
-      const roles = await commandHelper.guild.getUserGuildRoles({
+      const result = await verifyGuild({
         client,
-        userId: author.id,
         server: message.guild,
+        userId: author.id,
       });
-      if (!roles || !roles.size) return;
-      if (roles.size > 1) {
-        return djsMessageHelper.send({
-          channelId: message.channel.id,
+      if (result.errorEmbed) {
+        await djsMessageHelper.send({
           client,
+          channelId: message.channel.id,
           options: {
-            embeds: [commandHelper.guild.renderMultipleGuildEmbed(roles)],
+            embeds: [result.errorEmbed],
           },
         });
+        return;
       }
-      const guildRole = roles.first()!;
-      rpgGuildSuccess({
+      const userGuild = result.guild;
+      if (!userGuild) return;
+      await rpgGuildSuccess({
         author,
         embed,
-        server: message.guild,
-        guildRoleId: guildRole.id,
+        guildServerId: userGuild.serverId,
+        guildRoleId: userGuild.roleId,
         isSlashCommand,
-      });
-      registerUserToGuild({
-        userId: author.id,
-        serverId: message.guild.id,
-        roleId: guildRole.id,
       });
     }
   });
@@ -62,30 +57,35 @@ export const rpgGuild = ({author, client, message, isSlashCommand}: IRpgGuild) =
 interface IRpgGuildSuccess {
   author: User;
   embed: Embed;
-  server: Guild;
+  guildServerId: string;
   guildRoleId: string;
   isSlashCommand?: boolean;
 }
 
-const rpgGuildSuccess = async ({embed, server, guildRoleId, isSlashCommand}: IRpgGuildSuccess) => {
+const rpgGuildSuccess = async ({
+  embed,
+  guildServerId,
+  guildRoleId,
+  isSlashCommand,
+}: IRpgGuildSuccess) => {
   const guildInfo = embedReaders.guild({
     embed,
   });
   const guildToggle = await toggleGuildChecker({
-    serverId: server.id,
+    serverId: guildServerId,
     roleId: guildRoleId,
   });
 
   if (isSlashCommand) {
     // return if guild name is not matched in slash command
     const currentGuild = await guildService.findGuild({
-      serverId: server.id,
+      serverId: guildServerId,
       roleId: guildRoleId,
     });
     if (currentGuild && currentGuild.info.name !== guildInfo.name) return;
   }
   const guild = await guildService.findGuild({
-    serverId: server.id,
+    serverId: guildServerId,
     roleId: guildRoleId,
   });
   if (!guild) return;
@@ -93,39 +93,17 @@ const rpgGuildSuccess = async ({embed, server, guildRoleId, isSlashCommand}: IRp
     await guildService.registerReminder({
       readyIn: guildInfo.readyIn,
       roleId: guildRoleId,
-      serverId: server.id,
+      serverId: guildServerId,
     });
     if (!guild) return;
   }
   await guildService.updateGuildInfo({
-    serverId: server.id,
+    serverId: guildServerId,
+    roleId: guildRoleId,
     name: guildInfo.name === guild.info.name ? undefined : guildInfo.name,
     stealth: guildInfo.stealth === guild.info.stealth ? undefined : guildInfo.stealth,
     level: guildInfo.level === guild.info.level ? undefined : guildInfo.level,
     energy: guildInfo.energy === guild.info.energy ? undefined : guildInfo.energy,
-  });
-};
-
-interface IRegisterUserToGuild {
-  userId: string;
-  serverId: string;
-  roleId: string;
-}
-
-const registerUserToGuild = async ({userId, serverId, roleId}: IRegisterUserToGuild) => {
-  const cached = await redisGuildMembers.getGuildInfo({
-    userId,
-  });
-  if (cached?.guildRoleId === roleId && cached?.serverId === serverId) return;
-  await guildService.registerUserToGuild({
-    userId,
-    serverId,
-    roleId,
-  });
-  await redisGuildMembers.setGuildMember({
-    guildRoleId: roleId,
-    serverId,
-    userId,
   });
 };
 

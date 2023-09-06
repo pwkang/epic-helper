@@ -12,6 +12,8 @@ import donorService from '../../../../services/database/donor.service';
 import freeDonorService from '../../../../services/database/free-donor.service';
 import {serverService} from '../../../../services/database/server.service';
 import {_getDonorInfoEmbed} from './embeds/donor-info.embed';
+import {guildService} from '../../../../services/database/guild.service';
+import {redisServerInfo} from '../../../../services/redis/server-info.redis';
 
 interface IAccountSettings {
   author: User;
@@ -33,9 +35,19 @@ export const _accountSettings = async ({author}: IAccountSettings) => {
   const boostedServers = await serverService.getUserBoostedServers({
     userId: author.id,
   });
+  const guild = await guildService.findUserGuild({
+    userId: author.id,
+  });
+  const guildServer = guild
+    ? await redisServerInfo.getServerInfo({
+      serverId: guild?.serverId,
+    })
+    : null;
   const userSettingsEmbed = _getUserSettingsEmbed({
     author,
     userProfile,
+    guildName: guild?.info.name,
+    guildServerName: guildServer?.name,
   });
   const userReminderChannelEmbed = _getUserReminderChannelEmbed({
     userProfile,

@@ -5,9 +5,9 @@ import {redisServerInfo} from '../../../../../services/redis/server-info.redis';
 import {generateDuelLogEmbed} from '../embeds/duel-log';
 import {sendDuelLog} from '../send-duel-log';
 import {Client, EmbedBuilder, User} from 'discord.js';
-import {redisGuildMembers} from '../../../../../services/redis/guild-members.redis';
 import {toggleGuildChecker} from '../../../toggle-checker/guild';
 import {BOT_COLOR} from '@epic-helper/constants';
+import {guildService} from '../../../../../services/database/guild.service';
 
 interface IRegisterUserDuel {
   author: User;
@@ -30,12 +30,12 @@ export const registerUserDuelLog = async ({
   client,
   commandChannelId,
 }: IRegisterUserDuel) => {
-  const guildInfo = await redisGuildMembers.getGuildInfo({
+  const guildInfo = await guildService.findUserGuild({
     userId: author.id,
   });
   if (!guildInfo) return embeds.notInGuild();
   const toggleGuild = await toggleGuildChecker({
-    roleId: guildInfo.guildRoleId,
+    roleId: guildInfo.roleId,
     serverId: guildInfo.serverId,
   });
   if (toggleGuild?.duel.refRequired && !source?.messageId) {
@@ -53,7 +53,7 @@ export const registerUserDuelLog = async ({
       isWinner,
       reportGuild: {
         serverId: guildInfo.serverId,
-        guildRoleId: guildInfo.guildRoleId,
+        guildRoleId: guildInfo.roleId,
       },
     },
   });
@@ -62,7 +62,7 @@ export const registerUserDuelLog = async ({
     userId: author.id,
     serverId: guildInfo.serverId,
     expGained: result.expGained,
-    roleId: guildInfo.guildRoleId,
+    roleId: guildInfo.roleId,
     isUpdate: result.isExists,
   });
 
@@ -88,7 +88,7 @@ export const registerUserDuelLog = async ({
   await sendDuelLog({
     client,
     embed,
-    roleId: guildInfo.guildRoleId,
+    roleId: guildInfo.roleId,
     serverId: guildInfo.serverId,
     ignoreChannel: commandChannelId,
   });
