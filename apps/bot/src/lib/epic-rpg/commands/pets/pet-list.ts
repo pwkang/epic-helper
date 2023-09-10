@@ -206,7 +206,7 @@ interface IRenderResultEmbed {
 }
 
 const renderResultEmbed = ({updatedPets, author}: IRenderResultEmbed) => {
-  const embed = new EmbedBuilder().setColor(BOT_COLOR.devEmbed).setAuthor({
+  const embed = new EmbedBuilder().setColor(BOT_COLOR.embed).setAuthor({
     name: `${author.username} — pets`,
     iconURL: author.avatarURL() ?? undefined,
   });

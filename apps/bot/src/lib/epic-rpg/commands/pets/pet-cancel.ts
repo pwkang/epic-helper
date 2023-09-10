@@ -1,70 +1,61 @@
-import {BaseMessageOptions, Client, Message, User} from 'discord.js';
+import {Client, Message, User} from 'discord.js';
 import {convertNumToPetId, convertPetIdToNum} from '@epic-helper/utils';
 import {IUserPet} from '@epic-helper/models';
 import {RPG_PET_STATUS} from '@epic-helper/constants';
 import {userPetServices} from '../../../../services/database/user-pet.service';
-import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {djsMessageHelper} from '../../../discordjs/message';
-
-interface IRpgPetCancel {
-  client: Client;
-  author: User;
-  message: Message;
-  isSlashCommand: boolean;
-  selectedPets: string[];
-}
-
-export const rpgPetCancel = ({
-  client,
-  message,
-  author,
-  isSlashCommand,
-  selectedPets,
-}: IRpgPetCancel) => {
-  if (!message.inGuild()) return;
-  const event = createRpgCommandListener({
-    channelId: message.channel.id,
-    client,
-    author,
-  });
-  if (!event) return;
-  event.on('content', async (_, collected) => {
-    if (rpgPetCancelChecker.isPetSuccessfullyCancelled({message: collected, author})) {
-      const cancelledPetAmount = rpgPetCancelChecker.extractCancelledPetAmount({
-        message: collected,
-      });
-      const options = await rpgPetAdvCancelSuccess({
-        message: collected,
-        author,
-        selectedPets,
-        amountOfPetCancelled: cancelledPetAmount,
-      });
-      await djsMessageHelper.send({
-        client,
-        channelId: message.channel.id,
-        options,
-      });
-      event.stop();
-    }
-    if (rpgPetCancelChecker.isFailToCancelPet({message: collected, author})) {
-      event.stop();
-    }
-  });
-  if (isSlashCommand) event.triggerCollect(message);
-};
+import {collectSelectedPets} from './_shared';
 
 interface IRpgPetAdvCancelSuccess {
   author: User;
-  selectedPets: string[];
-  amountOfPetCancelled: number;
+  selectedPets?: string[];
   message: Message;
+  client: Client;
 }
 
 export const rpgPetAdvCancelSuccess = async ({
   author,
   selectedPets,
+  message,
+  client,
+}: IRpgPetAdvCancelSuccess) => {
+  const amountOfPetCancelled = extractCancelledPetAmount({
+    message,
+  });
+
+  if (!selectedPets) {
+    selectedPets = await collectSelectedPets({
+      author,
+      client,
+      message,
+    });
+  }
+  if (!selectedPets) return;
+
+  const messageOptions = await unregisterPetFromAdventure({
+    author,
+    amountOfPetCancelled,
+    selectedPets,
+  });
+
+  await djsMessageHelper.send({
+    client,
+    channelId: message.channel.id,
+    options: messageOptions,
+  });
+};
+
+interface IUnregisterPetFromAdventure {
+  author: User;
+  selectedPets: string[];
+  amountOfPetCancelled: number;
+}
+
+const unregisterPetFromAdventure = async ({
+  selectedPets,
   amountOfPetCancelled,
-}: IRpgPetAdvCancelSuccess): Promise<BaseMessageOptions> => {
+  author,
+}: IUnregisterPetFromAdventure) => {
   const petsToCancel = await fetchPetsToCancel({
     userId: author.id,
     selectedPets,

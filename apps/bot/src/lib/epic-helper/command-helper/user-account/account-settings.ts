@@ -40,8 +40,8 @@ export const _accountSettings = async ({author}: IAccountSettings) => {
   });
   const guildServer = guild
     ? await redisServerInfo.getServerInfo({
-      serverId: guild?.serverId,
-    })
+        serverId: guild?.serverId,
+      })
     : null;
   const userSettingsEmbed = _getUserSettingsEmbed({
     author,
