@@ -1,18 +1,13 @@
-import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {
-  rpgPetAdventure,
-  rpgPetAdventureChecker,
-} from '../../../../lib/epic-rpg/commands/pets/pet-adventure';
-import {djsMessageHelper} from '../../../../lib/discordjs/message';
 import {
   PREFIX_COMMAND_TYPE,
   USER_ACC_OFF_ACTIONS,
   USER_NOT_REGISTERED_ACTIONS,
 } from '@epic-helper/constants';
+import {rpgPetAdventure} from '../../../../lib/epic-rpg/commands/pets/pet-adventure';
 
 const args1 = ['pets', 'pet'];
 const args2 = ['adventure', 'adv'];
-const args3 = ['learn', 'drill', 'find'];
+const args3 = ['learn', 'drill', 'find', 'cancel'];
 
 function generateAllPossibleCommands(args1: string[], args2: string[], args3: string[]) {
   return args1.flatMap((arg1) =>
@@ -29,44 +24,12 @@ export default <PrefixCommand>{
     userAccOff: USER_ACC_OFF_ACTIONS.abort,
   },
   execute: (client, message, args) => {
-    const event = createRpgCommandListener({
-      channelId: message.channel.id,
-      client,
+    rpgPetAdventure({
       author: message.author,
-    });
-    if (!event) return;
-    event.on('content', async (content, collected) => {
-      if (
-        rpgPetAdventureChecker.isFailToSendPetsToAdventure({
-          message: collected,
-          author: message.author,
-        })
-      ) {
-        event.stop();
-      }
-      if (
-        rpgPetAdventureChecker.isSuccessfullySentPetsToAdventure({
-          message: collected,
-          author: message.author,
-        })
-      ) {
-        event.stop();
-        const amountOfPetSent = rpgPetAdventureChecker.amountOfPetsSentToAdventure({
-          message: collected,
-          author: message.author,
-        });
-        const options = await rpgPetAdventure({
-          author: message.author,
-          selectedPets: args.slice(3),
-          amountOfPetSent,
-          message: collected,
-        });
-        djsMessageHelper.send({
-          client,
-          channelId: message.channel.id,
-          options,
-        });
-      }
+      client,
+      selectedPets: args.slice(3),
+      message,
+      isSlashCommand: false,
     });
   },
 };
