@@ -118,6 +118,10 @@ export const SLASH_COMMAND = {
       name: 'cd',
       description: 'List of pets on adventure',
     },
+    summary: {
+      name: 'summary',
+      description: 'Pet summary',
+    },
   },
   server: {
     name: 'server',

@@ -77,7 +77,7 @@ const getUserPets = async ({
     options.skip = page * limit;
     options.limit = limit;
   }
-  return dbUserPet.find(query, null, options);
+  return dbUserPet.find(query, null, options).lean();
 };
 
 interface ICalcTotalPets {

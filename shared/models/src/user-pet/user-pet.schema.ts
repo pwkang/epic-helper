@@ -30,6 +30,7 @@ export const userPetSchema = new Schema<IUserPet>({
     ascended: Number,
     fighter: Number,
     perfect: Number,
+    master: Number,
   },
   tier: {
     type: Number,
