@@ -1,6 +1,6 @@
 import {Embed} from 'discord.js';
 import {typedObjectEntries} from '@epic-helper/utils';
-import {RPG_WILD_PET_TYPE} from '@epic-helper/constants';
+import {RPG_PET_TYPE_WILD} from '@epic-helper/constants';
 
 interface IWildPetReader {
   embed: Embed;
@@ -15,7 +15,7 @@ const wildPetReader = ({embed}: IWildPetReader) => {
     happiness: Number(happiness),
     hunger: Number(hunger),
     petName:
-      typedObjectEntries(RPG_WILD_PET_TYPE).find(
+      typedObjectEntries(RPG_PET_TYPE_WILD).find(
         ([, value]) => value.toLowerCase() === petName.toLowerCase().replaceAll(' ', '')
       )?.[0] ?? null,
     owner: owner.trim() === '' ? null : owner.trim(),

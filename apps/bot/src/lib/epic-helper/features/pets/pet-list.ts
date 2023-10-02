@@ -4,9 +4,13 @@ import {IUserPet} from '@epic-helper/models';
 import {
   BOT_COLOR,
   BOT_EMOJI,
-  RPG_PET_SKILL,
+  RPG_PET_LABEL,
+  RPG_PET_SKILL_ASCEND,
+  RPG_PET_SKILL_EVENT,
+  RPG_PET_SKILL_LABEL,
+  RPG_PET_SKILL_SPECIAL,
   RPG_PET_SKILL_TIER_REVERSE,
-  RPG_PET_TYPE,
+  RPG_PET_TYPE_EVENT,
   TSkillTierNumber,
 } from '@epic-helper/constants';
 import {convertNumberToRoman} from '../../../../utils/roman-conversion';
@@ -51,14 +55,12 @@ const generateEmbed = async ({pets, author}: IGeneratePetListEmbed) => {
 export const generateEmbedPetFields = (pets: IUserPet[]) => {
   const fields: EmbedField[] = [];
   for (const pet of pets) {
-    const petNameKey = typedObjectEntries(RPG_PET_TYPE).find(
-      ([, value]) => value === pet.name
-    )?.[0];
-    const petEmoji = petNameKey ? BOT_EMOJI.pet[petNameKey] : '';
+    const petName = RPG_PET_LABEL[pet.name];
+    const petEmoji = pet.name ? BOT_EMOJI.pet[pet.name] : '';
     fields.push({
       name:
         `\`ID: ${convertNumToPetId(pet.petId)}\`\n` +
-        `${petEmoji} ${pet.name} — ${convertNumberToRoman(pet.tier)}`,
+        `${petEmoji} ${petName} — ${convertNumberToRoman(pet.tier)}`,
       value: generatePetSkillsRows(pet),
       inline: true,
     });
@@ -66,7 +68,9 @@ export const generateEmbedPetFields = (pets: IUserPet[]) => {
   return fields;
 };
 
-const PET_SKILLS_ORDER: Array<keyof typeof RPG_PET_SKILL> = [
+const PET_SKILLS_ORDER: Array<
+  keyof typeof RPG_PET_SKILL_ASCEND | keyof typeof RPG_PET_SKILL_SPECIAL
+> = [
   'fast',
   'happy',
   'clever',
@@ -76,31 +80,31 @@ const PET_SKILLS_ORDER: Array<keyof typeof RPG_PET_SKILL> = [
   'epic',
   'ascended',
   'perfect',
+  'fighter',
+  'master',
 ];
 
 const generatePetSkillsRows = (pet: IUserPet) => {
   const str = [];
   for (const skill of PET_SKILLS_ORDER) {
-    if (pet.skills[skill]) {
-      const skillEmoji = BOT_EMOJI.petSkill[skill];
-      const skillName = RPG_PET_SKILL[skill];
-      const skillTier = pet.skills[skill] as TSkillTierNumber;
-      const skillTierName = RPG_PET_SKILL_TIER_REVERSE[skillTier].toUpperCase();
-      str.push(`${skillEmoji} **${skillName}** [${skillTierName}]`);
-    }
+    if (!pet.skills[skill]) continue;
+    const skillEmoji = BOT_EMOJI.petSkill[skill];
+    const skillName = RPG_PET_SKILL_LABEL[skill];
+    const skillTier = pet.skills[skill] as TSkillTierNumber;
+    const skillTierName = RPG_PET_SKILL_TIER_REVERSE[skillTier].toUpperCase();
+    str.push(`${skillEmoji} **${skillName}** [${skillTierName}]`);
   }
 
-  if (pet.tier >= 10) {
-    const skillTier = (pet.tier - 9) as TSkillTierNumber;
-    const skillTierName = RPG_PET_SKILL_TIER_REVERSE[skillTier].toUpperCase();
-    str.push(`${BOT_EMOJI.petSkill.fighter} **${RPG_PET_SKILL.fighter}** [${skillTierName}]`);
-  }
+  const eventPet = typedObjectEntries(RPG_PET_TYPE_EVENT).find(
+    ([, value]) => value === pet.name
+  )?.[0];
+  if (eventPet) {
+    const skillType = RPG_PET_SKILL_EVENT[eventPet];
+    const skillName = RPG_PET_SKILL_LABEL[skillType];
+    const skillEmoji = BOT_EMOJI.petSkill[skillType];
 
-  if (pet.tier >= 15) {
-    const skillTier = (pet.tier - 14) as TSkillTierNumber;
-    const skillTierName = RPG_PET_SKILL_TIER_REVERSE[skillTier].toUpperCase();
-    str.push(`${BOT_EMOJI.petSkill.master} **${RPG_PET_SKILL.master}** [${skillTierName}]`);
+    str.push(`${skillEmoji} **${skillName}**`);
   }
-  if (!str.length) str.push(`${BOT_EMOJI.petSkill.normie} ${RPG_PET_SKILL.normie}`);
+  if (!str.length) str.push(`${BOT_EMOJI.petSkill.normie} ${RPG_PET_SKILL_LABEL.normie}`);
   return str.join('\n');
 };

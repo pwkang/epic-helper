@@ -1,13 +1,14 @@
 import {Embed, User} from 'discord.js';
 import {convertRomanToNumber} from '../../../utils/roman-conversion';
 import ms from 'ms';
-import {convertPetIdToNum} from '@epic-helper/utils';
+import {convertPetIdToNum, typedObjectEntries} from '@epic-helper/utils';
 import {
-  RPG_PET_SKILL,
+  RPG_PET_ADV_STATUS,
+  RPG_PET_LABEL,
+  RPG_PET_SKILL_ASCEND,
+  RPG_PET_SKILL_LABEL,
+  RPG_PET_SKILL_SPECIAL,
   RPG_PET_SKILL_TIER,
-  RPG_PET_STATUS,
-  RPG_PET_TYPE,
-  TSkillTierNumber,
   TSkillTierStr,
 } from '@epic-helper/constants';
 import {IUserPet} from '@epic-helper/models';
@@ -15,17 +16,6 @@ import {IUserPet} from '@epic-helper/models';
 export interface IReadPets {
   embed: Embed;
   author: User;
-}
-
-type TPetStatus = ValuesOf<typeof RPG_PET_STATUS>;
-
-interface IPetInfo {
-  name: ValuesOf<typeof RPG_PET_TYPE> | 'unknown';
-  tier: number;
-  id: number;
-  status: TPetStatus;
-  readyAt?: Date;
-  skill: Record<keyof typeof RPG_PET_SKILL, TSkillTierNumber>;
 }
 
 const petsReader = ({embed, author}: IReadPets) => {
@@ -46,7 +36,7 @@ const petsReader = ({embed, author}: IReadPets) => {
       tier: petTier,
       skills: petSkills,
       readyAt: petReadyAt,
-      status: petStatus ?? RPG_PET_STATUS.idle,
+      status: petStatus ?? RPG_PET_ADV_STATUS.idle,
     });
   }
   return pets;
@@ -54,33 +44,38 @@ const petsReader = ({embed, author}: IReadPets) => {
 
 const getPetStatus = (fieldValue: string) => {
   if (fieldValue.includes('idle')) {
-    return RPG_PET_STATUS.idle;
+    return RPG_PET_ADV_STATUS.idle;
   } else if (fieldValue.includes('back from adventure')) {
-    return RPG_PET_STATUS.back;
+    return RPG_PET_ADV_STATUS.back;
   } else if (['learning', 'drilling', 'finding'].some((type) => fieldValue.includes(type))) {
-    return RPG_PET_STATUS.adventure;
+    return RPG_PET_ADV_STATUS.adventure;
   }
-  return RPG_PET_STATUS.idle;
+  return RPG_PET_ADV_STATUS.idle;
 };
 
 const getPetId = (fieldName: string) => {
   return convertPetIdToNum(fieldName.split('\n')[0].split(' ')[1].replaceAll('`', ''));
 };
 const getPetName = (fieldName: string) => {
-  return Object.values(RPG_PET_TYPE).find((pet) => fieldName.includes(pet));
+  return typedObjectEntries(RPG_PET_LABEL).find(([, name]) => fieldName.includes(name))?.[0];
 };
 
 const getPetSkills = (fieldValue: string) => {
-  const skill: Partial<IPetInfo['skill']> = {};
+  const skill: IUserPet['skills'] = {};
   for (const line of fieldValue.split('\n')) {
-    const skillName = Object.entries(RPG_PET_SKILL).find(([, skill]) =>
+    const skillName = typedObjectEntries(RPG_PET_SKILL_LABEL).find(([, skill]) =>
       line.includes(`${skill}**`)
-    )?.[0] as keyof typeof RPG_PET_SKILL;
+    )?.[0];
     const skillTier = line.match(/\[(SS\+|SS|S|A|B|C|D|E|F)]/)?.[1];
     if (!skillName) continue;
     if (!skillTier) continue;
 
-    skill[skillName] = RPG_PET_SKILL_TIER[skillTier.toLowerCase() as TSkillTierStr];
+    if (skillName in RPG_PET_SKILL_ASCEND || skillName in RPG_PET_SKILL_SPECIAL) {
+      const filteredSkillName = skillName as
+        | keyof typeof RPG_PET_SKILL_ASCEND
+        | keyof typeof RPG_PET_SKILL_SPECIAL;
+      skill[filteredSkillName] = RPG_PET_SKILL_TIER[skillTier.toLowerCase() as TSkillTierStr];
+    }
   }
   return skill;
 };
@@ -91,7 +86,7 @@ const getPetTier = (fieldName: string) => {
 };
 
 const getPetReadyAt = (fieldValue: string) => {
-  if (getPetStatus(fieldValue) !== RPG_PET_STATUS.adventure) return null;
+  if (getPetStatus(fieldValue) !== RPG_PET_ADV_STATUS.adventure) return null;
   const timeArr = fieldValue
     .split('\n')
     ?.find((row) => row.includes('Status'))

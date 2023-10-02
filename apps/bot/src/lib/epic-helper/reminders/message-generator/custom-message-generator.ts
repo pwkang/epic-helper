@@ -46,14 +46,14 @@ export const generateUserReminderMessage = ({
   const hasCountdown = toggleChecker?.countdown;
   const nextReminderTime = nextReminder?.readyAt
     ? timestampHelper.relative({
-        time: nextReminder?.readyAt?.getTime(),
-      })
+      time: nextReminder?.readyAt?.getTime(),
+    })
     : '';
   const nextReminderType = nextReminder
     ? _parseCommandString({
-        toggleChecker,
-        ...nextReminder,
-      })
+      toggleChecker,
+      ...nextReminder,
+    })
     : '';
   const nextReminderString =
     hasCountdown && nextReminder ? `\`${nextReminderType}\` ready **${nextReminderTime}**` : '';

@@ -98,6 +98,9 @@ export const BOT_EMOJI = {
     snowman: '<:snowman:1108920973077524561>',
     epicPanda: '<:epicpanda:1108920962646286386>',
     voiDog: '<:voidog:1108920976625909850>',
+    worker: '<:worker:1154687237829705779>',
+    bunny: '<:bunny:1154691767204061306>',
+    fakeGoldenBunny: '<:fakeGoldenBunny:1154691771108962344>',
   },
   petSkill: {
     timeTraveler: '<:timetraveller:1108797667737354393>',
@@ -106,7 +109,7 @@ export const BOT_EMOJI = {
     farmer: '<:farmer:1108800490340352182>',
     fisherfish: '<:fisherfish:1108800497248374864>',
     gifter: '<:gifter:1108800487408541836>',
-    Antarctician: '<:Antarctician:1108800471814127626>',
+    antarctician: '<:Antarctician:1108800471814127626>',
     monsterHunter: '<:monsterhunter:1108800492152303707>',
     faster: '<:faster:1108800495524524073>',
     digger: '<:digger:1108800521403383870>',
@@ -121,5 +124,6 @@ export const BOT_EMOJI = {
     ascended: '<:ascended:1108800517980823642>',
     perfect: '<:perfect:1139479450308849756>',
     master: '<:master:1110960150841397289>',
+    leader: '<:Antarctician:1108800471814127626>',
   },
 } as const;

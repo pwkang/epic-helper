@@ -1,6 +1,7 @@
 import {
-  RPG_PET_SKILL,
-  RPG_PET_STATUS,
+  RPG_PET_ADV_STATUS,
+  RPG_PET_SKILL_ASCEND,
+  RPG_PET_SKILL_SPECIAL,
   RPG_PET_TYPE,
   TSkillTierNumber,
 } from '@epic-helper/constants';
@@ -12,6 +13,8 @@ export interface IUserPet {
   name: ValuesOf<typeof RPG_PET_TYPE>;
   tier: number;
   readyAt: Date | null;
-  status: ValuesOf<typeof RPG_PET_STATUS>;
-  skills: Partial<Record<keyof typeof RPG_PET_SKILL, TSkillTierNumber>>;
+  status: ValuesOf<typeof RPG_PET_ADV_STATUS>;
+  skills: Partial<
+    Record<keyof typeof RPG_PET_SKILL_ASCEND | keyof typeof RPG_PET_SKILL_SPECIAL, TSkillTierNumber>
+  >;
 }

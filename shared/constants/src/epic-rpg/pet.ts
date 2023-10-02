@@ -1,4 +1,43 @@
+export const RPG_PET_TYPE_BASIC = {
+  cat: 'cat',
+  dog: 'dog',
+  dragon: 'dragon',
+} as const;
+
+export const RPG_PET_TYPE_EVENT = {
+  pumpkinBat: 'pumpkinBat',
+  hamster: 'hamster',
+  pinkFish: 'pinkFish',
+  snowball: 'snowball',
+  pony: 'pony',
+  goldenBunny: 'goldenBunny',
+  penguin: 'penguin',
+  snowman: 'snowman',
+  epicPanda: 'epicPanda',
+  voiDog: 'voiDog',
+  worker: 'worker',
+} as const;
+
+export const RPG_PET_TYPE_INVENTORY = {
+  bunny: 'bunny',
+  fakeGoldenBunny: 'fakeGoldenBunny',
+} as const;
+
 export const RPG_PET_TYPE = {
+  ...RPG_PET_TYPE_BASIC,
+  ...RPG_PET_TYPE_EVENT,
+  ...RPG_PET_TYPE_INVENTORY,
+} as const;
+
+export const RPG_PET_TYPE_WILD = {
+  cat: RPG_PET_TYPE.cat,
+  dog: RPG_PET_TYPE.dog,
+  dragon: RPG_PET_TYPE.dragon,
+  bunny: RPG_PET_TYPE.bunny,
+  fakeGoldenBunny: RPG_PET_TYPE.fakeGoldenBunny,
+} as const;
+
+export const RPG_PET_LABEL = {
   cat: 'Cat',
   dog: 'Dog',
   dragon: 'Dragon',
@@ -12,17 +51,50 @@ export const RPG_PET_TYPE = {
   snowman: 'Snowman',
   epicPanda: 'Epic panda',
   voiDog: 'VoiDog',
+  worker: 'Worker',
+  bunny: 'Bunny',
+  fakeGoldenBunny: 'Fake golden bunny',
+};
+
+export const RPG_PET_SKILL_ASCEND = {
+  normie: 'normie',
+  fast: 'fast',
+  happy: 'happy',
+  clever: 'clever',
+  digger: 'digger',
+  lucky: 'lucky',
+  timeTraveler: 'timeTraveler',
+  epic: 'epic',
 } as const;
 
-export const RPG_WILD_PET_TYPE = {
-  cat: 'cat',
-  dog: 'dog',
-  dragon: 'dragon',
-  bunny: 'bunny',
-  fakeGoldenBunny: 'Fake golden bunny',
+export const RPG_PET_SKILL_SPECIAL = {
+  ascended: 'ascended',
+  perfect: 'perfect',
+  fighter: 'fighter',
+  master: 'master',
+};
+
+export const RPG_PET_SKILL_EVENT = {
+  pinkFish: 'fisherfish',
+  pumpkinBat: 'monsterHunter',
+  hamster: 'booster',
+  snowball: 'gifter',
+  snowman: 'gifter',
+  goldenBunny: 'faster',
+  pony: 'farmer',
+  epicPanda: 'competitive',
+  penguin: 'antarctician',
+  worker: 'leader',
+  voiDog: 'resetter',
 } as const;
 
 export const RPG_PET_SKILL = {
+  ...RPG_PET_SKILL_ASCEND,
+  ...RPG_PET_SKILL_SPECIAL,
+  ...RPG_PET_SKILL_EVENT,
+} as const;
+
+export const RPG_PET_SKILL_LABEL = {
   normie: 'Normie',
   fast: 'Fast',
   happy: 'Happy',
@@ -32,24 +104,22 @@ export const RPG_PET_SKILL = {
   timeTraveler: 'Time traveler',
   epic: 'EPIC',
   ascended: 'ASCENDED',
-  fighter: 'FIGHTER',
   perfect: 'PERFECT',
+  fighter: 'FIGHTER',
   master: 'MASTER',
-} as const;
+  fisherfish: 'Fisherfish',
+  monsterHunter: 'Monster Hunter',
+  booster: 'BOOSTER',
+  gifter: 'Gifter',
+  faster: 'Faster',
+  farmer: 'Farmer',
+  competitive: 'Competitive',
+  antarctician: 'Antarctician',
+  leader: 'Leader',
+  resetter: 'Resetter',
+};
 
-export const RPG_SPECIAL_PET_SKILL = {
-  pinkFish: 'Fisherfish',
-  pumpkinBat: 'Monster Hunter',
-  hamster: 'BOOSTER',
-  snowball: 'Gifter',
-  snowman: 'Gifter',
-  goldenBunny: 'Faster',
-  pony: 'Farmer',
-  epicPanda: 'Competitive',
-  penguin: 'Antarctician',
-} as const;
-
-export const RPG_PET_STATUS = {
+export const RPG_PET_ADV_STATUS = {
   idle: 'idle',
   adventure: 'adventure',
   back: 'back',

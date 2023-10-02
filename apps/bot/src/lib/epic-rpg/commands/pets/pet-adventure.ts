@@ -1,19 +1,104 @@
+import {BaseMessageOptions, Client, Message, User} from 'discord.js';
+import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {IMessageContentChecker} from '../../../../types/utils';
-import {BaseMessageOptions, Message, User} from 'discord.js';
 import ms from 'ms';
-import convertMsToHumanReadableString from '../../../../utils/convert-ms-to-human-readable-string';
+import {djsMessageHelper} from '../../../discordjs/message';
 import {convertNumToPetId, convertPetIdToNum} from '@epic-helper/utils';
-import {RPG_PET_STATUS, RPG_PET_TYPE} from '@epic-helper/constants';
-import {IUserPet} from '@epic-helper/models';
 import {userPetServices} from '../../../../services/database/user-pet.service';
-
-/*
- *  ===================================================
- *       Main function to send pet to adventure
- *  ===================================================
- */
+import {RPG_PET_ADV_STATUS, RPG_PET_TYPE} from '@epic-helper/constants';
+import {IUserPet} from '@epic-helper/models';
+import convertMsToHumanReadableString from '../../../../utils/convert-ms-to-human-readable-string';
+import {collectSelectedPets} from './_shared';
+import {rpgPetAdvCancelSuccess} from './pet-cancel';
 
 interface IRpgPetAdventure {
+  client: Client;
+  author: User;
+  message: Message<true>;
+  isSlashCommand: boolean;
+  selectedPets?: string[];
+}
+
+export const rpgPetAdventure = async ({
+  message,
+  author,
+  client,
+  isSlashCommand,
+  selectedPets,
+}: IRpgPetAdventure) => {
+  const event = createRpgCommandListener({
+    author,
+    client,
+    channelId: message.channel.id,
+  });
+  if (!event) return;
+  event.on('content', async (content, collected) => {
+    if (
+      isFailToSendPetsToAdventure({message: collected, author}) ||
+      isFailToCancelPet({message: collected, author})
+    )
+      event.stop();
+    if (isSuccessfullySentPetsToAdventure({message: collected, author})) {
+      event.stop();
+      await rpgPetAdventureSuccess({
+        message: collected,
+        selectedPets,
+        client,
+        author,
+      });
+    }
+    if (isPetSuccessfullyCancelled({message: collected, author})) {
+      event.stop();
+      await rpgPetAdvCancelSuccess({
+        client,
+        selectedPets,
+        message: collected,
+        author,
+      });
+    }
+  });
+  if (isSlashCommand) event.triggerCollect(message);
+};
+
+interface IRpgPetAdventureSuccess {
+  message: Message<true>;
+  selectedPets?: string[];
+  author: User;
+  client: Client;
+}
+
+const rpgPetAdventureSuccess = async ({
+  message,
+  selectedPets,
+  author,
+  client,
+}: IRpgPetAdventureSuccess) => {
+  const amountOfPetSent = extractSentPets({message, author: message.author});
+
+  if (!selectedPets) {
+    selectedPets = await collectSelectedPets({
+      author,
+      client,
+      message,
+    });
+  }
+
+  if (!selectedPets) return;
+
+  const messageOptions = await registerPetsToAdventure({
+    message,
+    author,
+    selectedPets,
+    amountOfPetSent,
+  });
+  await djsMessageHelper.send({
+    client,
+    channelId: message.channel.id,
+    options: messageOptions,
+  });
+};
+
+interface IRegisterPetsToAdventure {
   author: User;
   selectedPets: string[];
   amountOfPetSent: number;
@@ -25,12 +110,12 @@ interface ISentResult {
   duration: number;
 }
 
-export const rpgPetAdventure = async ({
+export const registerPetsToAdventure = async ({
   author,
   selectedPets,
   amountOfPetSent,
   message,
-}: IRpgPetAdventure): Promise<BaseMessageOptions> => {
+}: IRegisterPetsToAdventure): Promise<BaseMessageOptions> => {
   let petsToSend = await fetchPetsToSend({
     userId: author.id,
     selectedPets: selectedPets,
@@ -122,82 +207,7 @@ const fetchPetsToSend = async ({selectedPets, userId}: IFetchPetsToSend) => {
     });
     petsToSend.push(...availableEpicPets);
   }
-  return petsToSend.filter((p) => p.status === RPG_PET_STATUS.idle);
-};
-
-/*
- *  ===================================================
- *        Check whether the message is valid
- *  ===================================================
- */
-
-const isSuccessfullySentPetsToAdventure = ({message, author}: IMessageContentChecker) =>
-  isSentSinglePetToAdventure({message, author}) ||
-  isSentMultiplePetsToAdventure({
-    message,
-    author,
-  });
-
-const isSentSinglePetToAdventure = ({message, author}: IMessageContentChecker) =>
-  message.content.includes('will be back in') ||
-  isPetComebackInstantly({
-    message,
-    author,
-  });
-
-const isSentMultiplePetsToAdventure = ({message}: IMessageContentChecker) =>
-  message.content.includes('of your pets have started an adventure!');
-
-const isPetComebackInstantly = ({message}: IMessageContentChecker) =>
-  message.content.includes('IT CAME BACK INSTANTLY!!');
-
-/*
- *  ===================================================
- *       Check if the pet commands is fail
- *  ===================================================
- */
-
-const isFailToSendPetsToAdventure = ({message, author}: IMessageContentChecker) =>
-  isNoAvailablePetToSend({message, author}) ||
-  isSendingMultipleNonEpicPets({message, author}) ||
-  isSelectedPetsInAdventure({message, author}) ||
-  isSelectingInvalidPets({message, author}) ||
-  isNoPetMeetRequirement({message, author}) ||
-  isSelectingPetsMultipleTimes({message, author});
-
-const isNoAvailablePetToSend = ({message, author}: IMessageContentChecker) =>
-  message.content.includes('you cannot send another pet to an adventure') &&
-  message.mentions.has(author.id);
-
-const isSendingMultipleNonEpicPets = ({message, author}: IMessageContentChecker) =>
-  message.content.includes('you cannot send more than one pet') && message.mentions.has(author.id);
-
-const isSelectedPetsInAdventure = ({message, author}: IMessageContentChecker) =>
-  message.content.includes('is already in an adventure!') && message.mentions.has(author.id);
-
-const isSelectingInvalidPets = ({message, author}: IMessageContentChecker) =>
-  message.content.includes('what pets are you trying to select?') &&
-  message.mentions.has(author.id);
-
-const isNoPetMeetRequirement = ({message, author}: IMessageContentChecker) =>
-  message.content.includes('no pets met the requirement') && message.mentions.has(author.id);
-
-const isSelectingPetsMultipleTimes = ({message, author}: IMessageContentChecker) =>
-  message.content.includes('has been selected more than once') && message.mentions.has(author.id);
-
-/*
- *  ================================================================
- *    Read and return total pets sent to adventure from rpg message
- *  ================================================================
- */
-
-const amountOfPetsSentToAdventure = ({message, author}: IMessageContentChecker) => {
-  if (isSentSinglePetToAdventure({message, author})) return 1;
-  if (isSentMultiplePetsToAdventure({message, author})) {
-    const amount = message.content.match(/\*\*(\d+)\*\* of your pets have started an adventure!/);
-    if (amount) return parseInt(amount[1]);
-  }
-  return 1;
+  return petsToSend.filter((p) => p.status === RPG_PET_ADV_STATUS.idle);
 };
 
 /*
@@ -208,20 +218,20 @@ const amountOfPetsSentToAdventure = ({message, author}: IMessageContentChecker) 
 
 const hasSentEpic = (pets: string[]) => pets.map((p) => p.toLowerCase()).includes('epic');
 
-interface ISendPetToAdventure {
-  userId: string;
-  pet: IUserPet;
-}
-
 /*
  *  ===================================================
  *     Send pet to adventure and update database
  * ===================================================
  */
 
+interface ISendPetToAdventure {
+  userId: string;
+  pet: IUserPet;
+}
+
 const sendPetToAdventure = async ({pet, userId}: ISendPetToAdventure) => {
   const adventureTime = calcAdventureTime({pet});
-  pet.status = RPG_PET_STATUS.adventure;
+  pet.status = RPG_PET_ADV_STATUS.adventure;
   pet.readyAt = new Date(Date.now() + adventureTime);
   await userPetServices.updateUserPet({
     pet,
@@ -242,7 +252,7 @@ interface IUpdatePetStatus {
 }
 
 const updateInstantBackPet = async ({pet, userId}: IUpdatePetStatus) => {
-  pet.status = RPG_PET_STATUS.back;
+  pet.status = RPG_PET_ADV_STATUS.back;
   pet.readyAt = new Date();
   await userPetServices.updateUserPet({
     pet,
@@ -285,11 +295,114 @@ const generateResult = (result: ISentResult[]) => {
   return results.join('\n');
 };
 
-/**
- * ===================================================
- *   Extract returned pet id from rpg message content
- * ===================================================
+/*
+ *  ===================================================
+ *       Check if the pet commands is fail
+ *  ===================================================
  */
+
+const isFailToSendPetsToAdventure = ({message, author}: IMessageContentChecker) =>
+  isNoAvailablePetToSend({message, author}) ||
+  isSendingMultipleNonEpicPets({message, author}) ||
+  isSelectedPetsInAdventure({message, author}) ||
+  isSelectingInvalidPets({message, author}) ||
+  isNoPetMeetRequirement({message, author}) ||
+  isSelectingPetsMultipleTimes({message, author});
+
+const isNoAvailablePetToSend = ({message, author}: IMessageContentChecker) =>
+  message.content.includes('you cannot send another pet to an adventure') &&
+  message.mentions.has(author.id);
+
+const isSendingMultipleNonEpicPets = ({message, author}: IMessageContentChecker) =>
+  message.content.includes('you cannot send more than one pet') && message.mentions.has(author.id);
+
+const isSelectedPetsInAdventure = ({message, author}: IMessageContentChecker) =>
+  message.content.includes('is already in an adventure!') && message.mentions.has(author.id);
+
+const isSelectingInvalidPets = ({message, author}: IMessageContentChecker) =>
+  message.content.includes('what pets are you trying to select?') &&
+  message.mentions.has(author.id);
+
+const isSelectingPetsMultipleTimes = ({message, author}: IMessageContentChecker) =>
+  message.content.includes('has been selected more than once') && message.mentions.has(author.id);
+
+/*
+ *  ===================================================
+ *        Check whether the message is valid
+ *  ===================================================
+ */
+
+const isSuccessfullySentPetsToAdventure = ({message, author}: IMessageContentChecker) =>
+  isSentSinglePetToAdventure({message, author}) ||
+  isSentMultiplePetsToAdventure({
+    message,
+    author,
+  });
+
+const isSentSinglePetToAdventure = ({message, author}: IMessageContentChecker) =>
+  message.content.includes('will be back in') ||
+  isPetComebackInstantly({
+    message,
+    author,
+  });
+
+const isSentMultiplePetsToAdventure = ({message}: IMessageContentChecker) =>
+  message.content.includes('of your pets have started an adventure!');
+
+const isPetComebackInstantly = ({message}: IMessageContentChecker) =>
+  message.content.includes('IT CAME BACK INSTANTLY!!');
+
+interface IChecker {
+  message: Message;
+  author: User;
+}
+
+const isFailToCancelPet = ({message, author}: IChecker): boolean =>
+  isPetNotOnAdventure({message, author}) ||
+  isNoPetMeetRequirement({message, author}) ||
+  isInvalidCancelPetId({message, author}) ||
+  isPetSelectedMultipleTimes({message, author}) ||
+  isSelectedPetHasTimeTraveller({message, author});
+
+const isPetSelectedMultipleTimes = ({message, author}: IChecker): boolean =>
+  message.mentions.has(author.id) && message.content.includes('has been selected more than once');
+
+const isInvalidCancelPetId = ({message, author}: IChecker): boolean =>
+  message.mentions.has(author.id) &&
+  message.content.includes('what pet(s) are you trying to select?');
+
+const isPetNotOnAdventure = ({message, author}: IChecker): boolean =>
+  message.mentions.has(author.id) && message.content.includes('is not in an adventure');
+
+const isNoPetMeetRequirement = ({message, author}: IChecker): boolean =>
+  message.mentions.has(author.id) && message.content.includes('no pets met the requirement');
+
+const isSelectedPetHasTimeTraveller = ({message, author}: IChecker): boolean =>
+  message.mentions.has(author.id) &&
+  message.content.includes('you cannot cancel the adventure of your pet');
+
+interface IIsPetSuccessfullyCancelled {
+  message: Message;
+  author: User;
+}
+
+const isPetSuccessfullyCancelled = ({message, author}: IIsPetSuccessfullyCancelled): boolean =>
+  message.mentions.has(author.id) && message.content.includes('pet adventure(s) cancelled');
+
+/*
+ *  ================================================================
+ *    Read and return total pets sent to adventure from rpg message
+ *  ================================================================
+ */
+
+const extractSentPets = ({message, author}: IMessageContentChecker) => {
+  if (isSentSinglePetToAdventure({message, author})) return 1;
+  if (isSentMultiplePetsToAdventure({message, author})) {
+    const amount = message.content.match(/\*\*(\d+)\*\* of your pets have started an adventure!/);
+    if (amount) return parseInt(amount[1]);
+  }
+  return 1;
+};
 
 const hasPetsReturnedInstantly = (content: string) =>
   content.includes('the following pets are back instantly:');
@@ -300,10 +413,4 @@ const extractReturnedPetsId = ({message}: IMessageContentChecker) => {
   const petIds = targetRow.match(/`(\w+)`/g);
   if (!petIds) return [];
   return petIds.map((p) => p.replace(/`/g, ''));
-};
-
-export const rpgPetAdventureChecker = {
-  isSuccessfullySentPetsToAdventure,
-  isFailToSendPetsToAdventure,
-  amountOfPetsSentToAdventure,
 };

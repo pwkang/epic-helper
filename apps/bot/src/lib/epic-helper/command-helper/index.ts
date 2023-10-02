@@ -10,6 +10,7 @@ import {_freeDonorHelper} from './free-donor';
 import {_epicTokenHelper} from './epic-token';
 import {_botInfoHelper} from './bot-info';
 import {_duelLogHelper} from './duel-log';
+import {_petHelper} from './pet';
 
 const commandHelper = {
   toggle: _toggleHelper,
@@ -24,6 +25,7 @@ const commandHelper = {
   epicToken: _epicTokenHelper,
   information: _botInfoHelper,
   duel: _duelLogHelper,
+  pet: _petHelper,
 };
 
 export default commandHelper;

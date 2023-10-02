@@ -1,6 +1,6 @@
 import {type FilterQuery, Model, type QueryOptions} from 'mongoose';
 import {mongoClient} from '@epic-helper/services';
-import {RPG_PET_STATUS} from '@epic-helper/constants';
+import {RPG_PET_ADV_STATUS} from '@epic-helper/constants';
 import {type IUserPet, userPetSchema} from '@epic-helper/models';
 import {userReminderServices} from './user-reminder.service';
 import 'mongodb';
@@ -42,7 +42,7 @@ interface IGetUserPets {
   petsId?: number[];
   page?: number;
   limit?: number;
-  status?: ValuesOf<typeof RPG_PET_STATUS>[];
+  status?: ValuesOf<typeof RPG_PET_ADV_STATUS>[];
   orderBy?: 'petId' | 'readyAt';
 }
 
@@ -77,12 +77,12 @@ const getUserPets = async ({
     options.skip = page * limit;
     options.limit = limit;
   }
-  return dbUserPet.find(query, null, options);
+  return dbUserPet.find(query, null, options).lean();
 };
 
 interface ICalcTotalPets {
   userId: string;
-  status?: ValuesOf<typeof RPG_PET_STATUS>[];
+  status?: ValuesOf<typeof RPG_PET_ADV_STATUS>[];
 }
 
 const calcTotalPets = async ({userId, status}: ICalcTotalPets) => {
@@ -179,7 +179,7 @@ const updateRemindedPets = async ({userId, petIds}: IUpdateRemindedPets) => {
         readyAt: 1,
       },
       $set: {
-        status: RPG_PET_STATUS.back,
+        status: RPG_PET_ADV_STATUS.back,
       },
     }
   );
@@ -192,7 +192,7 @@ interface IGetAvailableEpicPets {
 const getAvailableEpicPets = async ({userId}: IGetAvailableEpicPets) => {
   return dbUserPet.find({
     userId,
-    status: RPG_PET_STATUS.idle,
+    status: RPG_PET_ADV_STATUS.idle,
     'skills.epic': {
       $ne: null,
     },
@@ -207,7 +207,7 @@ const getAdventureEpicPets = async ({userId}: IGetAdventureEpicPets) => {
   return dbUserPet.find({
     userId,
     status: {
-      $in: [RPG_PET_STATUS.adventure, RPG_PET_STATUS.back],
+      $in: [RPG_PET_ADV_STATUS.adventure, RPG_PET_ADV_STATUS.back],
     },
     'skills.epic': {
       $ne: null,
@@ -221,7 +221,7 @@ const claimAllPets = async ({userId}: {userId: string}) => {
       userId,
       $or: [
         {
-          status: RPG_PET_STATUS.back,
+          status: RPG_PET_ADV_STATUS.back,
         },
         {
           readyAt: {
@@ -232,7 +232,7 @@ const claimAllPets = async ({userId}: {userId: string}) => {
     },
     {
       $set: {
-        status: RPG_PET_STATUS.idle,
+        status: RPG_PET_ADV_STATUS.idle,
       },
       $unset: {
         readyAt: 1,
@@ -248,7 +248,7 @@ const resetUserPetsAdvStatus = async (userId: string) => {
     },
     {
       $set: {
-        status: RPG_PET_STATUS.idle,
+        status: RPG_PET_ADV_STATUS.idle,
       },
       $unset: {
         readyAt: 1,
@@ -282,7 +282,7 @@ const cancelAdventurePets = async ({userId, petIds}: ICancelAdventurePets) => {
     },
     {
       $set: {
-        status: RPG_PET_STATUS.idle,
+        status: RPG_PET_ADV_STATUS.idle,
       },
       $unset: {
         readyAt: 1,

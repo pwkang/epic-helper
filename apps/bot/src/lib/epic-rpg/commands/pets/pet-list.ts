@@ -1,11 +1,13 @@
-import {Client, Embed, Message, User} from 'discord.js';
+import {Client, Embed, EmbedBuilder, Message, User} from 'discord.js';
 import ms from 'ms';
 import embedReaders from '../../embed-readers';
 import {userPetServices} from '../../../../services/database/user-pet.service';
-import {RPG_PET_SKILL} from '@epic-helper/constants';
+import {BOT_COLOR, RPG_PET_SKILL_ASCEND, RPG_PET_SKILL_SPECIAL} from '@epic-helper/constants';
 import {IUserPet} from '@epic-helper/models';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {createMessageEditedListener} from '../../../../utils/message-edited-listener';
+import {djsMessageHelper} from '../../../discordjs/message';
+import {convertNumToPetId} from '@epic-helper/utils';
 
 interface IRpgPet {
   client: Client;
@@ -38,26 +40,88 @@ interface IRpgPetSuccess {
   message: Message;
 }
 
+interface IUpdatedPets {
+  newPets: IUserPet[];
+  updatedPets: IUserPet[];
+}
+
 const rpgPetSuccess = async ({author, embed, message, client}: IRpgPetSuccess) => {
-  await updatePetsFromEmbed({embed, author, client});
+  const updatedPets: IUpdatedPets = {
+    newPets: [],
+    updatedPets: [],
+  };
+  await updatePetsFromEmbed({embed, author, updatedPets});
+  let sentMessage = await sendResultEmbed({
+    author,
+    client,
+    channelId: message.channel.id,
+    updatedPets,
+  });
   const event = await createMessageEditedListener({
     messageId: message.id,
   });
   if (!event) return;
   event.on('edited', async (newMessage) => {
     if (isRpgPet({author, embed: newMessage.embeds[0]})) {
-      await updatePetsFromEmbed({embed: newMessage.embeds[0], author, client});
+      await updatePetsFromEmbed({embed: newMessage.embeds[0], author, updatedPets});
+
+      sentMessage = await sendResultEmbed({
+        author,
+        message: sentMessage,
+        client,
+        channelId: message.channel.id,
+        updatedPets,
+      });
     }
+  });
+};
+
+interface ISendResultEmbed {
+  client: Client;
+  message?: Message;
+  channelId: string;
+  updatedPets: IUpdatedPets;
+  author: User;
+}
+
+const sendResultEmbed = async ({
+  message,
+  client,
+  channelId,
+  updatedPets,
+  author,
+}: ISendResultEmbed) => {
+  if (!updatedPets.newPets.length && !updatedPets.updatedPets.length) return;
+  const embed = renderResultEmbed({
+    updatedPets,
+    author,
+  });
+  if (message) {
+    await djsMessageHelper.edit({
+      client,
+      message,
+      options: {
+        embeds: [embed],
+      },
+    });
+    return message;
+  }
+  return await djsMessageHelper.send({
+    client,
+    channelId,
+    options: {
+      embeds: [embed],
+    },
   });
 };
 
 interface IUpdatePetsFromEmbed {
   embed: Embed;
   author: User;
-  client: Client;
+  updatedPets: IUpdatedPets;
 }
 
-const updatePetsFromEmbed = async ({embed, author}: IUpdatePetsFromEmbed) => {
+const updatePetsFromEmbed = async ({embed, author, updatedPets}: IUpdatePetsFromEmbed) => {
   const pets = embedReaders.pets({embed, author});
   const dbPetsList = await userPetServices.getUserPets({
     userId: author.id,
@@ -70,6 +134,7 @@ const updatePetsFromEmbed = async ({embed, author}: IUpdatePetsFromEmbed) => {
         pet: newPet,
         userId: author.id,
       });
+      updatedPets.newPets.push(newPet);
       continue;
     }
     if (isPetUpdated({newPet, oldPet})) {
@@ -77,6 +142,7 @@ const updatePetsFromEmbed = async ({embed, author}: IUpdatePetsFromEmbed) => {
         pet: newPet,
         userId: author.id,
       });
+      updatedPets.updatedPets.push(newPet);
     }
   }
   const maxPet = getMaxPetId({embed});
@@ -116,7 +182,10 @@ const isPetUpdated = ({newPet, oldPet}: IIsPetUpdated) => {
   const newPetReadyAt = newPet.readyAt?.getTime() ?? 0;
   const isReadyAtUpdated = Math.abs(newPetReadyAt - oldPetReadyAt) > ms('5s');
   const isStatusUpdated = newPet.status !== oldPet.status;
-  const skillNameList = Object.keys(RPG_PET_SKILL) as Array<keyof typeof RPG_PET_SKILL>;
+  const skillNameList = Object.values({
+    ...RPG_PET_SKILL_ASCEND,
+    ...RPG_PET_SKILL_SPECIAL,
+  }) as (keyof typeof RPG_PET_SKILL_ASCEND | keyof typeof RPG_PET_SKILL_SPECIAL)[];
   const isSkillUpdated = skillNameList.some(
     (skillName) => newPet.skills[skillName] !== oldPet.skills[skillName]
   );
@@ -132,4 +201,37 @@ interface IGetMaxPetId {
 const getMaxPetId = ({embed}: IGetMaxPetId) => {
   const num = embed.description?.split('\n')?.[1]?.split(' ')?.pop()?.split('/')[0];
   return num ? parseInt(num) : 0;
+};
+
+interface IRenderResultEmbed {
+  updatedPets: IUpdatedPets;
+  author: User;
+}
+
+const renderResultEmbed = ({updatedPets, author}: IRenderResultEmbed) => {
+  const embed = new EmbedBuilder().setColor(BOT_COLOR.embed).setAuthor({
+    name: `${author.username} — pets`,
+    iconURL: author.avatarURL() ?? undefined,
+  });
+  if (updatedPets.newPets.length) {
+    embed.addFields({
+      name: 'New pets',
+      value: updatedPets.newPets
+        .map((pet) => convertNumToPetId(pet.petId))
+        .map((id) => `\`${id}\``)
+        .join(' '),
+      inline: true,
+    });
+  }
+  if (updatedPets.updatedPets.length) {
+    embed.addFields({
+      name: 'Updated pets',
+      value: updatedPets.updatedPets
+        .map((pet) => convertNumToPetId(pet.petId))
+        .map((id) => `\`${id}\``)
+        .join(' '),
+      inline: true,
+    });
+  }
+  return embed;
 };
