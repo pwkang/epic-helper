@@ -1,6 +1,6 @@
 import {Schema} from 'mongoose';
 import {IUserPet} from './user-pet.type';
-import {RPG_PET_STATUS, RPG_PET_TYPE} from '@epic-helper/constants';
+import {RPG_PET_ADV_STATUS, RPG_PET_TYPE} from '@epic-helper/constants';
 
 export const userPetSchema = new Schema<IUserPet>({
   userId: {
@@ -37,7 +37,7 @@ export const userPetSchema = new Schema<IUserPet>({
   },
   status: {
     type: String,
-    enum: Object.values(RPG_PET_STATUS),
+    enum: Object.values(RPG_PET_ADV_STATUS),
   },
   readyAt: Date,
 });

@@ -1,7 +1,7 @@
 import {Client, Message, User} from 'discord.js';
 import {convertNumToPetId, convertPetIdToNum} from '@epic-helper/utils';
 import {IUserPet} from '@epic-helper/models';
-import {RPG_PET_STATUS} from '@epic-helper/constants';
+import {RPG_PET_ADV_STATUS} from '@epic-helper/constants';
 import {userPetServices} from '../../../../services/database/user-pet.service';
 import {djsMessageHelper} from '../../../discordjs/message';
 import {collectSelectedPets} from './_shared';
@@ -123,11 +123,11 @@ const fetchPetsToCancel = async ({selectedPets, userId}: IFetchPetsToCancel) => 
       petsId: nonEpicPetsId
         .map(convertPetIdToNum)
         .filter((p) => petsToCancel.every((p2) => p2.petId !== p)),
-      status: [RPG_PET_STATUS.adventure],
+      status: [RPG_PET_ADV_STATUS.adventure],
     });
     petsToCancel.push(...nonEpicPets);
   }
-  return petsToCancel.filter((p) => p.status !== RPG_PET_STATUS.idle);
+  return petsToCancel.filter((p) => p.status !== RPG_PET_ADV_STATUS.idle);
 };
 
 const hasCancelEpic = (pets: string[]) => pets.map((p) => p.toLowerCase()).includes('epic');

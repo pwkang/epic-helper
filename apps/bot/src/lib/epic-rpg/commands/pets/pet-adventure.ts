@@ -5,7 +5,7 @@ import ms from 'ms';
 import {djsMessageHelper} from '../../../discordjs/message';
 import {convertNumToPetId, convertPetIdToNum} from '@epic-helper/utils';
 import {userPetServices} from '../../../../services/database/user-pet.service';
-import {RPG_PET_STATUS, RPG_PET_TYPE} from '@epic-helper/constants';
+import {RPG_PET_ADV_STATUS, RPG_PET_TYPE} from '@epic-helper/constants';
 import {IUserPet} from '@epic-helper/models';
 import convertMsToHumanReadableString from '../../../../utils/convert-ms-to-human-readable-string';
 import {collectSelectedPets} from './_shared';
@@ -207,7 +207,7 @@ const fetchPetsToSend = async ({selectedPets, userId}: IFetchPetsToSend) => {
     });
     petsToSend.push(...availableEpicPets);
   }
-  return petsToSend.filter((p) => p.status === RPG_PET_STATUS.idle);
+  return petsToSend.filter((p) => p.status === RPG_PET_ADV_STATUS.idle);
 };
 
 /*
@@ -231,7 +231,7 @@ interface ISendPetToAdventure {
 
 const sendPetToAdventure = async ({pet, userId}: ISendPetToAdventure) => {
   const adventureTime = calcAdventureTime({pet});
-  pet.status = RPG_PET_STATUS.adventure;
+  pet.status = RPG_PET_ADV_STATUS.adventure;
   pet.readyAt = new Date(Date.now() + adventureTime);
   await userPetServices.updateUserPet({
     pet,
@@ -252,7 +252,7 @@ interface IUpdatePetStatus {
 }
 
 const updateInstantBackPet = async ({pet, userId}: IUpdatePetStatus) => {
-  pet.status = RPG_PET_STATUS.back;
+  pet.status = RPG_PET_ADV_STATUS.back;
   pet.readyAt = new Date();
   await userPetServices.updateUserPet({
     pet,
