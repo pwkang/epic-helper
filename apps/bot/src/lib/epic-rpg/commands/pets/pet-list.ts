@@ -2,13 +2,7 @@ import {Client, Embed, EmbedBuilder, Message, User} from 'discord.js';
 import ms from 'ms';
 import embedReaders from '../../embed-readers';
 import {userPetServices} from '../../../../services/database/user-pet.service';
-import {
-  BOT_COLOR,
-  RPG_PET_SKILL,
-  RPG_PET_SKILL_ASCEND,
-  RPG_PET_SKILL_LABEL,
-  RPG_PET_SKILL_SPECIAL,
-} from '@epic-helper/constants';
+import {BOT_COLOR, RPG_PET_SKILL_ASCEND, RPG_PET_SKILL_SPECIAL} from '@epic-helper/constants';
 import {IUserPet} from '@epic-helper/models';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {createMessageEditedListener} from '../../../../utils/message-edited-listener';

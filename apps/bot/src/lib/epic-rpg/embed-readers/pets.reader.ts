@@ -5,9 +5,7 @@ import {convertPetIdToNum, typedObjectEntries} from '@epic-helper/utils';
 import {
   RPG_PET_ADV_STATUS,
   RPG_PET_LABEL,
-  RPG_PET_SKILL,
   RPG_PET_SKILL_ASCEND,
-  RPG_PET_SKILL_EVENT,
   RPG_PET_SKILL_LABEL,
   RPG_PET_SKILL_SPECIAL,
   RPG_PET_SKILL_TIER,
