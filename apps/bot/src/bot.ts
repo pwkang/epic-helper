@@ -1,5 +1,5 @@
 import {ClusterClient, getInfo} from 'discord-hybrid-sharding';
-import {Client, Collection, IntentsBitField} from 'discord.js';
+import {Client, Collection} from 'discord.js';
 
 import * as dotenv from 'dotenv';
 import loadCommands from './handler/on-start/commands.handler';
@@ -8,6 +8,7 @@ import loadCronJob from './handler/on-start/cron.handler';
 import {initSentry} from './handler/on-start/sentry.handler';
 import {logger} from '@epic-helper/utils';
 import {loadRedis} from './handler/on-start/redis.handler';
+import {DiscordClientConfig} from './client-config';
 
 dotenv.config();
 const environment = process.env.NODE_ENV || 'development';
@@ -16,11 +17,7 @@ const shards = environment === 'development' ? 'auto' : getInfo().SHARD_LIST;
 const shardCount = environment === 'development' ? 1 : getInfo().TOTAL_SHARDS;
 
 const client = new Client({
-  intents: new IntentsBitField().add([
-    IntentsBitField.Flags.Guilds,
-    IntentsBitField.Flags.GuildMessages,
-    IntentsBitField.Flags.MessageContent,
-  ]),
+  ...DiscordClientConfig,
   shardCount,
   shards,
 });
