@@ -47,21 +47,25 @@ export default <PrefixCommand>{
         rpgInventoryChecker.isUserInventory({author: message.author, embed})
       ) {
         event?.stop();
+        let messageOptions;
+        if (materialCalculator.isCalcMaterial(args)) {
+          messageOptions = materialCalculator.getCalcMaterialMessage({
+            embed,
+            area: calcInfo.area ?? 0,
+            author: message.author,
+          });
+        } else {
+          messageOptions = sttScoreCalculator.getCalcSTTMessage({
+            embed,
+            area: calcInfo.area ?? 0,
+            author: message.author,
+            level: calcInfo.level ?? 0,
+          });
+        }
         await djsMessageHelper.send({
           client,
           channelId: message.channel.id,
-          options: materialCalculator.isCalcMaterial(args)
-            ? materialCalculator.getCalcMaterialMessage({
-                embed,
-                area: calcInfo.area ?? 0,
-                author: message.author,
-              })
-            : sttScoreCalculator.getCalcSTTMessage({
-                embed,
-                area: calcInfo.area ?? 0,
-                author: message.author,
-                level: calcInfo.level ?? 0,
-              }),
+          options: messageOptions,
         });
       }
     });
