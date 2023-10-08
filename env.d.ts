@@ -10,6 +10,7 @@ declare global {
       DEVS_ID: string;
       MONGO_URI: string;
       TOTAL_CLUSTERS: string;
+      TOTAL_SHARDS: string;
       SENTRY_DSN: string;
       PATREON_CAMPAIGN_ID: string;
       PATREON_ACCESS_TOKEN: string;
