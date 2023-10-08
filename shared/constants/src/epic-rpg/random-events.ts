@@ -8,7 +8,10 @@ export const RPG_RANDOM_EVENTS = {
   miniboss: 'miniboss',
 } as const;
 
-export const RPG_RANDOM_EVENTS_NAME: Record<keyof typeof RPG_RANDOM_EVENTS, string> = {
+export const RPG_RANDOM_EVENTS_NAME: Record<
+  keyof typeof RPG_RANDOM_EVENTS,
+  string
+> = {
   log: 'Epic Tree',
   fish: 'Megalodon',
   coin: 'Raining Coins',
@@ -18,7 +21,10 @@ export const RPG_RANDOM_EVENTS_NAME: Record<keyof typeof RPG_RANDOM_EVENTS, stri
   miniboss: 'Miniboss',
 } as const;
 
-export const RPG_RANDOM_EVENTS_COMMAND: Record<keyof typeof RPG_RANDOM_EVENTS, string> = {
+export const RPG_RANDOM_EVENTS_COMMAND: Record<
+  keyof typeof RPG_RANDOM_EVENTS,
+  string
+> = {
   log: 'Cut',
   fish: 'Lure',
   coin: 'Catch',

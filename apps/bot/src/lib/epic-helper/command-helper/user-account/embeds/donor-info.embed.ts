@@ -1,6 +1,7 @@
-import {EmbedBuilder, User} from 'discord.js';
-import {IDonor, IFreeDonor} from '@epic-helper/models';
-import {serverService} from '../../../../../services/database/server.service';
+import type {User} from 'discord.js';
+import {EmbedBuilder} from 'discord.js';
+import type {IDonor, IFreeDonor} from '@epic-helper/models';
+import type {serverService} from '../../../../../services/database/server.service';
 import {BOT_COLOR, DONOR_TOKEN_AMOUNT} from '@epic-helper/constants';
 import {capitalizeFirstLetters} from '@epic-helper/utils';
 
@@ -8,7 +9,9 @@ interface IGetDonorInfoEmbed {
   donor: IDonor | null;
   author: User;
   freeDonor: IFreeDonor | null;
-  boostedServers: Awaited<ReturnType<typeof serverService.getUserBoostedServers>>;
+  boostedServers: Awaited<
+    ReturnType<typeof serverService.getUserBoostedServers>
+  >;
 }
 
 export const _getDonorInfoEmbed = ({
@@ -27,7 +30,10 @@ export const _getDonorInfoEmbed = ({
   const donorToken = donor?.tier ? DONOR_TOKEN_AMOUNT[donor.tier] : 0;
   const freeToken = freeDonor?.token ?? 0;
   const totalToken = donorToken + freeToken;
-  const usedToken = boostedServers.reduce((acc, server) => acc + server.token, 0);
+  const usedToken = boostedServers.reduce(
+    (acc, server) => acc + server.token,
+    0
+  );
   const remainingToken = totalToken - usedToken;
 
   if (donor?.tier) {
@@ -53,7 +59,10 @@ export const _getDonorInfoEmbed = ({
     embed.addFields({
       name: 'Boosted servers',
       value: boostedServers
-        .map((server, index) => `\`[${index + 1}]\` **${server.name}** - ${server.token} boosts`)
+        .map(
+          (server, index) =>
+            `\`[${index + 1}]\` **${server.name}** - ${server.token} boosts`
+        )
         .join('\n'),
       inline: false,
     });

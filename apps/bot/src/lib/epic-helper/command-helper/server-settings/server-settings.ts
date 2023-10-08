@@ -1,10 +1,9 @@
-import {
-  ActionRowBuilder,
+import type {
   BaseMessageOptions,
   Guild,
-  StringSelectMenuBuilder,
   StringSelectMenuInteraction,
 } from 'discord.js';
+import {ActionRowBuilder, StringSelectMenuBuilder} from 'discord.js';
 import {serverService} from '../../../../services/database/server.service';
 import {_getRandomEventSettingsEmbed} from './embed/random-event.embed';
 import _getEnchantChannelsEmbed from './embed/enchant-channels.embed';
@@ -74,8 +73,12 @@ export const _serverSettings = async ({server}: IServerSettings) => {
     };
   };
 
-  const responseInteraction = (interaction: StringSelectMenuInteraction): BaseMessageOptions => {
-    const pageType = interaction.values[0] as ValuesOf<typeof SERVER_SETTINGS_PAGE_TYPE>;
+  const responseInteraction = (
+    interaction: StringSelectMenuInteraction
+  ): BaseMessageOptions => {
+    const pageType = interaction.values[0] as ValuesOf<
+      typeof SERVER_SETTINGS_PAGE_TYPE
+    >;
     return render({type: pageType});
   };
 

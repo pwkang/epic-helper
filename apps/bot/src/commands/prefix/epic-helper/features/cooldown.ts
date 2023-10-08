@@ -24,7 +24,9 @@ export default <PrefixCommand>{
 
     const embed = embedProvider.userCooldown({
       author: message.author,
-      userReminder: await userReminderServices.getUserAllCooldowns(message.author.id),
+      userReminder: await userReminderServices.getUserAllCooldowns(
+        message.author.id
+      ),
       userAccount,
       toggleChecker,
     });

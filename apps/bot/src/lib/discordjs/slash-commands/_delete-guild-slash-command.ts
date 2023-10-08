@@ -1,4 +1,5 @@
-import {Client, Guild, Routes} from 'discord.js';
+import type {Client, Guild} from 'discord.js';
+import {Routes} from 'discord.js';
 import {logger} from '@epic-helper/utils';
 import {djsRestClient} from '@epic-helper/services';
 

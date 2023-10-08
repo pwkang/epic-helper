@@ -14,7 +14,9 @@ export default <PrefixCommand>{
 
     const isGuild = message.content.includes('--guild');
     const isGlobal = message.content.includes('--global');
-    const commandsToRegister = slashCommands.filter((sc) => args.includes(sc.name));
+    const commandsToRegister = slashCommands.filter((sc) =>
+      args.includes(sc.name)
+    );
     if (!commandsToRegister.length)
       return djsMessageHelper.send({
         client,
@@ -51,6 +53,7 @@ export default <PrefixCommand>{
           commands: command.builder.toJSON(),
         });
         registered++;
+
         // ==== Update status message ====
         await djsMessageHelper.edit({
           client,
@@ -59,6 +62,7 @@ export default <PrefixCommand>{
             content: getStatusMessage(),
           },
         });
+
         // ==== Wait 1 second ====
         await sleep(1000);
       }
@@ -70,6 +74,7 @@ export default <PrefixCommand>{
           commands: command.builder.toJSON(),
         });
         registered++;
+
         // ==== Update status message ====
         await djsMessageHelper.edit({
           client,
@@ -79,6 +84,7 @@ export default <PrefixCommand>{
             content: getStatusMessage(),
           },
         });
+
         // ==== Wait 1 second ====
         await sleep(1000);
       }

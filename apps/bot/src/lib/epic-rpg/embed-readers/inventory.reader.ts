@@ -1,4 +1,4 @@
-import {Embed} from 'discord.js';
+import type {Embed} from 'discord.js';
 import {RPG_ITEMS} from '@epic-helper/constants';
 import {typedObjectEntries} from '@epic-helper/utils';
 
@@ -18,7 +18,8 @@ const inventoryReader = ({embed}: IScanInventory) => {
       row.toLowerCase().includes(`**${value}**`)
     )?.[0];
     if (!itemName) continue;
-    items[itemName] = Number((row.split(' ').pop() ?? '').replaceAll(',', '')) ?? 0;
+    items[itemName] =
+      Number((row.split(' ').pop() ?? '').replaceAll(',', '')) ?? 0;
   }
 
   return items;

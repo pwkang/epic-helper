@@ -33,7 +33,9 @@ export default <PrefixCommand>{
         expiresAt:
           patron.subscription.lastChargeDate &&
           patron.subscription.lastChargeStatus === PATREON_PAYMENT_STATUS.paid
-            ? new Date(patron.subscription.lastChargeDate?.getTime() + ms('31d'))
+            ? new Date(
+                patron.subscription.lastChargeDate?.getTime() + ms('31d')
+              )
             : patron.subscription.lastChargeDate,
       }))
     );

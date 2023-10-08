@@ -1,4 +1,9 @@
-import type {Client, Message, MessageCreateOptions, MessagePayload} from 'discord.js';
+import type {
+  Client,
+  Message,
+  MessageCreateOptions,
+  MessagePayload,
+} from 'discord.js';
 import {PermissionsBitField, TextChannel} from 'discord.js';
 import {logger} from '@epic-helper/utils';
 
@@ -10,13 +15,18 @@ export interface ReplyMessageProps {
   options: string | MessagePayload | MessageCreateOptions;
 }
 
-export default async function _replyMessage({message, options, client}: ReplyMessageProps) {
+export default async function _replyMessage({
+  message,
+  options,
+  client,
+}: ReplyMessageProps) {
   const channel = client.channels.cache.get(message.channelId);
   if (!channel) return;
 
   if (channel instanceof TextChannel) {
     const textChannel = channel as TextChannel;
-    if (!textChannel.permissionsFor(client.user!)?.has(requiredPermissions)) return;
+    if (!textChannel.permissionsFor(client.user!)?.has(requiredPermissions))
+      return;
     try {
       return await message.reply(options);
     } catch (error: any) {

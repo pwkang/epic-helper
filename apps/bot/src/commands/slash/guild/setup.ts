@@ -1,6 +1,9 @@
 import djsInteractionHelper from '../../../lib/discordjs/interaction';
 import {SLASH_COMMAND} from '../constant';
-import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
+import {
+  USER_ACC_OFF_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS,
+} from '@epic-helper/constants';
 import commandHelper from '../../../lib/epic-helper/command-helper';
 
 export default <SlashCommand>{
@@ -18,13 +21,17 @@ export default <SlashCommand>{
       .addRoleOption((option) =>
         option
           .setName('role')
-          .setDescription('Only user with this role can trigger guild reminder, duel log, etc.')
+          .setDescription(
+            'Only user with this role can trigger guild reminder, duel log, etc.'
+          )
           .setRequired(true)
       )
       .addUserOption((option) =>
         option
           .setName('leader')
-          .setDescription('User that can modify the guild settings without admin permission')
+          .setDescription(
+            'User that can modify the guild settings without admin permission'
+          )
       ),
   execute: async (client, interaction) => {
     const role = interaction.options.getRole('role', true);

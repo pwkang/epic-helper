@@ -1,12 +1,11 @@
-import {IGuild} from '@epic-helper/models';
-import {
-  ActionRowBuilder,
+import type {IGuild} from '@epic-helper/models';
+import type {
   BaseInteraction,
   BaseMessageOptions,
   Guild,
-  StringSelectMenuBuilder,
   StringSelectMenuInteraction,
 } from 'discord.js';
+import {ActionRowBuilder, StringSelectMenuBuilder} from 'discord.js';
 import {generateNavigationRow} from './pagination-row';
 
 const GUILDS_PER_PAGE = 20;
@@ -55,7 +54,10 @@ export const guildSelectorHelper = ({
   }: {
     interaction: BaseInteraction | StringSelectMenuInteraction;
   }) => {
-    if (interaction.isStringSelectMenu() && interaction.customId === GUILD_SELECTOR_NAME) {
+    if (
+      interaction.isStringSelectMenu() &&
+      interaction.customId === GUILD_SELECTOR_NAME
+    ) {
       guildId = interaction.values[0];
     }
     if (interaction.isButton()) {
@@ -77,7 +79,12 @@ interface IGetPageSelector {
   selectedGuildRoleId?: string;
 }
 
-const _getPageSelector = ({page, guilds, selectedGuildRoleId, server}: IGetPageSelector) => {
+const _getPageSelector = ({
+  page,
+  guilds,
+  selectedGuildRoleId,
+  server,
+}: IGetPageSelector) => {
   const actionRow = new ActionRowBuilder<StringSelectMenuBuilder>();
   const menu = new StringSelectMenuBuilder()
     .setCustomId(GUILD_SELECTOR_NAME)
@@ -88,8 +95,12 @@ const _getPageSelector = ({page, guilds, selectedGuildRoleId, server}: IGetPageS
   guildsOnPage.forEach((guild) => {
     const roleName = server.roles.cache.get(guild.roleId)?.name;
     menu.addOptions({
-      label: guild.info.name ? guild.info.name : `Role: ${roleName ?? 'Not found'}`,
-      description: guild.info.name ? `Role: ${roleName ?? 'Not found'}` : undefined,
+      label: guild.info.name
+        ? guild.info.name
+        : `Role: ${roleName ?? 'Not found'}`,
+      description: guild.info.name
+        ? `Role: ${roleName ?? 'Not found'}`
+        : undefined,
       value: guild.roleId,
       default: guild.roleId === selectedGuildRoleId,
     });

@@ -1,4 +1,5 @@
-import {Client, Embed, EmbedBuilder, Message, User} from 'discord.js';
+import type {Client, Embed, Message, User} from 'discord.js';
+import {EmbedBuilder} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {
@@ -98,7 +99,11 @@ interface IRpgQuestSuccess {
 const QUEST_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.quest.accepted;
 const DECLINED_QUEST_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.quest.declined;
 
-const rpgQuestSuccess = async ({author, questAccepted, channelId}: IRpgQuestSuccess) => {
+const rpgQuestSuccess = async ({
+  author,
+  questAccepted,
+  channelId,
+}: IRpgQuestSuccess) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker) return;
 
@@ -132,7 +137,11 @@ interface IShowArenaCooldown {
   channelId: string;
 }
 
-export const showArenaCooldown = async ({client, author, channelId}: IShowArenaCooldown) => {
+export const showArenaCooldown = async ({
+  client,
+  author,
+  channelId,
+}: IShowArenaCooldown) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker) return;
   if (!toggleChecker.questArena) return;
@@ -166,7 +175,11 @@ interface IShowMinibossCooldown {
   channelId: string;
 }
 
-export const showMinibossCooldown = async ({client, author, channelId}: IShowMinibossCooldown) => {
+export const showMinibossCooldown = async ({
+  client,
+  author,
+  channelId,
+}: IShowMinibossCooldown) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker) return;
   if (!toggleChecker.questMiniboss) return;
@@ -208,7 +221,8 @@ interface IIsQuestDeclined {
 }
 
 const isQuestDeclined = ({message, author}: IIsQuestDeclined) =>
-  message.mentions.has(author.id) && message.content.includes('you did not accept the quest');
+  message.mentions.has(author.id) &&
+  message.content.includes('you did not accept the quest');
 
 interface IIsQuestOnGoing {
   embed: Embed;
@@ -216,7 +230,8 @@ interface IIsQuestOnGoing {
 }
 
 const isQuestOnGoing = ({author, embed}: IIsQuestOnGoing) =>
-  embed.author?.name === `${author.username} — quest` && embed.description?.includes('quest quit');
+  embed.author?.name === `${author.username} — quest` &&
+  embed.description?.includes('quest quit');
 
 interface IIsCompletingQuest {
   embed: Embed;
@@ -224,7 +239,8 @@ interface IIsCompletingQuest {
 }
 
 const isCompletingQuest = ({author, embed}: IIsCompletingQuest) =>
-  embed.author?.name === `${author.username} — quest` && embed.description?.includes('Complete!');
+  embed.author?.name === `${author.username} — quest` &&
+  embed.description?.includes('Complete!');
 
 interface IIsArenaQuest {
   embed: Embed;

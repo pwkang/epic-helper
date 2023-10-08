@@ -1,9 +1,9 @@
-import {IUser} from '@epic-helper/models';
-import {BaseMessageOptions, Client, User} from 'discord.js';
-import {CUSTOM_MESSAGE_PAGE_TYPE} from './custom-message.constant';
+import type {IUser} from '@epic-helper/models';
+import type {BaseMessageOptions, Client, User} from 'discord.js';
+import type {CUSTOM_MESSAGE_PAGE_TYPE} from './custom-message.constant';
 import {_getCustomMessageEmbed} from './custom-message.embed';
 import {_customMessagePageSelector} from './custom-message.components';
-import {IToggleUserCheckerReturnType} from '../../toggle-checker/user';
+import type {IToggleUserCheckerReturnType} from '../../toggle-checker/user';
 
 export interface IGetMessageOptions {
   client: Client;

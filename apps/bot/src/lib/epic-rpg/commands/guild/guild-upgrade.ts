@@ -1,6 +1,9 @@
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {Client, Message, User} from 'discord.js';
-import {IMessageContentChecker, IMessageEmbedChecker} from '../../../../types/utils';
+import type {Client, Message, User} from 'discord.js';
+import type {
+  IMessageContentChecker,
+  IMessageEmbedChecker,
+} from '../../../../types/utils';
 import {guildService} from '../../../../services/database/guild.service';
 import ms from 'ms';
 import {upgraidService} from '../../../../services/database/upgraid.service';
@@ -124,9 +127,11 @@ const isGuildUpgradeSuccess = ({embed}: IMessageEmbedChecker) =>
   );
 
 const isUserDontHaveGuild = ({author, message}: IMessageContentChecker) =>
-  ['you don\'t have a guild', 'not in a guild'].some((msg) => message.content.includes(msg)) &&
-  message.mentions.users.has(author.id);
+  ["you don't have a guild", 'not in a guild'].some((msg) =>
+    message.content.includes(msg)
+  ) && message.mentions.users.has(author.id);
 
 const isGuildCantBeUpgraded = ({author, message}: IMessageContentChecker) =>
-  ['it cannot be upgraded anymore'].some((msg) => message.content.includes(msg)) &&
-  message.mentions.users.has(author.id);
+  ['it cannot be upgraded anymore'].some((msg) =>
+    message.content.includes(msg)
+  ) && message.mentions.users.has(author.id);

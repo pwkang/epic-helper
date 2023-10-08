@@ -1,10 +1,11 @@
-import {IGuild} from '@epic-helper/models';
+import type {IGuild} from '@epic-helper/models';
 import {redisService} from './redis.service';
 import {toGuild} from '../transformer/guild.transformer';
 
 const PREFIX = 'epic-helper:guild:';
 
-const getKey = (serverId: string, roleId: string) => `${PREFIX}${serverId}:${roleId}`;
+const getKey = (serverId: string, roleId: string) =>
+  `${PREFIX}${serverId}:${roleId}`;
 
 const setGuild = async (serverId: string, roleId: string, guild: IGuild) => {
   const key = getKey(serverId, roleId);
@@ -13,7 +14,10 @@ const setGuild = async (serverId: string, roleId: string, guild: IGuild) => {
   return formattedGuild;
 };
 
-const getGuild = async (serverId: string, roleId: string): Promise<IGuild | null> => {
+const getGuild = async (
+  serverId: string,
+  roleId: string
+): Promise<IGuild | null> => {
   const key = getKey(serverId, roleId);
   const guild = await redisService.get(key);
   return guild ? toGuild(JSON.parse(guild)) : null;

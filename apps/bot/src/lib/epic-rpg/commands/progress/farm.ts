@@ -1,4 +1,4 @@
-import {Client, Embed, Message, User} from 'discord.js';
+import type {Client, Embed, Message, User} from 'discord.js';
 import {
   BOT_REMINDER_BASE_COOLDOWN,
   RPG_COMMAND_TYPE,
@@ -32,7 +32,10 @@ export function rpgFarm({client, message, author, isSlashCommand}: IRpgFarm) {
   });
   if (!event) return;
   event.on('content', async (content, collected) => {
-    if (isRpgFarmSuccess({content, author}) || isSeedNotGrowingUpEnded({content, author})) {
+    if (
+      isRpgFarmSuccess({content, author}) ||
+      isSeedNotGrowingUpEnded({content, author})
+    ) {
       await rpgFarmSuccess({
         author,
         client,
@@ -73,7 +76,11 @@ interface IRpgFarmSuccess {
   content: Message['content'];
 }
 
-const rpgFarmSuccess = async ({content, author, channelId}: IRpgFarmSuccess) => {
+const rpgFarmSuccess = async ({
+  content,
+  author,
+  channelId,
+}: IRpgFarmSuccess) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker) return;
   const seedType = whatIsTheSeed(content);
@@ -109,12 +116,16 @@ interface IIsRpgFarmSuccess {
 
 const isRpgFarmSuccess = ({author, content}: IIsRpgFarmSuccess) =>
   content.includes(author.username) &&
-  ['have grown from the seed', 'HITS THE FLOOR WITH THE FISTS', 'in the ground...'].some((msg) =>
-    content.includes(msg)
-  );
+  [
+    'have grown from the seed',
+    'HITS THE FLOOR WITH THE FISTS',
+    'in the ground...',
+  ].some((msg) => content.includes(msg));
 
 function whatIsTheSeed(content: string) {
-  return Object.values(RPG_FARM_SEED).find((seed) => seed && content.split('\n')[0].includes(seed));
+  return Object.values(RPG_FARM_SEED).find(
+    (seed) => seed && content.split('\n')[0].includes(seed)
+  );
 }
 
 interface IIsFarmingInSpace {
@@ -133,7 +144,9 @@ interface IHasNoSeedToPlant {
 const hasNoSeedToPlant = ({message, author}: IHasNoSeedToPlant) =>
   message.mentions.has(author.id) &&
   (['you need a', 'seed'].every((msg) => message.content.includes(msg)) ||
-    ['you do not have this type of seed'].some((msg) => message.content.includes(msg)));
+    ['you do not have this type of seed'].some((msg) =>
+      message.content.includes(msg)
+    ));
 
 interface IIsSeedNotGrowingUp {
   embed: Embed;
@@ -141,16 +154,22 @@ interface IIsSeedNotGrowingUp {
 }
 
 const isSeedNotGrowingUp = ({embed, author}: IIsSeedNotGrowingUp) =>
-  embed.description?.includes('You planted a seed, but for some reason it\'s not growing up') &&
-  embed.author?.name === `${author.username} — farm`;
+  embed.description?.includes(
+    "You planted a seed, but for some reason it's not growing up"
+  ) && embed.author?.name === `${author.username} — farm`;
 
 interface IIsFailToPlantAnotherSeed {
   content: string;
   author: User;
 }
 
-const isSeedNotGrowingUpEnded = ({content, author}: IIsFailToPlantAnotherSeed) =>
+const isSeedNotGrowingUpEnded = ({
+  content,
+  author,
+}: IIsFailToPlantAnotherSeed) =>
   content.includes(author.username) &&
-  ['is about to plant another seed', 'HITS THE FLOOR WITH THEIR FISTS', 'cried'].some((msg) =>
-    content.includes(msg)
-  );
+  [
+    'is about to plant another seed',
+    'HITS THE FLOOR WITH THEIR FISTS',
+    'cried',
+  ].some((msg) => content.includes(msg));

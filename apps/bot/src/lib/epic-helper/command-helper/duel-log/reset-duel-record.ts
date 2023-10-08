@@ -1,13 +1,15 @@
-import {
-  ActionRowBuilder,
+import type {
   BaseInteraction,
   BaseMessageOptions,
-  ButtonBuilder,
-  ButtonStyle,
   Client,
-  EmbedBuilder,
   Guild,
   User,
+} from 'discord.js';
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  EmbedBuilder,
 } from 'discord.js';
 import {guildService} from '../../../../services/database/guild.service';
 import {BOT_COLOR} from '@epic-helper/constants';
@@ -22,7 +24,12 @@ interface IResetDuelRecord {
   author: User;
 }
 
-export const _resetDuelRecord = async ({roleId, server, author, client}: IResetDuelRecord) => {
+export const _resetDuelRecord = async ({
+  roleId,
+  server,
+  author,
+  client,
+}: IResetDuelRecord) => {
   const guildAccount = await guildService.findGuild({
     roleId,
     serverId: server.id,
@@ -95,14 +102,26 @@ interface IGenerateConfirmationEmbed {
   roleId: string;
 }
 
-const generateConfirmationOptions = ({roleId}: IGenerateConfirmationEmbed): BaseMessageOptions => {
+const generateConfirmationOptions = ({
+  roleId,
+}: IGenerateConfirmationEmbed): BaseMessageOptions => {
   const embed = new EmbedBuilder()
     .setColor(BOT_COLOR.embed)
-    .setDescription(`Are you sure want to reset duel record for ${messageFormatter.role(roleId)}?`);
+    .setDescription(
+      `Are you sure want to reset duel record for ${messageFormatter.role(
+        roleId
+      )}?`
+    );
 
   const rows = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    new ButtonBuilder().setCustomId('yes').setLabel('Yes').setStyle(ButtonStyle.Success),
-    new ButtonBuilder().setCustomId('no').setLabel('No').setStyle(ButtonStyle.Danger)
+    new ButtonBuilder()
+      .setCustomId('yes')
+      .setLabel('Yes')
+      .setStyle(ButtonStyle.Success),
+    new ButtonBuilder()
+      .setCustomId('no')
+      .setLabel('No')
+      .setStyle(ButtonStyle.Danger)
   );
 
   return {
@@ -124,7 +143,9 @@ const generateResultOptions = ({
 }: IGenerateResultOptions): BaseMessageOptions => {
   const embed = new EmbedBuilder().setColor(BOT_COLOR.embed);
   if (deleted) {
-    embed.setDescription(`Successfully reset duel record for ${messageFormatter.role(roleId)}`);
+    embed.setDescription(
+      `Successfully reset duel record for ${messageFormatter.role(roleId)}`
+    );
     embed.setFooter({text: `Reset by ${author.username}`});
   } else {
     embed.setDescription('Cancelled');

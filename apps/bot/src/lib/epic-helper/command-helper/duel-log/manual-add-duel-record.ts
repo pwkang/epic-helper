@@ -1,4 +1,4 @@
-import {Client, EmbedBuilder, User} from 'discord.js';
+import type {Client, EmbedBuilder, User} from 'discord.js';
 import {registerUserDuelLog} from './common/register-user-duel-log';
 
 interface IManualAddDuelRecord {

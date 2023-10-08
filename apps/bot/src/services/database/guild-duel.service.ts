@@ -13,7 +13,13 @@ interface IAddLog {
   isUpdate: boolean;
 }
 
-const addLog = async ({expGained, roleId, userId, serverId, isUpdate}: IAddLog) => {
+const addLog = async ({
+  expGained,
+  roleId,
+  userId,
+  serverId,
+  isUpdate,
+}: IAddLog) => {
   const currentLog = await dbGuildDuel
     .findOne({
       serverId,
@@ -64,7 +70,9 @@ interface IGetLastTwoWeeksGuildsDuelLogs {
   serverId: string;
 }
 
-const getLastTwoWeeksGuildsDuelLogs = async ({serverId}: IGetLastTwoWeeksGuildsDuelLogs) => {
+const getLastTwoWeeksGuildsDuelLogs = async ({
+  serverId,
+}: IGetLastTwoWeeksGuildsDuelLogs) => {
   const guildsDuelLogs = await dbGuildDuel
     .find({
       serverId,
@@ -141,7 +149,11 @@ interface IFindUserCurrentRecord {
   roleId: string;
 }
 
-const findUserCurrentRecord = async ({userId, serverId, roleId}: IFindUserCurrentRecord) => {
+const findUserCurrentRecord = async ({
+  userId,
+  serverId,
+  roleId,
+}: IFindUserCurrentRecord) => {
   const currentLog = await dbGuildDuel.findOne({
     serverId,
     guildRoleId: roleId,
@@ -190,7 +202,12 @@ interface IUndoUserDuel {
   expGained: number;
 }
 
-const undoUserDuel = async ({userId, serverId, roleId, expGained}: IUndoUserDuel) => {
+const undoUserDuel = async ({
+  userId,
+  serverId,
+  roleId,
+  expGained,
+}: IUndoUserDuel) => {
   const currentLog = await dbGuildDuel.findOne({
     serverId,
     guildRoleId: roleId,

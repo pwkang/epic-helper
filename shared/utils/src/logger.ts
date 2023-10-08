@@ -27,12 +27,15 @@ export const logger = (props: ILogger | string) => {
     loggerChild = pino({});
     loggerChild.setBindings({
       variant,
-      clusterId: props?.clusterId !== undefined ? String(props.clusterId) : undefined,
+      clusterId:
+        props?.clusterId !== undefined ? String(props.clusterId) : undefined,
     });
   } else {
     const variantMsg = variant ? `${variant}: ` : '';
     const clusterIdMsg =
-      !isString && props?.clusterId !== undefined ? `[Cluster ${props.clusterId}] ` : '';
+      !isString && props?.clusterId !== undefined
+        ? `[Cluster ${props.clusterId}] `
+        : '';
     loggerChild = pino(
       pretty({
         translateTime: 'SYS:yyyy-mm-dd hh:MM:ss TT',

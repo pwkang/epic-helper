@@ -1,4 +1,4 @@
-import {IServer} from '@epic-helper/models';
+import type {IServer} from '@epic-helper/models';
 import {typedObjectEntries} from '@epic-helper/utils';
 import {RPG_RANDOM_EVENTS} from '@epic-helper/constants';
 
@@ -15,10 +15,13 @@ export const toServer = (server: any): IServer => {
         channels: server?.settings?.enchant?.channels ?? [],
         muteDuration: server?.settings?.enchant?.muteDuration,
       },
-      randomEvent: typedObjectEntries(RPG_RANDOM_EVENTS).reduce((acc, [key, value]) => {
-        acc[key] = server?.settings?.randomEvent?.[key] ?? value;
-        return acc;
-      }, {} as Record<ValuesOf<typeof RPG_RANDOM_EVENTS>, string>),
+      randomEvent: typedObjectEntries(RPG_RANDOM_EVENTS).reduce(
+        (acc, [key, value]) => {
+          acc[key] = server?.settings?.randomEvent?.[key] ?? value;
+          return acc;
+        },
+        {} as Record<ValuesOf<typeof RPG_RANDOM_EVENTS>, string>
+      ),
       ttVerification: {
         channelId: server?.settings?.ttVerification?.channelId,
         rules: server?.settings?.ttVerification?.rules ?? [],

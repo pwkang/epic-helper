@@ -1,7 +1,9 @@
-import {EmbedBuilder, User} from 'discord.js';
+import type {User} from 'discord.js';
+import {EmbedBuilder} from 'discord.js';
 import {userService} from '../../../../services/database/user.service';
 import {userPetServices} from '../../../../services/database/user-pet.service';
-import {IUserPet} from '@epic-helper/models';
+import type {IUserPet} from '@epic-helper/models';
+import type {TSkillTierNumber} from '@epic-helper/constants';
 import {
   BOT_COLOR,
   BOT_EMOJI,
@@ -11,11 +13,10 @@ import {
   RPG_PET_SKILL_TIER_REVERSE,
   RPG_PET_TYPE,
   RPG_PET_TYPE_BASIC,
-  TSkillTierNumber,
 } from '@epic-helper/constants';
 import {convertNumberToRoman} from '../../../../utils/roman-conversion';
 import {convertNumToPetId, typedObjectEntries} from '@epic-helper/utils';
-import {ValuesOf} from '@epic-helper/models/dist/type';
+import type {ValuesOf} from '@epic-helper/models/dist/type';
 
 interface IPetSummaryHelper {
   author: User;
@@ -173,7 +174,9 @@ const generateSkillEmbed = ({author, pets}: IGenerateSkillEmbed) => {
       skillMap.get(skill)?.push(pet);
     }
   }
-  for (const skillType of Object.keys(PET_SKILL_ORDER) as (keyof IUserPet['skills'])[]) {
+  for (const skillType of Object.keys(
+    PET_SKILL_ORDER
+  ) as (keyof IUserPet['skills'])[]) {
     const emoji = BOT_EMOJI.petSkill[skillType];
     const skillName = RPG_PET_SKILL_LABEL[skillType];
     const petList = skillMap.get(skillType) ?? [];
@@ -199,14 +202,21 @@ const generateSkillEmbed = ({author, pets}: IGenerateSkillEmbed) => {
         const petIds = petList
           .sort((a, b) => a.petId - b.petId)
           .map((pet) => ({
-            isSpecial: Object.values(RPG_PET_TYPE_BASIC).every((type) => type !== pet.name),
+            isSpecial: Object.values(RPG_PET_TYPE_BASIC).every(
+              (type) => type !== pet.name
+            ),
             petId: pet.petId,
           }))
-          .map((pet) => `${convertNumToPetId(pet.petId)}${pet.isSpecial ? '*' : ''}`)
+          .map(
+            (pet) =>
+              `${convertNumToPetId(pet.petId)}${pet.isSpecial ? '*' : ''}`
+          )
           .map((id) => `\`${id}\``)
           .join(' | ');
         const isNormie = !tier;
-        let tierName = isNormie ? '' : RPG_PET_SKILL_TIER_REVERSE[tier].toUpperCase();
+        let tierName = isNormie
+          ? ''
+          : RPG_PET_SKILL_TIER_REVERSE[tier].toUpperCase();
         if (!isNormie) tierName = `**${tierName}**:`;
 
         acc.push(`${tierName} ${petIds}`);

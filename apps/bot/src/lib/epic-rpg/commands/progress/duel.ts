@@ -3,7 +3,7 @@ import {
   RPG_COMMAND_TYPE,
   RPG_COOLDOWN_EMBED_TYPE,
 } from '@epic-helper/constants';
-import {Client, Embed, Message, User} from 'discord.js';
+import type {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
@@ -22,7 +22,13 @@ interface IRpgDuel {
   targetUser?: User;
 }
 
-export function rpgDuel({client, message, author, isSlashCommand, targetUser}: IRpgDuel) {
+export function rpgDuel({
+  client,
+  message,
+  author,
+  isSlashCommand,
+  targetUser,
+}: IRpgDuel) {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     author,
@@ -78,7 +84,9 @@ interface IRpgDuelSuccess {
 }
 
 const rpgDuelSuccess = async ({author, channelId}: IRpgDuelSuccess) => {
-  const isUserAccountOn = await userService.isUserAccountOn({userId: author.id});
+  const isUserAccountOn = await userService.isUserAccountOn({
+    userId: author.id,
+  });
   if (!isUserAccountOn) return;
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker) return;

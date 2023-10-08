@@ -1,6 +1,6 @@
 // let patreonListUrl = `https://www.patreon.com/api/oauth2/v2/campaigns/${ campaign_id }/members?page%5Bcount%5D=200&include=currently_entitled_tiers,user,campaign,address&fields%5Bmember%5D=last_charge_date,last_charge_status,lifetime_support_cents,currently_entitled_amount_cents,patron_status,pledge_relationship_start,next_charge_date,email&fields%5Buser%5D=social_connections`;
 
-import {
+import type {
   PATREON_CAMPAIGN_ATTRIBUTES,
   PATREON_MEMBER_ATTRIBUTES,
   PATREON_TIER_ATTRIBUTES,
@@ -39,7 +39,10 @@ const generateFetchPatreonApiUrl = ({
   if (user?.length) params.append('fields[user]', user.join(','));
 
   if (currently_entitled_tiers?.length)
-    params.append('fields[currently_entitled_tiers]', currently_entitled_tiers.join(','));
+    params.append(
+      'fields[currently_entitled_tiers]',
+      currently_entitled_tiers.join(',')
+    );
 
   if (nextCursor) params.append('page[cursor]', nextCursor);
 
@@ -54,7 +57,9 @@ interface IGenerateFetchCampaignUrl {
   };
 }
 
-const generateFetchCampaignUrl = ({include = {}}: IGenerateFetchCampaignUrl) => {
+const generateFetchCampaignUrl = ({
+  include = {},
+}: IGenerateFetchCampaignUrl) => {
   const baseUrl = 'https://www.patreon.com/api/oauth2/v2/campaigns';
   const params = new URLSearchParams({
     include: 'tiers,creator',
@@ -65,7 +70,8 @@ const generateFetchCampaignUrl = ({include = {}}: IGenerateFetchCampaignUrl) => 
 
   if (campaign?.length) params.append('fields[campaign]', campaign.join(','));
 
-  if (include.user?.length) params.append('fields[user]', include.user.join(','));
+  if (include.user?.length)
+    params.append('fields[user]', include.user.join(','));
 
   return `${baseUrl}?${params.toString()}`;
 };

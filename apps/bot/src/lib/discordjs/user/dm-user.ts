@@ -1,6 +1,6 @@
 import {_getUser} from './get-user';
 import {logger} from '@epic-helper/utils';
-import {BaseMessageOptions} from 'discord.js';
+import type {BaseMessageOptions} from 'discord.js';
 
 interface IDmUser {
   userId: string;

@@ -1,4 +1,9 @@
-import {Client, Message, MessageEditOptions, MessagePayload} from 'discord.js';
+import type {
+  Client,
+  Message,
+  MessageEditOptions,
+  MessagePayload,
+} from 'discord.js';
 import {logger} from '@epic-helper/utils';
 
 export interface EditMessageProps {
@@ -7,7 +12,11 @@ export interface EditMessageProps {
   options: string | MessagePayload | MessageEditOptions;
 }
 
-export default async function _editMessage({client, message, options}: EditMessageProps) {
+export default async function _editMessage({
+  client,
+  message,
+  options,
+}: EditMessageProps) {
   if (message.author.id !== client.user?.id) return;
   if (!message.editable) return;
   try {

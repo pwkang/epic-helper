@@ -7,10 +7,10 @@ interface IRedisUserReminder {
   readyAt: Date;
 }
 
-const setReminderTime: (userId: string, readyAt: Date) => Promise<void> = async (
-  userId,
-  readyAt
-) => {
+const setReminderTime: (
+  userId: string,
+  readyAt: Date
+) => Promise<void> = async (userId, readyAt) => {
   const data: IRedisUserReminder = {
     readyAt,
     userId,
@@ -33,7 +33,9 @@ const getReminderTime: () => Promise<string[]> = async () => {
   return usersId.filter((id) => id !== '');
 };
 
-const deleteReminderTime: (userId: string) => Promise<void> = async (userId) => {
+const deleteReminderTime: (userId: string) => Promise<void> = async (
+  userId
+) => {
   await redisService.del(`${prefix}${userId}`);
 };
 

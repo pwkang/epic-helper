@@ -49,7 +49,8 @@ function getTotalDigit(num: number) {
   return totalDigit;
 }
 
-const getChar = (num: number) => (num === 0 ? 'lmao' : String.fromCharCode(num + 96));
+const getChar = (num: number) =>
+  num === 0 ? 'lmao' : String.fromCharCode(num + 96);
 
 const getPrefixChar = (num: number) =>
   num === 0 ? 'z' : num === -1 ? 'y' : String.fromCharCode(num + 96);

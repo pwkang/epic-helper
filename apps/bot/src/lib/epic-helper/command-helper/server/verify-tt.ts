@@ -1,9 +1,10 @@
-import {Client, EmbedBuilder, Guild, User} from 'discord.js';
+import type {Client, Guild, User} from 'discord.js';
+import {EmbedBuilder} from 'discord.js';
 import {serverService} from '../../../../services/database/server.service';
 import {djsMemberHelper} from '../../../discordjs/member';
 import {djsMessageHelper} from '../../../discordjs/message';
 import {BOT_COLOR} from '@epic-helper/constants';
-import {ITTVerificationRules} from '@epic-helper/models';
+import type {ITTVerificationRules} from '@epic-helper/models';
 import messageFormatter from '../../../discordjs/message-formatter';
 import toggleServerChecker from '../../toggle-checker/server';
 
@@ -44,13 +45,17 @@ export const _verifyTT = async ({
   if (!member) return;
 
   const fulfilledRoles = ttVerificationSettings.rules.filter(
-    (rule) => rule.minTT <= timeTravels && (!rule.maxTT || rule.maxTT >= timeTravels)
+    (rule) =>
+      rule.minTT <= timeTravels && (!rule.maxTT || rule.maxTT >= timeTravels)
   );
   const notFulfilledRoles = ttVerificationSettings.rules.filter(
-    (rule) => rule.minTT > timeTravels || (rule.maxTT && rule.maxTT < timeTravels)
+    (rule) =>
+      rule.minTT > timeTravels || (rule.maxTT && rule.maxTT < timeTravels)
   );
 
-  const rolesToAssign = fulfilledRoles.filter((role) => !member.roles.cache.has(role.roleId));
+  const rolesToAssign = fulfilledRoles.filter(
+    (role) => !member.roles.cache.has(role.roleId)
+  );
   if (rolesToAssign.length) {
     await djsMemberHelper.addRoles({
       client,
@@ -60,7 +65,9 @@ export const _verifyTT = async ({
     });
   }
 
-  const rolesToRemove = notFulfilledRoles.filter((role) => member.roles.cache.has(role.roleId));
+  const rolesToRemove = notFulfilledRoles.filter((role) =>
+    member.roles.cache.has(role.roleId)
+  );
   if (rolesToRemove.length) {
     await djsMemberHelper.removeRoles({
       client,
@@ -101,13 +108,19 @@ const getEmbed = ({author, addedRole, removedRole}: IGetEmbed) => {
   if (addedRole.length) {
     embed.addFields({
       name: 'Added roles',
-      value: addedRole.map((role) => `- ${messageFormatter.role(role.roleId)}`).join('\n') || '-',
+      value:
+        addedRole
+          .map((role) => `- ${messageFormatter.role(role.roleId)}`)
+          .join('\n') || '-',
     });
   }
   if (removedRole.length) {
     embed.addFields({
       name: 'Removed roles',
-      value: removedRole.map((role) => `- ${messageFormatter.role(role.roleId)}`).join('\n') || '-',
+      value:
+        removedRole
+          .map((role) => `- ${messageFormatter.role(role.roleId)}`)
+          .join('\n') || '-',
     });
   }
   if (!addedRole.length && !removedRole.length) {
@@ -115,7 +128,9 @@ const getEmbed = ({author, addedRole, removedRole}: IGetEmbed) => {
   } else {
     embed.addFields({
       name: 'Info',
-      value: addedRole.length ? addedRole.map((role) => role.message).join('\n') : '-',
+      value: addedRole.length
+        ? addedRole.map((role) => role.message).join('\n')
+        : '-',
     });
   }
 

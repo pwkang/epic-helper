@@ -1,8 +1,10 @@
-import {Client, Embed, Message, MessageCollector, TextChannel, User} from 'discord.js';
+import type {Client, Embed, Message, MessageCollector, User} from 'discord.js';
+import {TextChannel} from 'discord.js';
 import {TypedEventEmitter} from './typed-event-emitter';
 import ms from 'ms';
 import {sleep, typedObjectEntries} from '@epic-helper/utils';
-import {EPIC_RPG_ID, RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants';
+import type {RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants';
+import {EPIC_RPG_ID} from '@epic-helper/constants';
 
 interface IRpgCommandListener {
   client: Client;
@@ -19,7 +21,9 @@ type TEventTypes = {
   end: [];
 };
 
-type CustomEventType = (TypedEventEmitter<TEventTypes> & TExtraProps) | undefined;
+type CustomEventType =
+  | (TypedEventEmitter<TEventTypes> & TExtraProps)
+  | undefined;
 
 type TExtraProps = {
   stop: () => void;
@@ -92,7 +96,8 @@ export const createRpgCommandListener = ({
       // the command is on cooldown
       if (embed.author?.name === `${author.username} — cooldown`) {
         const embedType = getCooldownType(embed);
-        if (commandType === embedType) event?.emit('cooldown', extractCooldown(embed));
+        if (commandType === embedType)
+          event?.emit('cooldown', extractCooldown(embed));
         event?.stop();
         return;
       }
@@ -166,7 +171,10 @@ function extractCooldown(embed: Embed) {
   return time_ms;
 }
 
-const commandKeyword: Record<ValuesOf<typeof RPG_COOLDOWN_EMBED_TYPE>, string> = {
+const commandKeyword: Record<
+  ValuesOf<typeof RPG_COOLDOWN_EMBED_TYPE>,
+  string
+> = {
   daily: 'You have claimed your daily rewards already',
   weekly: 'You have claimed your weekly rewards already',
   lootbox: 'You have already bought a lootbox',
@@ -201,29 +209,36 @@ interface IChecker {
 
 function isBotMaintenance({author, collected}: IChecker) {
   return (
-    collected.content.includes('The bot is under maintenance!') && collected.mentions.has(author.id)
+    collected.content.includes('The bot is under maintenance!') &&
+    collected.mentions.has(author.id)
   );
 }
 
 function isStoppedByPolice({author, collected}: IChecker) {
   return (
-    collected.mentions.has(author.id) && collected.content.includes('We have to check you are')
+    collected.mentions.has(author.id) &&
+    collected.content.includes('We have to check you are')
   );
 }
 
 function isArrested({author, collected}: IChecker) {
   return (
-    collected.content.includes(author.username) && collected.content.includes('Get in the car')
+    collected.content.includes(author.username) &&
+    collected.content.includes('Get in the car')
   );
 }
 
 function isInJail({author, collected}: IChecker) {
-  return collected.mentions.has(author.id) && collected.content.includes('you are in the **jail**');
+  return (
+    collected.mentions.has(author.id) &&
+    collected.content.includes('you are in the **jail**')
+  );
 }
 
 function isUserInCommand({author, collected}: IChecker) {
   return (
-    collected.content.includes('end your previous command') && collected.mentions.has(author.id)
+    collected.content.includes('end your previous command') &&
+    collected.mentions.has(author.id)
   );
 }
 
@@ -231,7 +246,8 @@ function isUserSpamming({author, collected}: IChecker) {
   const embed = collected.embeds[0];
   if (!embed) return false;
   return (
-    embed.author?.name === author.username && embed.fields[0]?.name.includes('please don\'t spam')
+    embed.author?.name === author.username &&
+    embed.fields[0]?.name.includes("please don't spam")
   );
 }
 
@@ -243,5 +259,9 @@ function isPolicePass({author, collected}: IChecker) {
 }
 
 function isSlashCommand({collected}: IChecker) {
-  return collected.content === '' && collected.embeds.length === 0 && collected.interaction?.id;
+  return (
+    collected.content === '' &&
+    collected.embeds.length === 0 &&
+    collected.interaction?.id
+  );
 }

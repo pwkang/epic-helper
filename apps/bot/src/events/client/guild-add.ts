@@ -1,4 +1,5 @@
-import {Events, Guild} from 'discord.js';
+import type {Guild} from 'discord.js';
+import {Events} from 'discord.js';
 import {serverService} from '../../services/database/server.service';
 import {redisServerInfo} from '../../services/redis/server-info.redis';
 

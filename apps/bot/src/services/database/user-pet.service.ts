@@ -1,4 +1,5 @@
-import {type FilterQuery, Model, type QueryOptions} from 'mongoose';
+import type {Model} from 'mongoose';
+import {type FilterQuery, type QueryOptions} from 'mongoose';
 import {mongoClient} from '@epic-helper/services';
 import {RPG_PET_ADV_STATUS} from '@epic-helper/constants';
 import {type IUserPet, userPetSchema} from '@epic-helper/models';
@@ -15,7 +16,10 @@ userPetSchema.post('updateMany', async function () {
   await updateNextPetReminderTime(updatedUserId, this.model);
 });
 
-async function updateNextPetReminderTime(userId: string, model: Model<IUserPet>) {
+async function updateNextPetReminderTime(
+  userId: string,
+  model: Model<IUserPet>
+) {
   const nextReminderTime = await model
     .find({
       userId,

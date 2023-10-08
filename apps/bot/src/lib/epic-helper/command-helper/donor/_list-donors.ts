@@ -1,16 +1,22 @@
-import {BOT_COLOR, DONOR_TIER, DONOR_TOKEN_AMOUNT} from '@epic-helper/constants';
-import donorService from '../../../../services/database/donor.service';
 import {
-  ActionRowBuilder,
+  BOT_COLOR,
+  DONOR_TIER,
+  DONOR_TOKEN_AMOUNT,
+} from '@epic-helper/constants';
+import donorService from '../../../../services/database/donor.service';
+import type {
   BaseInteraction,
   BaseMessageOptions,
   Client,
+  StringSelectMenuInteraction,
+} from 'discord.js';
+import {
+  ActionRowBuilder,
   EmbedBuilder,
   StringSelectMenuBuilder,
-  StringSelectMenuInteraction,
   UserSelectMenuBuilder,
 } from 'discord.js';
-import {IDonor} from '@epic-helper/models';
+import type {IDonor} from '@epic-helper/models';
 import messageFormatter from '../../../discordjs/message-formatter';
 import {djsUserHelper} from '../../../discordjs/user';
 import timestampHelper from '../../../discordjs/timestamp';
@@ -165,9 +171,10 @@ const generateTierSelector = (tier?: ValuesOf<typeof DONOR_TIER>) => {
   );
 };
 
-const userSelector = new ActionRowBuilder<UserSelectMenuBuilder>().addComponents(
-  new UserSelectMenuBuilder().setCustomId('user').setPlaceholder('User')
-);
+const userSelector =
+  new ActionRowBuilder<UserSelectMenuBuilder>().addComponents(
+    new UserSelectMenuBuilder().setCustomId('user').setPlaceholder('User')
+  );
 
 interface IBuildDonorEmbed {
   donor?: IDonor;
@@ -194,10 +201,16 @@ const buildDonorEmbed = async ({donor, userId, client}: IBuildDonorEmbed) => {
       name: 'PROFILE',
       value: [
         `**Status:** ${
-          donor ? (donor.expiresAt.getTime() > Date.now() ? 'Active' : 'Expired') : 'Non-donor'
+          donor
+            ? donor.expiresAt.getTime() > Date.now()
+              ? 'Active'
+              : 'Expired'
+            : 'Non-donor'
         }`,
         `**Tier:** ${donor?.tier ? capitalizeFirstLetters(donor.tier) : '-'}`,
-        `**Expires:** ${donor ? timestampHelper.relative({time: donor.expiresAt}) : '-'}`,
+        `**Expires:** ${
+          donor ? timestampHelper.relative({time: donor.expiresAt}) : '-'
+        }`,
         `**Token:** ${donor?.tier ? DONOR_TOKEN_AMOUNT[donor.tier] : '0'}`,
       ].join('\n'),
       inline: false,
@@ -206,8 +219,11 @@ const buildDonorEmbed = async ({donor, userId, client}: IBuildDonorEmbed) => {
       name: 'BOOSTED GUILDS',
       value: boostedServers.length
         ? boostedServers
-          .map((guild, index) => `\`[${index + 1}]\` **${guild.name}** - ${guild.token}`)
-          .join('\n')
+            .map(
+              (guild, index) =>
+                `\`[${index + 1}]\` **${guild.name}** - ${guild.token}`
+            )
+            .join('\n')
         : '-',
       inline: false,
     }
@@ -222,7 +238,7 @@ const buildDonorEmbed = async ({donor, userId, client}: IBuildDonorEmbed) => {
 const fetchUser = async (client: Client, userId?: string) =>
   userId
     ? await djsUserHelper.getUser({
-      userId,
-      client,
-    })
+        userId,
+        client,
+      })
     : null;

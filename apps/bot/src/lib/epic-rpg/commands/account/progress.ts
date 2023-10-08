@@ -1,6 +1,6 @@
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {Channel, Client, Embed, Guild, Message, User} from 'discord.js';
-import {IMessageEmbedChecker} from '../../../../types/utils';
+import type {Channel, Client, Embed, Guild, Message, User} from 'discord.js';
+import type {IMessageEmbedChecker} from '../../../../types/utils';
 import embedReaders from '../../embed-readers';
 import commandHelper from '../../../epic-helper/command-helper';
 
@@ -12,7 +12,13 @@ interface IRpgProfile {
   isSlashCommand: boolean;
 }
 
-export const rpgProgress = ({client, message, author, isSlashCommand, server}: IRpgProfile) => {
+export const rpgProgress = ({
+  client,
+  message,
+  author,
+  isSlashCommand,
+  server,
+}: IRpgProfile) => {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     client,
@@ -46,7 +52,13 @@ interface IRpgProfileSuccess {
   author: User;
 }
 
-const rpgProgressSuccess = async ({embed, server, client, channel, author}: IRpgProfileSuccess) => {
+const rpgProgressSuccess = async ({
+  embed,
+  server,
+  client,
+  channel,
+  author,
+}: IRpgProfileSuccess) => {
   const progress = embedReaders.progress({
     embed,
   });

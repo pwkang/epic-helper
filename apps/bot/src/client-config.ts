@@ -1,4 +1,5 @@
-import {ClientOptions, IntentsBitField, Message, Options} from 'discord.js';
+import type {ClientOptions, Message} from 'discord.js';
+import {IntentsBitField, Options} from 'discord.js';
 import ms from 'ms';
 import {EPIC_RPG_ID} from '@epic-helper/constants';
 

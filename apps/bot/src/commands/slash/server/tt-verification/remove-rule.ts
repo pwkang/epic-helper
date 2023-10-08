@@ -1,6 +1,9 @@
 import commandHelper from '../../../../lib/epic-helper/command-helper';
 import djsInteractionHelper from '../../../../lib/discordjs/interaction';
-import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
+import {
+  USER_ACC_OFF_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS,
+} from '@epic-helper/constants';
 import {SLASH_COMMAND} from '../../constant';
 
 export default <SlashCommand>{
@@ -16,7 +19,10 @@ export default <SlashCommand>{
   },
   builder: (subcommand) =>
     subcommand.addRoleOption((option) =>
-      option.setName('role').setDescription('Role to remove from verified users').setRequired(true)
+      option
+        .setName('role')
+        .setDescription('Role to remove from verified users')
+        .setRequired(true)
     ),
   execute: async (client, interaction) => {
     if (!interaction.inGuild() || !interaction.guild) return;

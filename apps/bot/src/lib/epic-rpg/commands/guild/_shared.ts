@@ -1,10 +1,11 @@
-import {Client, Embed, EmbedBuilder, Guild, User} from 'discord.js';
+import type {Client, Embed, Guild, User} from 'discord.js';
+import {EmbedBuilder} from 'discord.js';
 import {upgraidService} from '../../../../services/database/upgraid.service';
 import {guildService} from '../../../../services/database/guild.service';
 import {_renderThisWeekUpgraidListEmbed} from '../../../epic-helper/command-helper/guild/embed/this-week-upgraid-list';
 import {djsMessageHelper} from '../../../discordjs/message';
 import commandHelper from '../../../epic-helper/command-helper';
-import {IGuild} from '@epic-helper/models';
+import type {IGuild} from '@epic-helper/models';
 import {djsMemberHelper} from '../../../discordjs/member';
 
 interface ISendRecordsToGuildChannel {
@@ -114,7 +115,11 @@ export interface IGetUserGuildRoles {
   userId: string;
 }
 
-export const getUserGuildRoles = async ({server, userId, client}: IGetUserGuildRoles) => {
+export const getUserGuildRoles = async ({
+  server,
+  userId,
+  client,
+}: IGetUserGuildRoles) => {
   const serverMember = await djsMemberHelper.getMember({
     serverId: server.id,
     client,

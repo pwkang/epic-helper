@@ -22,7 +22,11 @@ export default <PrefixCommand>{
   },
   execute: async (client, message, args) => {
     const type = args[2];
-    if (!Object.values(CUSTOM_MESSAGE_TYPES_DISPLAY_NAME).includes(type.toLowerCase())) {
+    if (
+      !Object.values(CUSTOM_MESSAGE_TYPES_DISPLAY_NAME).includes(
+        type.toLowerCase()
+      )
+    ) {
       return djsMessageHelper.reply({
         client,
         message,
@@ -85,4 +89,11 @@ export default <PrefixCommand>{
 };
 
 const extractReminderMessage = (message: string) =>
-  message.split('set').slice(1).join('set').trim().split(' ').slice(1).join(' ');
+  message
+    .split('set')
+    .slice(1)
+    .join('set')
+    .trim()
+    .split(' ')
+    .slice(1)
+    .join(' ');

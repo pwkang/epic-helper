@@ -18,14 +18,22 @@ const filterKeyword = (keyword: string): string[] =>
   keyword
     .toLowerCase()
     .split(' ')
-    .filter((item) => regexParent.test(item) || regexChild.test(item) || regexRange);
+    .filter(
+      (item) => regexParent.test(item) || regexChild.test(item) || regexRange
+    );
 
-export const getUpdateQuery = <T>({on, off, toggleInfo}: IGetUpdateQuery): UpdateQuery<T> => {
+export const getUpdateQuery = <T>({
+  on,
+  off,
+  toggleInfo,
+}: IGetUpdateQuery): UpdateQuery<T> => {
   const itemOn = on
     ? filterKeyword(on).flatMap((item) => getPathsFromKeyword(item, toggleInfo))
     : [];
   const itemOff = off
-    ? filterKeyword(off).flatMap((item) => getPathsFromKeyword(item, toggleInfo))
+    ? filterKeyword(off).flatMap((item) =>
+        getPathsFromKeyword(item, toggleInfo)
+      )
     : [];
   const query: Record<string, boolean> = {};
 
@@ -97,7 +105,12 @@ interface IFindPath {
   childIndex?: number;
 }
 
-const findPath = ({toggleInfo, groupIndex, parentIndex, childIndex}: IFindPath): string | null => {
+const findPath = ({
+  toggleInfo,
+  groupIndex,
+  parentIndex,
+  childIndex,
+}: IFindPath): string | null => {
   const parent = toggleInfo[groupIndex]?.children[parentIndex] ?? null;
 
   if (!parent) return null;

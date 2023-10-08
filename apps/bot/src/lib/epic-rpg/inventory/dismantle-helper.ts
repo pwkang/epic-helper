@@ -1,7 +1,10 @@
-import {IInventoryItem} from '../embed-readers/inventory.reader';
-import {RpgArea} from '../../../types/rpg.types';
+import type {IInventoryItem} from '../embed-readers/inventory.reader';
+import type {RpgArea} from '../../../types/rpg.types';
 
-type IDismantleEverything = (inventory: IInventoryItem, currentArea?: RpgArea) => IInventoryItem;
+type IDismantleEverything = (
+  inventory: IInventoryItem,
+  currentArea?: RpgArea
+) => IInventoryItem;
 
 const dismantleRecommend: IDismantleEverything = (inventory, currentArea) => {
   const newInventory = new InitDismantle(inventory);
@@ -38,7 +41,11 @@ const dismantleRecommend: IDismantleEverything = (inventory, currentArea) => {
         .dismantleEpicFish()
         .dismantleGoldenFish();
     } else if (currentArea <= 9) {
-      newInventory.dismantleMegaLog().dismantleSuperLog().dismantleEpicLog().dismantleBanana();
+      newInventory
+        .dismantleMegaLog()
+        .dismantleSuperLog()
+        .dismantleEpicLog()
+        .dismantleBanana();
     } else if (currentArea <= 10) {
       newInventory.dismantleBanana();
     } else if (currentArea <= 15) {

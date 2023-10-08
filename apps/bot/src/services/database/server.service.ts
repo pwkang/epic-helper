@@ -1,7 +1,8 @@
 import {mongoClient} from '@epic-helper/services';
-import {IEnchantChannel, IServer, serverSchema} from '@epic-helper/models';
-import {RPG_RANDOM_EVENTS} from '@epic-helper/constants';
-import {UpdateQuery} from 'mongoose';
+import type {IEnchantChannel, IServer} from '@epic-helper/models';
+import {serverSchema} from '@epic-helper/models';
+import type {RPG_RANDOM_EVENTS} from '@epic-helper/constants';
+import type {UpdateQuery} from 'mongoose';
 import {typedObjectEntries} from '@epic-helper/utils';
 import {redisServerAccount} from '../redis/server-account.redis';
 import mongooseLeanDefaults from 'mongoose-lean-defaults';
@@ -20,7 +21,10 @@ interface IRegisterServerProps {
   name: string;
 }
 
-const registerServer = async ({serverId, name}: IRegisterServerProps): Promise<IServer> => {
+const registerServer = async ({
+  serverId,
+  name,
+}: IRegisterServerProps): Promise<IServer> => {
   const server = await getServer({serverId});
 
   if (!server) {
@@ -39,7 +43,9 @@ interface IGetServerProps {
   serverId: string;
 }
 
-const getServer = async ({serverId}: IGetServerProps): Promise<IServer | null> => {
+const getServer = async ({
+  serverId,
+}: IGetServerProps): Promise<IServer | null> => {
   const cachedServer = await redisServerAccount.getServer(serverId);
   if (cachedServer) return cachedServer;
   const server = await dbServer.findOne({serverId}).lean({defaults: true});
@@ -64,7 +70,9 @@ interface IGetEnchantChannels {
   serverId: string;
 }
 
-const getEnchantChannels = async ({serverId}: IGetEnchantChannels): Promise<IEnchantChannel[]> => {
+const getEnchantChannels = async ({
+  serverId,
+}: IGetEnchantChannels): Promise<IEnchantChannel[]> => {
   const server = await getServer({serverId});
 
   return server?.settings?.enchant?.channels ?? [];
@@ -75,7 +83,10 @@ interface IAddEnchantChannels {
   channels: IEnchantChannel[];
 }
 
-const addEnchantChannels = async ({serverId, channels}: IAddEnchantChannels) => {
+const addEnchantChannels = async ({
+  serverId,
+  channels,
+}: IAddEnchantChannels) => {
   await dbServer.findOneAndUpdate(
     {serverId},
     {
@@ -94,7 +105,10 @@ interface IRemoveEnchantChannels {
   channelIds: string[];
 }
 
-const removeEnchantChannels = async ({serverId, channelIds}: IRemoveEnchantChannels) => {
+const removeEnchantChannels = async ({
+  serverId,
+  channelIds,
+}: IRemoveEnchantChannels) => {
   await dbServer.findOneAndUpdate(
     {serverId},
     {
@@ -116,7 +130,11 @@ interface IUpdateEnchantChannel {
   settings: IEnchantChannel;
 }
 
-const updateEnchantChannel = async ({serverId, channelId, settings}: IUpdateEnchantChannel) => {
+const updateEnchantChannel = async ({
+  serverId,
+  channelId,
+  settings,
+}: IUpdateEnchantChannel) => {
   await dbServer.findOneAndUpdate(
     {serverId, 'settings.enchant.channels.channelId': channelId},
     {
@@ -151,7 +169,10 @@ interface IUpdateEnchantMuteDuration {
   duration: number;
 }
 
-const updateEnchantMuteDuration = async ({serverId, duration}: IUpdateEnchantMuteDuration) => {
+const updateEnchantMuteDuration = async ({
+  serverId,
+  duration,
+}: IUpdateEnchantMuteDuration) => {
   await dbServer.findOneAndUpdate(
     {serverId},
     {
@@ -165,7 +186,9 @@ const updateEnchantMuteDuration = async ({serverId, duration}: IUpdateEnchantMut
 
 interface IUpdateRandomEvents {
   serverId: string;
-  randomEvents: Partial<Record<ValuesOf<typeof RPG_RANDOM_EVENTS>, string | null>>;
+  randomEvents: Partial<
+    Record<ValuesOf<typeof RPG_RANDOM_EVENTS>, string | null>
+  >;
 }
 
 const updateRandomEvents = async ({
@@ -192,7 +215,10 @@ interface ISetTTVerificationChannel {
   channelId: string;
 }
 
-const setTTVerificationChannel = async ({serverId, channelId}: ISetTTVerificationChannel) => {
+const setTTVerificationChannel = async ({
+  serverId,
+  channelId,
+}: ISetTTVerificationChannel) => {
   await dbServer.findOneAndUpdate(
     {serverId},
     {
@@ -209,10 +235,17 @@ interface IIsTTVerificationRuleExists {
   roleId: string;
 }
 
-const isTTVerificationRuleExists = async ({serverId, roleId}: IIsTTVerificationRuleExists) => {
+const isTTVerificationRuleExists = async ({
+  serverId,
+  roleId,
+}: IIsTTVerificationRuleExists) => {
   const server = await getServer({serverId});
 
-  return server?.settings.ttVerification.rules.some((rule) => rule.roleId === roleId) ?? false;
+  return (
+    server?.settings.ttVerification.rules.some(
+      (rule) => rule.roleId === roleId
+    ) ?? false
+  );
 };
 
 interface ISetTTVerificationRule {
@@ -270,7 +303,10 @@ interface IRemoveTTVerificationRule {
   roleId: string;
 }
 
-const removeTTVerificationRule = async ({serverId, roleId}: IRemoveTTVerificationRule) => {
+const removeTTVerificationRule = async ({
+  serverId,
+  roleId,
+}: IRemoveTTVerificationRule) => {
   await dbServer.findOneAndUpdate(
     {serverId},
     {
@@ -388,7 +424,9 @@ const removeTokens = async ({serverId, userId, tokens}: IRemoveTokens) => {
   const isUserExists = server?.tokens.some((token) => token.userId === userId);
 
   if (!isUserExists || !server) return;
-  const tokenBoosted = server.tokens.find((token) => token.userId === userId)?.amount;
+  const tokenBoosted = server.tokens.find(
+    (token) => token.userId === userId
+  )?.amount;
   if (!tokenBoosted) return;
   const toRemove = tokens === undefined || tokens >= tokenBoosted;
   if (toRemove) {
@@ -483,7 +521,10 @@ interface IAddServerAdminRoles {
   rolesId: string[];
 }
 
-const addServerAdminRoles = async ({serverId, rolesId}: IAddServerAdminRoles) => {
+const addServerAdminRoles = async ({
+  serverId,
+  rolesId,
+}: IAddServerAdminRoles) => {
   await dbServer.findOneAndUpdate(
     {serverId},
     {
@@ -503,7 +544,10 @@ interface IRemoveServerAdminRoles {
   rolesId: string[];
 }
 
-const removeServerAdminRoles = async ({serverId, rolesId}: IRemoveServerAdminRoles) => {
+const removeServerAdminRoles = async ({
+  serverId,
+  rolesId,
+}: IRemoveServerAdminRoles) => {
   await dbServer.findOneAndUpdate(
     {serverId},
     {
@@ -523,7 +567,11 @@ interface IClearServerAdminRoles {
 }
 
 const clearServerAdminRoles = async ({serverId}: IClearServerAdminRoles) => {
-  await dbServer.findOneAndUpdate({serverId}, {$set: {'settings.admin.rolesId': []}}, {new: true});
+  await dbServer.findOneAndUpdate(
+    {serverId},
+    {$set: {'settings.admin.rolesId': []}},
+    {new: true}
+  );
   return await getServer({serverId});
 };
 
@@ -542,7 +590,11 @@ interface IResetToggle {
 }
 
 const resetServerToggle = async ({serverId}: IResetToggle) => {
-  await dbServer.findOneAndUpdate({serverId}, {$unset: {toggle: ''}}, {new: true});
+  await dbServer.findOneAndUpdate(
+    {serverId},
+    {$unset: {toggle: ''}},
+    {new: true}
+  );
   return await getServer({serverId});
 };
 

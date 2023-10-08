@@ -1,7 +1,8 @@
-import {Embed, User} from 'discord.js';
+import type {Embed, User} from 'discord.js';
 import {convertRomanToNumber} from '../../../utils/roman-conversion';
 import ms from 'ms';
 import {convertPetIdToNum, typedObjectEntries} from '@epic-helper/utils';
+import type {TSkillTierStr} from '@epic-helper/constants';
 import {
   RPG_PET_ADV_STATUS,
   RPG_PET_LABEL,
@@ -9,9 +10,8 @@ import {
   RPG_PET_SKILL_LABEL,
   RPG_PET_SKILL_SPECIAL,
   RPG_PET_SKILL_TIER,
-  TSkillTierStr,
 } from '@epic-helper/constants';
-import {IUserPet} from '@epic-helper/models';
+import type {IUserPet} from '@epic-helper/models';
 
 export interface IReadPets {
   embed: Embed;
@@ -47,34 +47,46 @@ const getPetStatus = (fieldValue: string) => {
     return RPG_PET_ADV_STATUS.idle;
   } else if (fieldValue.includes('back from adventure')) {
     return RPG_PET_ADV_STATUS.back;
-  } else if (['learning', 'drilling', 'finding'].some((type) => fieldValue.includes(type))) {
+  } else if (
+    ['learning', 'drilling', 'finding'].some((type) =>
+      fieldValue.includes(type)
+    )
+  ) {
     return RPG_PET_ADV_STATUS.adventure;
   }
   return RPG_PET_ADV_STATUS.idle;
 };
 
 const getPetId = (fieldName: string) => {
-  return convertPetIdToNum(fieldName.split('\n')[0].split(' ')[1].replaceAll('`', ''));
+  return convertPetIdToNum(
+    fieldName.split('\n')[0].split(' ')[1].replaceAll('`', '')
+  );
 };
 const getPetName = (fieldName: string) => {
-  return typedObjectEntries(RPG_PET_LABEL).find(([, name]) => fieldName.includes(name))?.[0];
+  return typedObjectEntries(RPG_PET_LABEL).find(([, name]) =>
+    fieldName.includes(name)
+  )?.[0];
 };
 
 const getPetSkills = (fieldValue: string) => {
   const skill: IUserPet['skills'] = {};
   for (const line of fieldValue.split('\n')) {
-    const skillName = typedObjectEntries(RPG_PET_SKILL_LABEL).find(([, skill]) =>
-      line.includes(`${skill}**`)
+    const skillName = typedObjectEntries(RPG_PET_SKILL_LABEL).find(
+      ([, skill]) => line.includes(`${skill}**`)
     )?.[0];
     const skillTier = line.match(/\[(SS\+|SS|S|A|B|C|D|E|F)]/)?.[1];
     if (!skillName) continue;
     if (!skillTier) continue;
 
-    if (skillName in RPG_PET_SKILL_ASCEND || skillName in RPG_PET_SKILL_SPECIAL) {
+    if (
+      skillName in RPG_PET_SKILL_ASCEND ||
+      skillName in RPG_PET_SKILL_SPECIAL
+    ) {
       const filteredSkillName = skillName as
         | keyof typeof RPG_PET_SKILL_ASCEND
         | keyof typeof RPG_PET_SKILL_SPECIAL;
-      skill[filteredSkillName] = RPG_PET_SKILL_TIER[skillTier.toLowerCase() as TSkillTierStr];
+      skill[filteredSkillName] =
+        RPG_PET_SKILL_TIER[skillTier.toLowerCase() as TSkillTierStr];
     }
   }
   return skill;

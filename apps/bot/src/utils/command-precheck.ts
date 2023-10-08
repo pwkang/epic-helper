@@ -1,17 +1,20 @@
-import {
+import type {
   BaseInteraction,
   BaseMessageOptions,
   Client,
   Guild,
   Message,
-  PermissionsBitField,
   User,
 } from 'discord.js';
+import {PermissionsBitField} from 'discord.js';
 import {userService} from '../services/database/user.service';
-import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
+import {
+  USER_ACC_OFF_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS,
+} from '@epic-helper/constants';
 import embedProvider from '../lib/epic-helper/embeds';
 import {djsMessageHelper} from '../lib/discordjs/message';
-import {ICommandPreCheck} from '../types/utils';
+import type {ICommandPreCheck} from '../types/utils';
 import {djsMemberHelper} from '../lib/discordjs/member';
 import {serverService} from '../services/database/server.service';
 import djsInteractionHelper from '../lib/discordjs/interaction';
@@ -130,7 +133,12 @@ interface IResponse {
   message?: Message;
 }
 
-const response = async ({message, interaction, client, messageOptions}: IResponse) => {
+const response = async ({
+  message,
+  interaction,
+  client,
+  messageOptions,
+}: IResponse) => {
   if (interaction) {
     await djsInteractionHelper.replyInteraction({
       client,

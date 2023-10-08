@@ -1,10 +1,11 @@
 import timestampHelper from '../../discordjs/timestamp';
 import {BOT_COLOR, BOT_EMOJI, RPG_COMMAND_TYPE} from '@epic-helper/constants';
-import {IUser, IUserReminder} from '@epic-helper/models';
-import {EmbedBuilder, User} from 'discord.js';
+import type {IUser, IUserReminder} from '@epic-helper/models';
+import type {User} from 'discord.js';
+import {EmbedBuilder} from 'discord.js';
 import {_parseCommandString} from '../reminders/message-generator/parse-command-name';
 import {capitalizeFirstLetters} from '@epic-helper/utils';
-import {IToggleUserCheckerReturnType} from '../toggle-checker/user';
+import type {IToggleUserCheckerReturnType} from '../toggle-checker/user';
 
 interface ICooldownItem {
   type: ValuesOf<typeof RPG_COMMAND_TYPE>;
@@ -122,9 +123,9 @@ const getUserCooldownEmbed = ({
       const cooldown = userReminder.find((c) => c.type === item.type);
       const commandName = cooldown
         ? _parseCommandString({
-          toggleChecker,
-          ...cooldown,
-        }).replace('RPG ', '')
+            toggleChecker,
+            ...cooldown,
+          }).replace('RPG ', '')
         : item.name;
       const readyIn =
         !!cooldown?.readyAt &&

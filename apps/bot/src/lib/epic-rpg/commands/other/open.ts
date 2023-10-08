@@ -1,4 +1,4 @@
-import {Client, Embed, Message, User} from 'discord.js';
+import type {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import embedReaders from '../../embed-readers';
 import {userService} from '../../../../services/database/user.service';
@@ -10,7 +10,12 @@ interface IRpgOpenLootbox {
   isSlashCommand: boolean;
 }
 
-export function rpgOpenLootbox({client, message, author, isSlashCommand}: IRpgOpenLootbox) {
+export function rpgOpenLootbox({
+  client,
+  message,
+  author,
+  isSlashCommand,
+}: IRpgOpenLootbox) {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     author,
@@ -43,7 +48,10 @@ interface IRpgOpenLootboxSuccess {
   author: User;
 }
 
-const rpgOpenLootboxSuccess = async ({embed, author}: IRpgOpenLootboxSuccess) => {
+const rpgOpenLootboxSuccess = async ({
+  embed,
+  author,
+}: IRpgOpenLootboxSuccess) => {
   const openedItems = embedReaders.lootbox({embed});
   if (openedItems.ruby) {
     await userService.updateUserRubyAmount({
@@ -75,4 +83,4 @@ interface IIsNotEnoughLootbox {
 }
 
 const isNotEnoughLootbox = ({content}: IIsNotEnoughLootbox) =>
-  content.includes('you don\'t have that many of this lootbox type');
+  content.includes("you don't have that many of this lootbox type");

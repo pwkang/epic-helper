@@ -1,4 +1,5 @@
-import {Client, EmbedBuilder, User} from 'discord.js';
+import type {Client, User} from 'discord.js';
+import {EmbedBuilder} from 'discord.js';
 import {userDuelService} from '../../../../services/database/user-duel.service';
 import {BOT_COLOR} from '@epic-helper/constants';
 import {guildDuelService} from '../../../../services/database/guild-duel.service';
@@ -10,7 +11,11 @@ interface IUndoDuelRecord {
   commandChannelId?: string;
 }
 
-export const _undoDuelRecord = async ({user, client, commandChannelId}: IUndoDuelRecord) => {
+export const _undoDuelRecord = async ({
+  user,
+  client,
+  commandChannelId,
+}: IUndoDuelRecord) => {
   const result = await userDuelService.undoDuelRecord({
     userId: user.id,
   });

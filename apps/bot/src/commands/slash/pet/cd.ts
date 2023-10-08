@@ -1,7 +1,13 @@
 import {itemListingHelper} from '../../../utils/item-listing-helper';
-import {paginatePetCd, PET_CD_PET_PAGE} from '../../../lib/epic-helper/features/pets/pet-cd';
+import {
+  paginatePetCd,
+  PET_CD_PET_PAGE,
+} from '../../../lib/epic-helper/features/pets/pet-cd';
 import {userPetServices} from '../../../services/database/user-pet.service';
-import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
+import {
+  USER_ACC_OFF_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS,
+} from '@epic-helper/constants';
 import {SLASH_COMMAND} from '../constant';
 
 export default <SlashCommand>{

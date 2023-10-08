@@ -1,4 +1,4 @@
-import {IServer} from '@epic-helper/models';
+import type {IServer} from '@epic-helper/models';
 import {redisService} from './redis.service';
 import {toServer} from '../transformer/server.transformer';
 

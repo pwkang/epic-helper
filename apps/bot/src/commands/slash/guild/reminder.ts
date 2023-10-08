@@ -1,6 +1,9 @@
 import {SLASH_COMMAND} from '../constant';
 import djsInteractionHelper from '../../../lib/discordjs/interaction';
-import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
+import {
+  USER_ACC_OFF_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS,
+} from '@epic-helper/constants';
 import commandHelper from '../../../lib/epic-helper/command-helper';
 
 export default <SlashCommand>{
@@ -21,29 +24,40 @@ export default <SlashCommand>{
           .setRequired(true)
       )
       .addChannelOption((option) =>
-        option.setName('channel').setDescription('Channel to send reminder message')
+        option
+          .setName('channel')
+          .setDescription('Channel to send reminder message')
       )
       .addNumberOption((option) =>
         option
           .setName('target-stealth')
-          .setDescription('Target stealth to switch reminder from upgrade to raid')
+          .setDescription(
+            'Target stealth to switch reminder from upgrade to raid'
+          )
       )
       .addStringOption((option) =>
         option
           .setName('upgrade-message')
-          .setDescription('Message to send when stealth is below target stealth')
+          .setDescription(
+            'Message to send when stealth is below target stealth'
+          )
       )
       .addStringOption((option) =>
         option
           .setName('raid-message')
-          .setDescription('Message to send when stealth is above target stealth')
+          .setDescription(
+            'Message to send when stealth is above target stealth'
+          )
       ),
   execute: async (client, interaction) => {
     const role = interaction.options.getRole('role', true);
     const channel = interaction.options.getChannel('channel');
-    const targetStealth = interaction.options.getNumber('target-stealth') ?? undefined;
-    const upgradeMessage = interaction.options.getString('upgrade-message') ?? undefined;
-    const raidMessage = interaction.options.getString('raid-message') ?? undefined;
+    const targetStealth =
+      interaction.options.getNumber('target-stealth') ?? undefined;
+    const upgradeMessage =
+      interaction.options.getString('upgrade-message') ?? undefined;
+    const raidMessage =
+      interaction.options.getString('raid-message') ?? undefined;
 
     const configureGuild = await commandHelper.guildSettings.configure({
       server: interaction.guild!,

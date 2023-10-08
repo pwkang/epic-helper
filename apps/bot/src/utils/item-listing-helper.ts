@@ -1,4 +1,4 @@
-import {
+import type {
   BaseMessageOptions,
   ChatInputCommandInteraction,
   Client,
@@ -108,7 +108,12 @@ interface IGenerateResponse {
   options: Awaited<ReturnType<typeof createPage>>;
 }
 
-const generateResponse = async ({client, message, interaction, options}: IGenerateResponse) => {
+const generateResponse = async ({
+  client,
+  message,
+  interaction,
+  options,
+}: IGenerateResponse) => {
   let event;
   if (message) {
     event = await djsMessageHelper.interactiveSend({

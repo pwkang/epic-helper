@@ -1,9 +1,15 @@
-import {EmbedBuilder, EmbedField, User} from 'discord.js';
+import type {EmbedField, User} from 'discord.js';
+import {EmbedBuilder} from 'discord.js';
 import {convertNumToPetId} from '@epic-helper/utils';
 import {convertNumberToRoman} from '../../../../utils/roman-conversion';
 import timestampHelper from '../../../discordjs/timestamp';
-import {IUserPet} from '@epic-helper/models';
-import {BOT_COLOR, BOT_EMOJI, RPG_PET_ADV_STATUS, RPG_PET_TYPE} from '@epic-helper/constants';
+import type {IUserPet} from '@epic-helper/models';
+import {
+  BOT_COLOR,
+  BOT_EMOJI,
+  RPG_PET_ADV_STATUS,
+  RPG_PET_TYPE,
+} from '@epic-helper/constants';
 import {userPetServices} from '../../../../services/database/user-pet.service';
 
 export const PET_CD_PET_PAGE = 21;
@@ -52,7 +58,9 @@ const generateEmbedFields = (pets: IUserPet[]) => {
   const fields: EmbedField[] = [];
   for (const pet of pets) {
     const epic = pet.skills.epic ? BOT_EMOJI.petSkill.epic : '';
-    const timeTraveler = pet.skills.timeTraveler ? BOT_EMOJI.petSkill.timeTraveler : '';
+    const timeTraveler = pet.skills.timeTraveler
+      ? BOT_EMOJI.petSkill.timeTraveler
+      : '';
     const petId = convertNumToPetId(pet.petId);
     const petTier = convertNumberToRoman(pet.tier);
     const petNameKey = Object.entries(RPG_PET_TYPE).find(
@@ -72,9 +80,16 @@ const generateEmbedFields = (pets: IUserPet[]) => {
 
 const getStatusText = (pet: IUserPet) => {
   const readyAt = pet.readyAt ? new Date(pet.readyAt).getTime() : null;
-  if (pet.status === RPG_PET_ADV_STATUS.back || (readyAt && readyAt < Date.now())) {
+  if (
+    pet.status === RPG_PET_ADV_STATUS.back ||
+    (readyAt && readyAt < Date.now())
+  ) {
     return '`BACK FROM ADVENTURE`';
-  } else if (pet.status === RPG_PET_ADV_STATUS.adventure && readyAt && readyAt > Date.now()) {
+  } else if (
+    pet.status === RPG_PET_ADV_STATUS.adventure &&
+    readyAt &&
+    readyAt > Date.now()
+  ) {
     const readyTime = timestampHelper.relative({
       time: readyAt,
     });
@@ -83,4 +98,5 @@ const getStatusText = (pet: IUserPet) => {
   return '**Idle**';
 };
 
-const isPetInIdleStatus = (pet: IUserPet) => pet.status === RPG_PET_ADV_STATUS.idle;
+const isPetInIdleStatus = (pet: IUserPet) =>
+  pet.status === RPG_PET_ADV_STATUS.idle;

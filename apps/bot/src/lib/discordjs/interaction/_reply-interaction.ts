@@ -1,12 +1,12 @@
-import {
+import type {
   BaseInteraction,
   Client,
-  Collection,
   InteractionReplyOptions,
   InteractionResponse,
   InteractionUpdateOptions,
   StringSelectMenuInteraction,
 } from 'discord.js';
+import {Collection} from 'discord.js';
 import ms from 'ms';
 import {logger} from '@epic-helper/utils';
 import _updateInteraction from './_update-interaction';

@@ -1,6 +1,10 @@
 import {Schema} from 'mongoose';
 import {IUser} from './user.type';
-import {BOT_TIME_FORMAT, BOT_TIMEZONE_LIST, RPG_DONOR_TIER} from '@epic-helper/constants';
+import {
+  BOT_TIME_FORMAT,
+  BOT_TIMEZONE_LIST,
+  RPG_DONOR_TIER,
+} from '@epic-helper/constants';
 
 export const userSchema = new Schema<IUser>({
   userId: {

@@ -1,15 +1,17 @@
-import {
-  ActionRowBuilder,
+import type {
   BaseMessageOptions,
-  EmbedBuilder,
   Guild,
-  StringSelectMenuBuilder,
   StringSelectMenuInteraction,
   User,
 } from 'discord.js';
+import {
+  ActionRowBuilder,
+  EmbedBuilder,
+  StringSelectMenuBuilder,
+} from 'discord.js';
 import {BOT_COLOR, RPG_ENCHANT_LEVEL} from '@epic-helper/constants';
 import {userService} from '../../../../services/database/user.service';
-import {IServer} from '@epic-helper/models';
+import type {IServer} from '@epic-helper/models';
 import {serverService} from '../../../../services/database/server.service';
 import messageFormatter from '../../../discordjs/message-formatter';
 

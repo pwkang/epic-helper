@@ -1,5 +1,5 @@
-import {Embed, User} from 'discord.js';
-import {IUserDuelUser} from '@epic-helper/models';
+import type {Embed, User} from 'discord.js';
+import type {IUserDuelUser} from '@epic-helper/models';
 
 interface IDuelResultReader {
   embed: Embed;
@@ -7,10 +7,14 @@ interface IDuelResultReader {
 }
 
 const duelResultReader = ({embed, users}: IDuelResultReader) => {
-  const winner = users.find((user) => embed.fields[0].name === `**${user.username}** won!`);
+  const winner = users.find(
+    (user) => embed.fields[0].name === `**${user.username}** won!`
+  );
   const exp: IUserDuelUser[] = [];
   for (const user of users) {
-    const regex = new RegExp(`\\*\\*${user.username}\\*\\*'s guild got (\\d) XP`);
+    const regex = new RegExp(
+      `\\*\\*${user.username}\\*\\*'s guild got (\\d) XP`
+    );
     const expGained = embed.fields[0].value.match(regex)?.[1];
     exp.push({
       userId: user.id,

@@ -1,15 +1,15 @@
-import {IUser, IUserReminder} from '@epic-helper/models';
-import {Client} from 'discord.js';
+import type {IUser, IUserReminder} from '@epic-helper/models';
+import type {Client} from 'discord.js';
 import {_parseUser} from './parse-user';
 import {_parseCommandString} from './parse-command-name';
 import {_parseSlash} from './parse-slash';
 import {getReminderMessageTemplate} from './get-reminder-message-template';
 import {_parseEmoji} from './parse-emoji';
 import {interpolateMessage} from '../../../../utils/message-interpolation';
-import {BOT_CUSTOM_MESSAGE_VARIABLES} from '@epic-helper/constants';
+import type {BOT_CUSTOM_MESSAGE_VARIABLES} from '@epic-helper/constants';
 import {convertNumToPetId} from '@epic-helper/utils';
 import timestampHelper from '../../../discordjs/timestamp';
-import {IToggleUserCheckerReturnType} from '../../toggle-checker/user';
+import type {IToggleUserCheckerReturnType} from '../../toggle-checker/user';
 
 interface IGenerateCustomMessage {
   client: Client;
@@ -46,22 +46,25 @@ export const generateUserReminderMessage = ({
   const hasCountdown = toggleChecker?.countdown;
   const nextReminderTime = nextReminder?.readyAt
     ? timestampHelper.relative({
-      time: nextReminder?.readyAt?.getTime(),
-    })
+        time: nextReminder?.readyAt?.getTime(),
+      })
     : '';
   const nextReminderType = nextReminder
     ? _parseCommandString({
-      toggleChecker,
-      ...nextReminder,
-    })
+        toggleChecker,
+        ...nextReminder,
+      })
     : '';
   const nextReminderString =
-    hasCountdown && nextReminder ? `\`${nextReminderType}\` ready **${nextReminderTime}**` : '';
+    hasCountdown && nextReminder
+      ? `\`${nextReminderType}\` ready **${nextReminderTime}**`
+      : '';
 
   /**
    * Ready Pets Ids
    */
-  const readyPetIdsString = readyPetsId?.map(convertNumToPetId).join(', ') ?? '';
+  const readyPetIdsString =
+    readyPetsId?.map(convertNumToPetId).join(', ') ?? '';
 
   /**
    * Emoji
@@ -85,7 +88,9 @@ export const generateUserReminderMessage = ({
     userId,
   });
 
-  const variables: Partial<Record<ValuesOf<typeof BOT_CUSTOM_MESSAGE_VARIABLES>, string>> = {
+  const variables: Partial<
+    Record<ValuesOf<typeof BOT_CUSTOM_MESSAGE_VARIABLES>, string>
+  > = {
     user: userString,
     cmd_upper: commandString.toUpperCase(),
     cmd_lower: commandString.toLowerCase(),

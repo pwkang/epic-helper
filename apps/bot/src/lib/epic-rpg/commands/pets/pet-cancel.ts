@@ -1,6 +1,6 @@
-import {Client, Message, User} from 'discord.js';
+import type {Client, Message, User} from 'discord.js';
 import {convertNumToPetId, convertPetIdToNum} from '@epic-helper/utils';
-import {IUserPet} from '@epic-helper/models';
+import type {IUserPet} from '@epic-helper/models';
 import {RPG_PET_ADV_STATUS} from '@epic-helper/constants';
 import {userPetServices} from '../../../../services/database/user-pet.service';
 import {djsMessageHelper} from '../../../discordjs/message';
@@ -73,7 +73,9 @@ const unregisterPetFromAdventure = async ({
   });
 
   return {
-    content: `**${petsToCancel.length}** adventure(s) cancelled (\`${petsToCancel
+    content: `**${
+      petsToCancel.length
+    }** adventure(s) cancelled (\`${petsToCancel
       .map((p) => convertNumToPetId(p.petId))
       .join(' ')}\`)`,
   };
@@ -84,15 +86,21 @@ interface IIsPetSuccessfullyCancelled {
   author: User;
 }
 
-const isPetSuccessfullyCancelled = ({message, author}: IIsPetSuccessfullyCancelled): boolean =>
-  message.mentions.has(author.id) && message.content.includes('pet adventure(s) cancelled');
+const isPetSuccessfullyCancelled = ({
+  message,
+  author,
+}: IIsPetSuccessfullyCancelled): boolean =>
+  message.mentions.has(author.id) &&
+  message.content.includes('pet adventure(s) cancelled');
 
 interface IExtractCancelledPetAmount {
   message: Message;
 }
 
 const extractCancelledPetAmount = ({message}: IExtractCancelledPetAmount) => {
-  const amount = message.content.match(/\*\*(\d+)\*\* pet adventure\(s\) cancelled/)?.[1];
+  const amount = message.content.match(
+    /\*\*(\d+)\*\* pet adventure\(s\) cancelled/
+  )?.[1];
   return amount ? parseInt(amount) : 0;
 };
 
@@ -108,7 +116,10 @@ interface IFetchPetsToCancel {
   selectedPets: string[];
 }
 
-const fetchPetsToCancel = async ({selectedPets, userId}: IFetchPetsToCancel) => {
+const fetchPetsToCancel = async ({
+  selectedPets,
+  userId,
+}: IFetchPetsToCancel) => {
   const nonEpicPetsId = selectedPets.filter((p) => p !== 'epic');
   const petsToCancel: IUserPet[] = [];
   if (hasCancelEpic(selectedPets)) {
@@ -130,7 +141,8 @@ const fetchPetsToCancel = async ({selectedPets, userId}: IFetchPetsToCancel) => 
   return petsToCancel.filter((p) => p.status !== RPG_PET_ADV_STATUS.idle);
 };
 
-const hasCancelEpic = (pets: string[]) => pets.map((p) => p.toLowerCase()).includes('epic');
+const hasCancelEpic = (pets: string[]) =>
+  pets.map((p) => p.toLowerCase()).includes('epic');
 
 /**
  *  ===================================================
@@ -151,17 +163,20 @@ const isFailToCancelPet = ({message, author}: IChecker): boolean =>
   isSelectedPetHasTimeTraveller({message, author});
 
 const isPetSelectedMultipleTimes = ({message, author}: IChecker): boolean =>
-  message.mentions.has(author.id) && message.content.includes('has been selected more than once');
+  message.mentions.has(author.id) &&
+  message.content.includes('has been selected more than once');
 
 const isInvalidCancelPetId = ({message, author}: IChecker): boolean =>
   message.mentions.has(author.id) &&
   message.content.includes('what pet(s) are you trying to select?');
 
 const isPetNotOnAdventure = ({message, author}: IChecker): boolean =>
-  message.mentions.has(author.id) && message.content.includes('is not in an adventure');
+  message.mentions.has(author.id) &&
+  message.content.includes('is not in an adventure');
 
 const isNoPetMeetRequirement = ({message, author}: IChecker): boolean =>
-  message.mentions.has(author.id) && message.content.includes('no pets met the requirement');
+  message.mentions.has(author.id) &&
+  message.content.includes('no pets met the requirement');
 
 const isSelectedPetHasTimeTraveller = ({message, author}: IChecker): boolean =>
   message.mentions.has(author.id) &&

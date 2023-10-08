@@ -1,11 +1,12 @@
-import {BaseMessageOptions, Client, EmbedBuilder, Guild, User} from 'discord.js';
+import type {BaseMessageOptions, Client, Guild, User} from 'discord.js';
+import {EmbedBuilder} from 'discord.js';
 import {guildDuelService} from '../../../../services/database/guild-duel.service';
 import {BOT_COLOR} from '@epic-helper/constants';
 import messageFormatter from '../../../discordjs/message-formatter';
 import {userChecker} from '../../user-checker';
 import {toggleGuildChecker} from '../../toggle-checker/guild';
 import {sendDuelLog} from './send-duel-log';
-import {IGuild} from '@epic-helper/models';
+import type {IGuild} from '@epic-helper/models';
 import {guildService} from '../../../../services/database/guild.service';
 import {verifyGuild} from '../../../epic-rpg/commands/guild/_shared';
 
@@ -135,7 +136,13 @@ interface IModifyDuelLog {
   guild: IGuild;
 }
 
-const getModifyLogEmbed = ({target, curr, prev, author, guild}: IModifyDuelLog) => {
+const getModifyLogEmbed = ({
+  target,
+  curr,
+  prev,
+  author,
+  guild,
+}: IModifyDuelLog) => {
   return new EmbedBuilder()
     .setColor(BOT_COLOR.embed)
     .setAuthor({name: `${guild.info.name} — duel log`})

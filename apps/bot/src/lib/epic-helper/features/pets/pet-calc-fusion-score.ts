@@ -1,12 +1,13 @@
-import {EmbedBuilder, EmbedField, User} from 'discord.js';
+import type {EmbedField, User} from 'discord.js';
+import {EmbedBuilder} from 'discord.js';
 import {convertPetIdToNum} from '@epic-helper/utils';
 import {generateEmbedPetFields} from './pet-list';
-import {IUserPet} from '@epic-helper/models';
+import type {IUserPet} from '@epic-helper/models';
+import type {RPG_PET_SKILL_TIER} from '@epic-helper/constants';
 import {
   BOT_COLOR,
   BOT_EMOJI,
   RPG_PET_SKILL,
-  RPG_PET_SKILL_TIER,
   RPG_PET_SKILL_TIER_REVERSE,
 } from '@epic-helper/constants';
 import {userPetServices} from '../../../../services/database/user-pet.service';
@@ -51,15 +52,22 @@ const skillsToFuse: TFusionSkills[] = [
 interface ICalcSelectedPetsFusionScoreReturn {
   type: TFusionSkills;
   total: number;
-  pets: Partial<Record<ValuesOf<typeof RPG_PET_SKILL_TIER>, IUserPet['petId'][]>>;
+  pets: Partial<
+    Record<ValuesOf<typeof RPG_PET_SKILL_TIER>, IUserPet['petId'][]>
+  >;
 }
 
-const calcSelectedPetsFusionScore = (pets: IUserPet[]): ICalcSelectedPetsFusionScoreReturn[] => {
+const calcSelectedPetsFusionScore = (
+  pets: IUserPet[]
+): ICalcSelectedPetsFusionScoreReturn[] => {
   const result: ICalcSelectedPetsFusionScoreReturn[] = [];
   for (const skill of skillsToFuse) {
     const petsWithSkill = pets.filter((pet) => pet.skills[skill]);
     if (!petsWithSkill.length) continue;
-    const totalScore = petsWithSkill.reduce((acc, pet) => acc + pet.skills[skill]!, 0);
+    const totalScore = petsWithSkill.reduce(
+      (acc, pet) => acc + pet.skills[skill]!,
+      0
+    );
     const petsBySkillTier = petsWithSkill.reduce((acc, pet) => {
       if (!pet.skills[skill]) return acc;
       const tier = pet.skills[skill] as ValuesOf<typeof RPG_PET_SKILL_TIER>;
@@ -95,7 +103,11 @@ interface IGenerateEmbed {
   author: User;
 }
 
-const generateEmbed = ({result, pets, author}: IGenerateEmbed): EmbedBuilder[] => {
+const generateEmbed = ({
+  result,
+  pets,
+  author,
+}: IGenerateEmbed): EmbedBuilder[] => {
   const embeds: EmbedBuilder[] = [];
   for (let i = 0; i < pets.length; i += 21) {
     const _pets = pets.slice(i, i + 21);
@@ -124,19 +136,24 @@ interface IGetScoreSummaryDescription {
   pets: IUserPet[];
 }
 
-const getScoreSummaryDescription = ({result, pets}: IGetScoreSummaryDescription): string => {
+const getScoreSummaryDescription = ({
+  result,
+  pets,
+}: IGetScoreSummaryDescription): string => {
   const recommendedFusionScore = calcRecommendedFusionScore(pets);
-  let description = '```\n' + '               | Target | Selected | Enough ? \n';
+  let description =
+    '```\n' + '               | Target | Selected | Enough ? \n';
   for (let i = 0; i < result.length; i++) {
     const {total, type} = result[i];
     const skillName = RPG_PET_SKILL[type];
     const recommendedScore = recommendedFusionScore[i + 1];
     const totalScore = total;
     const isEnough = totalScore >= recommendedScore;
-    description += `${skillName.padEnd(14, ' ')} | ${String(recommendedScore).padEnd(
-      6,
-      ' '
-    )} | ${totalScore.toString().padEnd(8, ' ')} | ${isEnough ? '✓' : '✗'}\n`;
+    description += `${skillName.padEnd(14, ' ')} | ${String(
+      recommendedScore
+    ).padEnd(6, ' ')} | ${totalScore.toString().padEnd(8, ' ')} | ${
+      isEnough ? '✓' : '✗'
+    }\n`;
   }
   description += '```';
   return description;
@@ -146,7 +163,9 @@ interface IGetScoreSummaryFields {
   result: ICalcSelectedPetsFusionScoreReturn[];
 }
 
-const getScoreSummaryFields = ({result}: IGetScoreSummaryFields): EmbedField[] => {
+const getScoreSummaryFields = ({
+  result,
+}: IGetScoreSummaryFields): EmbedField[] => {
   const fields: EmbedField[] = [];
   for (let i = 0; i < result.length; i++) {
     const {pets, total, type} = result[i];
@@ -159,7 +178,9 @@ const getScoreSummaryFields = ({result}: IGetScoreSummaryFields): EmbedField[] =
       const petIds = pets[i as ValuesOf<typeof RPG_PET_SKILL_TIER>];
       if (!petIds) continue;
       const tierLabel =
-        RPG_PET_SKILL_TIER_REVERSE[Number(i) as ValuesOf<typeof RPG_PET_SKILL_TIER>].toUpperCase();
+        RPG_PET_SKILL_TIER_REVERSE[
+          Number(i) as ValuesOf<typeof RPG_PET_SKILL_TIER>
+        ].toUpperCase();
       fieldValue += `**${tierLabel}** x${petIds.length}\n`;
     }
     fields.push({

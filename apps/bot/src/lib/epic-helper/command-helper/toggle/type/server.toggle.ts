@@ -1,9 +1,10 @@
-import {Guild} from 'discord.js';
+import type {Guild} from 'discord.js';
 import {serverService} from '../../../../../services/database/server.service';
-import {IServer} from '@epic-helper/models';
+import type {IServer} from '@epic-helper/models';
 import {toggleDisplayList} from '../toggle.list';
 import {renderEmbed} from '../toggle.embed';
-import {getUpdateQuery, IUpdateToggle} from '../toggle.helper';
+import type {IUpdateToggle} from '../toggle.helper';
+import {getUpdateQuery} from '../toggle.helper';
 
 interface IGetServerToggle {
   server: Guild;
@@ -59,7 +60,10 @@ interface IGetServerToggleEmbed {
   server: Guild;
 }
 
-const getServerToggleEmbed = ({serverAccount, server}: IGetServerToggleEmbed) => {
+const getServerToggleEmbed = ({
+  serverAccount,
+  server,
+}: IGetServerToggleEmbed) => {
   return renderEmbed({
     embedsInfo: toggleDisplayList.server(serverAccount.toggle),
   }).setAuthor({

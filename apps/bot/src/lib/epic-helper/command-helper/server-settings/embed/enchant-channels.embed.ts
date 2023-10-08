@@ -1,5 +1,6 @@
-import {EmbedBuilder, EmbedField, Guild} from 'discord.js';
-import {IServer} from '@epic-helper/models';
+import type {EmbedField, Guild} from 'discord.js';
+import {EmbedBuilder} from 'discord.js';
+import type {IServer} from '@epic-helper/models';
 import {BOT_COLOR} from '@epic-helper/constants';
 import convertMsToHumanReadableString from '../../../../../utils/convert-ms-to-human-readable-string';
 
@@ -8,7 +9,10 @@ interface IGetEnchantChannelsEmbed {
   enchantSettings: IServer['settings']['enchant'];
 }
 
-const _getEnchantChannelsEmbed = ({guild, enchantSettings}: IGetEnchantChannelsEmbed) => {
+const _getEnchantChannelsEmbed = ({
+  guild,
+  enchantSettings,
+}: IGetEnchantChannelsEmbed) => {
   const embed = new EmbedBuilder()
     .setAuthor({
       name: `${guild.name}'s enchant channels`,
@@ -26,10 +30,10 @@ const _getEnchantChannelsEmbed = ({guild, enchantSettings}: IGetEnchantChannelsE
       name: 'CHANNELS',
       value: enchantSettings.channels.length
         ? enchantSettings.channels
-          .map((channel) => {
-            return `<#${channel.channelId}>`;
-          })
-          .join(', ')
+            .map((channel) => {
+              return `<#${channel.channelId}>`;
+            })
+            .join(', ')
         : '-',
       inline: true,
     },

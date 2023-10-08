@@ -1,4 +1,4 @@
-import {Client, Embed, Message, User} from 'discord.js';
+import type {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import getTrainingAnswer from '../../../epic-helper/features/training-helper';
 import {djsMessageHelper} from '../../../discordjs/message';
@@ -24,7 +24,12 @@ interface IRpgTraining {
   isSlashCommand: boolean;
 }
 
-export function rpgTraining({client, message, author, isSlashCommand}: IRpgTraining) {
+export function rpgTraining({
+  client,
+  message,
+  author,
+  isSlashCommand,
+}: IRpgTraining) {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     channelId: message.channel.id,
@@ -124,7 +129,12 @@ interface IEncounteringPet {
   wildPetMessage: Message;
 }
 
-const encounteringPet = async ({embed, author, client, channelId}: IEncounteringPet) => {
+const encounteringPet = async ({
+  embed,
+  author,
+  client,
+  channelId,
+}: IEncounteringPet) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker?.petCatch) return;
 
@@ -135,7 +145,9 @@ const encounteringPet = async ({embed, author, client, channelId}: IEncountering
   await djsMessageHelper.send({
     options: {
       ...messageOptions,
-      content: toggleChecker?.mentions.petCatch ? messageFormatter.user(author.id) : undefined,
+      content: toggleChecker?.mentions.petCatch
+        ? messageFormatter.user(author.id)
+        : undefined,
     },
     channelId,
     client,
@@ -160,7 +172,9 @@ interface IIsRpgTrainingQuestion {
 }
 
 const isRpgTrainingQuestion = ({author, content}: IIsRpgTrainingQuestion) => {
-  return content.includes(author.username) && content.includes('is training in');
+  return (
+    content.includes(author.username) && content.includes('is training in')
+  );
 };
 
 interface IIsEncounteringPet {
@@ -169,4 +183,6 @@ interface IIsEncounteringPet {
 }
 
 const isEncounteringPet = ({embed, author}: IIsEncounteringPet) =>
-  [author.username, 'IS APPROACHING'].every((msg) => embed.fields[0]?.name?.includes(msg));
+  [author.username, 'IS APPROACHING'].every((msg) =>
+    embed.fields[0]?.name?.includes(msg)
+  );

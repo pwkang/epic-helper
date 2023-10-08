@@ -1,6 +1,9 @@
 import djsInteractionHelper from '../../../lib/discordjs/interaction';
 import {userService} from '../../../services/database/user.service';
-import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
+import {
+  USER_ACC_OFF_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS,
+} from '@epic-helper/constants';
 import {SLASH_COMMAND} from '../constant';
 
 export default <SlashCommand>{
@@ -18,7 +21,9 @@ export default <SlashCommand>{
         input.setName('hp').setDescription('Target HP to heal').setMinValue(1)
       )
       .addBooleanOption((option) =>
-        option.setName('remove').setDescription('Remove and disable heal reminder')
+        option
+          .setName('remove')
+          .setDescription('Remove and disable heal reminder')
       ),
   execute: async (client, interaction) => {
     const userId = interaction.user.id;

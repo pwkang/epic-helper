@@ -1,5 +1,5 @@
 import {guildService} from '../../../../services/database/guild.service';
-import {
+import type {
   BaseInteraction,
   BaseMessageOptions,
   Guild,
@@ -22,7 +22,11 @@ interface IShowSettings {
   type: ValuesOf<typeof GUILD_SETTINGS_PAGE_TYPE>;
 }
 
-export const _showSettings = async ({server, type, initialGuildRoleId}: IShowSettings) => {
+export const _showSettings = async ({
+  server,
+  type,
+  initialGuildRoleId,
+}: IShowSettings) => {
   const guilds = await guildService.getAllGuilds({
     serverId: server.id,
   });
@@ -56,16 +60,22 @@ export const _showSettings = async ({server, type, initialGuildRoleId}: IShowSet
     switch (type) {
       case GUILD_SETTINGS_PAGE_TYPE.settings:
         return _getGuildSettingsEmbed({
-          guildAccount: guilds.find((guild) => guild.roleId === guildSelector.getGuildId())!,
+          guildAccount: guilds.find(
+            (guild) => guild.roleId === guildSelector.getGuildId()
+          )!,
         });
       case GUILD_SETTINGS_PAGE_TYPE.toggle:
         return getGuildToggleEmbed({
-          guildAccount: guilds.find((guild) => guild.roleId === guildSelector.getGuildId())!,
+          guildAccount: guilds.find(
+            (guild) => guild.roleId === guildSelector.getGuildId()
+          )!,
         });
     }
   }
 
-  function replyInteraction({interaction}: IReplyInteraction): BaseMessageOptions {
+  function replyInteraction({
+    interaction,
+  }: IReplyInteraction): BaseMessageOptions {
     guildSelector.readInteraction({
       interaction,
     });

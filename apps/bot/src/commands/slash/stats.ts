@@ -1,6 +1,13 @@
-import {getStatsEmbeds, statsActionRow, TEventTypes} from '../../lib/epic-helper/features/stats';
+import type {TEventTypes} from '../../lib/epic-helper/features/stats';
+import {
+  getStatsEmbeds,
+  statsActionRow,
+} from '../../lib/epic-helper/features/stats';
 import djsInteractionHelper from '../../lib/discordjs/interaction';
-import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
+import {
+  USER_ACC_OFF_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS,
+} from '@epic-helper/constants';
 import {SLASH_COMMAND} from './constant';
 
 export default <SlashCommand>{

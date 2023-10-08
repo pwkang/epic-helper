@@ -92,7 +92,10 @@ interface IFindCurrentUpgraid {
   guildRoleId: string;
 }
 
-const findCurrentUpgraid = async ({serverId, guildRoleId}: IFindCurrentUpgraid) => {
+const findCurrentUpgraid = async ({
+  serverId,
+  guildRoleId,
+}: IFindCurrentUpgraid) => {
   return dbUpgraid.findOne({
     serverId,
     roleId: guildRoleId,

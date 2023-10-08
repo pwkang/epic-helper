@@ -1,12 +1,12 @@
-import {
+import type {
   BaseInteraction,
   Client,
-  Collection,
   InteractionUpdateOptions,
   MessageCreateOptions,
   MessagePayload,
   StringSelectMenuInteraction,
 } from 'discord.js';
+import {Collection} from 'discord.js';
 import ms from 'ms';
 import {djsMessageHelper} from './index';
 import djsInteractionHelper from '../interaction';
@@ -24,12 +24,9 @@ type TEventCB = (
   customId: string
 ) => Promise<InteractionUpdateOptions | null> | InteractionUpdateOptions | null;
 
-export default async function _sendInteractiveMessage<EventType extends string>({
-  channelId,
-  options,
-  client,
-  onStop,
-}: SendInteractiveMessageProps) {
+export default async function _sendInteractiveMessage<
+  EventType extends string
+>({channelId, options, client, onStop}: SendInteractiveMessageProps) {
   const channel = client.channels.cache.get(channelId);
   if (!channel) return;
 
@@ -50,7 +47,10 @@ export default async function _sendInteractiveMessage<EventType extends string>(
     allEventsFn = callback;
   }
 
-  function on(customId: EventType extends undefined ? string : EventType, callback: TEventCB) {
+  function on(
+    customId: EventType extends undefined ? string : EventType,
+    callback: TEventCB
+  ) {
     registeredEvents.set(customId, callback);
   }
 

@@ -1,5 +1,6 @@
-import {Embed, EmbedBuilder, EmbedField, MessageCreateOptions, User} from 'discord.js';
-import {RpgArea} from '../../../../types/rpg.types';
+import type {Embed, EmbedField, MessageCreateOptions, User} from 'discord.js';
+import {EmbedBuilder} from 'discord.js';
+import type {RpgArea} from '../../../../types/rpg.types';
 import tradeHelper from '../../../epic-rpg/inventory/trade-helper';
 import dismantleHelper from '../../../epic-rpg/inventory/dismantle-helper';
 import embedReaders from '../../../epic-rpg/embed-readers';
@@ -93,7 +94,9 @@ const buildCalcSTTEmbed = ({items, author, total}: IBuildCalcSTTEmbed) => {
         .map((item) => {
           const value = items[item.key];
           if (!value) return '';
-          return `${item.emoji ?? ''} **${item.label}**: ${value.toLocaleString()}`;
+          return `${item.emoji ?? ''} **${
+            item.label
+          }**: ${value.toLocaleString()}`;
         })
         .filter((value) => value)
         .join('\n'),
@@ -126,8 +129,8 @@ export const getCalcInfo: IGetCalcInfo = (args) => ({
       ? 'top'
       : null
     : Number(args[1]) <= 15 && Number(args[1]) >= 1
-      ? (Number(args[1]) as RpgArea)
-      : null,
+    ? (Number(args[1]) as RpgArea)
+    : null,
   level: isNaN(Number(args[2])) ? null : Number(args[2]),
 });
 
@@ -166,96 +169,112 @@ const groupItems: IGroupItems[] = [
         label: 'Ultimate Log',
         emoji: BOT_EMOJI.working.ultimateLog,
       },
+
       // 'superFish',
       {
         key: 'superFish',
         label: 'Super Fish',
         emoji: BOT_EMOJI.working.superFish,
       },
+
       // 'ruby',
       {
         key: 'ruby',
         label: 'Ruby',
         emoji: BOT_EMOJI.working.ruby,
       },
+
       // 'wolfSkin',
       {
         key: 'wolfSkin',
         label: 'Wolf Skin',
         emoji: BOT_EMOJI.drops.wolfSkin,
       },
+
       // 'zombieEye',
       {
         key: 'zombieEye',
         label: 'Zombie Eye',
         emoji: BOT_EMOJI.drops.zombieEye,
       },
+
       // 'unicornHorn',
       {
         key: 'unicornHorn',
         label: 'Unicorn Horn',
         emoji: BOT_EMOJI.drops.unicornHorn,
       },
+
       // 'mermaidHair',
       {
         key: 'mermaidHair',
         label: 'Mermaid Hair',
         emoji: BOT_EMOJI.drops.mermaidHair,
       },
+
       // 'chip',
       {
         key: 'chip',
         label: 'Chip',
         emoji: BOT_EMOJI.drops.chip,
       },
+
       // 'dragonScale',
       {
         key: 'dragonScale',
         label: 'Dragon Scale',
         emoji: BOT_EMOJI.drops.dragonScale,
       },
+
       // 'darkEnergy',
       {
         key: 'darkEnergy',
         label: 'Dark Energy',
         emoji: BOT_EMOJI.drops.darkEnergy,
       },
+
       // 'potato',
       {
         key: 'potato',
         label: 'Potato',
         emoji: BOT_EMOJI.farming.potato,
       },
+
       // 'carrot',
       {
         key: 'carrot',
         label: 'Carrot',
         emoji: BOT_EMOJI.farming.carrot,
       },
+
       // 'bread',
       {
         key: 'bread',
         label: 'Bread',
         emoji: BOT_EMOJI.farming.bread,
       },
+
       // 'seed',
       {
         key: 'seed',
         label: 'Seed',
         emoji: BOT_EMOJI.farming.seed,
       },
+
       // 'potatoSeed',
       {
         key: 'potatoSeed',
         label: 'Potato Seed',
         emoji: BOT_EMOJI.farming.potatoSeed,
       },
+
       // 'carrotSeed',
       {
         key: 'carrotSeed',
         label: 'Carrot Seed',
         emoji: BOT_EMOJI.farming.carrotSeed,
       },
+
       // 'breadSeed',
       {
         key: 'breadSeed',
@@ -273,48 +292,56 @@ const groupItems: IGroupItems[] = [
         label: 'Life Potion',
         emoji: BOT_EMOJI.items.lifePotion,
       },
+
       // 'lotteryTicket',
       {
         key: 'lotteryTicket',
         label: 'Lottery Ticket',
         emoji: BOT_EMOJI.items.lotteryTicket,
       },
+
       // 'commonLootbox',
       {
         key: 'commonLootbox',
         label: 'Common Lootbox',
         emoji: BOT_EMOJI.lootbox.commonLootbox,
       },
+
       // 'uncommonLootbox',
       {
         key: 'uncommonLootbox',
         label: 'Uncommon Lootbox',
         emoji: BOT_EMOJI.lootbox.uncommonLootbox,
       },
+
       // 'rareLootbox',
       {
         key: 'rareLootbox',
         label: 'Rare Lootbox',
         emoji: BOT_EMOJI.lootbox.rareLootbox,
       },
+
       // 'epicLootbox',
       {
         key: 'epicLootbox',
         label: 'Epic Lootbox',
         emoji: BOT_EMOJI.lootbox.epicLootbox,
       },
+
       // 'edgyLootbox',
       {
         key: 'edgyLootbox',
         label: 'Edgy Lootbox',
         emoji: BOT_EMOJI.lootbox.edgyLootbox,
       },
+
       // 'omegaLootbox',
       {
         key: 'omegaLootbox',
         label: 'Omega Lootbox',
         emoji: BOT_EMOJI.lootbox.omegaLootbox,
       },
+
       // 'godlyLootbox',
       {
         key: 'godlyLootbox',

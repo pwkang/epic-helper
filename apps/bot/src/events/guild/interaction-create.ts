@@ -1,4 +1,5 @@
-import {BaseInteraction, Client, Events} from 'discord.js';
+import type {BaseInteraction, Client} from 'discord.js';
+import {Events} from 'discord.js';
 import {preCheckCommand} from '../../utils/command-precheck';
 
 export default <BotEvent>{
@@ -27,7 +28,8 @@ export default <BotEvent>{
 };
 
 const searchSlashCommand = (client: Client, interaction: BaseInteraction) => {
-  if (!interaction.isCommand() || !interaction.isChatInputCommand()) return null;
+  if (!interaction.isCommand() || !interaction.isChatInputCommand())
+    return null;
   const commandName = interaction.commandName;
   const subcommandGroupName = interaction.options.getSubcommandGroup();
   const subcommandName = interaction.options.getSubcommand(false);

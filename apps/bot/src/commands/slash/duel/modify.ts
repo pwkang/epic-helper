@@ -1,5 +1,8 @@
 import {SLASH_COMMAND} from '../constant';
-import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
+import {
+  USER_ACC_OFF_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS,
+} from '@epic-helper/constants';
 import commandHelper from '../../../lib/epic-helper/command-helper';
 import djsInteractionHelper from '../../../lib/discordjs/interaction';
 
@@ -11,13 +14,24 @@ export default <SlashCommand>{
   builder: (subcommand) =>
     subcommand
       .addUserOption((option) =>
-        option.setName('user').setDescription('User to modify').setRequired(true)
+        option
+          .setName('user')
+          .setDescription('User to modify')
+          .setRequired(true)
       )
       .addNumberOption((option) =>
-        option.setName('count').setDescription('Number of duels').setRequired(true).setMinValue(0)
+        option
+          .setName('count')
+          .setDescription('Number of duels')
+          .setRequired(true)
+          .setMinValue(0)
       )
       .addNumberOption((option) =>
-        option.setName('exp').setDescription('Exp gained').setRequired(true).setMinValue(0)
+        option
+          .setName('exp')
+          .setDescription('Exp gained')
+          .setRequired(true)
+          .setMinValue(0)
       ),
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.skip,

@@ -1,5 +1,6 @@
-import {Client} from 'discord.js';
-import {evalOptions, getInfo} from 'discord-hybrid-sharding';
+import type {Client} from 'discord.js';
+import type {evalOptions} from 'discord-hybrid-sharding';
+import {getInfo} from 'discord-hybrid-sharding';
 
 interface IBroadcastEval<T> {
   client: Client;

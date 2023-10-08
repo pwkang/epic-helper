@@ -1,9 +1,14 @@
-import {Client, Embed, EmbedBuilder, Message, User} from 'discord.js';
+import type {Client, Embed, Message, User} from 'discord.js';
+import {EmbedBuilder} from 'discord.js';
 import ms from 'ms';
 import embedReaders from '../../embed-readers';
 import {userPetServices} from '../../../../services/database/user-pet.service';
-import {BOT_COLOR, RPG_PET_SKILL_ASCEND, RPG_PET_SKILL_SPECIAL} from '@epic-helper/constants';
-import {IUserPet} from '@epic-helper/models';
+import {
+  BOT_COLOR,
+  RPG_PET_SKILL_ASCEND,
+  RPG_PET_SKILL_SPECIAL,
+} from '@epic-helper/constants';
+import type {IUserPet} from '@epic-helper/models';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {createMessageEditedListener} from '../../../../utils/message-edited-listener';
 import {djsMessageHelper} from '../../../discordjs/message';
@@ -16,7 +21,12 @@ interface IRpgPet {
   isSlashCommand: boolean;
 }
 
-export const rpgPetList = async ({message, author, isSlashCommand, client}: IRpgPet) => {
+export const rpgPetList = async ({
+  message,
+  author,
+  isSlashCommand,
+  client,
+}: IRpgPet) => {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     author,
@@ -48,7 +58,12 @@ interface IUpdatedPets {
   updatedPets: IUserPet[];
 }
 
-const rpgPetSuccess = async ({author, embed, message, client}: IRpgPetSuccess) => {
+const rpgPetSuccess = async ({
+  author,
+  embed,
+  message,
+  client,
+}: IRpgPetSuccess) => {
   const updatedPets: IUpdatedPets = {
     newPets: [],
     updatedPets: [],
@@ -67,7 +82,11 @@ const rpgPetSuccess = async ({author, embed, message, client}: IRpgPetSuccess) =
   if (!event) return;
   event.on(message.id, async (newMessage) => {
     if (isRpgPet({author, embed: newMessage.embeds[0]})) {
-      await updatePetsFromEmbed({embed: newMessage.embeds[0], author, updatedPets});
+      await updatePetsFromEmbed({
+        embed: newMessage.embeds[0],
+        author,
+        updatedPets,
+      });
 
       sentMessage = await sendResultEmbed({
         author,
@@ -125,7 +144,11 @@ interface IUpdatePetsFromEmbed {
   updatedPets: IUpdatedPets;
 }
 
-const updatePetsFromEmbed = async ({embed, author, updatedPets}: IUpdatePetsFromEmbed) => {
+const updatePetsFromEmbed = async ({
+  embed,
+  author,
+  updatedPets,
+}: IUpdatePetsFromEmbed) => {
   const pets = embedReaders.pets({embed, author});
   const dbPetsList = await userPetServices.getUserPets({
     userId: author.id,
@@ -189,11 +212,20 @@ const isPetUpdated = ({newPet, oldPet}: IIsPetUpdated) => {
   const skillNameList = Object.values({
     ...RPG_PET_SKILL_ASCEND,
     ...RPG_PET_SKILL_SPECIAL,
-  }) as (keyof typeof RPG_PET_SKILL_ASCEND | keyof typeof RPG_PET_SKILL_SPECIAL)[];
+  }) as (
+    | keyof typeof RPG_PET_SKILL_ASCEND
+    | keyof typeof RPG_PET_SKILL_SPECIAL
+  )[];
   const isSkillUpdated = skillNameList.some(
     (skillName) => newPet.skills[skillName] !== oldPet.skills[skillName]
   );
-  return isStatusUpdated || isSkillUpdated || isTierUpdated || isReadyAtUpdated || isNameUpdated;
+  return (
+    isStatusUpdated ||
+    isSkillUpdated ||
+    isTierUpdated ||
+    isReadyAtUpdated ||
+    isNameUpdated
+  );
 };
 
 // ======== Get the maximum pet id from the embed ========
@@ -203,7 +235,11 @@ interface IGetMaxPetId {
 }
 
 const getMaxPetId = ({embed}: IGetMaxPetId) => {
-  const num = embed.description?.split('\n')?.[1]?.split(' ')?.pop()?.split('/')[0];
+  const num = embed.description
+    ?.split('\n')?.[1]
+    ?.split(' ')
+    ?.pop()
+    ?.split('/')[0];
   return num ? parseInt(num) : 0;
 };
 

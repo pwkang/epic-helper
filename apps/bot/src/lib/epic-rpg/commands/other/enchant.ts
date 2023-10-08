@@ -1,10 +1,14 @@
-import {Client, Embed, Guild, Message, User} from 'discord.js';
+import type {Client, Embed, Guild, Message, User} from 'discord.js';
 import ms from 'ms';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import djsChannelHelper from '../../../discordjs/channel';
 import {djsMessageHelper} from '../../../discordjs/message';
 import timestampHelper from '../../../discordjs/timestamp';
-import {EPIC_RPG_ID, RPG_ENCHANT_LEVEL, RPG_ENCHANT_LEVEL_RANK} from '@epic-helper/constants';
+import {
+  EPIC_RPG_ID,
+  RPG_ENCHANT_LEVEL,
+  RPG_ENCHANT_LEVEL_RANK,
+} from '@epic-helper/constants';
 import {userService} from '../../../../services/database/user.service';
 import toggleServerChecker from '../../../epic-helper/toggle-checker/server';
 
@@ -27,7 +31,12 @@ interface IRpgEnchant {
   isSlashCommand: boolean;
 }
 
-export function rpgEnchant({client, message, author, isSlashCommand}: IRpgEnchant) {
+export function rpgEnchant({
+  client,
+  message,
+  author,
+  isSlashCommand,
+}: IRpgEnchant) {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     channelId: message.channel.id,
@@ -79,9 +88,14 @@ const rpgEnchantSuccess = async ({
     const equipmentType = Object.values(EQUIPMENT_TYPE).find((type) =>
       embed.description?.toLowerCase().includes(type)
     );
-    const targetTier = await userService.getUserEnchantTier({userId: author.id});
+    const targetTier = await userService.getUserEnchantTier({
+      userId: author.id,
+    });
     if (!targetTier || !enchantTier || !equipmentType) return;
-    if (RPG_ENCHANT_LEVEL_RANK[enchantTier] < RPG_ENCHANT_LEVEL_RANK[targetTier]) return;
+    if (
+      RPG_ENCHANT_LEVEL_RANK[enchantTier] < RPG_ENCHANT_LEVEL_RANK[targetTier]
+    )
+      return;
 
     const unmuteIn = timestampHelper.relative({
       time: new Date(Date.now() + ms('5s')),
