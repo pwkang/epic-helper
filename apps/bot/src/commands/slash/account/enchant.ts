@@ -18,11 +18,14 @@ export default <SlashCommand>{
       author: interaction.user,
       server: interaction.guild!,
     });
-    const event = await djsInteractionHelper.replyInteraction({
+    let event = await djsInteractionHelper.replyInteraction({
       client,
       interaction,
       options: setEnchantTier.render(),
       interactive: true,
+      onStop: () => {
+        event = undefined;
+      },
     });
     if (!event) return;
     event.every(async (interaction) => {

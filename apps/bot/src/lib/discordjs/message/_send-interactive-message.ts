@@ -15,6 +15,7 @@ export interface SendInteractiveMessageProps {
   client: Client;
   channelId: string;
   options: string | MessagePayload | MessageCreateOptions;
+  onStop?: () => void;
 }
 
 type TEventCB = (
@@ -26,6 +27,7 @@ export default async function _sendInteractiveMessage<EventType extends string>(
   channelId,
   options,
   client,
+  onStop,
 }: SendInteractiveMessageProps) {
   const channel = client.channels.cache.get(channelId);
   if (!channel) return;
@@ -72,6 +74,7 @@ export default async function _sendInteractiveMessage<EventType extends string>(
   function stop() {
     collector.stop();
     collector.removeAllListeners();
+    onStop?.();
   }
 
   function isEnded() {

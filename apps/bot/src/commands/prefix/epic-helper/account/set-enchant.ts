@@ -19,10 +19,13 @@ export default <PrefixCommand>{
       author: message.author,
       server: message.guild!,
     });
-    const event = await djsMessageHelper.interactiveSend({
+    let event = await djsMessageHelper.interactiveSend({
       client,
       channelId: message.channel.id,
       options: setEnchant.render(),
+      onStop: () => {
+        event = undefined;
+      },
     });
     if (!event) return;
     event.every(async (interaction) => {

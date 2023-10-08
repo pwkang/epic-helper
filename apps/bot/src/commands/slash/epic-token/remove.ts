@@ -16,11 +16,14 @@ export default <SlashCommand>{
     const removeToken = await commandHelper.epicToken.removeEpicToken({
       userId: interaction.user.id,
     });
-    const event = await djsInteractionHelper.replyInteraction({
+    let event = await djsInteractionHelper.replyInteraction({
       client,
       options: removeToken.render(),
       interaction,
       interactive: true,
+      onStop: () => {
+        event = undefined;
+      },
     });
     if (!event) return;
     event.every(async (interaction) => {

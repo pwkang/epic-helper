@@ -18,10 +18,13 @@ export default <PrefixCommand>{
     const setDonor = commandHelper.userAccount.setDonorP({
       author: message.author,
     });
-    const event = await djsMessageHelper.interactiveSend({
+    let event = await djsMessageHelper.interactiveSend({
       client,
       channelId: message.channel.id,
       options: setDonor.render(),
+      onStop: () => {
+        event = undefined;
+      },
     });
     if (!event) return;
     event.every(async (interaction, customId) => {

@@ -15,11 +15,14 @@ export default <SlashCommand>{
     const embeds = await getStatsEmbeds({
       author: interaction.user,
     });
-    const event = await djsInteractionHelper.replyInteraction<TEventTypes>({
+    let event = await djsInteractionHelper.replyInteraction<TEventTypes>({
       client,
       interaction,
       options: {embeds: [embeds.donor], components: [statsActionRow]},
       interactive: true,
+      onStop: () => {
+        event = undefined;
+      },
     });
     if (!event) return;
     event.on('default', async () => {

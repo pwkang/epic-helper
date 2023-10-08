@@ -20,7 +20,7 @@ export default <SlashCommand>{
     const userAccount = await userService.getUserAccount(interaction.user.id);
     const toggleChecker = await toggleUserChecker({userId: interaction.user.id});
     if (!userAccount || !toggleChecker) return;
-    const event = await djsInteractionHelper.replyInteraction({
+    let event = await djsInteractionHelper.replyInteraction({
       client,
       interaction,
       interactive: true,
@@ -30,6 +30,9 @@ export default <SlashCommand>{
         userAccount,
         toggleChecker,
       }),
+      onStop: () => {
+        event = undefined;
+      },
     });
     if (!event) return;
     for (const pageType of Object.values(CUSTOM_MESSAGE_PAGE_TYPE)) {

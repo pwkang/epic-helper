@@ -17,11 +17,14 @@ export default <SlashCommand>{
     const setDonor = commandHelper.userAccount.setDonorP({
       author: interaction.user,
     });
-    const event = await djsInteractionHelper.replyInteraction({
+    let event = await djsInteractionHelper.replyInteraction({
       client,
       interaction,
       options: setDonor.render(),
       interactive: true,
+      onStop: () => {
+        event = undefined;
+      },
     });
     if (!event) return;
     event.every(async (interaction, customId) => {

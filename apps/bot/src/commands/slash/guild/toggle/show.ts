@@ -21,11 +21,14 @@ export default <SlashCommand>{
       server: interaction.guild!,
       type: GUILD_SETTINGS_PAGE_TYPE.toggle,
     });
-    const event = await djsInteractionHelper.replyInteraction({
+    let event = await djsInteractionHelper.replyInteraction({
       client,
       interaction,
       options: guildSettings.getMessagePayload(),
       interactive: true,
+      onStop: () => {
+        event = undefined;
+      },
     });
     if (!event) return;
     event.every((interaction, customId) => {

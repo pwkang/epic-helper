@@ -30,11 +30,14 @@ export default <SlashCommand>{
       client,
     });
     const messageOptions = await configureGuild.deleteGuild();
-    const event = await djsInteractionHelper.replyInteraction({
+    let event = await djsInteractionHelper.replyInteraction({
       client,
       interaction,
       options: messageOptions,
       interactive: true,
+      onStop: () => {
+        event = undefined;
+      },
     });
     if (!event) return;
     event.every(async (interaction) => {
