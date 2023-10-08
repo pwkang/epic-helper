@@ -18,7 +18,7 @@ interface IRpgGuildRaid {
 
 export const rpgGuildRaid = async ({author, message, isSlashCommand, client}: IRpgGuildRaid) => {
   if (!message.inGuild() || !!message.mentions.users.size) return;
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     author,
     client,
     channelId: message.channel.id,
@@ -27,7 +27,7 @@ export const rpgGuildRaid = async ({author, message, isSlashCommand, client}: IR
   if (!event) return;
   event.on('embed', async (embed, collected) => {
     if (isGuildRaidSuccess({author, embed})) {
-      event.stop();
+      event?.stop();
       const result = await verifyGuild({
         client,
         server: message.guild,
@@ -71,8 +71,11 @@ export const rpgGuildRaid = async ({author, message, isSlashCommand, client}: IR
   });
   event.on('content', async (_, collected) => {
     if (!isUserDontHaveGuild({author, message: collected})) {
-      event.stop();
+      event?.stop();
     }
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 };

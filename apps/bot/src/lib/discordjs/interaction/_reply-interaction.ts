@@ -10,12 +10,14 @@ import {
 import ms from 'ms';
 import {logger} from '@epic-helper/utils';
 import _updateInteraction from './_update-interaction';
+import disableAllComponents from '../../../utils/disable-components';
 
 export interface IReplyInteraction {
   client: Client;
   interaction: BaseInteraction;
   options: InteractionReplyOptions;
   interactive?: boolean;
+  onStop?: () => void;
 }
 
 type TEventCB = (
@@ -28,6 +30,7 @@ export default async function _replyInteraction<T>({
   interactive,
   options,
   client,
+  onStop,
 }: IReplyInteraction) {
   if (!interaction.isRepliable() || interaction.replied) return;
   let interactionResponse: InteractionResponse | undefined;
@@ -49,7 +52,7 @@ export default async function _replyInteraction<T>({
   let allEventsFn: TEventCB | null = null;
   if (!channel) return;
   const collector = interactionResponse.createMessageComponentCollector({
-    idle: ms('1m'),
+    idle: ms('5s'),
   });
 
   function on(customId: T extends undefined ? string : T, callback: TEventCB) {
@@ -80,13 +83,15 @@ export default async function _replyInteraction<T>({
   function stop() {
     collector?.stop();
     collector?.removeAllListeners();
+    onStop?.();
   }
 
   collector?.on('end', async (collected, reason) => {
+    const lastMessage = collected.last()?.message ?? sentMessage;
     if (reason === 'idle') {
       try {
         await interactionResponse?.edit({
-          components: [],
+          components: disableAllComponents(lastMessage.components),
         });
       } catch (error: any) {
         logger({

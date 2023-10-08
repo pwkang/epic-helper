@@ -25,7 +25,7 @@ interface IRpgQuest {
 
 export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
   if (!message.inGuild()) return;
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     channelId: message.channel.id,
     client,
     author,
@@ -40,7 +40,7 @@ export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
         client,
         questAccepted: true,
       });
-      event.stop();
+      event?.stop();
     }
     if (isQuestDeclined({message: collected, author})) {
       await rpgQuestSuccess({
@@ -60,10 +60,10 @@ export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
   });
   event.on('embed', async (embed) => {
     if (isCompletingQuest({author, embed})) {
-      event.stop();
+      event?.stop();
     }
     if (isQuestOnGoing({author, embed})) {
-      event.stop();
+      event?.stop();
     }
     if (isArenaQuest({author, embed})) {
       await showArenaCooldown({
@@ -71,7 +71,7 @@ export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
         channelId: message.channel.id,
         client,
       });
-      event.stop();
+      event?.stop();
     }
     if (isMinibossQuest({author, embed})) {
       await showMinibossCooldown({
@@ -79,8 +79,11 @@ export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
         channelId: message.channel.id,
         client,
       });
-      event.stop();
+      event?.stop();
     }
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 }

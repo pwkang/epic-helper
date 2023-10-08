@@ -21,7 +21,7 @@ interface IRpgEpicQuest {
 
 export function rpgEpicQuest({client, message, author, isSlashCommand}: IRpgEpicQuest) {
   if (!message.inGuild()) return;
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     author,
     client,
     channelId: message.channel.id,
@@ -35,14 +35,15 @@ export function rpgEpicQuest({client, message, author, isSlashCommand}: IRpgEpic
         channelId: message.channel.id,
         client,
       });
+      event?.stop();
     }
   });
   event.on('content', async (content) => {
     if (isEpicHorseMissing({content})) {
-      event.stop();
+      event?.stop();
     }
     if (isHavingQuest({content})) {
-      event.stop();
+      event?.stop();
     }
   });
   event.on('cooldown', async (cooldown) => {
@@ -51,6 +52,9 @@ export function rpgEpicQuest({client, message, author, isSlashCommand}: IRpgEpic
       readyAt: new Date(Date.now() + cooldown),
       type: RPG_COMMAND_TYPE.quest,
     });
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 }

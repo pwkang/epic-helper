@@ -16,7 +16,7 @@ export interface IRpgGuild {
 
 export const rpgGuild = ({author, client, message, isSlashCommand}: IRpgGuild) => {
   if (!message.inGuild() || !!message.mentions.users.size) return;
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     channelId: message.channel.id,
     client,
     author,
@@ -24,7 +24,7 @@ export const rpgGuild = ({author, client, message, isSlashCommand}: IRpgGuild) =
   if (!event) return;
   event.on('embed', async (embed) => {
     if (isGuildSuccess({author, embed})) {
-      event.stop();
+      event?.stop();
       const result = await verifyGuild({
         client,
         server: message.guild,
@@ -50,6 +50,9 @@ export const rpgGuild = ({author, client, message, isSlashCommand}: IRpgGuild) =
         isSlashCommand,
       });
     }
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 };

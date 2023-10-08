@@ -46,7 +46,7 @@ interface IRpgCooldown {
 
 export const rpgCooldown = ({client, message, author, isSlashCommand}: IRpgCooldown) => {
   if (!message.inGuild()) return;
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     client,
     channelId: message.channel.id,
     author,
@@ -58,8 +58,11 @@ export const rpgCooldown = ({client, message, author, isSlashCommand}: IRpgCoold
         author,
         embed,
       });
-      event.stop();
+      event?.stop();
     }
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 };

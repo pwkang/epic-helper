@@ -11,10 +11,13 @@ export default <PrefixCommand>{
     const donor = commandHelper.freeDonor.listFreeDonors({
       client,
     });
-    const event = await djsMessageHelper.interactiveSend({
+    let event = await djsMessageHelper.interactiveSend({
       options: await donor.render(),
       client,
       channelId: message.channel.id,
+      onStop: () => {
+        event = undefined;
+      },
     });
     if (!event) return;
     event.every(async (interaction) => {

@@ -12,7 +12,7 @@ interface IRpgPetClaim {
 
 export const rpgPetClaim = async ({author, message, client, isSlashCommand}: IRpgPetClaim) => {
   if (!message.inGuild()) return;
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     channelId: message.channel.id,
     client,
     author: message.author,
@@ -20,18 +20,21 @@ export const rpgPetClaim = async ({author, message, client, isSlashCommand}: IRp
   if (!event) return;
   event.on('content', (_, collected) => {
     if (isNoPetsToClaim({message: collected, author})) {
-      event.stop();
+      event?.stop();
     }
   });
   event.on('embed', async (embed) => {
     if (isSuccessfullyClaimedPet({embed, author})) {
-      event.stop();
+      event?.stop();
       await rpgPetClaimSuccess({
         client,
         embed,
         author,
       });
     }
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 };

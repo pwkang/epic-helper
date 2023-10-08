@@ -12,7 +12,7 @@ interface IRpgSuccess {
 
 export const rpgTrade = ({client, message, author, isSlashCommand}: IRpgSuccess) => {
   if (!message.inGuild()) return;
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     author,
     channelId: message.channelId,
     client,
@@ -21,13 +21,16 @@ export const rpgTrade = ({client, message, author, isSlashCommand}: IRpgSuccess)
   event.on('embed', (embed) => {
     if (isRpgTrade({embed, author})) {
       rpgTradeSuccess({embed, author});
-      event.stop();
+      event?.stop();
     }
   });
   event.on('content', (content, collected) => {
     if (isNotEnoughItems({message: collected, author})) {
-      event.stop();
+      event?.stop();
     }
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 };

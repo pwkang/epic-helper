@@ -19,7 +19,7 @@ export const collectSelectedPets = async ({
   const readyIn = timestampHelper.relative({
     time: new Date(Date.now() + ms('5s')),
   });
-  const event = await djsMessageHelper.interactiveSend({
+  let event = await djsMessageHelper.interactiveSend({
     client,
     channelId: message.channel.id,
     options: {
@@ -29,16 +29,19 @@ export const collectSelectedPets = async ({
       ].join('\n'),
       components: [row],
     },
+    onStop: () => {
+      event = undefined;
+    },
   });
   if (!event) return undefined;
   return new Promise((resolve) => {
     const autoSelectTimeout = setTimeout(() => {
-      if (event.isEnded()) return;
+      if (event?.isEnded() || !event?.message) return;
       resolve(['epic']);
-      event.stop();
+      event?.stop();
       djsMessageHelper.edit({
         client,
-        message: event.message,
+        message: event?.message,
         options: {
           components: [],
           content: '**EPIC** selected',
@@ -46,15 +49,15 @@ export const collectSelectedPets = async ({
       });
     }, ms('5s'));
 
-    event.on('epic', () => {
+    event?.on('epic', () => {
       resolve(['epic']);
-      event.stop();
+      event?.stop();
       return {
         components: [],
         content: '**EPIC** selected',
       };
     });
-    event.on('ids', async (interaction) => {
+    event?.on('ids', async (interaction) => {
       if (!interaction.isButton()) return {};
       await djsInteractionHelper.updateInteraction({
         client,

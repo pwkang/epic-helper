@@ -17,7 +17,7 @@ interface IRpgForge {
 
 export const rpgForge = ({client, message, author, isSlashCommand}: IRpgForge) => {
   if (!message.inGuild()) return;
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     channelId: message.channel.id,
     client,
     author,
@@ -29,7 +29,11 @@ export const rpgForge = ({client, message, author, isSlashCommand}: IRpgForge) =
         author,
         content,
       });
+      event?.stop();
     }
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 };

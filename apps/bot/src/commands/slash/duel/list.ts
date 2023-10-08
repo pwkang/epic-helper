@@ -20,11 +20,14 @@ export default <SlashCommand>{
       author: interaction.user,
       client,
     });
-    const event = await djsInteractionHelper.replyInteraction({
+    let event = await djsInteractionHelper.replyInteraction({
       client,
       interaction,
       interactive: true,
       options: duelLog.render(),
+      onStop: () => {
+        event = undefined;
+      },
     });
     if (!event) return;
     event.every((interaction) => {

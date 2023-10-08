@@ -23,11 +23,14 @@ export default <SlashCommand>{
     const messageOptions = serverSettings.render({
       type: SERVER_SETTINGS_PAGE_TYPE.randomEvent,
     });
-    const event = await djsInteractionHelper.replyInteraction({
+    let event = await djsInteractionHelper.replyInteraction({
       client,
       interaction,
       options: messageOptions,
       interactive: true,
+      onStop: () => {
+        event = undefined;
+      },
     });
     if (!event) return;
     event.every((interaction) => {

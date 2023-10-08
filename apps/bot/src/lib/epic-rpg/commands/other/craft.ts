@@ -19,7 +19,7 @@ interface IRpgCraft {
 
 export function rpgCraft({client, message, author, isSlashCommand}: IRpgCraft) {
   if (!message.inGuild()) return;
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     channelId: message.channel.id,
     client,
     author,
@@ -31,7 +31,11 @@ export function rpgCraft({client, message, author, isSlashCommand}: IRpgCraft) {
         author,
         content,
       });
+      event?.stop();
     }
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 }

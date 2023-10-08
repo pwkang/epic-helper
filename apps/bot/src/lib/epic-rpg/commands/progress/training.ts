@@ -26,7 +26,7 @@ interface IRpgTraining {
 
 export function rpgTraining({client, message, author, isSlashCommand}: IRpgTraining) {
   if (!message.inGuild()) return;
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     channelId: message.channel.id,
     client,
     author,
@@ -35,7 +35,7 @@ export function rpgTraining({client, message, author, isSlashCommand}: IRpgTrain
   if (!event) return;
   event.on('content', async (content) => {
     if (isRpgTrainingQuestion({author, content})) {
-      event.pendingAnswer();
+      event?.pendingAnswer();
       const answer = await getTrainingAnswer({author, content});
       if (!answer) return;
       await djsMessageHelper.send({
@@ -71,8 +71,11 @@ export function rpgTraining({client, message, author, isSlashCommand}: IRpgTrain
         channelId: message.channel.id,
         wildPetMessage: collected,
       });
-      event.stop();
+      event?.stop();
     }
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 }

@@ -12,7 +12,7 @@ interface IRpgOpenLootbox {
 
 export function rpgOpenLootbox({client, message, author, isSlashCommand}: IRpgOpenLootbox) {
   if (!message.inGuild()) return;
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     author,
     client,
     channelId: message.channelId,
@@ -21,16 +21,19 @@ export function rpgOpenLootbox({client, message, author, isSlashCommand}: IRpgOp
   event.on('embed', (embed) => {
     if (isLootboxOpen({embed, author})) {
       rpgOpenLootboxSuccess({embed, author});
-      event.stop();
+      event?.stop();
     }
   });
   event.on('content', (content) => {
     if (isOpenTooMany({content})) {
-      event.stop();
+      event?.stop();
     }
     if (isNotEnoughLootbox({content})) {
-      event.stop();
+      event?.stop();
     }
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 }

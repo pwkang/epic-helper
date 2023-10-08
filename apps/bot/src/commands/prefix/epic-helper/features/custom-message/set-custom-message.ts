@@ -55,7 +55,7 @@ export default <PrefixCommand>{
     });
     const toggleChecker = await toggleUserChecker({userId: message.author.id});
     if (!userAccount || !toggleChecker) return;
-    const event = await djsMessageHelper.interactiveSend({
+    let event = await djsMessageHelper.interactiveSend({
       client,
       channelId: message.channel.id,
       options: await commandHelper.customMessage.getMessageOptions({
@@ -64,6 +64,9 @@ export default <PrefixCommand>{
         client,
         toggleChecker,
       }),
+      onStop: () => {
+        event = undefined;
+      },
     });
     if (!event) return;
     for (const pageType of Object.values(CUSTOM_MESSAGE_PAGE_TYPE)) {

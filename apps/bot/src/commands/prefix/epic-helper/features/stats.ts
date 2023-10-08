@@ -22,10 +22,13 @@ export default <PrefixCommand>{
     const embeds = await getStatsEmbeds({
       author: message.author,
     });
-    const event = await djsMessageHelper.interactiveSend<TEventTypes>({
+    let event = await djsMessageHelper.interactiveSend<TEventTypes>({
       client,
       channelId: message.channel.id,
       options: {embeds: [embeds.donor], components: [statsActionRow]},
+      onStop: () => {
+        event = undefined;
+      },
     });
     if (!event) return;
     event.on('default', async () => {

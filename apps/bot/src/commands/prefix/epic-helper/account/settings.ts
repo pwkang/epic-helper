@@ -19,12 +19,15 @@ export default <PrefixCommand>{
       author: message.author,
     });
     if (!userSettings) return;
-    const event = await djsMessageHelper.interactiveSend({
+    let event = await djsMessageHelper.interactiveSend({
       client,
       channelId: message.channel.id,
       options: userSettings.render({
         type: 'settings',
       }),
+      onStop: () => {
+        event = undefined;
+      },
     });
     if (!event) return;
     event.every(async (interaction) => {

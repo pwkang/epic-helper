@@ -28,11 +28,14 @@ export default <SlashCommand>{
       roleId: role.id,
       server: interaction.guild,
     });
-    const event = await djsInteractionHelper.replyInteraction({
+    let event = await djsInteractionHelper.replyInteraction({
       client,
       interaction,
       options: resetDuelLog.render(),
       interactive: true,
+      onStop: () => {
+        event = undefined;
+      },
     });
     if (!event) return;
     event.every(async (interaction) => {

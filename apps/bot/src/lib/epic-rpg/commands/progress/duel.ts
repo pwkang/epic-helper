@@ -24,7 +24,7 @@ interface IRpgDuel {
 
 export function rpgDuel({client, message, author, isSlashCommand, targetUser}: IRpgDuel) {
   if (!message.inGuild()) return;
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     author,
     channelId: message.channel.id,
     client,
@@ -33,10 +33,10 @@ export function rpgDuel({client, message, author, isSlashCommand, targetUser}: I
   if (!event) return;
   event.on('embed', async (embed, collected) => {
     if (isRpgDuelRequest({embed, author})) {
-      event.resetTimer(30000);
+      event?.resetTimer(30000);
     }
     if (isRpgDuelWeapon({embed, author})) {
-      event.resetTimer(30000);
+      event?.resetTimer(30000);
     }
     if (isRpgDuelEnded({embed, author})) {
       const users = [author];
@@ -54,7 +54,7 @@ export function rpgDuel({client, message, author, isSlashCommand, targetUser}: I
         duelMessage: collected,
         client,
       });
-      event.stop();
+      event?.stop();
     }
   });
   event.on('cooldown', async (cooldown) => {
@@ -63,6 +63,9 @@ export function rpgDuel({client, message, author, isSlashCommand, targetUser}: I
       readyAt: new Date(Date.now() + cooldown),
       type: RPG_COMMAND_TYPE.duel,
     });
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 }

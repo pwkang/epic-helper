@@ -115,6 +115,9 @@ const generateResponse = async ({client, message, interaction, options}: IGenera
       client,
       channelId: message.channel.id,
       options,
+      onStop: () => {
+        event = undefined;
+      },
     });
   } else if (interaction) {
     event = await djsInteractionHelper.replyInteraction({

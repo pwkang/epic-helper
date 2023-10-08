@@ -18,13 +18,16 @@ export default <SlashCommand>{
       author: interaction.user,
     });
     if (!userSettings) return;
-    const event = await djsInteractionHelper.replyInteraction({
+    let event = await djsInteractionHelper.replyInteraction({
       client,
       interaction,
       options: userSettings.render({
         type: 'settings',
       }),
       interactive: true,
+      onStop: () => {
+        event = undefined;
+      },
     });
     if (!event) return;
     event.every(async (interaction) => {
