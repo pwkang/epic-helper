@@ -1,36 +1,26 @@
 import {IUser} from '@epic-helper/models';
 import {redisService} from './redis.service';
+import {toUser} from '../transformer/user.transformer';
 
-const userRubyPrefix = 'epic-helper:user-ruby:';
-
-interface IRedisUserRubyAmount {
-  userId: string;
-  ruby: number;
-}
-
-const setRuby = async (userId: string, ruby: number) => {
-  const data: IRedisUserRubyAmount = {
-    userId,
-    ruby,
-  };
-  await redisService.set(`${userRubyPrefix}:${userId}`, JSON.stringify(data));
+const userAccPrefix = 'epic-helper:user:';
+const findUser = async (userId: string) => {
+  const data = await redisService.get(`${userAccPrefix}:${userId}`);
+  if (!data) return null;
+  return toUser(JSON.parse(data));
 };
 
-const getRuby = async (userId: string, cb: () => Promise<IUser>) => {
-  const data = await redisService.get(`${userRubyPrefix}:${userId}`);
-  if (!data) {
-    const user = await cb();
-    // TODO: check if user exists
-    await setRuby(userId, user?.items.ruby ?? 0);
-    return user.items.ruby;
-  }
-  const {ruby} = JSON.parse(data) as IRedisUserRubyAmount;
-  return ruby;
+const setUser = async (userId: string, user: IUser) => {
+  await redisService.set(`${userAccPrefix}:${userId}`, JSON.stringify(toUser(user)));
+};
+
+const delUser = async (userId: string) => {
+  await redisService.del(`${userAccPrefix}:${userId}`);
 };
 
 const redisUserAccount = {
-  setRuby,
-  getRuby,
+  findUser,
+  setUser,
+  delUser,
 };
 
 export default redisUserAccount;

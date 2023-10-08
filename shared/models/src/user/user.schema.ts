@@ -132,7 +132,7 @@ export const userSchema = new Schema<IUser>({
   config: {
     timezone: {
       type: String,
-      default: BOT_TIMEZONE_LIST.UTC,
+      // default: BOT_TIMEZONE_LIST.UTC,
       enum: Object.values(BOT_TIMEZONE_LIST),
     },
     heal: {type: Number, default: 0},
