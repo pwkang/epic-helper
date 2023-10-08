@@ -22,7 +22,7 @@ export const _isServerAdmin = async ({serverId, client, userId}: IIsServerAdmin)
   if (!member) return false;
   const hasPermission = member.permissions.any(PERMISSIONS);
   if (hasPermission) return true;
-  const serverAccount = await serverService.findServerById(serverId);
+  const serverAccount = await serverService.getServer({serverId});
   if (!serverAccount) return false;
   const memberRoles = member.roles.cache.map((role) => role.id);
   return (
