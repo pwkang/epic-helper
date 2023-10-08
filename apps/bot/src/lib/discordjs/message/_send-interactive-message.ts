@@ -1,5 +1,6 @@
 import {
   BaseInteraction,
+  ButtonStyle,
   Client,
   Collection,
   InteractionUpdateOptions,
@@ -10,6 +11,7 @@ import {
 import ms from 'ms';
 import {djsMessageHelper} from './index';
 import djsInteractionHelper from '../interaction';
+import disableAllComponents from '../../../utils/disable-components';
 
 export interface SendInteractiveMessageProps {
   client: Client;
@@ -41,7 +43,7 @@ export default async function _sendInteractiveMessage<EventType extends string>(
 
   let allEventsFn: TEventCB | null = null;
   const registeredEvents = new Collection<string | EventType, TEventCB>();
-  const collector = sentMessage.createMessageComponentCollector({
+  let collector = sentMessage.createMessageComponentCollector({
     idle: ms('1m'),
   });
 
@@ -74,6 +76,7 @@ export default async function _sendInteractiveMessage<EventType extends string>(
   function stop() {
     collector.stop();
     collector.removeAllListeners();
+    collector = undefined as any;
     onStop?.();
   }
 
@@ -89,7 +92,7 @@ export default async function _sendInteractiveMessage<EventType extends string>(
         client,
         message: sentMessage,
         options: {
-          components: [], // todo: make all components disabled instead of remove it
+          components: disableAllComponents(sentMessage.components),
         },
       });
   });
@@ -102,44 +105,3 @@ export default async function _sendInteractiveMessage<EventType extends string>(
     message: sentMessage,
   };
 }
-
-// function disableAllComponents(components: ActionRow<MessageActionRowComponent>[]) {
-//   // return JSON.parse(JSON.stringify(components));
-//   return components.map((row) => {
-//     if (row instanceof ActionRow<ButtonComponent>) {
-//       const _components = row.components.map((component) => {
-//         const _component = component as ButtonComponent;
-//         return ButtonBuilder.from(_component).setDisabled(true);
-//       });
-//       return new ActionRowBuilder<ButtonBuilder>().addComponents(_components);
-//     }
-//     if (row instanceof ActionRow<StringSelectMenuComponent>) {
-//       const _components = row.components.map((component) => {
-//         const _component = component as StringSelectMenuComponent;
-//         return StringSelectMenuBuilder.from(_component).setDisabled(true);
-//       });
-//       return new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(_components);
-//     }
-//     // UserSelectMenuComponent
-//     // RoleSelectMenuComponent
-//     // MentionableSelectMenuComponent
-//     // ChannelSelectMenuComponent
-//
-//     // const _row = row.components.map((component) => {
-//     //   if (component instanceof ButtonComponent) {
-//     //     return ButtonBuilder.from(component).setDisabled(true).toJSON();
-//     //   } else if (component instanceof StringSelectMenuComponent) {
-//     //     return StringSelectMenuBuilder.from(component).setDisabled(true).toJSON();
-//     //   } else if (component instanceof UserSelectMenuComponent) {
-//     //     return UserSelectMenuBuilder.from(component).setDisabled(true).toJSON();
-//     //   } else if (component instanceof RoleSelectMenuComponent) {
-//     //     return RoleSelectMenuBuilder.from(component).setDisabled(true).toJSON();
-//     //   } else if (component instanceof MentionableSelectMenuComponent) {
-//     //     return MentionableSelectMenuBuilder.from(component).setDisabled(true).toJSON();
-//     //   } else {
-//     //     return ChannelSelectMenuBuilder.from(component).setDisabled(true).toJSON();
-//     //   }
-//     // });
-//     // return ActionRowBuilder.from(_row).toJSON();
-//   });
-// }
