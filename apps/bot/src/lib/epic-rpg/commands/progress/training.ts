@@ -6,7 +6,7 @@ import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {
   BOT_REMINDER_BASE_COOLDOWN,
   RPG_COMMAND_TYPE,
-  RPG_COOLDOWN_EMBED_TYPE,
+  RPG_COOLDOWN_EMBED_TYPE
 } from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
@@ -28,14 +28,14 @@ export function rpgTraining({
   client,
   message,
   author,
-  isSlashCommand,
+  isSlashCommand
 }: IRpgTraining) {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     channelId: message.channel.id,
     client,
     author,
-    commandType: RPG_COOLDOWN_EMBED_TYPE.training,
+    commandType: RPG_COOLDOWN_EMBED_TYPE.training
   });
   if (!event) return;
   event.on('content', async (content) => {
@@ -47,8 +47,8 @@ export function rpgTraining({
         channelId: message.channel.id,
         client,
         options: {
-          components: answer,
-        },
+          components: answer
+        }
       });
     }
 
@@ -56,7 +56,7 @@ export function rpgTraining({
       await rpgTrainingSuccess({
         author,
         channelId: message.channel.id,
-        client,
+        client
       });
     }
   });
@@ -64,7 +64,7 @@ export function rpgTraining({
     await userReminderServices.updateUserCooldown({
       userId: author.id,
       type: RPG_COMMAND_TYPE.training,
-      readyAt: new Date(Date.now() + cooldown),
+      readyAt: new Date(Date.now() + cooldown)
     });
   });
   event.on('embed', async (embed, collected) => {
@@ -74,7 +74,7 @@ export function rpgTraining({
         author,
         embed,
         channelId: message.channel.id,
-        wildPetMessage: collected,
+        wildPetMessage: collected
       });
       event?.stop();
     }
@@ -101,23 +101,23 @@ const rpgTrainingSuccess = async ({author, channelId}: IRpgTrainingSuccess) => {
     const cooldown = await calcCdReduction({
       userId: author.id,
       commandType: RPG_COMMAND_TYPE.training,
-      cooldown: TRAINING_COOLDOWN,
+      cooldown: TRAINING_COOLDOWN
     });
     await userReminderServices.saveUserTrainingCooldown({
       userId: author.id,
       ultraining: false,
-      readyAt: new Date(Date.now() + cooldown),
+      readyAt: new Date(Date.now() + cooldown)
     });
   }
 
   await updateReminderChannel({
     userId: author.id,
-    channelId,
+    channelId
   });
 
   await userStatsService.countUserStats({
     userId: author.id,
-    type: USER_STATS_RPG_COMMAND_TYPE.training,
+    type: USER_STATS_RPG_COMMAND_TYPE.training
   });
 };
 
@@ -133,13 +133,13 @@ const encounteringPet = async ({
   embed,
   author,
   client,
-  channelId,
+  channelId
 }: IEncounteringPet) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker?.petCatch) return;
 
   const info = embedReaders.wildPet({
-    embed,
+    embed
   });
   const messageOptions = generatePetCatchMessageOptions({info});
   await djsMessageHelper.send({
@@ -147,10 +147,10 @@ const encounteringPet = async ({
       ...messageOptions,
       content: toggleChecker?.mentions.petCatch
         ? messageFormatter.user(author.id)
-        : undefined,
+        : undefined
     },
     channelId,
-    client,
+    client
   });
 };
 

@@ -8,7 +8,7 @@ import {
   _toggleDuelRefRequired,
   _toggleUpgraidAllowReserved,
   _toggleUpgraidReminder,
-  _toggleUpgraidSendUpgraidList,
+  _toggleUpgraidSendUpgraidList
 } from './toggle-guild-checker-list';
 
 interface IToggleGuildChecker {
@@ -18,11 +18,11 @@ interface IToggleGuildChecker {
 
 export const toggleGuildChecker = async ({
   roleId,
-  serverId,
+  serverId
 }: IToggleGuildChecker) => {
   const guild = await guildService.findGuild({
     serverId,
-    roleId,
+    roleId
   });
   if (!guild) return null;
 
@@ -31,16 +31,16 @@ export const toggleGuildChecker = async ({
     upgraid: {
       reminder: _toggleUpgraidReminder({toggle: guild.toggle}),
       autoSendList: _toggleUpgraidSendUpgraidList({toggle: guild.toggle}),
-      allowReserved: _toggleUpgraidAllowReserved({toggle: guild.toggle}),
+      allowReserved: _toggleUpgraidAllowReserved({toggle: guild.toggle})
     },
     duel: {
       log: {
         duelAdd: _toggleDuelLogDuelAdd({toggle: guild.toggle}),
         duelUndo: _toggleDuelLogDuelUndo({toggle: guild.toggle}),
         duelReset: _toggleDuelLogDuelReset({toggle: guild.toggle}),
-        duelModify: _toggleDuelLogDuelModify({toggle: guild.toggle}),
+        duelModify: _toggleDuelLogDuelModify({toggle: guild.toggle})
       },
-      refRequired: _toggleDuelRefRequired({toggle: guild.toggle}),
-    },
+      refRequired: _toggleDuelRefRequired({toggle: guild.toggle})
+    }
   };
 };

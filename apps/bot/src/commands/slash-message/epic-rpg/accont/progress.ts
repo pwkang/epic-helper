@@ -1,7 +1,7 @@
 import {
   SLASH_MESSAGE_BOT_TYPE,
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS
 } from '@epic-helper/constants';
 import {rpgProgress} from '../../../../lib/epic-rpg/commands/account/progress';
 
@@ -11,7 +11,7 @@ export default <SlashMessage>{
   commandName: ['progress'],
   preCheck: {
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,
-    userAccOff: USER_ACC_OFF_ACTIONS.skip,
+    userAccOff: USER_ACC_OFF_ACTIONS.skip
   },
   execute: async (client, message, author) => {
     if (!message.guild) return;
@@ -20,7 +20,7 @@ export default <SlashMessage>{
       author,
       message,
       isSlashCommand: true,
-      server: message.guild,
+      server: message.guild
     });
-  },
+  }
 };

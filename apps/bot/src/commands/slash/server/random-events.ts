@@ -2,7 +2,7 @@ import {
   RPG_RANDOM_EVENTS_COMMAND,
   RPG_RANDOM_EVENTS_NAME,
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS
 } from '@epic-helper/constants';
 import djsInteractionHelper from '../../../lib/discordjs/interaction';
 import {serverService} from '../../../services/database/server.service';
@@ -18,7 +18,7 @@ export default <SlashCommand>{
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,
-    isServerAdmin: true,
+    isServerAdmin: true
   },
   builder: (subcommand) =>
     subcommand
@@ -109,12 +109,12 @@ export default <SlashCommand>{
           ? miniboss === 'clear'
             ? null
             : miniboss
-          : undefined,
-      },
+          : undefined
+      }
     });
     if (!serverAccount) return null;
     const serverSettings = await commandHelper.serverSettings.settings({
-      server: interaction.guild!,
+      server: interaction.guild!
     });
     if (!serverSettings) return null;
     await djsInteractionHelper.replyInteraction({
@@ -122,8 +122,8 @@ export default <SlashCommand>{
       interaction,
       options: serverSettings.render({
         type: SERVER_SETTINGS_PAGE_TYPE.randomEvent,
-        displayOnly: true,
-      }),
+        displayOnly: true
+      })
     });
-  },
+  }
 };

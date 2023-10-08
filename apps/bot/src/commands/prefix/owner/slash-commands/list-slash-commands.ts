@@ -13,10 +13,10 @@ export default <PrefixCommand>{
     const slashCommands = await listSlashCommands();
     const guildSlashCommands = await djsRestHelper.slashCommand.guild.getAll({
       client,
-      guild: message.guild!,
+      guild: message.guild!
     });
     const globalSlashCommands = await djsRestHelper.slashCommand.global.getAll({
-      client,
+      client
     });
 
     const registeredGlobalSlashCommands: SlashCommand['name'][] = [];
@@ -46,15 +46,15 @@ export default <PrefixCommand>{
 | global |  guild | name 
 | --------------------------------
 ${slashCommands
-  .map(
-    (sc) =>
-      `| ${
-        registeredGlobalSlashCommands.includes(sc.name) ? '  ✓   ' : '  ✗   '
-      } | ${
-        registeredGuildSlashCommands.includes(sc.name) ? '  ✓   ' : '  ✗   '
-      } | ${sc.name}`
-  )
-  .join('\n')}
+          .map(
+            (sc) =>
+              `| ${
+                registeredGlobalSlashCommands.includes(sc.name) ? '  ✓   ' : '  ✗   '
+              } | ${
+                registeredGuildSlashCommands.includes(sc.name) ? '  ✓   ' : '  ✗   '
+              } | ${sc.name}`
+          )
+          .join('\n')}
 \`\`\` 
       `
       )
@@ -62,21 +62,21 @@ ${slashCommands
         {
           name: 'Commands',
           value: '`register [name1] [name2] ...`\n`delete [name1] [name2] ...`',
-          inline: true,
+          inline: true
         },
         {
           name: 'Flags',
           value: '`--guild` `--global`',
-          inline: true,
+          inline: true
         }
       );
 
     await djsMessageHelper.send({
       client,
       options: {
-        embeds: [embed],
+        embeds: [embed]
       },
-      channelId: message.channelId,
+      channelId: message.channelId
     });
-  },
+  }
 };

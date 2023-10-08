@@ -16,26 +16,26 @@ export const getUserToggle = async ({author}: IGetUserToggle) => {
   let userToggle = await userService.getUserToggle(author.id);
   if (!userToggle) return null;
   const isDonor = await donorChecker.isDonor({
-    userId: author.id,
+    userId: author.id
   });
 
   function render(userToggle: IUserToggle): BaseMessageOptions {
     const embed = getEmbed(userToggle);
     return {
-      embeds: [embed],
+      embeds: [embed]
     };
   }
 
   function getEmbed(userToggle: IUserToggle) {
     return isDonor
       ? getDonorToggleEmbed({
-          author,
-          userToggle,
-        })
+        author,
+        userToggle
+      })
       : getNonDonorToggleEmbed({
-          author,
-          userToggle,
-        });
+        author,
+        userToggle
+      });
   }
 
   async function update({on, off}: IUpdateToggle) {
@@ -44,11 +44,11 @@ export const getUserToggle = async ({author}: IGetUserToggle) => {
       off,
       toggleInfo: isDonor
         ? toggleDisplayList.donor(userToggle!)
-        : toggleDisplayList.nonDonor(userToggle!),
+        : toggleDisplayList.nonDonor(userToggle!)
     });
     const userAccount = await userService.updateUserToggle({
       query,
-      userId: author.id,
+      userId: author.id
     });
     if (!userAccount) return null;
     userToggle = userAccount.toggle;
@@ -57,7 +57,7 @@ export const getUserToggle = async ({author}: IGetUserToggle) => {
 
   return {
     render: () => render(userToggle!),
-    update,
+    update
   };
 };
 
@@ -68,14 +68,14 @@ interface IGetDonorToggleEmbed {
 
 export const getDonorToggleEmbed = ({
   userToggle,
-  author,
+  author
 }: IGetDonorToggleEmbed) => {
   return renderEmbed({
-    embedsInfo: toggleDisplayList.donor(userToggle),
+    embedsInfo: toggleDisplayList.donor(userToggle)
   })
     .setAuthor({
       name: `${author.username}'s toggle`,
-      iconURL: author.avatarURL() ?? undefined,
+      iconURL: author.avatarURL() ?? undefined
     })
     .setDescription(
       `**Syntax 1:** \`${PREFIX.bot}t <on/off> <ID> [ID] [ID]\` - turn on/off any settings
@@ -91,12 +91,12 @@ interface IGetNonDonorToggleEmbed {
 
 const getNonDonorToggleEmbed = ({
   userToggle,
-  author,
+  author
 }: IGetNonDonorToggleEmbed) => {
   return renderEmbed({
-    embedsInfo: toggleDisplayList.nonDonor(userToggle),
+    embedsInfo: toggleDisplayList.nonDonor(userToggle)
   }).setAuthor({
     name: `${author.username}'s toggle`,
-    iconURL: author.avatarURL() ?? undefined,
+    iconURL: author.avatarURL() ?? undefined
   });
 };

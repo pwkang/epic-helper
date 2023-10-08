@@ -18,13 +18,13 @@ const addLog = async ({
   roleId,
   userId,
   serverId,
-  isUpdate,
+  isUpdate
 }: IAddLog) => {
   const currentLog = await dbGuildDuel
     .findOne({
       serverId,
       guildRoleId: roleId,
-      weekAt: getGuildWeek(),
+      weekAt: getGuildWeek()
     })
     .lean();
   let query = {};
@@ -33,11 +33,11 @@ const addLog = async ({
     query = {
       $inc: {
         'users.$[user].totalExp': expGained,
-        'users.$[user].duelCount': isUpdate ? 0 : 1,
-      },
+        'users.$[user].duelCount': isUpdate ? 0 : 1
+      }
     };
     arrayFilters.push({
-      'user.userId': userId,
+      'user.userId': userId
     });
   } else {
     query = {
@@ -45,22 +45,22 @@ const addLog = async ({
         users: {
           userId,
           totalExp: expGained,
-          duelCount: 1,
-        },
-      },
+          duelCount: 1
+        }
+      }
     };
   }
   const updatedDuel = await dbGuildDuel.findOneAndUpdate(
     {
       guildRoleId: roleId,
       serverId,
-      weekAt: getGuildWeek(),
+      weekAt: getGuildWeek()
     },
     query,
     {
       upsert: true,
       arrayFilters,
-      new: true,
+      new: true
     }
   );
   return updatedDuel ?? null;
@@ -71,14 +71,14 @@ interface IGetLastTwoWeeksGuildsDuelLogs {
 }
 
 const getLastTwoWeeksGuildsDuelLogs = async ({
-  serverId,
+  serverId
 }: IGetLastTwoWeeksGuildsDuelLogs) => {
   const guildsDuelLogs = await dbGuildDuel
     .find({
       serverId,
       weekAt: {
-        $gte: getGuildWeek().getTime() - ms('7d'),
-      },
+        $gte: getGuildWeek().getTime() - ms('7d')
+      }
     })
     .lean();
   return guildsDuelLogs ?? [];
@@ -97,12 +97,12 @@ const modifyUserDuel = async ({
   serverId,
   roleId,
   expGained,
-  duelCount,
+  duelCount
 }: IModifyUserDuel) => {
   const currentLog = await dbGuildDuel.findOne({
     serverId,
     guildRoleId: roleId,
-    weekAt: getGuildWeek(),
+    weekAt: getGuildWeek()
   });
   const isUserExists = currentLog?.users.some((user) => user.userId === userId);
   let query = {};
@@ -111,11 +111,11 @@ const modifyUserDuel = async ({
     query = {
       $set: {
         'users.$[user].totalExp': expGained,
-        'users.$[user].duelCount': duelCount,
-      },
+        'users.$[user].duelCount': duelCount
+      }
     };
     arrayFilters.push({
-      'user.userId': userId,
+      'user.userId': userId
     });
   } else {
     query = {
@@ -123,21 +123,21 @@ const modifyUserDuel = async ({
         users: {
           userId,
           totalExp: expGained,
-          duelCount,
-        },
-      },
+          duelCount
+        }
+      }
     };
   }
   const updatedDuel = await dbGuildDuel.findOneAndUpdate(
     {
       guildRoleId: roleId,
       serverId,
-      weekAt: getGuildWeek(),
+      weekAt: getGuildWeek()
     },
     query,
     {
       upsert: true,
-      arrayFilters,
+      arrayFilters
     }
   );
   return updatedDuel ?? null;
@@ -152,12 +152,12 @@ interface IFindUserCurrentRecord {
 const findUserCurrentRecord = async ({
   userId,
   serverId,
-  roleId,
+  roleId
 }: IFindUserCurrentRecord) => {
   const currentLog = await dbGuildDuel.findOne({
     serverId,
     guildRoleId: roleId,
-    weekAt: getGuildWeek(),
+    weekAt: getGuildWeek()
   });
   if (!currentLog) return null;
   const user = currentLog.users.find((u) => u.userId === userId);
@@ -173,23 +173,23 @@ const resetGuildDuel = async ({serverId, roleId}: IResetGuildDuel) => {
   const currentLog = await dbGuildDuel.findOne({
     serverId,
     guildRoleId: roleId,
-    weekAt: getGuildWeek(),
+    weekAt: getGuildWeek()
   });
   if (!currentLog) return null;
   const updatedDuel = await dbGuildDuel.findOneAndUpdate(
     {
       guildRoleId: roleId,
       serverId,
-      weekAt: getGuildWeek(),
+      weekAt: getGuildWeek()
     },
     {
       $set: {
-        users: [],
-      },
+        users: []
+      }
     },
     {
       upsert: true,
-      new: true,
+      new: true
     }
   );
   return updatedDuel ?? null;
@@ -206,12 +206,12 @@ const undoUserDuel = async ({
   userId,
   serverId,
   roleId,
-  expGained,
+  expGained
 }: IUndoUserDuel) => {
   const currentLog = await dbGuildDuel.findOne({
     serverId,
     guildRoleId: roleId,
-    weekAt: getGuildWeek(),
+    weekAt: getGuildWeek()
   });
   if (!currentLog) return null;
   const user = currentLog.users.find((u) => u.userId === userId);
@@ -220,22 +220,22 @@ const undoUserDuel = async ({
     {
       guildRoleId: roleId,
       serverId,
-      weekAt: getGuildWeek(),
+      weekAt: getGuildWeek()
     },
     {
       $set: {
         'users.$[user].totalExp': Math.max(0, user.totalExp - expGained),
-        'users.$[user].duelCount': Math.max(0, user.duelCount - 1),
-      },
+        'users.$[user].duelCount': Math.max(0, user.duelCount - 1)
+      }
     },
     {
       upsert: true,
       arrayFilters: [
         {
-          'user.userId': userId,
-        },
+          'user.userId': userId
+        }
       ],
-      new: true,
+      new: true
     }
   );
   return updatedDuel ?? null;
@@ -247,5 +247,5 @@ export const guildDuelService = {
   modifyUserDuel,
   resetGuildDuel,
   undoUserDuel,
-  findUserCurrentRecord,
+  findUserCurrentRecord
 };

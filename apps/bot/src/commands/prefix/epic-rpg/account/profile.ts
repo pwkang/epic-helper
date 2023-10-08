@@ -1,7 +1,7 @@
 import {
   PREFIX_COMMAND_TYPE,
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS
 } from '@epic-helper/constants';
 import {rpgProfile} from '../../../../lib/epic-rpg/commands/account/profile';
 
@@ -11,7 +11,7 @@ export default <PrefixCommand>{
   type: PREFIX_COMMAND_TYPE.rpg,
   preCheck: {
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,
-    userAccOff: USER_ACC_OFF_ACTIONS.skip,
+    userAccOff: USER_ACC_OFF_ACTIONS.skip
   },
   execute: (client, message) => {
     if (!message.guild) return;
@@ -20,7 +20,7 @@ export default <PrefixCommand>{
       isSlashCommand: false,
       message,
       client,
-      server: message.guild,
+      server: message.guild
     });
-  },
+  }
 };

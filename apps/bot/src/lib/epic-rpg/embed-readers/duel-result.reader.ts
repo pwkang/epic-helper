@@ -19,12 +19,12 @@ const duelResultReader = ({embed, users}: IDuelResultReader) => {
     exp.push({
       userId: user.id,
       isWinner: user.id === winner?.id,
-      guildExp: expGained ? parseInt(expGained) : 0,
+      guildExp: expGained ? parseInt(expGained) : 0
     });
   }
   return {
     winner,
-    usersExp: exp,
+    usersExp: exp
   };
 };
 

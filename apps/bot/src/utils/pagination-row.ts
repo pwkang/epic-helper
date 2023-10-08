@@ -1,7 +1,7 @@
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle} from 'discord.js';
 
 export const NAVIGATION_ROW_BUTTONS = {
-  all: 'all',
+  all: 'all'
 } as const;
 
 interface IGenerateNavigationRow {
@@ -15,7 +15,7 @@ export const generateNavigationRow = ({
   page,
   total,
   itemsPerPage,
-  all,
+  all
 }: IGenerateNavigationRow) => {
   const row = new ActionRowBuilder<ButtonBuilder>();
   const prevPage = Math.max(page - 1, 0);

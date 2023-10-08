@@ -14,13 +14,13 @@ export const rpgTrade = ({
   client,
   message,
   author,
-  isSlashCommand,
+  isSlashCommand
 }: IRpgSuccess) => {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     author,
     channelId: message.channelId,
-    client,
+    client
   });
   if (!event) return;
   event.on('embed', (embed) => {
@@ -51,7 +51,7 @@ const rpgTradeSuccess = async ({embed, author}: IRpgTradeSuccess) => {
   await userService.updateUserRubyAmount({
     userId: author.id,
     ruby: Math.abs(traded.ruby),
-    type: traded.ruby > 0 ? 'inc' : 'dec',
+    type: traded.ruby > 0 ? 'inc' : 'dec'
   });
 };
 
@@ -81,7 +81,7 @@ const extractTradedItems = ({embed}: IExtractTradedItems): ITradedItem => {
 
   return {
     [tradedItemName]: -tradeItemAmount,
-    [itemGetName]: +itemGetAmount,
+    [itemGetName]: +itemGetAmount
   };
 };
 
@@ -100,5 +100,5 @@ interface IIsNotEnoughItems {
 }
 
 const isNotEnoughItems = ({author, message}: IIsNotEnoughItems) =>
-  message.content.includes("you don't have enough") &&
+  message.content.includes('you don\'t have enough') &&
   message.mentions.has(author.id);

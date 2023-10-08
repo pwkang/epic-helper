@@ -31,5 +31,5 @@ const delGuild = async (serverId: string, roleId: string) => {
 export const redisGuild = {
   setGuild,
   getGuild,
-  delGuild,
+  delGuild
 };

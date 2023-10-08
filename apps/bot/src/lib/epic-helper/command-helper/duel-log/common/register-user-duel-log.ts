@@ -29,21 +29,21 @@ export const registerUserDuelLog = async ({
   author,
   isWinner,
   client,
-  commandChannelId,
+  commandChannelId
 }: IRegisterUserDuel) => {
   const guildInfo = await guildService.findUserGuild({
-    userId: author.id,
+    userId: author.id
   });
   if (!guildInfo) return embeds.notInGuild();
   const toggleGuild = await toggleGuildChecker({
     roleId: guildInfo.roleId,
-    serverId: guildInfo.serverId,
+    serverId: guildInfo.serverId
   });
   if (toggleGuild?.duel.refRequired && !source?.messageId) {
     return refRequiredEmbed;
   }
   const latestLog = await userDuelService.findLatestLog({
-    userId: author.id,
+    userId: author.id
   });
   const result = await userDuelService.addLog({
     duelAt: new Date(),
@@ -54,9 +54,9 @@ export const registerUserDuelLog = async ({
       isWinner,
       reportGuild: {
         serverId: guildInfo.serverId,
-        guildRoleId: guildInfo.roleId,
-      },
-    },
+        guildRoleId: guildInfo.roleId
+      }
+    }
   });
 
   const guildDuel = await guildDuelService.addLog({
@@ -64,7 +64,7 @@ export const registerUserDuelLog = async ({
     serverId: guildInfo.serverId,
     expGained: result.expGained,
     roleId: guildInfo.roleId,
-    isUpdate: result.isExists,
+    isUpdate: result.isExists
   });
 
   if (!guildDuel) return embeds.notInGuild();
@@ -83,7 +83,7 @@ export const registerUserDuelLog = async ({
     expGained: result.expGained,
     source,
     serverName: serverName?.name ?? 'Unknown',
-    isExists: result.isExists,
+    isExists: result.isExists
   });
 
   await sendDuelLog({
@@ -91,7 +91,7 @@ export const registerUserDuelLog = async ({
     embed,
     roleId: guildInfo.roleId,
     serverId: guildInfo.serverId,
-    ignoreChannel: commandChannelId,
+    ignoreChannel: commandChannelId
   });
 
   return embed;

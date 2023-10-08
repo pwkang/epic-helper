@@ -3,7 +3,7 @@ import type {
   PATREON_PATRON_STATUS,
   PATREON_PAYMENT_STATUS,
   PATREON_PLEDGE_TYPE,
-  PATREON_SOCIAL_CONNECTIONS_TYPE,
+  PATREON_SOCIAL_CONNECTIONS_TYPE
 } from './patreon.constant';
 
 export interface IFetchPatreonCampaignMembersResponse {

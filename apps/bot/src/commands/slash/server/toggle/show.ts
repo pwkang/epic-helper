@@ -1,7 +1,7 @@
 import {SLASH_COMMAND} from '../../constant';
 import {
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS
 } from '@epic-helper/constants';
 import commandHelper from '../../../../lib/epic-helper/command-helper';
 
@@ -14,16 +14,16 @@ export default <SlashCommand>{
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
     isServerAdmin: true,
-    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,
+    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip
   },
   execute: async (client, interaction) => {
     if (!interaction.guild) return;
     const serverToggle = await commandHelper.toggle.server({
-      server: interaction.guild,
+      server: interaction.guild
     });
     if (!serverToggle) return;
     const messageOptions = serverToggle.render();
     if (!messageOptions) return;
     await interaction.reply(messageOptions);
-  },
+  }
 };

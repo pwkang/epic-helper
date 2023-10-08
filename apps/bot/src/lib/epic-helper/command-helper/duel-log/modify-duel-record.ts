@@ -27,71 +27,71 @@ export const modifyDuelRecord = async ({
   exp,
   count,
   author,
-  commandChannelId,
+  commandChannelId
 }: IModifyDuelRecord): Promise<BaseMessageOptions> => {
   const result = await verifyGuild({
     client,
     userId: user.id,
-    server,
+    server
   });
   if (result.errorEmbed) {
     return {
-      embeds: [result.errorEmbed],
+      embeds: [result.errorEmbed]
     };
   }
   const userGuild = result.guild;
   if (!userGuild) {
     return {
-      embeds: [getNotInGuildEmbed(user)],
+      embeds: [getNotInGuildEmbed(user)]
     };
   }
   const isServerAdmin = await userChecker.isServerAdmin({
     client,
     serverId: userGuild.serverId,
-    userId: author.id,
+    userId: author.id
   });
   const isGuildLeader = await userChecker.isGuildLeader({
     serverId: userGuild.serverId,
     guildRoleId: userGuild.roleId,
-    userId: author.id,
+    userId: author.id
   });
   if (!isServerAdmin && !isGuildLeader) {
     return {
-      content: 'Nice try... You are not the guild leader or server admin',
+      content: 'Nice try... You are not the guild leader or server admin'
     };
   }
 
   const guild = await guildService.findGuild({
     roleId: userGuild.roleId,
-    serverId: userGuild.serverId,
+    serverId: userGuild.serverId
   });
 
   if (!guild) {
     return {
-      content: 'There is no guild with this role',
+      content: 'There is no guild with this role'
     };
   }
 
   const currentLog = await guildDuelService.findUserCurrentRecord({
     userId: user.id,
     roleId: userGuild.roleId,
-    serverId: userGuild.serverId,
+    serverId: userGuild.serverId
   });
   const prev = {
     count: currentLog?.duelCount ?? 0,
-    exp: currentLog?.totalExp ?? 0,
+    exp: currentLog?.totalExp ?? 0
   };
   const modifiedEmbed = getModifyLogEmbed({
     author,
     target: user,
     curr: {count, exp},
     prev,
-    guild,
+    guild
   });
 
   const toggleGuild = await toggleGuildChecker({
     roleId: userGuild.roleId,
-    serverId: userGuild.serverId,
+    serverId: userGuild.serverId
   });
 
   if (toggleGuild?.duel.log.duelModify) {
@@ -100,7 +100,7 @@ export const modifyDuelRecord = async ({
       roleId: userGuild.roleId,
       serverId: userGuild.serverId,
       embed: modifiedEmbed,
-      ignoreChannel: commandChannelId,
+      ignoreChannel: commandChannelId
     });
   }
 
@@ -109,11 +109,11 @@ export const modifyDuelRecord = async ({
     roleId: userGuild.roleId,
     serverId: userGuild.serverId,
     duelCount: count,
-    expGained: exp,
+    expGained: exp
   });
 
   return {
-    embeds: [modifiedEmbed],
+    embeds: [modifiedEmbed]
   };
 };
 
@@ -141,7 +141,7 @@ const getModifyLogEmbed = ({
   curr,
   prev,
   author,
-  guild,
+  guild
 }: IModifyDuelLog) => {
   return new EmbedBuilder()
     .setColor(BOT_COLOR.embed)
@@ -149,17 +149,17 @@ const getModifyLogEmbed = ({
     .addFields(
       {
         name: 'User',
-        value: messageFormatter.user(target.id),
+        value: messageFormatter.user(target.id)
       },
       {
         name: 'From',
         value: `\`\`${prev.exp} exp ${prev.count} duels\`\``,
-        inline: true,
+        inline: true
       },
       {
         name: 'To',
         value: `\`\`${curr.exp} exp ${curr.count} duels\`\``,
-        inline: true,
+        inline: true
       }
     )
     .setFooter({text: `Modified by ${author.username}`});

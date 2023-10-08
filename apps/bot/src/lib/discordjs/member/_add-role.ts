@@ -14,17 +14,17 @@ export const _addRoles = async ({
   client,
   serverId,
   userId,
-  roleIds,
+  roleIds
 }: IAddRoles) => {
   const server = await djsServerHelper.getServer({
     serverId,
-    client,
+    client
   });
   if (!server) return;
   const member = await _fetchMember({
     userId,
     client,
-    serverId,
+    serverId
   });
   if (!member) return;
   const roles = server.roles.cache.filter((role) => roleIds.includes(role.id));
@@ -40,7 +40,7 @@ export const _addRoles = async ({
       message: `Failed to add roles ${roleIds.join(
         ', '
       )} to ${userId} in ${serverId}`,
-      variant: 'add-roles',
+      variant: 'add-roles'
     });
   }
 };

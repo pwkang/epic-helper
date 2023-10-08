@@ -7,7 +7,7 @@ export const _notInGuild = async () => {
     .setDescription(
       [
         'You are not registered in a guild!',
-        'If you think this is a mistake, please send `rpg guild` in your guild server to register',
+        'If you think this is a mistake, please send `rpg guild` in your guild server to register'
       ].join('\n')
     );
 };

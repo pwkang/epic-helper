@@ -2,7 +2,7 @@ import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import type {Client, Message, User} from 'discord.js';
 import type {
   IMessageContentChecker,
-  IMessageEmbedChecker,
+  IMessageEmbedChecker
 } from '../../../../types/utils';
 import {guildService} from '../../../../services/database/guild.service';
 import ms from 'ms';
@@ -23,14 +23,14 @@ export const rpgGuildUpgrade = async ({
   author,
   message,
   isSlashCommand,
-  client,
+  client
 }: IRpgGuildUpgrade) => {
   if (!message.inGuild() || !!message.mentions.users.size) return;
   let event = createRpgCommandListener({
     author,
     client,
     channelId: message.channel.id,
-    commandType: RPG_COOLDOWN_EMBED_TYPE.guild,
+    commandType: RPG_COOLDOWN_EMBED_TYPE.guild
   });
   if (!event) return;
   event.on('embed', async (embed, collected) => {
@@ -39,15 +39,15 @@ export const rpgGuildUpgrade = async ({
       const result = await verifyGuild({
         client,
         server: message.guild,
-        userId: author.id,
+        userId: author.id
       });
       if (result.errorEmbed) {
         await djsMessageHelper.send({
           client,
           channelId: message.channel.id,
           options: {
-            embeds: [result.errorEmbed],
-          },
+            embeds: [result.errorEmbed]
+          }
         });
         return;
       }
@@ -55,14 +55,14 @@ export const rpgGuildUpgrade = async ({
       if (!userGuild) return;
       const guildToggle = await toggleGuildChecker({
         serverId: userGuild.serverId,
-        roleId: userGuild.roleId,
+        roleId: userGuild.roleId
       });
       if (guildToggle?.upgraid.reminder) {
         await rpgGuildUpgradeSuccess({
           author,
           guildRoleId: userGuild.roleId,
           guildServerId: userGuild.serverId,
-          message: collected,
+          message: collected
         });
       }
       if (guildToggle?.upgraid.autoSendList) {
@@ -72,7 +72,7 @@ export const rpgGuildUpgrade = async ({
           guildServerId: userGuild.serverId,
           rpgEmbed: embed,
           actionChannelId: message.channel.id,
-          author,
+          author
         });
       }
     }
@@ -102,12 +102,12 @@ const rpgGuildUpgradeSuccess = async ({
   guildRoleId,
   author,
   guildServerId,
-  message,
+  message
 }: IRpgGuildUpgradeSuccess): Promise<void> => {
   await guildService.registerReminder({
     readyIn: ms('2h'),
     roleId: guildRoleId,
-    serverId: guildServerId,
+    serverId: guildServerId
   });
   await upgraidService.addRecord({
     guildRoleId,
@@ -117,7 +117,7 @@ const rpgGuildUpgradeSuccess = async ({
     upgraidAt: new Date(),
     actionChannelId: message.channel.id,
     actionServerId: message.guildId!,
-    actionMessageId: message.id,
+    actionMessageId: message.id
   });
 };
 
@@ -127,7 +127,7 @@ const isGuildUpgradeSuccess = ({embed}: IMessageEmbedChecker) =>
   );
 
 const isUserDontHaveGuild = ({author, message}: IMessageContentChecker) =>
-  ["you don't have a guild", 'not in a guild'].some((msg) =>
+  ['you don\'t have a guild', 'not in a guild'].some((msg) =>
     message.content.includes(msg)
   ) && message.mentions.users.has(author.id);
 

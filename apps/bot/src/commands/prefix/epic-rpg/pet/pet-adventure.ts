@@ -1,7 +1,7 @@
 import {
   PREFIX_COMMAND_TYPE,
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS
 } from '@epic-helper/constants';
 import {rpgPetAdventure} from '../../../../lib/epic-rpg/commands/pets/pet-adventure';
 
@@ -25,7 +25,7 @@ export default <PrefixCommand>{
   type: PREFIX_COMMAND_TYPE.rpg,
   preCheck: {
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.abort,
-    userAccOff: USER_ACC_OFF_ACTIONS.abort,
+    userAccOff: USER_ACC_OFF_ACTIONS.abort
   },
   execute: (client, message, args) => {
     rpgPetAdventure({
@@ -33,7 +33,7 @@ export default <PrefixCommand>{
       client,
       selectedPets: args.slice(3),
       message,
-      isSlashCommand: false,
+      isSlashCommand: false
     });
-  },
+  }
 };

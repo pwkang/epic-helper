@@ -24,77 +24,77 @@ const cmd: ICooldown[] = [
     value: [
       {
         type: RPG_COMMAND_TYPE.daily,
-        name: 'Daily',
+        name: 'Daily'
       },
       {
         type: RPG_COMMAND_TYPE.weekly,
-        name: 'Weekly',
+        name: 'Weekly'
       },
       {
         type: RPG_COMMAND_TYPE.lootbox,
-        name: 'Lootbox',
+        name: 'Lootbox'
       },
       {
         type: RPG_COMMAND_TYPE.vote,
-        name: 'Vote',
-      },
-    ],
+        name: 'Vote'
+      }
+    ]
   },
   {
     name: '<:sword:886278799975678043> Experience',
     value: [
       {
         type: RPG_COMMAND_TYPE.hunt,
-        name: 'Hunt',
+        name: 'Hunt'
       },
       {
         type: RPG_COMMAND_TYPE.adventure,
-        name: 'Adventure',
+        name: 'Adventure'
       },
       {
         type: RPG_COMMAND_TYPE.training,
-        name: 'Training',
+        name: 'Training'
       },
       {
         type: RPG_COMMAND_TYPE.duel,
-        name: 'Duel',
+        name: 'Duel'
       },
       {
         type: RPG_COMMAND_TYPE.quest,
-        name: 'Quest',
-      },
-    ],
+        name: 'Quest'
+      }
+    ]
   },
   {
     name: '✨ Progress',
     value: [
       {
         type: RPG_COMMAND_TYPE.working,
-        name: 'Working',
+        name: 'Working'
       },
       {
         type: RPG_COMMAND_TYPE.farm,
-        name: 'Farm',
+        name: 'Farm'
       },
       {
         type: RPG_COMMAND_TYPE.horse,
-        name: 'Horse Breeding | Horse Race',
+        name: 'Horse Breeding | Horse Race'
       },
       {
         type: RPG_COMMAND_TYPE.arena,
-        name: 'Arena',
+        name: 'Arena'
       },
       {
         type: RPG_COMMAND_TYPE.dungeon,
-        name: 'Dungeon | Miniboss',
-      },
-    ],
+        name: 'Dungeon | Miniboss'
+      }
+    ]
   },
   {
     name: '🧩 Other',
     skipIfNone: true,
-    value: [],
-  },
+    value: []
+  }
 ];
 
 export interface IGetUserCooldownEmbedProps {
@@ -107,12 +107,12 @@ export interface IGetUserCooldownEmbedProps {
 const getUserCooldownEmbed = ({
   userReminder,
   author,
-  toggleChecker,
+  toggleChecker
 }: IGetUserCooldownEmbedProps) => {
   const embed = new EmbedBuilder()
     .setAuthor({
       name: `${author.username}'s cooldowns`,
-      iconURL: author.avatarURL() || undefined,
+      iconURL: author.avatarURL() || undefined
     })
     .setColor(BOT_COLOR.embed);
 
@@ -123,15 +123,15 @@ const getUserCooldownEmbed = ({
       const cooldown = userReminder.find((c) => c.type === item.type);
       const commandName = cooldown
         ? _parseCommandString({
-            toggleChecker,
-            ...cooldown,
-          }).replace('RPG ', '')
+          toggleChecker,
+          ...cooldown
+        }).replace('RPG ', '')
         : item.name;
       const readyIn =
         !!cooldown?.readyAt &&
         cooldown.readyAt.getTime() > Date.now() &&
         timestampHelper.relative({
-          time: cooldown.readyAt,
+          time: cooldown.readyAt
         });
       const icon =
         cooldown?.readyAt && cooldown?.readyAt.getTime() > Date.now()
@@ -144,7 +144,7 @@ const getUserCooldownEmbed = ({
     if (value.length > 0) {
       fields.push({
         name: field.name,
-        value: value.join('\n'),
+        value: value.join('\n')
       });
     }
   }

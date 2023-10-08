@@ -8,7 +8,7 @@ import {
   BOT_COLOR,
   BOT_EMOJI,
   RPG_PET_ADV_STATUS,
-  RPG_PET_TYPE,
+  RPG_PET_TYPE
 } from '@epic-helper/constants';
 import {userPetServices} from '../../../../services/database/user-pet.service';
 
@@ -25,11 +25,11 @@ export const paginatePetCd = async ({user, page}: IPaginatePetCd) => {
     limit: PET_CD_PET_PAGE,
     status: ['adventure', 'back'],
     userId: user.id,
-    orderBy: 'petId',
+    orderBy: 'petId'
   });
   return generateEmbed({
     pets,
-    author: user,
+    author: user
   });
 };
 
@@ -43,7 +43,7 @@ const generateEmbed = ({author, pets}: IGeneratePetCdEmbed) => {
   const embed = new EmbedBuilder()
     .setAuthor({
       name: `${author.username}'s pets`,
-      iconURL: author.avatarURL() ?? undefined,
+      iconURL: author.avatarURL() ?? undefined
     })
     .setColor(BOT_COLOR.embed);
   if (fields.length > 0) {
@@ -72,7 +72,7 @@ const generateEmbedFields = (pets: IUserPet[]) => {
     fields.push({
       name: `${epic} ${timeTraveler} \`ID: ${petId}\`\n${petEmoji} ${pet.name} — TIER ${petTier}`,
       value: statusText,
-      inline: true,
+      inline: true
     });
   }
   return fields;
@@ -91,7 +91,7 @@ const getStatusText = (pet: IUserPet) => {
     readyAt > Date.now()
   ) {
     const readyTime = timestampHelper.relative({
-      time: readyAt,
+      time: readyAt
     });
     return `**Claim ${readyTime}**`;
   }

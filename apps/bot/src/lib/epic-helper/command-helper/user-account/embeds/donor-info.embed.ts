@@ -18,12 +18,12 @@ export const _getDonorInfoEmbed = ({
   freeDonor,
   donor,
   boostedServers,
-  author,
+  author
 }: IGetDonorInfoEmbed) => {
   const embed = new EmbedBuilder()
     .setAuthor({
       name: `${author.username}'s donor info`,
-      iconURL: author.avatarURL() ?? undefined,
+      iconURL: author.avatarURL() ?? undefined
     })
     .setThumbnail(author.avatarURL())
     .setColor(BOT_COLOR.embed);
@@ -41,9 +41,9 @@ export const _getDonorInfoEmbed = ({
       name: 'Donor',
       value: [
         `⚙️ - **Tier:** ${capitalizeFirstLetters(donor.tier)}`,
-        `🚀 - **EPIC Tokens:** ${DONOR_TOKEN_AMOUNT[donor.tier]}`,
+        `🚀 - **EPIC Tokens:** ${DONOR_TOKEN_AMOUNT[donor.tier]}`
       ].join('\n'),
-      inline: true,
+      inline: true
     });
   }
 
@@ -51,7 +51,7 @@ export const _getDonorInfoEmbed = ({
     embed.addFields({
       name: 'Free donor',
       value: [`🚀 - **EPIC Tokens:** ${freeDonor.token}`].join('\n'),
-      inline: true,
+      inline: true
     });
   }
 
@@ -64,13 +64,13 @@ export const _getDonorInfoEmbed = ({
             `\`[${index + 1}]\` **${server.name}** - ${server.token} boosts`
         )
         .join('\n'),
-      inline: false,
+      inline: false
     });
   }
 
   if (totalToken) {
     embed.setFooter({
-      text: `Token left: ${remainingToken} / ${totalToken}`,
+      text: `Token left: ${remainingToken} / ${totalToken}`
     });
   }
 

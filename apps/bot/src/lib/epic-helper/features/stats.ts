@@ -3,7 +3,7 @@ import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  EmbedBuilder,
+  EmbedBuilder
 } from 'discord.js';
 import {
   getDayOfWeek,
@@ -11,7 +11,7 @@ import {
   getStartOfThisWeek,
   getStartOfToday,
   getStartOfYesterday,
-  typedObjectEntries,
+  typedObjectEntries
 } from '@epic-helper/utils';
 import {BOT_COLOR} from '@epic-helper/constants';
 import type {IUserStats} from '@epic-helper/models';
@@ -24,17 +24,17 @@ interface IGetDonorStatsEmbed {
 
 export const getStatsEmbeds = async ({author}: IGetDonorStatsEmbed) => {
   const stats = await userStatsService.getUserStatsOfLast2Weeks({
-    userId: author.id,
+    userId: author.id
   });
   const bestStats = await userStatsService.getUserBestStats({
-    userId: author.id,
+    userId: author.id
   });
 
   return {
     nonDonor: getNonDonorStatsEmbed({stats, author}),
     donor: getDonorDefaultEmbed({stats, author, bestStats}),
     thisWeek: getThisWeekStats({stats, author}),
-    lastWeek: getLastWeekStats({stats, author}),
+    lastWeek: getLastWeekStats({stats, author})
   };
 };
 
@@ -45,7 +45,7 @@ const weekDays = {
   3: 'Thursday',
   4: 'Friday',
   5: 'Saturday',
-  6: 'Sunday',
+  6: 'Sunday'
 };
 
 interface IGetThisWeekStats {
@@ -59,7 +59,7 @@ const getThisWeekStats = ({stats, author}: IGetThisWeekStats) => {
     .setColor(BOT_COLOR.embed)
     .setAuthor({
       name: `${author.username}'s this week stats`,
-      iconURL: author.avatarURL() ?? undefined,
+      iconURL: author.avatarURL() ?? undefined
     })
     .setThumbnail(author.avatarURL());
   for (const [, value] of Object.entries(weekDays)) {
@@ -83,7 +83,7 @@ const getLastWeekStats = ({stats, author}: IGetLastWeekStats) => {
     .setColor(BOT_COLOR.embed)
     .setAuthor({
       name: `${author.username}'s last week stats`,
-      iconURL: author.avatarURL() ?? undefined,
+      iconURL: author.avatarURL() ?? undefined
     })
     .setThumbnail(author.avatarURL());
   for (const [, value] of Object.entries(weekDays)) {
@@ -105,13 +105,13 @@ interface getDonorDefaultEmbed {
 const getDonorDefaultEmbed = ({
   stats,
   author,
-  bestStats,
+  bestStats
 }: getDonorDefaultEmbed) => {
   const embed = new EmbedBuilder()
     .setColor(BOT_COLOR.embed)
     .setAuthor({
       name: `${author.username}'s stats`,
-      iconURL: author.avatarURL() ?? undefined,
+      iconURL: author.avatarURL() ?? undefined
     })
     .setThumbnail(author.avatarURL());
 
@@ -151,17 +151,17 @@ interface IGetNonDonorStatsEmbed {
 const getNonDonorStatsEmbed = ({
   stats,
   author,
-  bestStats,
+  bestStats
 }: IGetNonDonorStatsEmbed) => {
   const embed = new EmbedBuilder()
     .setColor(BOT_COLOR.embed)
     .setAuthor({
       name: `${author.username}'s stats`,
-      iconURL: author.avatarURL() ?? undefined,
+      iconURL: author.avatarURL() ?? undefined
     })
     .setThumbnail(author.avatarURL())
     .setFooter({
-      text: 'If you want to view real time stats, you can donate to the bot and get access some extra benefits',
+      text: 'If you want to view real time stats, you can donate to the bot and get access some extra benefits'
     });
 
   const yesterdayStats = stats.find(
@@ -186,7 +186,7 @@ const statsToShow = {
   [USER_STATS_RPG_COMMAND_TYPE.training]: 'Training',
   [USER_STATS_RPG_COMMAND_TYPE.ultraining]: 'Ultraining',
   [USER_STATS_RPG_COMMAND_TYPE.working]: 'Working',
-  [USER_STATS_RPG_COMMAND_TYPE.farm]: 'Farm',
+  [USER_STATS_RPG_COMMAND_TYPE.farm]: 'Farm'
 } as const;
 
 const generateStatsField = (
@@ -202,7 +202,7 @@ const generateStatsField = (
     if (
       [
         USER_STATS_RPG_COMMAND_TYPE.huntTogether,
-        USER_STATS_RPG_COMMAND_TYPE.ultraining,
+        USER_STATS_RPG_COMMAND_TYPE.ultraining
       ].some((_type) => type === _type) &&
       !stats?.[type]
     )
@@ -213,7 +213,7 @@ const generateStatsField = (
   return {
     name,
     value: row.join('\n'),
-    inline: true,
+    inline: true
   };
 };
 
@@ -231,7 +231,7 @@ const generateWeeklyStatsField = (
     if (
       [
         USER_STATS_RPG_COMMAND_TYPE.huntTogether,
-        USER_STATS_RPG_COMMAND_TYPE.ultraining,
+        USER_STATS_RPG_COMMAND_TYPE.ultraining
       ].some((_type) => type === _type) &&
       !stats?.[type]
     )
@@ -244,7 +244,7 @@ const generateWeeklyStatsField = (
   return {
     name,
     value: row.join('\n'),
-    inline: true,
+    inline: true
   };
 };
 

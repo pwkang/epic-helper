@@ -14,10 +14,10 @@ interface IUndoDuelRecord {
 export const _undoDuelRecord = async ({
   user,
   client,
-  commandChannelId,
+  commandChannelId
 }: IUndoDuelRecord) => {
   const result = await userDuelService.undoDuelRecord({
-    userId: user.id,
+    userId: user.id
   });
   if (result === null) return noRecordEmbed;
   if (result.reportGuild) {
@@ -25,14 +25,14 @@ export const _undoDuelRecord = async ({
       serverId: result.reportGuild.serverId,
       userId: user.id,
       expGained: result.expRemoved,
-      roleId: result.reportGuild.guildRoleId,
+      roleId: result.reportGuild.guildRoleId
     });
     sendDuelLog({
       roleId: result.reportGuild.guildRoleId,
       serverId: result.reportGuild.serverId,
       embed: getUndoEmbed({author: user}),
       client,
-      ignoreChannel: commandChannelId,
+      ignoreChannel: commandChannelId
     });
   }
   return successEmbed;

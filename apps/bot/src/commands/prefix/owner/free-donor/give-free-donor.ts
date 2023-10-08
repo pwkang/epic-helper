@@ -26,30 +26,30 @@ export default <PrefixCommand>{
     if (mentionedUsers.size === 0 && mentionedUsersId.length === 0) {
       djsMessageHelper.send({
         options: {
-          content: 'Please mention user',
+          content: 'Please mention user'
         },
         channelId: message.channel.id,
-        client,
+        client
       });
       return;
     }
     if (!token) {
       djsMessageHelper.send({
         options: {
-          content: 'Please provide token',
+          content: 'Please provide token'
         },
         channelId: message.channel.id,
-        client,
+        client
       });
       return;
     }
     if (!duration) {
       djsMessageHelper.send({
         options: {
-          content: 'Please provide duration',
+          content: 'Please provide duration'
         },
         channelId: message.channel.id,
-        client,
+        client
       });
       return;
     }
@@ -57,14 +57,14 @@ export default <PrefixCommand>{
     await freeDonorService.createFreeDonors({
       token,
       expiresAt: new Date(Date.now() + duration),
-      usersId: [...mentionedUsers.map((user) => user.id), ...mentionedUsersId],
+      usersId: [...mentionedUsers.map((user) => user.id), ...mentionedUsersId]
     });
     await djsMessageHelper.send({
       options: {
-        content: 'Done',
+        content: 'Done'
       },
       channelId: message.channel.id,
-      client,
+      client
     });
-  },
+  }
 };

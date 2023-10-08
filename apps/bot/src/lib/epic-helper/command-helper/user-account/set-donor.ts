@@ -3,12 +3,12 @@ import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  EmbedBuilder,
+  EmbedBuilder
 } from 'discord.js';
 import {
   BOT_CLICKABLE_SLASH_COMMANDS,
   BOT_COLOR,
-  RPG_DONOR_TIER,
+  RPG_DONOR_TIER
 } from '@epic-helper/constants';
 import {userService} from '../../../../services/database/user.service';
 
@@ -20,7 +20,7 @@ export const _setDonor = ({author}: ISetDonor) => {
   function render(): BaseMessageOptions {
     return {
       embeds: [embed],
-      components: [row],
+      components: [row]
     };
   }
 
@@ -40,18 +40,18 @@ export const _setDonor = ({author}: ISetDonor) => {
     if (!tier) return null;
     await userService.updateRpgDonorTier({
       userId: author.id,
-      tier,
+      tier
     });
 
     return {
       components: [],
-      embeds: [getSuccessEmbed(tier)],
+      embeds: [getSuccessEmbed(tier)]
     };
   }
 
   return {
     render,
-    responseInteraction,
+    responseInteraction
   };
 };
 
@@ -78,7 +78,7 @@ const RESPONSE_MSG = {
   [RPG_DONOR_TIER.nonDonor]: 'You have set your donor tier to Non-donor',
   [RPG_DONOR_TIER.donor10]: 'You have set your donor tier to -10%',
   [RPG_DONOR_TIER.donor20]: 'You have set your donor tier to -20%',
-  [RPG_DONOR_TIER.donor35]: 'You have set your donor tier to -35%',
+  [RPG_DONOR_TIER.donor35]: 'You have set your donor tier to -35%'
 } as const;
 
 const getSuccessEmbed = (tier: ValuesOf<typeof RPG_DONOR_TIER>) => {

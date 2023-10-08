@@ -3,7 +3,7 @@ import type {
   ChatInputCommandInteraction,
   Client,
   EmbedBuilder,
-  Message,
+  Message
 } from 'discord.js';
 import {generateNavigationRow, NAVIGATION_ROW_BUTTONS} from './pagination-row';
 import {sleep} from '@epic-helper/utils';
@@ -29,20 +29,20 @@ export const itemListingHelper = async ({
   message,
   interaction,
   itemsPerPage,
-  embedFn,
+  embedFn
 }: IItemListingHelper) => {
   let page = 0;
   const pageOptions = await createPage({
     embedFn,
     itemsPerPage,
     totalItems,
-    page,
+    page
   });
   const event = await generateResponse({
     client,
     message,
     interaction,
-    options: pageOptions,
+    options: pageOptions
   });
   if (!event) return;
   event.every((interaction) => {
@@ -54,12 +54,12 @@ export const itemListingHelper = async ({
         client,
         totalItems,
         embedFn,
-        itemsPerPage,
+        itemsPerPage
       });
       return {
         content: '‍',
         embeds: [],
-        components: [],
+        components: []
       };
     }
     page = Number(interaction.customId);
@@ -67,7 +67,7 @@ export const itemListingHelper = async ({
       embedFn,
       itemsPerPage,
       page,
-      totalItems,
+      totalItems
     });
   });
 };
@@ -85,7 +85,7 @@ const showAllItems = async ({
   totalItems,
   channelId,
   embedFn,
-  itemsPerPage,
+  itemsPerPage
 }: IShowAllItems) => {
   const totalPage = Math.floor(totalItems / itemsPerPage);
   for (let i = 0; i <= totalPage; i++) {
@@ -94,8 +94,8 @@ const showAllItems = async ({
       client,
       channelId,
       options: {
-        embeds: [embed],
-      },
+        embeds: [embed]
+      }
     });
     await sleep(1500);
   }
@@ -112,7 +112,7 @@ const generateResponse = async ({
   client,
   message,
   interaction,
-  options,
+  options
 }: IGenerateResponse) => {
   let event;
   if (message) {
@@ -122,14 +122,14 @@ const generateResponse = async ({
       options,
       onStop: () => {
         event = undefined;
-      },
+      }
     });
   } else if (interaction) {
     event = await djsInteractionHelper.replyInteraction({
       client,
       interaction,
       options,
-      interactive: true,
+      interactive: true
     });
   }
   return event;
@@ -146,17 +146,17 @@ const createPage = async ({
   page,
   totalItems,
   embedFn,
-  itemsPerPage,
+  itemsPerPage
 }: ICreatePage): Promise<BaseMessageOptions> => {
   const embed = await embedFn(page);
   const row = generateNavigationRow({
     page,
     total: totalItems,
     all: true,
-    itemsPerPage,
+    itemsPerPage
   });
   return {
     embeds: [embed],
-    components: [row],
+    components: [row]
   };
 };

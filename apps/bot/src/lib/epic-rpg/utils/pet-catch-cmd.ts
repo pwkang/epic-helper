@@ -4,7 +4,7 @@ import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  EmbedBuilder,
+  EmbedBuilder
 } from 'discord.js';
 import {BOT_COLOR, BOT_EMOJI, RPG_PET_THUMBNAIL} from '@epic-helper/constants';
 
@@ -24,14 +24,14 @@ interface ICmd {
 
 export const generatePetCatchMessageOptions = ({
   info,
-  clicked = 0,
+  clicked = 0
 }: IGeneratePetCatchCommand): BaseMessageOptions => {
   const {hunger, petName, owner, happiness} = info;
   const commands = getCommands(hunger, happiness, clicked);
 
   return {
     embeds: [getEmbed(commands, owner ?? undefined, petName)],
-    components: getComponents(commands),
+    components: getComponents(commands)
   };
 };
 
@@ -43,7 +43,7 @@ const getEmbed = (
   const embed = new EmbedBuilder().setColor(BOT_COLOR.embed);
   if (owner) {
     embed.setFooter({
-      text: `${owner}'s pet`,
+      text: `${owner}'s pet`
     });
   }
   if (petName) {
@@ -59,7 +59,7 @@ const getEmbed = (
 
     embed.addFields({
       name,
-      value,
+      value
     });
   }
   return embed;
@@ -133,7 +133,7 @@ const getCommands = (hunger: number, happiness: number, clicked: number) => {
       max: percentage.max,
       feed: feedAmount,
       pat: patAmount,
-      isMax: percentage.min === 100,
+      isMax: percentage.min === 100
     });
     if (percentage.min !== 100 || !patAmount) {
       loop = false;
@@ -172,20 +172,20 @@ const generatePercentage = (
   return {
     min,
     max,
-    avg,
+    avg
   };
 };
 
 const hungerTimes = {
   min: 18,
   max: 22,
-  avg: 20,
+  avg: 20
 } as const;
 
 const happinessTimes = {
   min: 8,
   max: 12,
-  avg: 10,
+  avg: 10
 } as const;
 
 const calcPercentage = (

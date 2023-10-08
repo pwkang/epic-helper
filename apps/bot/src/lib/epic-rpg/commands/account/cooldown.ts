@@ -29,12 +29,12 @@ const RPG_COMMAND_CATEGORY = {
     'mine',
     'pickaxe',
     'drill',
-    'dynamite',
+    'dynamite'
   ],
   farm: ['farm'],
   horse: ['horse breeding', 'horse race'],
   arena: ['arena', 'big arena'],
-  dungeon: ['dungeon', 'minintboss'],
+  dungeon: ['dungeon', 'minintboss']
 };
 
 interface IRpgCooldown {
@@ -48,20 +48,20 @@ export const rpgCooldown = ({
   client,
   message,
   author,
-  isSlashCommand,
+  isSlashCommand
 }: IRpgCooldown) => {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     client,
     channelId: message.channel.id,
-    author,
+    author
   });
   if (!event) return;
   event.on('embed', async (embed) => {
     if (isRpgCooldownResponse({embed, author})) {
       await rpgCooldownSuccess({
         author,
-        embed,
+        embed
       });
       event?.stop();
     }
@@ -96,7 +96,7 @@ const rpgCooldownSuccess = async ({author, embed}: IRpgCooldownSuccess) => {
       if (currentCooldowns.some((cooldown) => cooldown.type === commandType)) {
         await userReminderServices.updateRemindedCooldowns({
           types: [commandType],
-          userId: author.id,
+          userId: author.id
         });
       }
     } else {
@@ -104,7 +104,7 @@ const rpgCooldownSuccess = async ({author, embed}: IRpgCooldownSuccess) => {
       if (commandType === RPG_COMMAND_TYPE.hunt && userAccount.config.donorP) {
         const extraDuration = calcExtraHuntCdWithPartner({
           donorP: userAccount.config.donorP,
-          donor: userAccount.config.donor,
+          donor: userAccount.config.donor
         });
         readyIn += extraDuration;
       }
@@ -121,13 +121,13 @@ const rpgCooldownSuccess = async ({author, embed}: IRpgCooldownSuccess) => {
         await userReminderServices.updateUserCooldown({
           userId: author.id,
           type: commandType,
-          readyAt,
+          readyAt
         });
       } else {
         await userReminderServices.updateUserCooldown({
           userId: author.id,
           type: commandType,
-          readyAt,
+          readyAt
         });
       }
     }

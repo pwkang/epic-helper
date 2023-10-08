@@ -7,18 +7,18 @@ export default async function loadCronJob(client: Client) {
   const commands = await importFiles<CronJob>({
     path: `./${handlerRoot}/cron`,
     options: {
-      fileFilter: [handlerFileFilter],
-    },
+      fileFilter: [handlerFileFilter]
+    }
   });
   logger({
     message: `Loaded (${commands.length}) cron jobs`,
-    clusterId: client.cluster?.id,
+    clusterId: client.cluster?.id
   });
   commands.forEach(({data}) => {
     if (!data?.name || data.disabled) return;
     schedule(data.expression, () => data.execute(client), {
       ...data.cronOptions,
-      timezone: 'Asia/Kuala_Lumpur',
+      timezone: 'Asia/Kuala_Lumpur'
     });
   });
 }

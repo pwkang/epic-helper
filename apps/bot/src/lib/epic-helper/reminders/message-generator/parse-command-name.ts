@@ -2,7 +2,7 @@ import type {
   RPG_EPIC_ITEM_TYPES,
   RPG_FARM_SEED,
   RPG_LOOTBOX_TYPE,
-  RPG_WORKING_TYPE,
+  RPG_WORKING_TYPE
 } from '@epic-helper/constants';
 import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import type {IUserReminder} from '@epic-helper/models';
@@ -25,7 +25,7 @@ interface IGetHuntCommandStr {
 const getHuntCommandStr = ({
   hardMode,
   together,
-  toggleChecker,
+  toggleChecker
 }: IGetHuntCommandStr) => {
   if (toggleChecker?.huntSwitch) together = !together;
 
@@ -119,7 +119,7 @@ type IGetPetTrainCommandStr = IUserReminder & {
 export const _parseCommandString = ({
   props,
   type,
-  toggleChecker,
+  toggleChecker
 }: IGetPetTrainCommandStr) => {
   switch (type) {
     case RPG_COMMAND_TYPE.daily:
@@ -128,7 +128,7 @@ export const _parseCommandString = ({
       return getWeeklyCommandStr();
     case RPG_COMMAND_TYPE.lootbox:
       return GetLootboxCommandStr({
-        lootboxType: props?.lootboxType,
+        lootboxType: props?.lootboxType
       });
     case RPG_COMMAND_TYPE.vote:
       return GetVoteCommandStr();
@@ -136,29 +136,29 @@ export const _parseCommandString = ({
       return getHuntCommandStr({
         hardMode: props?.hardMode,
         together: props?.together,
-        toggleChecker,
+        toggleChecker
       });
     case RPG_COMMAND_TYPE.adventure:
       return getAdventureCommandStr({
-        hardMode: props?.hardMode,
+        hardMode: props?.hardMode
       });
     case RPG_COMMAND_TYPE.training:
       return getTrainingCommandStr({
-        ultraining: props?.ultraining,
+        ultraining: props?.ultraining
       });
     case RPG_COMMAND_TYPE.duel:
       return getDuelCommandStr();
     case RPG_COMMAND_TYPE.quest:
       return getQuestCommandStr({
-        epicQuest: props?.epicQuest,
+        epicQuest: props?.epicQuest
       });
     case RPG_COMMAND_TYPE.working:
       return getWorkCommandStr({
-        workingType: props?.workingType,
+        workingType: props?.workingType
       });
     case RPG_COMMAND_TYPE.farm:
       return getFarmCommandStr({
-        seedType: props?.seedType,
+        seedType: props?.seedType
       });
     case RPG_COMMAND_TYPE.horse:
       return getHorseCommandStr();
@@ -168,7 +168,7 @@ export const _parseCommandString = ({
       return GetDungeonCommandStr();
     case RPG_COMMAND_TYPE.epicItem:
       return getEpicItemCommandStr({
-        epicItemType: props?.epicItemType,
+        epicItemType: props?.epicItemType
       });
     case RPG_COMMAND_TYPE.pet:
       return getPetCommandStr();

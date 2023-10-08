@@ -24,7 +24,7 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
     if (command.readyAt && Date.now() - command.readyAt.getTime() > ms('5s')) {
       await userReminderServices.updateRemindedCooldowns({
         userId: userAccount.userId,
-        types: [command.type],
+        types: [command.type]
       });
       continue;
     }
@@ -34,20 +34,20 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
         userReminder: command,
         userAccount,
         toggleChecker,
-        client,
+        client
       });
     }
 
     const channelId = await getReminderChannel({
       commandType: command.type,
       userId: userAccount.userId,
-      client,
+      client
     });
     if (!channelId || !client.channels.cache.has(channelId)) continue;
     if (!toggleChecker.reminder[command.type]) continue;
 
     const nextReminder = await userReminderServices.getNextReadyCommand({
-      userId,
+      userId
     });
 
     const reminderMessage = generateUserReminderMessage({
@@ -57,28 +57,28 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
       type: command.type,
       nextReminder: nextReminder ?? undefined,
       userReminder: command,
-      toggleChecker,
+      toggleChecker
     });
     if (toggleChecker.dm[command.type]) {
       await djsUserHelper.sendDm({
         client,
         userId,
         options: {
-          content: reminderMessage,
-        },
+          content: reminderMessage
+        }
       });
     } else {
       await djsMessageHelper.send({
         client,
         channelId,
         options: {
-          content: reminderMessage,
-        },
+          content: reminderMessage
+        }
       });
     }
   }
   await userReminderServices.updateRemindedCooldowns({
     userId: userAccount.userId,
-    types: readyCommands.map((cmd) => cmd.type),
+    types: readyCommands.map((cmd) => cmd.type)
   });
 };

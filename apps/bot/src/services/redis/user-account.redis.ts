@@ -23,7 +23,7 @@ const delUser = async (userId: string) => {
 const redisUserAccount = {
   findUser,
   setUser,
-  delUser,
+  delUser
 };
 
 export default redisUserAccount;

@@ -2,11 +2,11 @@ import type {
   IFetchPatreonCampaignMembersResponse,
   IFetchPatreonCampaignResponse,
   IIncludeItem,
-  IUserAttributes,
+  IUserAttributes
 } from '../type';
 import type {
   PATREON_PATRON_STATUS,
-  PATREON_PAYMENT_STATUS,
+  PATREON_PAYMENT_STATUS
 } from '../patreon.constant';
 import {PATREON_INCLUDE_TYPE} from '../patreon.constant';
 import type {DONOR_TIER} from '@epic-helper/constants';
@@ -41,13 +41,13 @@ export const toCampaignInfo = (
           amountCents: includedTier.attributes.amount_cents,
           discordRoleIds: includedTier.attributes.discord_role_ids,
           totalPatrons: includedTier.attributes.patron_count,
-          title: includedTier.attributes.title,
+          title: includedTier.attributes.title
         });
       }
     }
     campaignInfo.push({
       totalPatrons: campaign.attributes.patron_count,
-      tiers,
+      tiers
     });
   }
   return campaignInfo;
@@ -107,22 +107,22 @@ export const toPatrons = (
         patronStatus,
         pledgeRelationshipStart: pledgeRelationshipStart
           ? new Date(pledgeRelationshipStart)
-          : undefined,
+          : undefined
       },
       currentTier: currentTierId
         ? typedObjectEntries(DONOR_TIER_ID).find(
-            ([, v]) => v === currentTierId
-          )?.[0]
+          ([, v]) => v === currentTierId
+        )?.[0]
         : undefined,
       discord: {
-        userId: discordUserId ?? undefined,
+        userId: discordUserId ?? undefined
       },
       patreon: {
         memberId: member.id,
         userId: patronUserId,
         email: patronEmail ?? undefined,
-        fullName: patronFullName ?? undefined,
-      },
+        fullName: patronFullName ?? undefined
+      }
     };
     patrons.push(patron);
   }

@@ -4,7 +4,7 @@ import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {
   BOT_REMINDER_BASE_COOLDOWN,
   RPG_COMMAND_TYPE,
-  RPG_COOLDOWN_EMBED_TYPE,
+  RPG_COOLDOWN_EMBED_TYPE
 } from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
@@ -23,14 +23,14 @@ export function rpgEpicQuest({
   client,
   message,
   author,
-  isSlashCommand,
+  isSlashCommand
 }: IRpgEpicQuest) {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     author,
     client,
     channelId: message.channel.id,
-    commandType: RPG_COOLDOWN_EMBED_TYPE.quest,
+    commandType: RPG_COOLDOWN_EMBED_TYPE.quest
   });
   if (!event) return;
   event.on('embed', async (embed) => {
@@ -38,7 +38,7 @@ export function rpgEpicQuest({
       await rpgEpicQuestSuccess({
         author,
         channelId: message.channel.id,
-        client,
+        client
       });
       event?.stop();
     }
@@ -55,7 +55,7 @@ export function rpgEpicQuest({
     await userReminderServices.updateUserCooldown({
       userId: author.id,
       readyAt: new Date(Date.now() + cooldown),
-      type: RPG_COMMAND_TYPE.quest,
+      type: RPG_COMMAND_TYPE.quest
     });
   });
   event.on('end', () => {
@@ -74,7 +74,7 @@ const QUEST_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.epicQuest;
 
 const rpgEpicQuestSuccess = async ({
   author,
-  channelId,
+  channelId
 }: IRpgEpicQuestSuccess) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker) return;
@@ -83,23 +83,23 @@ const rpgEpicQuestSuccess = async ({
     const cooldown = await calcCdReduction({
       userId: author.id,
       commandType: RPG_COMMAND_TYPE.quest,
-      cooldown: QUEST_COOLDOWN,
+      cooldown: QUEST_COOLDOWN
     });
     await userReminderServices.saveUserQuestCooldown({
       epicQuest: true,
       userId: author.id,
-      readyAt: new Date(Date.now() + cooldown),
+      readyAt: new Date(Date.now() + cooldown)
     });
   }
 
   await updateReminderChannel({
     userId: author.id,
-    channelId,
+    channelId
   });
 
   await userStatsService.countUserStats({
     userId: author.id,
-    type: USER_STATS_RPG_COMMAND_TYPE.epicQuest,
+    type: USER_STATS_RPG_COMMAND_TYPE.epicQuest
   });
 };
 

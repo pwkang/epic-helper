@@ -16,35 +16,35 @@ export default <PrefixCommand>{
     if (!data) return;
     const patrons = toPatrons({
       data: data.data,
-      included: data.included,
+      included: data.included
     });
     await donorService.registerDonors(
       patrons.map((patron) => ({
         discord: {
-          userId: patron.discord.userId,
+          userId: patron.discord.userId
         },
         patreon: {
           email: patron.patreon.email,
           userId: patron.patreon.userId,
           memberId: patron.patreon.memberId,
-          fullName: patron.patreon.fullName,
+          fullName: patron.patreon.fullName
         },
         tier: patron.currentTier,
         expiresAt:
           patron.subscription.lastChargeDate &&
           patron.subscription.lastChargeStatus === PATREON_PAYMENT_STATUS.paid
             ? new Date(
-                patron.subscription.lastChargeDate?.getTime() + ms('31d')
-              )
-            : patron.subscription.lastChargeDate,
+              patron.subscription.lastChargeDate?.getTime() + ms('31d')
+            )
+            : patron.subscription.lastChargeDate
       }))
     );
     await djsMessageHelper.send({
       options: {
-        content: 'Done',
+        content: 'Done'
       },
       channelId: message.channel.id,
-      client,
+      client
     });
-  },
+  }
 };

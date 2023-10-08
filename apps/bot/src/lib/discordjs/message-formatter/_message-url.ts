@@ -16,6 +16,6 @@ export const _getInfoFromMessageUrl = (messageUrl: string) => {
   return {
     serverId,
     channelId,
-    messageId,
+    messageId
   };
 };

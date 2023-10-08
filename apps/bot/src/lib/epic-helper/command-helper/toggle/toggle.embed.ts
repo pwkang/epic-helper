@@ -30,7 +30,7 @@ export const renderEmbed = ({embedsInfo}: IGetToggleEmbed): EmbedBuilder => {
   const fields: EmbedField[] = embedsInfo.map((info, index) =>
     renderFieldValue({
       info,
-      index,
+      index
     })
   );
   embed.addFields(fields);
@@ -72,7 +72,7 @@ const renderFieldValue = ({info, index}: IRenderFieldValue): EmbedField => {
   return {
     value: embedValue.join('\n'),
     inline,
-    name: info.title,
+    name: info.title
   };
 };
 

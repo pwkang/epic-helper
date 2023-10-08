@@ -6,7 +6,7 @@ import {
   CUSTOM_MESSAGE_PAGE_TYPE,
   CUSTOM_MESSAGE_PAGES,
   CUSTOM_MESSAGE_TYPES_DISPLAY_NAME,
-  CUSTOM_MESSAGE_VARIABLES_DESCRIPTION,
+  CUSTOM_MESSAGE_VARIABLES_DESCRIPTION
 } from './custom-message.constant';
 import {generateUserReminderMessage} from '../../reminders/message-generator/custom-message-generator';
 import ms from 'ms';
@@ -25,12 +25,12 @@ export const _getCustomMessageEmbed = ({
   userAccount,
   author,
   pageType = CUSTOM_MESSAGE_PAGE_TYPE.general,
-  toggleChecker,
+  toggleChecker
 }: IGetCustomMessageEmbed) => {
   const embed = new EmbedBuilder()
     .setAuthor({
       name: `${author.username}'s custom messages`,
-      iconURL: author.avatarURL() ?? undefined,
+      iconURL: author.avatarURL() ?? undefined
     })
     .setColor(BOT_COLOR.embed);
 
@@ -58,8 +58,8 @@ export const _getCustomMessageEmbed = ({
             userId: author.id,
             props: {
               hardMode: false,
-              together: false,
-            },
+              together: false
+            }
           },
           userReminder: {
             type,
@@ -67,14 +67,14 @@ export const _getCustomMessageEmbed = ({
             readyAt: new Date(Date.now() + ms('1h')),
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            props: getReminderProps[type] ?? {},
-          },
+            props: getReminderProps[type] ?? {}
+          }
         });
         embedValue.push(`${currentMessage}`);
 
         embed.addFields({
           name: '▶ ' + label.toUpperCase(),
-          value: embedValue.join('\n\n'),
+          value: embedValue.join('\n\n')
         });
       }
       break;
@@ -82,19 +82,19 @@ export const _getCustomMessageEmbed = ({
       embed.addFields(
         {
           name: 'Commands',
-          value: `\`${PREFIX.bot}cm\` - View this settings\n\`wrcm set <message type> <message>\` - update custom reminder message \n\`wrcm reset\` - Clear and reset to default settings`,
+          value: `\`${PREFIX.bot}cm\` - View this settings\n\`wrcm set <message type> <message>\` - update custom reminder message \n\`wrcm reset\` - Clear and reset to default settings`
         },
         {
           name: 'Variables',
           value: Object.entries(CUSTOM_MESSAGE_VARIABLES_DESCRIPTION)
             .map(([key, desc]) => `\`{${key}}\` - ${desc}`)
-            .join('\n'),
+            .join('\n')
         },
         {
           name: 'Message type',
           value: Object.values(CUSTOM_MESSAGE_TYPES_DISPLAY_NAME)
             .map((type) => `\`${type}\``)
-            .join(' '),
+            .join(' ')
         }
       );
       break;
@@ -106,27 +106,27 @@ export const _getCustomMessageEmbed = ({
 const getReminderProps = {
   hunt: {
     hardMode: false,
-    together: true,
+    together: true
   },
   adventure: {
-    hardMode: false,
+    hardMode: false
   },
   training: {
-    ultraining: true,
+    ultraining: true
   },
   quest: {
-    epicQuest: false,
+    epicQuest: false
   },
   working: {
-    workingType: 'fish',
+    workingType: 'fish'
   },
   farm: {
-    seedType: 'carrot',
+    seedType: 'carrot'
   },
   epicItem: {
-    epicItemType: 'epic seed',
+    epicItemType: 'epic seed'
   },
   lootbox: {
-    lootboxType: 'edgy',
-  },
+    lootboxType: 'edgy'
+  }
 };

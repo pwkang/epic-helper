@@ -3,7 +3,7 @@ import {
   RPG_COMMAND_TYPE,
   RPG_WORKING_TYPE,
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS
 } from '@epic-helper/constants';
 import {userService} from '../../../services/database/user.service';
 import {SLASH_COMMAND} from '../constant';
@@ -14,7 +14,7 @@ export default <SlashCommand>{
   type: 'subcommand',
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
-    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
+    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister
   },
   commandName: SLASH_COMMAND.account.name,
   builder: (subcommand) =>
@@ -35,11 +35,11 @@ export default <SlashCommand>{
           .setChoices(
             {
               name: 'Set',
-              value: 'set',
+              value: 'set'
             },
             {
               name: 'Remove',
-              value: 'remove',
+              value: 'remove'
             }
           )
       ),
@@ -60,8 +60,8 @@ export default <SlashCommand>{
             RPG_COMMAND_TYPE
           )
             .map((i) => `\`${i}\``)
-            .join(', ')}`,
-        },
+            .join(', ')}`
+        }
       });
 
     let message: string;
@@ -71,7 +71,7 @@ export default <SlashCommand>{
         await userService.setUserReminderChannel({
           channelId: interaction.channelId,
           userId: interaction.user.id,
-          commandType: reminderType,
+          commandType: reminderType
         });
         message = `Successfully set reminder channel for ${reminderType
           .map((i) => `\`${i}\``)
@@ -80,7 +80,7 @@ export default <SlashCommand>{
       case 'remove':
         await userService.removeUserReminderChannel({
           userId: interaction.user.id,
-          commandType: reminderType,
+          commandType: reminderType
         });
         message = `Successfully removed reminder channel for ${reminderType
           .map((i) => `\`${i}\``)
@@ -92,10 +92,10 @@ export default <SlashCommand>{
       client,
       interaction,
       options: {
-        content: message,
-      },
+        content: message
+      }
     });
-  },
+  }
 };
 
 type IKeyword = Record<keyof typeof RPG_COMMAND_TYPE, string[]>;
@@ -116,7 +116,7 @@ const keyWords: IKeyword = {
   training: ['training', 'tr'],
   vote: ['vote'],
   weekly: ['weekly'],
-  working: ['working', ...Object.keys(RPG_WORKING_TYPE)],
+  working: ['working', ...Object.keys(RPG_WORKING_TYPE)]
 };
 
 const matchReminderType = (reminderType: string) => {

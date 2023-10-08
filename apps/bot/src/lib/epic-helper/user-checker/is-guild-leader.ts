@@ -9,11 +9,11 @@ interface IsGuildLeader {
 export const _isGuildLeader = async ({
   serverId,
   guildRoleId,
-  userId,
+  userId
 }: IsGuildLeader) => {
   const guildAccount = await guildService.findGuild({
     roleId: guildRoleId,
-    serverId,
+    serverId
   });
   return guildAccount?.leaderId === userId;
 };

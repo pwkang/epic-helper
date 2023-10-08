@@ -8,11 +8,11 @@ interface ITurnOnAccount {
 }
 
 export const _turnOnAccount = async ({
-  author,
+  author
 }: ITurnOnAccount): Promise<BaseMessageOptions> => {
   await userService.userAccountOn(author.id);
   return {
-    embeds: [embed],
+    embeds: [embed]
   };
 };
 

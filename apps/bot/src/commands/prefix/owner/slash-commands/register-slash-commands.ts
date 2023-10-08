@@ -22,16 +22,16 @@ export default <PrefixCommand>{
         client,
         channelId: message.channel.id,
         options: {
-          content: 'No commands to register',
-        },
+          content: 'No commands to register'
+        }
       });
     if (!isGuild && !isGlobal) {
       return djsMessageHelper.send({
         client,
         channelId: message.channel.id,
         options: {
-          content: 'Please specify `--guild` or `--global`',
-        },
+          content: 'Please specify `--guild` or `--global`'
+        }
       });
     }
     let registered = 0;
@@ -39,18 +39,19 @@ export default <PrefixCommand>{
       client,
       channelId: message.channel.id,
       options: {
-        content: getStatusMessage(),
-      },
+        content: getStatusMessage()
+      }
     });
 
     if (!sentMessage) return;
     if (isGuild) {
       for (const command of commandsToRegister) {
+
         // ==== Register guild slash command ====
         await djsRestHelper.slashCommand.guild.createOne({
           client,
           guild: message.guild!,
-          commands: command.builder.toJSON(),
+          commands: command.builder.toJSON()
         });
         registered++;
 
@@ -59,8 +60,8 @@ export default <PrefixCommand>{
           client,
           message: sentMessage,
           options: {
-            content: getStatusMessage(),
-          },
+            content: getStatusMessage()
+          }
         });
 
         // ==== Wait 1 second ====
@@ -68,10 +69,11 @@ export default <PrefixCommand>{
       }
     } else if (isGlobal) {
       for (const command of commandsToRegister) {
+
         // ==== Register global slash command ====
         await djsRestHelper.slashCommand.global.createOne({
           client,
-          commands: command.builder.toJSON(),
+          commands: command.builder.toJSON()
         });
         registered++;
 
@@ -81,8 +83,8 @@ export default <PrefixCommand>{
 
           message: sentMessage,
           options: {
-            content: getStatusMessage(),
-          },
+            content: getStatusMessage()
+          }
         });
 
         // ==== Wait 1 second ====
@@ -93,5 +95,5 @@ export default <PrefixCommand>{
     function getStatusMessage() {
       return `Registering ${commandsToRegister.length} slash commands..., (${registered}/${commandsToRegister.length})`;
     }
-  },
+  }
 };

@@ -1,12 +1,12 @@
 import {itemListingHelper} from '../../../utils/item-listing-helper';
 import {
   paginatePetCd,
-  PET_CD_PET_PAGE,
+  PET_CD_PET_PAGE
 } from '../../../lib/epic-helper/features/pets/pet-cd';
 import {userPetServices} from '../../../services/database/user-pet.service';
 import {
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS
 } from '@epic-helper/constants';
 import {SLASH_COMMAND} from '../constant';
 
@@ -17,12 +17,12 @@ export default <SlashCommand>{
   type: 'subcommand',
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
-    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
+    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister
   },
   execute: async (client, interaction) => {
     const totalPets = await userPetServices.calcTotalPets({
       userId: interaction.user.id,
-      status: ['adventure', 'back'],
+      status: ['adventure', 'back']
     });
 
     await itemListingHelper({
@@ -31,11 +31,11 @@ export default <SlashCommand>{
       embedFn: (page) =>
         paginatePetCd({
           page,
-          user: interaction.user,
+          user: interaction.user
         }),
       interaction,
       itemsPerPage: PET_CD_PET_PAGE,
-      totalItems: totalPets,
+      totalItems: totalPets
     });
-  },
+  }
 };

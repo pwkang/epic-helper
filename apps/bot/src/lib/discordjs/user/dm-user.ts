@@ -11,7 +11,7 @@ interface IDmUser {
 export const _dmUser = async ({userId, client, options}: IDmUser) => {
   const user = await _getUser({
     client,
-    userId,
+    userId
   });
   if (!user) return;
   try {
@@ -20,7 +20,7 @@ export const _dmUser = async ({userId, client, options}: IDmUser) => {
     logger({
       logLevel: 'warn',
       message: `Failed to send DM to ${userId}`,
-      clusterId: client.cluster?.id,
+      clusterId: client.cluster?.id
     });
   }
 };

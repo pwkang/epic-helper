@@ -25,7 +25,7 @@ const commandHelper = {
   epicToken: _epicTokenHelper,
   information: _botInfoHelper,
   duel: _duelLogHelper,
-  pet: _petHelper,
+  pet: _petHelper
 };
 
 export default commandHelper;

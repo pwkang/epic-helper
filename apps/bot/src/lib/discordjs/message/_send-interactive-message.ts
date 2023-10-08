@@ -4,7 +4,7 @@ import type {
   InteractionUpdateOptions,
   MessageCreateOptions,
   MessagePayload,
-  StringSelectMenuInteraction,
+  StringSelectMenuInteraction
 } from 'discord.js';
 import {Collection} from 'discord.js';
 import ms from 'ms';
@@ -33,14 +33,14 @@ export default async function _sendInteractiveMessage<
   const sentMessage = await djsMessageHelper.send({
     channelId,
     client,
-    options,
+    options
   });
   if (!sentMessage) return;
 
   let allEventsFn: TEventCB | null = null;
   const registeredEvents = new Collection<string | EventType, TEventCB>();
   let collector = sentMessage.createMessageComponentCollector({
-    idle: ms('1m'),
+    idle: ms('1m')
   });
 
   function every(callback: TEventCB) {
@@ -68,7 +68,7 @@ export default async function _sendInteractiveMessage<
     await djsInteractionHelper.updateInteraction({
       interaction: collected,
       options: replyOptions,
-      client,
+      client
     });
   });
 
@@ -91,8 +91,8 @@ export default async function _sendInteractiveMessage<
         client,
         message: sentMessage,
         options: {
-          components: disableAllComponents(sentMessage.components),
-        },
+          components: disableAllComponents(sentMessage.components)
+        }
       });
   });
 
@@ -101,6 +101,6 @@ export default async function _sendInteractiveMessage<
     stop,
     isEnded,
     every,
-    message: sentMessage,
+    message: sentMessage
   };
 }

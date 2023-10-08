@@ -1,7 +1,7 @@
 import {SLASH_COMMAND} from '../constant';
 import {
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS
 } from '@epic-helper/constants';
 import commandHelper from '../../../lib/epic-helper/command-helper';
 import djsInteractionHelper from '../../../lib/discordjs/interaction';
@@ -13,7 +13,7 @@ export default <SlashCommand>{
   description: SLASH_COMMAND.pet.summary.description,
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
-    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
+    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister
   },
   builder: (subcommand) =>
     subcommand.addStringOption((option) =>
@@ -32,13 +32,13 @@ export default <SlashCommand>{
       | 'skill';
     const petSummary = await commandHelper.pet.summary({
       author: interaction.user,
-      type: filter,
+      type: filter
     });
     if (!petSummary) return;
     await djsInteractionHelper.replyInteraction({
       client,
       interaction,
-      options: petSummary.render(),
+      options: petSummary.render()
     });
-  },
+  }
 };

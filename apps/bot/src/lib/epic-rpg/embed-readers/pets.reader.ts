@@ -9,7 +9,7 @@ import {
   RPG_PET_SKILL_ASCEND,
   RPG_PET_SKILL_LABEL,
   RPG_PET_SKILL_SPECIAL,
-  RPG_PET_SKILL_TIER,
+  RPG_PET_SKILL_TIER
 } from '@epic-helper/constants';
 import type {IUserPet} from '@epic-helper/models';
 
@@ -36,7 +36,7 @@ const petsReader = ({embed, author}: IReadPets) => {
       tier: petTier,
       skills: petSkills,
       readyAt: petReadyAt,
-      status: petStatus ?? RPG_PET_ADV_STATUS.idle,
+      status: petStatus ?? RPG_PET_ADV_STATUS.idle
     });
   }
   return pets;

@@ -3,7 +3,7 @@ import {
   BOT_REMINDER_BASE_COOLDOWN,
   RPG_COMMAND_TYPE,
   RPG_COOLDOWN_EMBED_TYPE,
-  RPG_FARM_SEED,
+  RPG_FARM_SEED
 } from '@epic-helper/constants';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
@@ -28,7 +28,7 @@ export function rpgFarm({client, message, author, isSlashCommand}: IRpgFarm) {
     author,
     client,
     channelId: message.channel.id,
-    commandType: RPG_COOLDOWN_EMBED_TYPE.farm,
+    commandType: RPG_COOLDOWN_EMBED_TYPE.farm
   });
   if (!event) return;
   event.on('content', async (content, collected) => {
@@ -40,7 +40,7 @@ export function rpgFarm({client, message, author, isSlashCommand}: IRpgFarm) {
         author,
         client,
         channelId: message.channel.id,
-        content,
+        content
       });
       event?.stop();
     }
@@ -53,6 +53,7 @@ export function rpgFarm({client, message, author, isSlashCommand}: IRpgFarm) {
   });
   event.on('embed', (embed) => {
     if (isSeedNotGrowingUp({embed, author})) {
+
       // event.stop();
     }
   });
@@ -60,7 +61,7 @@ export function rpgFarm({client, message, author, isSlashCommand}: IRpgFarm) {
     await userReminderServices.updateUserCooldown({
       userId: author.id,
       readyAt: new Date(Date.now() + cooldown),
-      type: RPG_COMMAND_TYPE.farm,
+      type: RPG_COMMAND_TYPE.farm
     });
   });
   event.on('end', () => {
@@ -79,7 +80,7 @@ interface IRpgFarmSuccess {
 const rpgFarmSuccess = async ({
   content,
   author,
-  channelId,
+  channelId
 }: IRpgFarmSuccess) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker) return;
@@ -89,23 +90,23 @@ const rpgFarmSuccess = async ({
     const cooldown = await calcCdReduction({
       userId: author.id,
       commandType: RPG_COMMAND_TYPE.farm,
-      cooldown: FARM_COOLDOWN,
+      cooldown: FARM_COOLDOWN
     });
     await userReminderServices.saveUserFarmCooldown({
       userId: author.id,
       readyAt: new Date(Date.now() + cooldown),
-      seedType,
+      seedType
     });
   }
 
   await updateReminderChannel({
     userId: author.id,
-    channelId,
+    channelId
   });
 
   await userStatsService.countUserStats({
     userId: author.id,
-    type: USER_STATS_RPG_COMMAND_TYPE.farm,
+    type: USER_STATS_RPG_COMMAND_TYPE.farm
   });
 };
 
@@ -119,7 +120,7 @@ const isRpgFarmSuccess = ({author, content}: IIsRpgFarmSuccess) =>
   [
     'have grown from the seed',
     'HITS THE FLOOR WITH THE FISTS',
-    'in the ground...',
+    'in the ground...'
   ].some((msg) => content.includes(msg));
 
 function whatIsTheSeed(content: string) {
@@ -155,7 +156,7 @@ interface IIsSeedNotGrowingUp {
 
 const isSeedNotGrowingUp = ({embed, author}: IIsSeedNotGrowingUp) =>
   embed.description?.includes(
-    "You planted a seed, but for some reason it's not growing up"
+    'You planted a seed, but for some reason it\'s not growing up'
   ) && embed.author?.name === `${author.username} — farm`;
 
 interface IIsFailToPlantAnotherSeed {
@@ -165,11 +166,11 @@ interface IIsFailToPlantAnotherSeed {
 
 const isSeedNotGrowingUpEnded = ({
   content,
-  author,
+  author
 }: IIsFailToPlantAnotherSeed) =>
   content.includes(author.username) &&
   [
     'is about to plant another seed',
     'HITS THE FLOOR WITH THEIR FISTS',
-    'cried',
+    'cried'
   ].some((msg) => content.includes(msg));

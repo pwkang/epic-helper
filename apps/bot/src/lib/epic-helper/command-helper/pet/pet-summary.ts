@@ -12,7 +12,7 @@ import {
   RPG_PET_SKILL_LABEL,
   RPG_PET_SKILL_TIER_REVERSE,
   RPG_PET_TYPE,
-  RPG_PET_TYPE_BASIC,
+  RPG_PET_TYPE_BASIC
 } from '@epic-helper/constants';
 import {convertNumberToRoman} from '../../../../utils/roman-conversion';
 import {convertNumToPetId, typedObjectEntries} from '@epic-helper/utils';
@@ -27,36 +27,36 @@ export const _petSummaryHelper = async ({author, type}: IPetSummaryHelper) => {
   const userAccount = await userService.getUserAccount(author.id);
   if (!userAccount) return null;
   const userPets = await userPetServices.getUserPets({
-    userId: author.id,
+    userId: author.id
   });
 
   const renderTier = () => {
     const embed = generateTierEmbed({
       author,
-      pets: userPets,
+      pets: userPets
     });
     return {
-      embeds: [embed],
+      embeds: [embed]
     };
   };
 
   const renderSkill = () => {
     const embed = generateSkillEmbed({
       author,
-      pets: userPets,
+      pets: userPets
     });
     return {
-      embeds: [embed],
+      embeds: [embed]
     };
   };
 
   const renderMap = {
     tier: renderTier,
-    skill: renderSkill,
+    skill: renderSkill
   };
 
   return {
-    render: renderMap[type],
+    render: renderMap[type]
   };
 };
 
@@ -76,7 +76,7 @@ const PET_ORDER = {
   [RPG_PET_TYPE.worker]: 13,
   [RPG_PET_TYPE.bunny]: 14,
   [RPG_PET_TYPE.fakeGoldenBunny]: 15,
-  [RPG_PET_TYPE.snowball]: 16,
+  [RPG_PET_TYPE.snowball]: 16
 } as const;
 
 const PET_SKILL_ORDER = {
@@ -91,7 +91,7 @@ const PET_SKILL_ORDER = {
   [RPG_PET_SKILL.perfect]: 9,
   [RPG_PET_SKILL.fighter]: 10,
   [RPG_PET_SKILL.master]: 11,
-  [RPG_PET_SKILL.normie]: 12,
+  [RPG_PET_SKILL.normie]: 12
 } as const;
 
 interface IGenerateTierEmbed {
@@ -102,7 +102,7 @@ interface IGenerateTierEmbed {
 const generateTierEmbed = ({author, pets}: IGenerateTierEmbed) => {
   const embed = new EmbedBuilder().setColor(BOT_COLOR.embed).setAuthor({
     name: `${author.username}'s pets`,
-    iconURL: author.avatarURL() ?? undefined,
+    iconURL: author.avatarURL() ?? undefined
   });
 
   const tierMap = new Map<number, IUserPet[]>();
@@ -143,7 +143,7 @@ const generateTierEmbed = ({author, pets}: IGenerateTierEmbed) => {
     embed.addFields({
       name: 'TIER ' + convertNumberToRoman(tier),
       value: value.join('\n'),
-      inline: true,
+      inline: true
     });
   }
 
@@ -158,7 +158,7 @@ interface IGenerateSkillEmbed {
 const generateSkillEmbed = ({author, pets}: IGenerateSkillEmbed) => {
   const embed = new EmbedBuilder().setColor(BOT_COLOR.embed).setAuthor({
     name: `${author.username}'s pets`,
-    iconURL: author.avatarURL() ?? undefined,
+    iconURL: author.avatarURL() ?? undefined
   });
 
   const skillMap = new Map<keyof IUserPet['skills'], IUserPet[]>();
@@ -205,7 +205,7 @@ const generateSkillEmbed = ({author, pets}: IGenerateSkillEmbed) => {
             isSpecial: Object.values(RPG_PET_TYPE_BASIC).every(
               (type) => type !== pet.name
             ),
-            petId: pet.petId,
+            petId: pet.petId
           }))
           .map(
             (pet) =>
@@ -228,11 +228,11 @@ const generateSkillEmbed = ({author, pets}: IGenerateSkillEmbed) => {
     embed.addFields({
       name: `${emoji} **${skillName}**`,
       value: value.join('\n'),
-      inline: true,
+      inline: true
     });
   }
   embed.setFooter({
-    text: '* Special pet',
+    text: '* Special pet'
   });
 
   return embed;

@@ -8,7 +8,7 @@ export interface IGetGlobalSlashCommands {
 }
 
 export const _getGlobalSlashCommands = async ({
-  client,
+  client
 }: IGetGlobalSlashCommands) => {
   if (!client.user) return [];
   try {
@@ -22,7 +22,7 @@ export const _getGlobalSlashCommands = async ({
       message: e.rawError.message,
       variant: 'get-global-slash-commands',
       logLevel: 'error',
-      clusterId: client.cluster?.id,
+      clusterId: client.cluster?.id
     });
     return [];
   }

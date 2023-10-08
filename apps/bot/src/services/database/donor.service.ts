@@ -26,7 +26,7 @@ const registerDonors = async (donors: IRegisterDonor[]): Promise<void> => {
   for (const donor of donors) {
     bulk
       .find({
-        'patreon.userId': donor.patreon.userId,
+        'patreon.userId': donor.patreon.userId
       })
       .upsert()
       .updateOne({
@@ -40,8 +40,8 @@ const registerDonors = async (donors: IRegisterDonor[]): Promise<void> => {
           'patreon.userId': donor.patreon.userId,
           'patreon.memberId': donor.patreon.memberId,
           tier: donor.tier,
-          expiresAt: donor.expiresAt,
-        },
+          expiresAt: donor.expiresAt
+        }
       });
   }
   await bulk.execute();
@@ -58,8 +58,8 @@ const getDonors = async ({tier, page, limit}: IGetDonors) => {
   if (tier) query.tier = tier;
   const options: QueryOptions<IDonor> = {
     sort: {
-      expiresAt: -1,
-    },
+      expiresAt: -1
+    }
   };
   if (page !== undefined && limit) {
     options.skip = page * limit;
@@ -69,7 +69,7 @@ const getDonors = async ({tier, page, limit}: IGetDonors) => {
   const total = await dbDonor.countDocuments(query);
   return {
     data,
-    total,
+    total
   };
 };
 
@@ -87,7 +87,7 @@ const findDonor = async ({discordUserId}: IFindDonor) => {
 const donorService = {
   registerDonors,
   getDonors,
-  findDonor,
+  findDonor
 };
 
 export default donorService;

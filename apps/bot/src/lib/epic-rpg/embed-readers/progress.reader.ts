@@ -21,7 +21,7 @@ const profileReader = ({embed}: IProfileReader) => {
     level: Number(level),
     currentArea: Number(currentArea),
     maxArea: Number(maxArea),
-    timeTravels: Number(timeTravels),
+    timeTravels: Number(timeTravels)
   };
 };
 

@@ -13,20 +13,20 @@ interface ICreateFreeDonors {
 const createFreeDonors = async ({
   usersId,
   expiresAt,
-  token,
+  token
 }: ICreateFreeDonors): Promise<void> => {
   const bulk = dbFreeDonor.collection.initializeUnorderedBulkOp();
   for (const userId of usersId) {
     bulk
       .find({
-        discordId: userId,
+        discordId: userId
       })
       .upsert()
       .updateOne({
         $set: {
           expiresAt,
-          token,
-        },
+          token
+        }
       });
   }
   await bulk.execute();
@@ -40,8 +40,8 @@ interface IGetFreeDonors {
 const getFreeDonors = async ({page, limit}: IGetFreeDonors) => {
   const options: QueryOptions = {
     sort: {
-      expiresAt: -1,
-    },
+      expiresAt: -1
+    }
   };
   if (page !== undefined && limit !== undefined) {
     options.skip = page * limit;
@@ -58,7 +58,7 @@ interface IFindFreeDonor {
 
 const findFreeDonor = async ({discordUserId}: IFindFreeDonor) => {
   const freeDonor = await dbFreeDonor.findOne({
-    discordId: discordUserId,
+    discordId: discordUserId
   });
   return freeDonor ?? null;
 };
@@ -72,9 +72,9 @@ const deleteFreeDonors = async ({usersId}: IDeleteFreeDonors) => {
     usersId.map((userId) => ({
       deleteOne: {
         filter: {
-          discordId: userId,
-        },
-      },
+          discordId: userId
+        }
+      }
     }))
   );
 };
@@ -83,7 +83,7 @@ const freeDonorService = {
   createFreeDonors,
   getFreeDonors,
   findFreeDonor,
-  deleteFreeDonors,
+  deleteFreeDonors
 };
 
 export default freeDonorService;

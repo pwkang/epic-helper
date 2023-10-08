@@ -4,13 +4,13 @@ import type {
   Client,
   Guild,
   Message,
-  User,
+  User
 } from 'discord.js';
 import {PermissionsBitField} from 'discord.js';
 import {userService} from '../services/database/user.service';
 import {
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS
 } from '@epic-helper/constants';
 import embedProvider from '../lib/epic-helper/embeds';
 import {djsMessageHelper} from '../lib/discordjs/message';
@@ -34,22 +34,22 @@ export const preCheckCommand = async ({
   client,
   server,
   interaction,
-  message,
+  message
 }: IPreCheckCommand) => {
   const status: Record<keyof PrefixCommand['preCheck'], boolean> = {
     userNotRegistered: true,
     userAccOff: true,
-    isServerAdmin: true,
+    isServerAdmin: true
   };
 
   if (preCheck.isServerAdmin) {
     const member = await djsMemberHelper.getMember({
       client,
       serverId: server.id,
-      userId: author.id,
+      userId: author.id
     });
     const serverAccount = await serverService.getServer({
-      serverId: server.id,
+      serverId: server.id
     });
     const adminRoles = serverAccount?.settings.admin.rolesId ?? [];
     const adminUsers = serverAccount?.settings.admin.usersId ?? [];
@@ -64,8 +64,8 @@ export const preCheckCommand = async ({
         interaction,
         message,
         messageOptions: {
-          content: 'You do not have permission to use this command.',
-        },
+          content: 'You do not have permission to use this command.'
+        }
       });
 
       status.isServerAdmin = false;
@@ -91,10 +91,10 @@ export const preCheckCommand = async ({
             messageOptions: {
               embeds: [
                 embedProvider.howToRegister({
-                  author,
-                }),
-              ],
-            },
+                  author
+                })
+              ]
+            }
           });
         break;
     }
@@ -114,10 +114,10 @@ export const preCheckCommand = async ({
           await response({
             client,
             messageOptions: {
-              embeds: [embedProvider.turnOnAccount()],
+              embeds: [embedProvider.turnOnAccount()]
             },
             message,
-            interaction,
+            interaction
           });
         break;
     }
@@ -137,19 +137,19 @@ const response = async ({
   message,
   interaction,
   client,
-  messageOptions,
+  messageOptions
 }: IResponse) => {
   if (interaction) {
     await djsInteractionHelper.replyInteraction({
       client,
       interaction,
-      options: messageOptions,
+      options: messageOptions
     });
   } else if (message) {
     await djsMessageHelper.reply({
       client,
       message,
-      options: messageOptions,
+      options: messageOptions
     });
   }
 };

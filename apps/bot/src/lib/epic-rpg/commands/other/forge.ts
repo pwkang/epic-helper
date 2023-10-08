@@ -5,7 +5,7 @@ import {userService} from '../../../../services/database/user.service';
 import {typedObjectEntries} from '@epic-helper/utils';
 
 const rubyConsumed = {
-  [RPG_EQUIPMENTS.ultraEdgyArmor]: 400,
+  [RPG_EQUIPMENTS.ultraEdgyArmor]: 400
 };
 
 interface IRpgForge {
@@ -19,20 +19,20 @@ export const rpgForge = ({
   client,
   message,
   author,
-  isSlashCommand,
+  isSlashCommand
 }: IRpgForge) => {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     channelId: message.channel.id,
     client,
-    author,
+    author
   });
   if (!event) return;
   event.on('content', async (content) => {
     if (isSuccessfullyForged({content})) {
       await rpgForgeSuccess({
         author,
-        content,
+        content
       });
       event?.stop();
     }
@@ -66,7 +66,7 @@ const rpgForgeSuccess = async ({content, author}: IRpgForgeSuccess) => {
     await userService.updateUserRubyAmount({
       type: 'dec',
       userId: author.id,
-      ruby,
+      ruby
     });
   }
 };

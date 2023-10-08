@@ -7,7 +7,7 @@ import {
   BOT_COLOR,
   BOT_EMOJI,
   PREFIX,
-  RPG_CLICKABLE_SLASH_COMMANDS,
+  RPG_CLICKABLE_SLASH_COMMANDS
 } from '@epic-helper/constants';
 
 interface ICalcOptions {
@@ -24,61 +24,61 @@ export const getCalcMaterialMessage: TCalcFunc = ({embed, area, author}) => {
     startArea: area,
     endArea: 3,
     inventory,
-    tradeTo: 'normieFish',
+    tradeTo: 'normieFish'
   }).normieFish;
   const a5Apple = tradeHelper.startTrading({
     startArea: area,
     endArea: 5,
     inventory,
-    tradeTo: 'apple',
+    tradeTo: 'apple'
   }).apple;
   const a10Log = tradeHelper.startTrading({
     startArea: area,
     endArea: 10,
     inventory,
-    tradeTo: 'woodenLog',
+    tradeTo: 'woodenLog'
   }).woodenLog;
   const a11Apple = tradeHelper.startTrading({
     startArea: area,
     endArea: 11,
     inventory,
-    tradeTo: 'apple',
+    tradeTo: 'apple'
   }).apple;
   const a12Ruby = tradeHelper.startTrading({
     startArea: area,
     endArea: 12,
     inventory,
-    tradeTo: 'ruby',
+    tradeTo: 'ruby'
   }).ruby;
   const topFish = tradeHelper.startTrading({
     startArea: area,
     endArea: 'top',
     inventory,
-    tradeTo: 'normieFish',
+    tradeTo: 'normieFish'
   }).normieFish;
   const topLog = tradeHelper.startTrading({
     startArea: area,
     endArea: 'top',
     inventory,
-    tradeTo: 'woodenLog',
+    tradeTo: 'woodenLog'
   }).woodenLog;
   const topApple = tradeHelper.startTrading({
     startArea: area,
     endArea: 'top',
     inventory,
-    tradeTo: 'apple',
+    tradeTo: 'apple'
   }).apple;
   const topRuby = tradeHelper.startTrading({
     startArea: area,
     endArea: 'top',
     inventory,
-    tradeTo: 'ruby',
+    tradeTo: 'ruby'
   }).ruby;
 
   const tradeEmbed = new EmbedBuilder()
     .setAuthor({
       name: `${author.username}'s Material Calculator (Current Area ${area})`,
-      iconURL: author.displayAvatarURL(),
+      iconURL: author.displayAvatarURL()
     })
     .setDescription(
       'Assuming you dismantle all the materials and follow the trade rate'
@@ -102,7 +102,7 @@ export const getCalcMaterialMessage: TCalcFunc = ({embed, area, author}) => {
           `${
             BOT_EMOJI.working.ruby
           } \`[ A12+ ]\`: ${a12Ruby?.toLocaleString()}`,
-        inline: true,
+        inline: true
       },
       {
         name: 'Materials (TOP)',
@@ -111,13 +111,13 @@ export const getCalcMaterialMessage: TCalcFunc = ({embed, area, author}) => {
           `${BOT_EMOJI.working.woodenLog}: ${topLog?.toLocaleString()}\n` +
           `${BOT_EMOJI.working.apple}: ${topApple?.toLocaleString()}\n` +
           `${BOT_EMOJI.working.ruby}: ${topRuby?.toLocaleString()}`,
-        inline: true,
-      },
+        inline: true
+      }
     ])
     .setColor(BOT_COLOR.embed);
 
   return {
-    embeds: [tradeEmbed],
+    embeds: [tradeEmbed]
   };
 };
 
@@ -135,13 +135,13 @@ export const getInvalidCalcArgsMessage = (): MessageCreateOptions => {
     content:
       'Correct usage:\n' +
       `**Material Calculator:** \`${PREFIX.bot}calc [area]\`\n` +
-      `**STT Calculator:** \`${PREFIX.bot}calc [area] [level]\``,
+      `**STT Calculator:** \`${PREFIX.bot}calc [area] [level]\``
   };
 };
 
 export const getCalcInstructionMessage = (): MessageCreateOptions => {
   return {
-    content: `Use ${RPG_CLICKABLE_SLASH_COMMANDS.inventory} once`,
+    content: `Use ${RPG_CLICKABLE_SLASH_COMMANDS.inventory} once`
   };
 };
 
@@ -149,7 +149,7 @@ const materialCalculator = {
   getCalcMaterialMessage,
   isCalcMaterial,
   getInvalidCalcArgsMessage,
-  getCalcInstructionMessage,
+  getCalcInstructionMessage
 };
 
 export default materialCalculator;

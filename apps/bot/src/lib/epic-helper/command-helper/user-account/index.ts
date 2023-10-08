@@ -15,5 +15,5 @@ export const _userAccountHelper = {
   setDonorP: _setDonorP,
   deleteAccount: _deleteAccount,
   setEnchant: _setEnchant,
-  settings: _accountSettings,
+  settings: _accountSettings
 };

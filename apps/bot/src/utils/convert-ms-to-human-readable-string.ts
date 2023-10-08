@@ -1,4 +1,5 @@
 function getYears(milliseconds: number) {
+
   // Convert milliseconds to seconds
   const seconds = Math.floor(milliseconds / 1000);
 
@@ -7,6 +8,7 @@ function getYears(milliseconds: number) {
 }
 
 function getDays(milliseconds: number) {
+
   // Convert milliseconds to seconds
   const seconds = Math.floor(milliseconds / 1000);
 
@@ -15,6 +17,7 @@ function getDays(milliseconds: number) {
 }
 
 function getHours(milliseconds: number) {
+
   // Convert milliseconds to seconds
   const seconds = Math.floor(milliseconds / 1000);
 
@@ -25,6 +28,7 @@ function getHours(milliseconds: number) {
 }
 
 function getMinutes(milliseconds: number) {
+
   // Convert milliseconds to seconds
   const seconds = Math.floor(milliseconds / 1000);
 
@@ -35,6 +39,7 @@ function getMinutes(milliseconds: number) {
 }
 
 function getSeconds(milliseconds: number) {
+
   // Convert milliseconds to seconds
   let seconds = Math.floor(milliseconds / 1000);
 

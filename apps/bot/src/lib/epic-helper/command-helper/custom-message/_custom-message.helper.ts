@@ -5,5 +5,5 @@ import {_getMessageOptions} from './custom-message.message-options';
 export const _customMessageHelper = {
   renderEmbed: _getCustomMessageEmbed,
   renderPageSelector: _customMessagePageSelector,
-  getMessageOptions: _getMessageOptions,
+  getMessageOptions: _getMessageOptions
 };

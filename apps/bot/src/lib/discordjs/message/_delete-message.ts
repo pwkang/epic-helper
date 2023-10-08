@@ -8,7 +8,7 @@ export interface DeleteMessageProps {
 
 export default async function _deleteMessage({
   client,
-  message,
+  message
 }: DeleteMessageProps) {
   if (message.author.id !== client.user?.id) return;
   if (!message.deletable) return;
@@ -19,7 +19,7 @@ export default async function _deleteMessage({
       message: e.rawError.message,
       variant: 'delete-message',
       logLevel: 'warn',
-      clusterId: client.cluster?.id,
+      clusterId: client.cluster?.id
     });
   }
 }

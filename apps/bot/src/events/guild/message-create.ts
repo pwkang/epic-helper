@@ -4,7 +4,7 @@ import {
   DEVS_ID,
   EPIC_RPG_ID,
   PREFIX,
-  PREFIX_COMMAND_TYPE,
+  PREFIX_COMMAND_TYPE
 } from '@epic-helper/constants';
 import {preCheckCommand} from '../../utils/command-precheck';
 
@@ -27,7 +27,7 @@ export default <BotEvent>{
           author: message.interaction!.user,
           message,
           preCheck: cmd.preCheck,
-          server: message.guild,
+          server: message.guild
         });
         if (!toExecute) return;
         cmd.execute(client, message, message.interaction!.user);
@@ -42,7 +42,7 @@ export default <BotEvent>{
         preCheck: result.command.preCheck,
         author: message.author,
         server: message.guild,
-        message,
+        message
       });
       if (!toExecute) return;
       await result.command.execute(client, message, result.args);
@@ -53,7 +53,7 @@ export default <BotEvent>{
       if (!commands.size) return;
       commands.forEach((cmd) => cmd.execute(client, message));
     }
-  },
+  }
 };
 
 const searchSlashMessages = (client: Client, message: Message) =>

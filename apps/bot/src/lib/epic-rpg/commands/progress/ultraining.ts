@@ -4,7 +4,7 @@ import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {
   BOT_REMINDER_BASE_COOLDOWN,
   RPG_COMMAND_TYPE,
-  RPG_COOLDOWN_EMBED_TYPE,
+  RPG_COOLDOWN_EMBED_TYPE
 } from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
@@ -23,14 +23,14 @@ export function rpgUltraining({
   client,
   message,
   author,
-  isSlashCommand,
+  isSlashCommand
 }: IRpgUltraining) {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     channelId: message.channel.id,
     client,
     author,
-    commandType: RPG_COOLDOWN_EMBED_TYPE.training,
+    commandType: RPG_COOLDOWN_EMBED_TYPE.training
   });
   if (!event) return;
   event.on('embed', async (embed) => {
@@ -38,7 +38,7 @@ export function rpgUltraining({
       await rpgUlTrainingSuccess({
         author,
         channelId: message.channel.id,
-        client,
+        client
       });
       event?.stop();
     }
@@ -47,7 +47,7 @@ export function rpgUltraining({
     await userReminderServices.updateUserCooldown({
       userId: author.id,
       type: RPG_COMMAND_TYPE.training,
-      readyAt: new Date(Date.now() + cooldown),
+      readyAt: new Date(Date.now() + cooldown)
     });
   });
   event.on('end', () => {
@@ -71,7 +71,7 @@ const TRAINING_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.training;
 
 const rpgUlTrainingSuccess = async ({
   author,
-  channelId,
+  channelId
 }: IRpgTrainingSuccess) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker) return;
@@ -80,23 +80,23 @@ const rpgUlTrainingSuccess = async ({
     const cooldown = await calcCdReduction({
       userId: author.id,
       commandType: RPG_COMMAND_TYPE.training,
-      cooldown: TRAINING_COOLDOWN,
+      cooldown: TRAINING_COOLDOWN
     });
     await userReminderServices.saveUserTrainingCooldown({
       userId: author.id,
       ultraining: true,
-      readyAt: new Date(Date.now() + cooldown),
+      readyAt: new Date(Date.now() + cooldown)
     });
   }
 
   await updateReminderChannel({
     userId: author.id,
-    channelId,
+    channelId
   });
 
   await userStatsService.countUserStats({
     userId: author.id,
-    type: USER_STATS_RPG_COMMAND_TYPE.ultraining,
+    type: USER_STATS_RPG_COMMAND_TYPE.ultraining
   });
 };
 
