@@ -1,4 +1,3 @@
-import {TypedEventEmitter} from './typed-event-emitter';
 import {Message} from 'discord.js';
 import {redisMessageEdited} from '../services/redis/message-edited.redis';
 import {EventEmitter} from 'events';
@@ -8,44 +7,29 @@ const messageEditedEvent = new EventEmitter();
 
 interface ICreateMessageEditedListener {
   messageId: string;
+  timeout?: number;
 }
 
-type TEventTypes = {
-  edited: [Message];
-};
-
-type TExtraProps = {
-  stop: () => void;
-};
-
-export const createMessageEditedListener = async ({messageId}: ICreateMessageEditedListener) => {
+export const createMessageEditedListener = async ({
+  messageId,
+  timeout = ms('10m'),
+}: ICreateMessageEditedListener) => {
   await redisMessageEdited.register({
     messageId,
   });
-  const event = new TypedEventEmitter<TEventTypes>() as TypedEventEmitter<TEventTypes> &
-    TExtraProps;
 
-  messageEditedEvent.on(messageId, messageEdited);
+  messageEditedEvent.on = (
+    messageId: string | symbol,
+    callback: (message: Message) => void
+  ): any => {
+    setTimeout(() => {
+      messageEditedEvent.removeListener(messageId, callback);
+    }, timeout);
 
-  const timeout = setTimeout(() => {
-    clear();
-  }, ms('1m'));
-
-  event.stop = () => {
-    clear();
+    return messageEditedEvent.addListener(messageId, callback);
   };
 
-  function messageEdited(message: Message) {
-    event.emit('edited', message);
-  }
-
-  function clear() {
-    clearTimeout(timeout);
-    event.removeAllListeners();
-    messageEditedEvent.removeListener(messageId, messageEdited);
-  }
-
-  return event;
+  return messageEditedEvent;
 };
 
 export const emitMessageEdited = async (message: Message) => {
@@ -55,4 +39,20 @@ export const emitMessageEdited = async (message: Message) => {
   });
   if (!isEdited) return;
   messageEditedEvent.emit(messageId, message);
+};
+
+interface IRemoveMessageEditedListener {
+  messageId: string;
+  callback: (message: Message) => void;
+  timeout?: number;
+}
+
+export const removeMessageEditedListener = async ({
+  timeout = ms('10m'),
+  messageId,
+  callback,
+}: IRemoveMessageEditedListener) => {
+  setTimeout(() => {
+    messageEditedEvent.removeListener(messageId, callback);
+  }, timeout);
 };

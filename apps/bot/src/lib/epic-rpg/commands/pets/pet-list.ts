@@ -59,9 +59,10 @@ const rpgPetSuccess = async ({author, embed, message, client}: IRpgPetSuccess) =
   });
   const event = await createMessageEditedListener({
     messageId: message.id,
+    timeout: ms('3m'),
   });
   if (!event) return;
-  event.on('edited', async (newMessage) => {
+  event.on(message.id, async (newMessage) => {
     if (isRpgPet({author, embed: newMessage.embeds[0]})) {
       await updatePetsFromEmbed({embed: newMessage.embeds[0], author, updatedPets});
 
