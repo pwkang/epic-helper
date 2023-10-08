@@ -1,6 +1,5 @@
 import {
   BaseInteraction,
-  ButtonStyle,
   Client,
   Collection,
   InteractionUpdateOptions,
