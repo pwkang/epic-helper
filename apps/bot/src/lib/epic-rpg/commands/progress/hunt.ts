@@ -25,7 +25,7 @@ interface IRpgHunt {
 
 export function rpgHunt({author, message, client, isSlashCommand}: IRpgHunt) {
   if (!message.inGuild()) return;
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     client,
     channelId: message.channel.id,
     author,
@@ -40,7 +40,7 @@ export function rpgHunt({author, message, client, isSlashCommand}: IRpgHunt) {
         author,
         content,
       });
-      event.stop();
+      event?.stop();
     }
 
     if (isRpgHuntSuccess({author, content})) {
@@ -62,21 +62,23 @@ export function rpgHunt({author, message, client, isSlashCommand}: IRpgHunt) {
       });
     }
 
-    if (isPartnerUnderCommand({author, message}) || isHardModeNotUnlocked({content})) event.stop();
+    if (isPartnerUnderCommand({author, message}) || isHardModeNotUnlocked({content})) event?.stop();
   });
   event.on('embed', (embed) => {
     if (isUserEncounterZombieHorde({author, embed})) {
-      event.resetTimer(20000);
-      event.pendingAnswer();
+      event?.resetTimer(20000);
+      event?.pendingAnswer();
     }
   });
-  event.on('cooldown', (cooldown) => {
-    userReminderServices.updateUserCooldown({
+  event.on('cooldown', async (cooldown) => {
+    await userReminderServices.updateUserCooldown({
       userId: author.id,
       type: RPG_COMMAND_TYPE.hunt,
       readyAt: new Date(Date.now() + cooldown),
     });
-    event.stop();
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 }

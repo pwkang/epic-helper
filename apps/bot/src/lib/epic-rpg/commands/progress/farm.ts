@@ -24,7 +24,7 @@ interface IRpgFarm {
 
 export function rpgFarm({client, message, author, isSlashCommand}: IRpgFarm) {
   if (!message.inGuild()) return;
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     author,
     client,
     channelId: message.channel.id,
@@ -39,13 +39,13 @@ export function rpgFarm({client, message, author, isSlashCommand}: IRpgFarm) {
         channelId: message.channel.id,
         content,
       });
-      event.stop();
+      event?.stop();
     }
     if (isFarmingInSpace({content, author})) {
-      event.stop();
+      event?.stop();
     }
     if (hasNoSeedToPlant({message: collected, author})) {
-      event.stop();
+      event?.stop();
     }
   });
   event.on('embed', (embed) => {
@@ -59,6 +59,9 @@ export function rpgFarm({client, message, author, isSlashCommand}: IRpgFarm) {
       readyAt: new Date(Date.now() + cooldown),
       type: RPG_COMMAND_TYPE.farm,
     });
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 }

@@ -21,7 +21,7 @@ interface IRpgUltraining {
 
 export function rpgUltraining({client, message, author, isSlashCommand}: IRpgUltraining) {
   if (!message.inGuild()) return;
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     channelId: message.channel.id,
     client,
     author,
@@ -35,15 +35,18 @@ export function rpgUltraining({client, message, author, isSlashCommand}: IRpgUlt
         channelId: message.channel.id,
         client,
       });
-      event.stop();
+      event?.stop();
     }
   });
-  event.on('cooldown', (cooldown) => {
-    userReminderServices.updateUserCooldown({
+  event.on('cooldown', async (cooldown) => {
+    await userReminderServices.updateUserCooldown({
       userId: author.id,
       type: RPG_COMMAND_TYPE.training,
       readyAt: new Date(Date.now() + cooldown),
     });
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 }

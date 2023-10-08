@@ -21,7 +21,7 @@ interface IRpgDaily {
 
 export function rpgDaily({client, message, author, isSlashCommand}: IRpgDaily) {
   if (!message.inGuild()) return;
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     author,
     channelId: message.channel.id,
     client,
@@ -40,7 +40,7 @@ export function rpgDaily({client, message, author, isSlashCommand}: IRpgDaily) {
         userId: author.id,
         channelId: message.channel.id,
       });
-      event.stop();
+      event?.stop();
     }
   });
   event.on('cooldown', async (cooldown) => {
@@ -49,6 +49,9 @@ export function rpgDaily({client, message, author, isSlashCommand}: IRpgDaily) {
       readyAt: new Date(Date.now() + cooldown),
       type: RPG_COMMAND_TYPE.daily,
     });
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 }

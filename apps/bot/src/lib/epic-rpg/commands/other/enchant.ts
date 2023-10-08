@@ -29,7 +29,7 @@ interface IRpgEnchant {
 
 export function rpgEnchant({client, message, author, isSlashCommand}: IRpgEnchant) {
   if (!message.inGuild()) return;
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     channelId: message.channel.id,
     client,
     author,
@@ -37,7 +37,7 @@ export function rpgEnchant({client, message, author, isSlashCommand}: IRpgEnchan
   if (!event) return;
   event.on('embed', async (embed) => {
     if (isSuccessfullyEnchanted({embed, author})) {
-      event.stop();
+      event?.stop();
       await rpgEnchantSuccess({
         client,
         channelId: message.channel.id,
@@ -47,8 +47,11 @@ export function rpgEnchant({client, message, author, isSlashCommand}: IRpgEnchan
       });
     }
     if (isEnchantEquipmentBroken({embed})) {
-      event.stop();
+      event?.stop();
     }
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 }

@@ -23,7 +23,7 @@ interface IRpgUseEpicItem {
 
 export function rpgUseEpicItem({author, message, isSlashCommand, client}: IRpgUseEpicItem) {
   if (!message.inGuild()) return;
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     channelId: message.channel.id,
     client,
     author: message.author,
@@ -40,7 +40,7 @@ export function rpgUseEpicItem({author, message, isSlashCommand, client}: IRpgUs
       type = RPG_EPIC_ITEM_TYPES.ultraBait;
     }
     if (type) {
-      event.stop();
+      event?.stop();
       await rpgUseEpicItemSuccess({
         author,
         client,
@@ -55,6 +55,9 @@ export function rpgUseEpicItem({author, message, isSlashCommand, client}: IRpgUs
       readyAt: new Date(Date.now() + cooldown),
       type: RPG_COMMAND_TYPE.epicItem,
     });
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 }

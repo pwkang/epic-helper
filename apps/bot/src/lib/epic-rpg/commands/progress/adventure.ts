@@ -25,7 +25,7 @@ interface IRpgAdventure {
 
 export function rpgAdventure({client, message, author, isSlashCommand}: IRpgAdventure) {
   if (!message.inGuild()) return;
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     channelId: message.channel.id,
     author,
     client,
@@ -46,7 +46,7 @@ export function rpgAdventure({client, message, author, isSlashCommand}: IRpgAdve
         content,
         channelId: message.channel.id,
       });
-      event.stop();
+      event?.stop();
     }
   });
   event.on('cooldown', async (cooldown) => {
@@ -55,6 +55,9 @@ export function rpgAdventure({client, message, author, isSlashCommand}: IRpgAdve
       type: RPG_COMMAND_TYPE.adventure,
       readyAt: new Date(Date.now() + cooldown),
     });
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 }

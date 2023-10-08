@@ -18,7 +18,7 @@ interface IRpgWeekly {
 
 export function rpgWeekly({client, message, author, isSlashCommand}: IRpgWeekly) {
   if (!message.inGuild()) return;
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     author,
     channelId: message.channel.id,
     client,
@@ -33,7 +33,7 @@ export function rpgWeekly({client, message, author, isSlashCommand}: IRpgWeekly)
         channelId: message.channel.id,
         client,
       });
-      event.stop();
+      event?.stop();
     }
   });
   event.on('cooldown', async (cooldown) => {
@@ -42,6 +42,9 @@ export function rpgWeekly({client, message, author, isSlashCommand}: IRpgWeekly)
       readyAt: new Date(Date.now() + cooldown),
       type: RPG_COMMAND_TYPE.weekly,
     });
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 }

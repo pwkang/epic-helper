@@ -26,7 +26,7 @@ export const rpgPetAdventure = async ({
   isSlashCommand,
   selectedPets,
 }: IRpgPetAdventure) => {
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     author,
     client,
     channelId: message.channel.id,
@@ -37,9 +37,9 @@ export const rpgPetAdventure = async ({
       isFailToSendPetsToAdventure({message: collected, author}) ||
       isFailToCancelPet({message: collected, author})
     )
-      event.stop();
+      event?.stop();
     if (isSuccessfullySentPetsToAdventure({message: collected, author})) {
-      event.stop();
+      event?.stop();
       await rpgPetAdventureSuccess({
         message: collected,
         selectedPets,
@@ -48,7 +48,7 @@ export const rpgPetAdventure = async ({
       });
     }
     if (isPetSuccessfullyCancelled({message: collected, author})) {
-      event.stop();
+      event?.stop();
       await rpgPetAdvCancelSuccess({
         client,
         selectedPets,
@@ -56,6 +56,9 @@ export const rpgPetAdventure = async ({
         author,
       });
     }
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 };

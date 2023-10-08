@@ -33,7 +33,7 @@ export default <PrefixCommand>{
 
     const calcInfo = sttScoreCalculator.getCalcInfo(args);
 
-    const event = createRpgCommandListener({
+    let event = createRpgCommandListener({
       channelId: message.channel.id,
       client,
       author: message.author,
@@ -41,7 +41,7 @@ export default <PrefixCommand>{
     if (!event) return;
     event.on('embed', async (embed) => {
       if (rpgInventoryChecker.isUserInventory({author: message.author, embed})) {
-        event.stop();
+        event?.stop();
         await djsMessageHelper.send({
           client,
           channelId: message.channel.id,
@@ -59,6 +59,9 @@ export default <PrefixCommand>{
             }),
         });
       }
+    });
+    event.on('end', () => {
+      event = undefined;
     });
   },
 };

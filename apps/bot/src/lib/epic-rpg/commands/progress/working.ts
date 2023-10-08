@@ -45,7 +45,7 @@ interface IRpgWorking {
 
 export function rpgWorking({client, message, author, isSlashCommand, workingType}: IRpgWorking) {
   if (!message.inGuild()) return;
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     channelId: message.channel.id,
     client,
     author,
@@ -60,10 +60,10 @@ export function rpgWorking({client, message, author, isSlashCommand, workingType
         author,
         workingType,
       });
-      event.stop();
+      event?.stop();
     }
     if (isWorkingInSpace({author, content})) {
-      event.stop();
+      event?.stop();
     }
     if (isRubyMined({author, content})) {
       const mined = rubyAmountMined({author, content});
@@ -72,7 +72,7 @@ export function rpgWorking({client, message, author, isSlashCommand, workingType
         type: 'inc',
         ruby: mined,
       });
-      event.stop();
+      event?.stop();
     }
     if (isFoughtRubyDragon({author, content})) {
       await userService.updateUserRubyAmount({
@@ -80,7 +80,7 @@ export function rpgWorking({client, message, author, isSlashCommand, workingType
         type: 'inc',
         ruby: 10,
       });
-      event.stop();
+      event?.stop();
       await djsMessageHelper.reply({
         client,
         message,
@@ -99,9 +99,12 @@ export function rpgWorking({client, message, author, isSlashCommand, workingType
   });
   event.on('embed', (embed) => {
     if (isEncounteringRubyDragon({embed, author})) {
-      event.pendingAnswer();
-      event.resetTimer(30000);
+      event?.pendingAnswer();
+      event?.resetTimer(30000);
     }
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 }

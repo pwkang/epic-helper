@@ -18,7 +18,7 @@ interface IRpgProfile {
 
 export const rpgProfile = ({client, message, author, isSlashCommand, server}: IRpgProfile) => {
   if (!message.inGuild()) return;
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     client,
     channelId: message.channel.id,
     author,
@@ -33,7 +33,7 @@ export const rpgProfile = ({client, message, author, isSlashCommand, server}: IR
         channel: message.channel,
         author,
       });
-      event.stop();
+      event?.stop();
     }
   });
   event.on('attachments', async () => {
@@ -43,7 +43,10 @@ export const rpgProfile = ({client, message, author, isSlashCommand, server}: IR
       client,
       author,
     });
-    event.stop();
+    event?.stop();
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 };

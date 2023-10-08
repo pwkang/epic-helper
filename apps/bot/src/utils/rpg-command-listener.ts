@@ -16,7 +16,10 @@ type TEventTypes = {
   content: [Message['content'], Message<true>];
   cooldown: [number];
   attachments: [Message['attachments'], Message<true>];
+  end: [];
 };
+
+type CustomEventType = (TypedEventEmitter<TEventTypes> & TExtraProps) | undefined;
 
 type TExtraProps = {
   stop: () => void;
@@ -42,31 +45,36 @@ export const createRpgCommandListener = ({
     collector = channel.createMessageCollector({time: 15000, filter});
   }
   if (!collector || !(channel instanceof TextChannel)) return;
-  const event = new TypedEventEmitter<TEventTypes>() as TypedEventEmitter<TEventTypes> &
-    TExtraProps;
+  let event = new TypedEventEmitter<TEventTypes>() as CustomEventType;
   let police = false;
   let waitingAnswer = false;
 
-  event.stop = () => {
-    collector?.stop();
-    collector?.removeAllListeners();
-    event.removeAllListeners();
-  };
+  if (event) {
+    event.stop = () => {
+      collector?.stop();
+      collector?.removeAllListeners();
+      collector = undefined;
 
-  event.pendingAnswer = () => {
-    waitingAnswer = true;
-  };
-  event.answered = () => {
-    waitingAnswer = false;
-  };
+      event?.emit('end');
+      event?.removeAllListeners();
+      event = undefined;
+    };
 
-  event.resetTimer = (ms: number) => {
-    collector?.resetTimer({time: ms});
-  };
+    event.pendingAnswer = () => {
+      waitingAnswer = true;
+    };
+    event.answered = () => {
+      waitingAnswer = false;
+    };
 
-  event.triggerCollect = (message: Message<true>) => {
-    messageCollected(message);
-  };
+    event.resetTimer = (ms: number) => {
+      collector?.resetTimer({time: ms});
+    };
+
+    event.triggerCollect = (message: Message<true>) => {
+      messageCollected(message);
+    };
+  }
 
   const messageCollected = async (collected: Message<true>) => {
     if (
@@ -84,22 +92,22 @@ export const createRpgCommandListener = ({
       // the command is on cooldown
       if (embed.author?.name === `${author.username} — cooldown`) {
         const embedType = getCooldownType(embed);
-        if (commandType === embedType) event.emit('cooldown', extractCooldown(embed));
-        event.stop();
+        if (commandType === embedType) event?.emit('cooldown', extractCooldown(embed));
+        event?.stop();
         return;
       }
 
       if (isUserSpamming({collected, author})) {
-        event.stop();
+        event?.stop();
         return;
       }
 
       if (police) return;
-      event.emit('embed', collected.embeds[0], collected);
+      event?.emit('embed', collected.embeds[0], collected);
     } else if (!collected.embeds.length) {
       // Message Content
       if (isBotMaintenance({collected, author})) {
-        event.stop();
+        event?.stop();
         return;
       }
 
@@ -109,12 +117,12 @@ export const createRpgCommandListener = ({
       }
 
       if (isArrested({author, collected})) {
-        event.stop();
+        event?.stop();
         return;
       }
 
       if (isInJail({author, collected})) {
-        event.stop();
+        event?.stop();
         return;
       }
 
@@ -127,17 +135,17 @@ export const createRpgCommandListener = ({
         if (waitingAnswer || police) {
           return;
         } else {
-          event.stop();
+          event?.stop();
           return;
         }
       }
 
       if (police) return;
-      event.emit('content', collected.content, collected);
+      event?.emit('content', collected.content, collected);
     }
 
     if (collected.attachments.size) {
-      event.emit('attachments', collected.attachments, collected);
+      event?.emit('attachments', collected.attachments, collected);
     }
   };
 

@@ -24,7 +24,7 @@ interface IRpgLootbox {
 
 export function rpgBuyLootbox({client, message, author, isSlashCommand}: IRpgLootbox) {
   if (!message.inGuild()) return;
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     author,
     channelId: message.channel.id,
     client,
@@ -39,13 +39,13 @@ export function rpgBuyLootbox({client, message, author, isSlashCommand}: IRpgLoo
         channelId: message.channel.id,
         content,
       });
-      event.stop();
+      event?.stop();
     }
     if (isNotEligibleToBuyLootbox({message: collected, author})) {
-      event.stop();
+      event?.stop();
     }
     if (isNotEnoughMoneyToBuyLootbox({author, content})) {
-      event.stop();
+      event?.stop();
     }
   });
   event.on('cooldown', async (cooldown) => {
@@ -54,6 +54,9 @@ export function rpgBuyLootbox({client, message, author, isSlashCommand}: IRpgLoo
       readyAt: new Date(Date.now() + cooldown),
       userId: author.id,
     });
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 }

@@ -18,7 +18,7 @@ interface IRpgPet {
 
 export const rpgPetList = async ({message, author, isSlashCommand, client}: IRpgPet) => {
   if (!message.inGuild()) return;
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     author,
     client,
     channelId: message.channel.id,
@@ -27,8 +27,11 @@ export const rpgPetList = async ({message, author, isSlashCommand, client}: IRpg
   event.on('embed', async (embed, collected) => {
     if (isRpgPet({author, embed})) {
       await rpgPetSuccess({client, author, embed, message: collected});
-      event.stop();
+      event?.stop();
     }
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 };

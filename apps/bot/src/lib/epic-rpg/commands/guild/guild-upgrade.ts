@@ -23,7 +23,7 @@ export const rpgGuildUpgrade = async ({
   client,
 }: IRpgGuildUpgrade) => {
   if (!message.inGuild() || !!message.mentions.users.size) return;
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     author,
     client,
     channelId: message.channel.id,
@@ -32,6 +32,7 @@ export const rpgGuildUpgrade = async ({
   if (!event) return;
   event.on('embed', async (embed, collected) => {
     if (isGuildUpgradeSuccess({author, embed})) {
+      event?.stop();
       const result = await verifyGuild({
         client,
         server: message.guild,
@@ -78,8 +79,11 @@ export const rpgGuildUpgrade = async ({
       isUserDontHaveGuild({author, message: collected}) ||
       isGuildCantBeUpgraded({author, message: collected})
     ) {
-      event.stop();
+      event?.stop();
     }
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 };

@@ -14,7 +14,7 @@ interface IRpgProfile {
 
 export const rpgProgress = ({client, message, author, isSlashCommand, server}: IRpgProfile) => {
   if (!message.inGuild()) return;
-  const event = createRpgCommandListener({
+  let event = createRpgCommandListener({
     client,
     channelId: message.channel.id,
     author,
@@ -29,8 +29,11 @@ export const rpgProgress = ({client, message, author, isSlashCommand, server}: I
         channel: message.channel,
         author,
       });
-      event.stop();
+      event?.stop();
     }
+  });
+  event.on('end', () => {
+    event = undefined;
   });
   if (isSlashCommand) event.triggerCollect(message);
 };
