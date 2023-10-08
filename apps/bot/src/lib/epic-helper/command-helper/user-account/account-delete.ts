@@ -3,7 +3,7 @@ import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  EmbedBuilder,
+  EmbedBuilder
 } from 'discord.js';
 import {userService} from '../../../../services/database/user.service';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
@@ -19,7 +19,7 @@ export const _deleteAccount = ({author}: ISlashAccountDelete) => {
   function render(): BaseMessageOptions {
     return {
       embeds: [embed],
-      components: [actionRow],
+      components: [actionRow]
     };
   }
 
@@ -30,24 +30,24 @@ export const _deleteAccount = ({author}: ISlashAccountDelete) => {
       await userService.userAccountDelete(author.id);
       await userReminderServices.clearUserCooldowns(author.id);
       await userPetServices.clearUserPets({
-        userId: author.id,
+        userId: author.id
       });
       await userStatsService.clearUserStats({userId: author.id});
       return {
         components: [],
-        embeds: [deletedEmbed],
+        embeds: [deletedEmbed]
       };
     } else {
       return {
         components: [],
-        embeds: [cancelledEmbed],
+        embeds: [cancelledEmbed]
       };
     }
   }
 
   return {
     render,
-    responseInteraction,
+    responseInteraction
   };
 };
 

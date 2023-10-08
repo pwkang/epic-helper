@@ -27,11 +27,11 @@ export const generateDuelLogEmbed = ({
   newTotalDuel,
   source,
   serverName,
-  isExists,
+  isExists
 }: IGenerateEmbed) => {
   const embed = new EmbedBuilder().setColor(BOT_COLOR.embed).setAuthor({
     name: author.username,
-    iconURL: author.displayAvatarURL(),
+    iconURL: author.displayAvatarURL()
   });
   if (isExists) {
     embed.setTitle(`Updated ${expGained} XP`);
@@ -39,14 +39,14 @@ export const generateDuelLogEmbed = ({
     embed.setTitle(`Added ${expGained} XP`);
   }
   const description = [
-    `**New:** \`${newTotalExp} XP | ${newTotalDuel} duels\``,
+    `**New:** \`${newTotalExp} XP | ${newTotalDuel} duels\``
   ];
   if (source) {
     description.push(
       `[Jump to duel result](${messageFormatter.messageUrl({
         channelId: source.channelId,
         messageId: source.messageId,
-        serverId: source.serverId,
+        serverId: source.serverId
       })}) **@ ${serverName}**`
     );
   }
@@ -54,11 +54,11 @@ export const generateDuelLogEmbed = ({
 
   const timeStr = lastDuel
     ? convertMsToHumanReadableString(
-        new Date().getTime() - lastDuel.getTime()
-      ) + ' ago'
+      new Date().getTime() - lastDuel.getTime()
+    ) + ' ago'
     : 'N/A';
   embed.setFooter({
-    text: `Last duel: ${timeStr}`,
+    text: `Last duel: ${timeStr}`
   });
   return embed;
 };

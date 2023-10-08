@@ -3,7 +3,7 @@ import {
   Collection,
   SlashCommandBuilder,
   SlashCommandSubcommandBuilder,
-  SlashCommandSubcommandGroupBuilder,
+  SlashCommandSubcommandGroupBuilder
 } from 'discord.js';
 import {importFiles} from '@epic-helper/utils';
 
@@ -15,7 +15,7 @@ interface ISlashCommand {
 export const listSlashCommands = async (): Promise<ISlashCommand[]> => {
   const commands = await importFiles<SlashCommand>({
     options: {fileFilter: '*.ts'},
-    path: `./${handlerRoot}/commands/slash`,
+    path: `./${handlerRoot}/commands/slash`
   });
   const generated = generateSlashCommands(commands.map(({data}) => data));
   return generated.map((value, key) => ({name: key, builder: value}));

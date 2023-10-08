@@ -5,7 +5,7 @@ import type {IUserPet} from '@epic-helper/models';
 import type {
   RPG_PET_SKILL_ASCEND,
   RPG_PET_SKILL_SPECIAL,
-  TSkillTierNumber,
+  TSkillTierNumber
 } from '@epic-helper/constants';
 import {
   BOT_COLOR,
@@ -14,7 +14,7 @@ import {
   RPG_PET_SKILL_EVENT,
   RPG_PET_SKILL_LABEL,
   RPG_PET_SKILL_TIER_REVERSE,
-  RPG_PET_TYPE_EVENT,
+  RPG_PET_TYPE_EVENT
 } from '@epic-helper/constants';
 import {convertNumberToRoman} from '../../../../utils/roman-conversion';
 import {userPetServices} from '../../../../services/database/user-pet.service';
@@ -30,12 +30,12 @@ export const paginatePetList = async ({author, page}: IPaginatePetList) => {
   const pets = await userPetServices.getUserPets({
     page,
     limit: PET_LIST_PET_PET_PAGE,
-    userId: author.id,
+    userId: author.id
   });
 
   return generateEmbed({
     pets,
-    author,
+    author
   });
 };
 
@@ -49,7 +49,7 @@ const generateEmbed = async ({pets, author}: IGeneratePetListEmbed) => {
   return new EmbedBuilder()
     .setAuthor({
       name: `${author.username}'s pets`,
-      iconURL: author.avatarURL() ?? undefined,
+      iconURL: author.avatarURL() ?? undefined
     })
     .setColor(BOT_COLOR.embed)
     .setFields(fields);
@@ -65,7 +65,7 @@ export const generateEmbedPetFields = (pets: IUserPet[]) => {
         `\`ID: ${convertNumToPetId(pet.petId)}\`\n` +
         `${petEmoji} ${petName} — ${convertNumberToRoman(pet.tier)}`,
       value: generatePetSkillsRows(pet),
-      inline: true,
+      inline: true
     });
   }
   return fields;
@@ -84,7 +84,7 @@ const PET_SKILLS_ORDER: Array<
   'ascended',
   'perfect',
   'fighter',
-  'master',
+  'master'
 ];
 
 const generatePetSkillsRows = (pet: IUserPet) => {

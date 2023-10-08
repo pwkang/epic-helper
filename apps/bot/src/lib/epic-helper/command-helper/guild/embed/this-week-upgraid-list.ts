@@ -13,7 +13,7 @@ interface IRenderThisWeekUpgraidListEmbed {
 
 export const _renderThisWeekUpgraidListEmbed = ({
   upgraidList,
-  guild,
+  guild
 }: IRenderThisWeekUpgraidListEmbed) => {
   const embed = new EmbedBuilder().setColor(BOT_COLOR.embed);
   const guildName = guild.info.name ?? '';
@@ -25,26 +25,26 @@ export const _renderThisWeekUpgraidListEmbed = ({
     name: 'Records',
     value: users.length
       ? users
-          .map(
-            (user, index) =>
-              `\`[${index + 1}]\` ${messageFormatter.user(user.uId)}: **${
-                user.records.length
-              } times**`
-          )
-          .join('\n')
+        .map(
+          (user, index) =>
+            `\`[${index + 1}]\` ${messageFormatter.user(user.uId)}: **${
+              user.records.length
+            } times**`
+        )
+        .join('\n')
       : 'No records',
-    inline: true,
+    inline: true
   });
 
   const guildMessage =
     guild.upgraid.readyAt &&
     new Date().getTime() < guild.upgraid.readyAt.getTime()
       ? `Reminds in ${convertMsToHumanReadableString(
-          guild.upgraid.readyAt.getTime() - new Date().getTime()
-        )}`
+        guild.upgraid.readyAt.getTime() - new Date().getTime()
+      )}`
       : 'Ready';
   embed.setFooter({
-    text: `${calcRemainingCount()} left | ${guildMessage}`,
+    text: `${calcRemainingCount()} left | ${guildMessage}`
   });
   return embed;
 };

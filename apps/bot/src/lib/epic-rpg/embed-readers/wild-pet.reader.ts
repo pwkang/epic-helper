@@ -22,7 +22,7 @@ const wildPetReader = ({embed}: IWildPetReader) => {
         ([, value]) =>
           value.toLowerCase() === petName.toLowerCase().replaceAll(' ', '')
       )?.[0] ?? null,
-    owner: owner.trim() === '' ? null : owner.trim(),
+    owner: owner.trim() === '' ? null : owner.trim()
   };
 };
 

@@ -22,5 +22,5 @@ const getKey = (serverId: string) => `${PREFIX}${serverId}`;
 export const redisServerAccount = {
   setServer,
   getServer,
-  delServer,
+  delServer
 };

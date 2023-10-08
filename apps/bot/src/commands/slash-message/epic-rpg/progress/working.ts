@@ -3,7 +3,7 @@ import {
   RPG_WORKING_TYPE,
   SLASH_MESSAGE_BOT_TYPE,
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS
 } from '@epic-helper/constants';
 
 export default <SlashMessage>{
@@ -12,7 +12,7 @@ export default <SlashMessage>{
   commandName: Object.values(RPG_WORKING_TYPE),
   preCheck: {
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.abort,
-    userAccOff: USER_ACC_OFF_ACTIONS.abort,
+    userAccOff: USER_ACC_OFF_ACTIONS.abort
   },
   execute: async (client, message, author) => {
     const workingType = Object.values(RPG_WORKING_TYPE).find(
@@ -24,7 +24,7 @@ export default <SlashMessage>{
       message,
       client,
       isSlashCommand: true,
-      workingType,
+      workingType
     });
-  },
+  }
 };

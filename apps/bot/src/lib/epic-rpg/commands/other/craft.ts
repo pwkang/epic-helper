@@ -7,7 +7,7 @@ import {typedObjectEntries} from '@epic-helper/utils';
 const rubyConsumed = {
   [RPG_EQUIPMENTS.rubySword]: 4,
   [RPG_EQUIPMENTS.rubyArmor]: 7,
-  [RPG_EQUIPMENTS.coinSword]: 4,
+  [RPG_EQUIPMENTS.coinSword]: 4
 };
 
 interface IRpgCraft {
@@ -22,14 +22,14 @@ export function rpgCraft({client, message, author, isSlashCommand}: IRpgCraft) {
   let event = createRpgCommandListener({
     channelId: message.channel.id,
     client,
-    author,
+    author
   });
   if (!event) return;
   event.on('content', async (content) => {
     if (isSuccessfullyCrafted({content})) {
       await rpgCraftSuccess({
         author,
-        content,
+        content
       });
       event?.stop();
     }
@@ -63,7 +63,7 @@ const rpgCraftSuccess = async ({content, author}: IRpgCraftSuccess) => {
     await userService.updateUserRubyAmount({
       type: 'dec',
       userId: author.id,
-      ruby,
+      ruby
     });
   }
 };

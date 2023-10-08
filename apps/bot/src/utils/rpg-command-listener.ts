@@ -39,12 +39,13 @@ export const createRpgCommandListener = ({
   channelId,
   client,
   author,
-  commandType,
+  commandType
 }: IRpgCommandListener) => {
   const channel = client.channels.cache.get(channelId);
   if (!channel) return;
   let collector: MessageCollector | undefined;
   if (channel instanceof TextChannel && !!channel.guild) {
+
     // const textChannel
     collector = channel.createMessageCollector({time: 15000, filter});
   }
@@ -110,6 +111,7 @@ export const createRpgCommandListener = ({
       if (police) return;
       event?.emit('embed', collected.embeds[0], collected);
     } else if (!collected.embeds.length) {
+
       // Message Content
       if (isBotMaintenance({collected, author})) {
         event?.stop();
@@ -190,7 +192,7 @@ const commandKeyword: Record<
   dungeon: 'You have been in a fight with a boss recently',
   epicItem: 'You have used an EPIC item already',
   guild: 'Your guild has already raided or been upgraded',
-  halboo: 'You have scared someone recently',
+  halboo: 'You have scared someone recently'
 };
 
 function getCooldownType(embed: Embed) {
@@ -247,7 +249,7 @@ function isUserSpamming({author, collected}: IChecker) {
   if (!embed) return false;
   return (
     embed.author?.name === author.username &&
-    embed.fields[0]?.name.includes("please don't spam")
+    embed.fields[0]?.name.includes('please don\'t spam')
   );
 }
 

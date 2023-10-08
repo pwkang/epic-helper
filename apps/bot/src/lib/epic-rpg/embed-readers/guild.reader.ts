@@ -23,7 +23,7 @@ const guildReader = ({embed}: IGuildReader) => {
     readyIn: time.reduce((acc, curr) => {
       return acc + ms(curr);
     }, 0),
-    energy: Number(energy),
+    energy: Number(energy)
   };
 };
 

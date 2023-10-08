@@ -24,12 +24,12 @@ export const rpgPetAdventure = async ({
   author,
   client,
   isSlashCommand,
-  selectedPets,
+  selectedPets
 }: IRpgPetAdventure) => {
   let event = createRpgCommandListener({
     author,
     client,
-    channelId: message.channel.id,
+    channelId: message.channel.id
   });
   if (!event) return;
   event.on('content', async (content, collected) => {
@@ -44,7 +44,7 @@ export const rpgPetAdventure = async ({
         message: collected,
         selectedPets,
         client,
-        author,
+        author
       });
     }
     if (isPetSuccessfullyCancelled({message: collected, author})) {
@@ -53,7 +53,7 @@ export const rpgPetAdventure = async ({
         client,
         selectedPets,
         message: collected,
-        author,
+        author
       });
     }
   });
@@ -74,7 +74,7 @@ const rpgPetAdventureSuccess = async ({
   message,
   selectedPets,
   author,
-  client,
+  client
 }: IRpgPetAdventureSuccess) => {
   const amountOfPetSent = extractSentPets({message, author: message.author});
 
@@ -82,7 +82,7 @@ const rpgPetAdventureSuccess = async ({
     selectedPets = await collectSelectedPets({
       author,
       client,
-      message,
+      message
     });
   }
 
@@ -92,12 +92,12 @@ const rpgPetAdventureSuccess = async ({
     message,
     author,
     selectedPets,
-    amountOfPetSent,
+    amountOfPetSent
   });
   await djsMessageHelper.send({
     client,
     channelId: message.channel.id,
-    options: messageOptions,
+    options: messageOptions
   });
 };
 
@@ -117,11 +117,11 @@ export const registerPetsToAdventure = async ({
   author,
   selectedPets,
   amountOfPetSent,
-  message,
+  message
 }: IRegisterPetsToAdventure): Promise<BaseMessageOptions> => {
   let petsToSend = await fetchPetsToSend({
     userId: author.id,
-    selectedPets: selectedPets,
+    selectedPets: selectedPets
   });
   const sentResult: ISentResult[] = [];
 
@@ -129,18 +129,18 @@ export const registerPetsToAdventure = async ({
     return {
       content:
         `**${amountOfPetSent}** pets were sent to adventure, but found **${petsToSend.length}** available pets to send.\n` +
-        'Type `rpg pet` to update and register pet reminder or use `rpg pet summary` to register 1 pet reminder',
+        'Type `rpg pet` to update and register pet reminder or use `rpg pet summary` to register 1 pet reminder'
     };
   }
 
   if (petsToSend.length === 1 && isPetComebackInstantly({message, author})) {
     sentResult.push({
       petId: petsToSend[0].petId,
-      duration: 0,
+      duration: 0
     });
     await updateInstantBackPet({
       userId: author.id,
-      pet: petsToSend[0],
+      pet: petsToSend[0]
     });
     petsToSend = [];
   }
@@ -148,18 +148,18 @@ export const registerPetsToAdventure = async ({
   if (hasPetsReturnedInstantly(message.content)) {
     const returnedPets = extractReturnedPetsId({
       message,
-      author,
+      author
     });
     for (const petId of returnedPets) {
       sentResult.push({
         petId: convertPetIdToNum(petId),
-        duration: 0,
+        duration: 0
       });
       const pet = petsToSend.find((p) => p.petId === convertPetIdToNum(petId));
       if (pet) {
         await updateInstantBackPet({
           userId: author.id,
-          pet,
+          pet
         });
       }
     }
@@ -171,16 +171,16 @@ export const registerPetsToAdventure = async ({
   for (const pet of petsToSend) {
     const duration = await sendPetToAdventure({
       userId: author.id,
-      pet,
+      pet
     });
     sentResult.push({
       petId: pet.petId,
-      duration,
+      duration
     });
   }
 
   return {
-    content: generateResult(sentResult),
+    content: generateResult(sentResult)
   };
 };
 
@@ -202,13 +202,13 @@ const fetchPetsToSend = async ({selectedPets, userId}: IFetchPetsToSend) => {
   if (nonEpicPetsId.length) {
     const nonEpicPets = await userPetServices.getUserPets({
       userId,
-      petsId: nonEpicPetsId.map(convertPetIdToNum),
+      petsId: nonEpicPetsId.map(convertPetIdToNum)
     });
     petsToSend.push(...nonEpicPets);
   }
   if (hasSentEpic(selectedPets)) {
     const availableEpicPets = await userPetServices.getAvailableEpicPets({
-      userId,
+      userId
     });
     petsToSend.push(...availableEpicPets);
   }
@@ -241,7 +241,7 @@ const sendPetToAdventure = async ({pet, userId}: ISendPetToAdventure) => {
   pet.readyAt = new Date(Date.now() + adventureTime);
   await userPetServices.updateUserPet({
     pet,
-    userId,
+    userId
   });
   return adventureTime;
 };
@@ -262,7 +262,7 @@ const updateInstantBackPet = async ({pet, userId}: IUpdatePetStatus) => {
   pet.readyAt = new Date();
   await userPetServices.updateUserPet({
     pet,
-    userId,
+    userId
   });
 };
 
@@ -314,7 +314,7 @@ const generateResult = (result: ISentResult[]) => {
 
 const isFailToSendPetsToAdventure = ({
   message,
-  author,
+  author
 }: IMessageContentChecker) =>
   isNoAvailablePetToSend({message, author}) ||
   isSendingMultipleNonEpicPets({message, author}) ||
@@ -329,7 +329,7 @@ const isNoAvailablePetToSend = ({message, author}: IMessageContentChecker) =>
 
 const isSendingMultipleNonEpicPets = ({
   message,
-  author,
+  author
 }: IMessageContentChecker) =>
   message.content.includes('you cannot send more than one pet') &&
   message.mentions.has(author.id);
@@ -344,7 +344,7 @@ const isSelectingInvalidPets = ({message, author}: IMessageContentChecker) =>
 
 const isSelectingPetsMultipleTimes = ({
   message,
-  author,
+  author
 }: IMessageContentChecker) =>
   message.content.includes('has been selected more than once') &&
   message.mentions.has(author.id);
@@ -357,22 +357,22 @@ const isSelectingPetsMultipleTimes = ({
 
 const isSuccessfullySentPetsToAdventure = ({
   message,
-  author,
+  author
 }: IMessageContentChecker) =>
   isSentSinglePetToAdventure({message, author}) ||
   isSentMultiplePetsToAdventure({
     message,
-    author,
+    author
   });
 
 const isSentSinglePetToAdventure = ({
   message,
-  author,
+  author
 }: IMessageContentChecker) =>
   message.content.includes('will be back in') ||
   isPetComebackInstantly({
     message,
-    author,
+    author
   });
 
 const isSentMultiplePetsToAdventure = ({message}: IMessageContentChecker) =>
@@ -420,7 +420,7 @@ interface IIsPetSuccessfullyCancelled {
 
 const isPetSuccessfullyCancelled = ({
   message,
-  author,
+  author
 }: IIsPetSuccessfullyCancelled): boolean =>
   message.mentions.has(author.id) &&
   message.content.includes('pet adventure(s) cancelled');

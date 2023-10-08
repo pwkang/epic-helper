@@ -13,7 +13,7 @@ export const PATREON_USER_ATTRIBUTES = {
   socialConnections: 'social_connections',
   thumbUrl: 'thumb_url',
   url: 'url',
-  vanity: 'vanity',
+  vanity: 'vanity'
 } as const;
 
 export const PATREON_CAMPAIGN_ATTRIBUTES = {
@@ -43,7 +43,7 @@ export const PATREON_CAMPAIGN_ATTRIBUTES = {
   thanksMsg: 'thanks_msg',
   thanksVideoUrl: 'thanks_video_url',
   url: 'url',
-  vanity: 'vanity',
+  vanity: 'vanity'
 } as const;
 
 export const PATREON_TIER_ATTRIBUTES = {
@@ -62,7 +62,7 @@ export const PATREON_TIER_ATTRIBUTES = {
   title: 'title',
   unpublishedAt: 'unpublished_at',
   url: 'url',
-  userLimit: 'user_limit',
+  userLimit: 'user_limit'
 } as const;
 
 export const PATREON_MEMBER_ATTRIBUTES = {
@@ -79,7 +79,7 @@ export const PATREON_MEMBER_ATTRIBUTES = {
   patronStatus: 'patron_status',
   pledgeCadence: 'pledge_cadence',
   pledgeRelationshipStart: 'pledge_relationship_start',
-  willPayAmountCents: 'will_pay_amount_cents',
+  willPayAmountCents: 'will_pay_amount_cents'
 } as const;
 
 export const PATREON_MEMBER_RELATIONSHIPS = {
@@ -87,7 +87,7 @@ export const PATREON_MEMBER_RELATIONSHIPS = {
   campaign: 'campaign',
   currentlyEntitledTiers: 'currently_entitled_tiers',
   pledgeHistory: 'pledge_history',
-  user: 'user',
+  user: 'user'
 } as const;
 
 export const PATREON_ADDRESS_ATTRIBUTES = {
@@ -99,7 +99,7 @@ export const PATREON_ADDRESS_ATTRIBUTES = {
   line2: 'line_2',
   phoneNumber: 'phone_number',
   postalCode: 'postal_code',
-  state: 'state',
+  state: 'state'
 } as const;
 export const PATREON_PLEDGE_ATTRIBUTES = {
   amountCents: 'amount_cents',
@@ -108,7 +108,7 @@ export const PATREON_PLEDGE_ATTRIBUTES = {
   paymentStatus: 'payment_status',
   tierId: 'tier_id',
   tierTitle: 'tier_title',
-  type: 'type',
+  type: 'type'
 } as const;
 
 export const PATREON_PAYMENT_STATUS = {
@@ -118,12 +118,12 @@ export const PATREON_PAYMENT_STATUS = {
   pending: 'Pending',
   refunded: 'Refunded',
   fraud: 'Fraud',
-  other: 'Other',
+  other: 'Other'
 } as const;
 export const PATREON_PATRON_STATUS = {
   activePatron: 'active_patron',
   declinedPatron: 'declined_patron',
-  formerPatron: 'former_patron',
+  formerPatron: 'former_patron'
 } as const;
 
 export const PATREON_PLEDGE_TYPE = {
@@ -131,7 +131,7 @@ export const PATREON_PLEDGE_TYPE = {
   pledgeUpgrade: 'pledge_upgrade',
   pledgeDowngrade: 'pledge_downgrade',
   pledgeDelete: 'pledge_delete',
-  subscription: 'subscription',
+  subscription: 'subscription'
 } as const;
 
 export const PATREON_INCLUDE_TYPE = {
@@ -139,7 +139,7 @@ export const PATREON_INCLUDE_TYPE = {
   creator: 'creator',
   goals: 'goals',
   rewards: 'rewards',
-  user: 'user',
+  user: 'user'
 } as const;
 
 export const PATREON_SOCIAL_CONNECTIONS_TYPE = {
@@ -154,5 +154,5 @@ export const PATREON_SOCIAL_CONNECTIONS_TYPE = {
   twitch: 'twitch',
   twitter: 'twitter',
   vimeo: 'vimeo',
-  youtube: 'youtube',
+  youtube: 'youtube'
 } as const;

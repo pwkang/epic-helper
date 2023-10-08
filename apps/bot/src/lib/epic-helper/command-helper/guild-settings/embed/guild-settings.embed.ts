@@ -9,7 +9,7 @@ export interface IGetGuildReminderEmbed {
 }
 
 export const _getGuildSettingsEmbed = ({
-  guildAccount,
+  guildAccount
 }: IGetGuildReminderEmbed): EmbedBuilder => {
   const embed = new EmbedBuilder()
     .setColor(BOT_COLOR.embed)
@@ -20,12 +20,12 @@ export const _getGuildSettingsEmbed = ({
         value: guildAccount.leaderId
           ? messageFormatter.user(guildAccount.leaderId)
           : '-',
-        inline: true,
+        inline: true
       },
       {
         name: 'Guild Role',
         value: messageFormatter.role(guildAccount.roleId),
-        inline: true,
+        inline: true
       },
       {
         name: '🔔 REMINDER',
@@ -43,9 +43,9 @@ export const _getGuildSettingsEmbed = ({
             guildAccount.upgraid.readyAt.getTime() > Date.now()
               ? timestampHelper.relative({time: guildAccount.upgraid.readyAt})
               : 'Ready'
-          }`,
+          }`
         ].join('\n'),
-        inline: false,
+        inline: false
       },
       {
         name: '📜 DUEL LOG',
@@ -54,8 +54,8 @@ export const _getGuildSettingsEmbed = ({
             guildAccount.duel.channelId
               ? messageFormatter.channel(guildAccount.duel.channelId)
               : '-'
-          }`,
-        ].join('\n'),
+          }`
+        ].join('\n')
       }
     );
 

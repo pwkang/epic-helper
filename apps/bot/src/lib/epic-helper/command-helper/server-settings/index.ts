@@ -7,5 +7,5 @@ export const _serverSettingsHelper = {
   settings: _serverSettings,
   ttVerification: _ttVerificationSettings,
   admin: _serverAdmin,
-  adminRole: _serverAdminRole,
+  adminRole: _serverAdminRole
 };

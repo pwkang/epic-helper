@@ -4,7 +4,7 @@ import commandHelper from '../../../../lib/epic-helper/command-helper';
 import {SERVER_SETTINGS_PAGE_TYPE} from '../../../../lib/epic-helper/command-helper/server-settings/constant';
 import {
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS
 } from '@epic-helper/constants';
 import {SLASH_COMMAND} from '../../constant';
 
@@ -17,7 +17,7 @@ export default <SlashCommand>{
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,
-    isServerAdmin: true,
+    isServerAdmin: true
   },
   execute: async (client, interaction) => {
     if (!interaction.inGuild()) return;
@@ -25,20 +25,20 @@ export default <SlashCommand>{
 
     await serverService.updateEnchantMuteDuration({
       duration: duration * 1000,
-      serverId: interaction.guildId!,
+      serverId: interaction.guildId!
     });
 
     const serverSettings = await commandHelper.serverSettings.settings({
-      server: interaction.guild!,
+      server: interaction.guild!
     });
     if (!serverSettings) return;
     await djsInteractionHelper.replyInteraction({
       client,
       options: serverSettings.render({
         type: SERVER_SETTINGS_PAGE_TYPE.enchantMute,
-        displayOnly: true,
+        displayOnly: true
       }),
-      interaction,
+      interaction
     });
-  },
+  }
 };

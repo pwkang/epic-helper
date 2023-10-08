@@ -12,7 +12,7 @@ export interface IGetGuildSlashCommands {
 export const _findGuildSlashCommand = async ({
   guild,
   client,
-  commandId,
+  commandId
 }: IGetGuildSlashCommands) => {
   if (!client.user) return [];
 
@@ -27,7 +27,7 @@ export const _findGuildSlashCommand = async ({
       message: e.rawError.message,
       variant: 'find-guild-slash-command',
       logLevel: 'error',
-      clusterId: client.cluster?.id,
+      clusterId: client.cluster?.id
     });
     return null;
   }

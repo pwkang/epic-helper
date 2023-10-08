@@ -2,7 +2,7 @@ import generateFusionScoreEmbed from '../../../lib/epic-helper/features/pets/pet
 import djsInteractionHelper from '../../../lib/discordjs/interaction';
 import {
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS
 } from '@epic-helper/constants';
 import {SLASH_COMMAND} from '../constant';
 
@@ -13,7 +13,7 @@ export default <SlashCommand>{
   type: 'subcommand',
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
-    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
+    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister
   },
   builder: (subcommand) =>
     subcommand.addStringOption((option) =>
@@ -27,15 +27,15 @@ export default <SlashCommand>{
 
     const embeds = await generateFusionScoreEmbed({
       petIds,
-      author: interaction.user,
+      author: interaction.user
     });
 
     await djsInteractionHelper.replyInteraction({
       client,
       interaction,
       options: {
-        embeds,
-      },
+        embeds
+      }
     });
-  },
+  }
 };

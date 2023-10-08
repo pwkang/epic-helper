@@ -3,7 +3,7 @@ import type {BaseInteraction, BaseMessageOptions} from 'discord.js';
 import {
   ActionRowBuilder,
   EmbedBuilder,
-  StringSelectMenuBuilder,
+  StringSelectMenuBuilder
 } from 'discord.js';
 import {generateNavigationRow} from '../../../../utils/pagination-row';
 import {BOT_COLOR} from '@epic-helper/constants';
@@ -16,7 +16,7 @@ interface IRemoveEpicTokens {
 
 export const _removeEpicTokens = async ({userId}: IRemoveEpicTokens) => {
   const boostedServers = await serverService.getUserBoostedServers({
-    userId,
+    userId
   });
   let page = 0;
 
@@ -25,8 +25,8 @@ export const _removeEpicTokens = async ({userId}: IRemoveEpicTokens) => {
       embeds: [getSelectServerEmbed({boostedServers})],
       components: getInteraction({
         boostedServers,
-        page,
-      }),
+        page
+      })
     };
   };
 
@@ -40,11 +40,11 @@ export const _removeEpicTokens = async ({userId}: IRemoveEpicTokens) => {
       );
       await removeTokens({
         serverId,
-        userId,
+        userId
       });
       return {
         embeds: [getSuccessEmbed({serverName: removedServer?.name})],
-        components: [],
+        components: []
       };
     }
     if (interaction.isButton()) {
@@ -56,7 +56,7 @@ export const _removeEpicTokens = async ({userId}: IRemoveEpicTokens) => {
 
   return {
     render,
-    responseInteraction,
+    responseInteraction
   };
 };
 
@@ -68,7 +68,7 @@ interface IRemoveTokens {
 const removeTokens = async ({serverId, userId}: IRemoveTokens) => {
   await serverService.removeTokens({
     serverId,
-    userId,
+    userId
   });
 };
 
@@ -87,7 +87,7 @@ const getInteraction = ({boostedServers, page}: IGetInteraction) => {
   actionRows.push(
     getServerSelector({
       page,
-      servers: boostedServers,
+      servers: boostedServers
     })
   );
   if (boostedServers.length > SERVERS_PER_PAGE) {
@@ -96,7 +96,7 @@ const getInteraction = ({boostedServers, page}: IGetInteraction) => {
         page,
         total: boostedServers.length,
         all: false,
-        itemsPerPage: SERVERS_PER_PAGE,
+        itemsPerPage: SERVERS_PER_PAGE
       })
     );
   }
@@ -121,7 +121,7 @@ const getServerSelector = ({servers, page}: IGetServerSelector) => {
         serversToShow.map((server) => ({
           value: server.serverId,
           label: server.name,
-          description: `Token: ${server.token}`,
+          description: `Token: ${server.token}`
         }))
       )
   );

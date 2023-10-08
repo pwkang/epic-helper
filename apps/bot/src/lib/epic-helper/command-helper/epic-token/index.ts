@@ -5,5 +5,5 @@ import {_syncBoostedServers} from './refresh-epic-tokens';
 export const _epicTokenHelper = {
   useEpicToken: _useEpicToken,
   removeEpicToken: _removeEpicTokens,
-  syncBoostedServers: _syncBoostedServers,
+  syncBoostedServers: _syncBoostedServers
 };

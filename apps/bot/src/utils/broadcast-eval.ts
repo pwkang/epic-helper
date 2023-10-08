@@ -15,15 +15,15 @@ interface IBroadcastEvalResult<T> {
 
 export const broadcastEval = async <T>({
   fn,
-  client,
+  client
 }: IBroadcastEval<T>): Promise<IBroadcastEvalResult<T>[] | null> => {
   if (!client.cluster) {
     const result = fn(client);
     return [
       {
         data: result,
-        clusterId: 0,
-      },
+        clusterId: 0
+      }
     ];
   }
   const results: IBroadcastEvalResult<T>[] = [];
@@ -31,17 +31,17 @@ export const broadcastEval = async <T>({
   for (let i = 0; i < getInfo().TOTAL_SHARDS; i++) {
     try {
       const result = (await client.cluster.broadcastEval(fn, {
-        cluster: i,
+        cluster: i
       })) as T[];
 
       results.push({
         data: result[0],
-        clusterId: i,
+        clusterId: i
       });
     } catch (err) {
       results.push({
         data: null,
-        clusterId: i,
+        clusterId: i
       });
     }
   }

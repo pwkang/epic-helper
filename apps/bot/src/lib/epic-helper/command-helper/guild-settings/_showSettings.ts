@@ -4,7 +4,7 @@ import type {
   BaseMessageOptions,
   Guild,
   InteractionReplyOptions,
-  StringSelectMenuInteraction,
+  StringSelectMenuInteraction
 } from 'discord.js';
 import {_getGuildSettingsEmbed} from './embed/guild-settings.embed';
 import messageFormatter from '../../../discordjs/message-formatter';
@@ -13,7 +13,7 @@ import {guildSelectorHelper} from '../../../../utils/guild-selector';
 
 export const GUILD_SETTINGS_PAGE_TYPE = {
   settings: 'settings',
-  toggle: 'toggle',
+  toggle: 'toggle'
 } as const;
 
 interface IShowSettings {
@@ -25,34 +25,34 @@ interface IShowSettings {
 export const _showSettings = async ({
   server,
   type,
-  initialGuildRoleId,
+  initialGuildRoleId
 }: IShowSettings) => {
   const guilds = await guildService.getAllGuilds({
-    serverId: server.id,
+    serverId: server.id
   });
   const guildSelector = guildSelectorHelper({
     currentGuildRoleId: initialGuildRoleId ?? guilds[0]?.roleId,
     guilds,
-    server,
+    server
   });
 
   function getMessagePayload(): InteractionReplyOptions {
     if (!guilds.length)
       return {
-        content: 'There is no guild setup in this server',
+        content: 'There is no guild setup in this server'
       };
     if (!guilds.find((guild) => guild.roleId === guildSelector.getGuildId())) {
       return {
         content: `There is no guild with role ${messageFormatter.role(
           guildSelector.getGuildId()
         )} setup in this server`,
-        ephemeral: true,
+        ephemeral: true
       };
     }
 
     return {
       embeds: [getEmbed()],
-      components: guildSelector.getSelector(),
+      components: guildSelector.getSelector()
     };
   }
 
@@ -62,32 +62,32 @@ export const _showSettings = async ({
         return _getGuildSettingsEmbed({
           guildAccount: guilds.find(
             (guild) => guild.roleId === guildSelector.getGuildId()
-          )!,
+          )!
         });
       case GUILD_SETTINGS_PAGE_TYPE.toggle:
         return getGuildToggleEmbed({
           guildAccount: guilds.find(
             (guild) => guild.roleId === guildSelector.getGuildId()
-          )!,
+          )!
         });
     }
   }
 
   function replyInteraction({
-    interaction,
+    interaction
   }: IReplyInteraction): BaseMessageOptions {
     guildSelector.readInteraction({
-      interaction,
+      interaction
     });
     return {
       embeds: [getEmbed()],
-      components: guildSelector.getSelector(),
+      components: guildSelector.getSelector()
     };
   }
 
   return {
     getMessagePayload,
-    replyInteraction,
+    replyInteraction
   };
 };
 

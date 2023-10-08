@@ -6,12 +6,12 @@ export default async function loadBotEvents(client: Client) {
   const commands = await importFiles<BotEvent>({
     path: `./${handlerRoot}/events`,
     options: {
-      fileFilter: [handlerFileFilter],
-    },
+      fileFilter: [handlerFileFilter]
+    }
   });
   logger({
     message: `Loaded (${commands.length}) bot events`,
-    clusterId: client.cluster?.id,
+    clusterId: client.cluster?.id
   });
   commands.forEach(({data}) => {
     if (!data?.eventName) return;

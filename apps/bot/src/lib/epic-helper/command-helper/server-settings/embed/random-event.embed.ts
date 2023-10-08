@@ -5,19 +5,19 @@ import {typedObjectEntries} from '@epic-helper/utils';
 
 export const _getRandomEventSettingsEmbed = ({
   serverAccount,
-  guild,
+  guild
 }: IServerSettings) => {
   const embed = new EmbedBuilder()
     .setAuthor({
       name: `${guild.name}'s random event settings`,
-      iconURL: guild.iconURL() ?? undefined,
+      iconURL: guild.iconURL() ?? undefined
     })
     .setColor(BOT_COLOR.embed);
 
   for (const [key, label] of typedObjectEntries(RPG_RANDOM_EVENTS_NAME)) {
     embed.addFields({
       name: label,
-      value: serverAccount?.settings.randomEvent[key] ?? '-',
+      value: serverAccount?.settings.randomEvent[key] ?? '-'
     });
   }
 

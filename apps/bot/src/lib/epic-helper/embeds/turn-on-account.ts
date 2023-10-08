@@ -13,7 +13,7 @@ const _turnOnAccount = () => {
       name: 'Notes',
       value:
         'Bot will not track any of your commands currently\n' +
-        `You can use ${BOT_CLICKABLE_SLASH_COMMANDS.toggleShow} to disable *reminder* or any features`,
+        `You can use ${BOT_CLICKABLE_SLASH_COMMANDS.toggleShow} to disable *reminder* or any features`
     });
 };
 

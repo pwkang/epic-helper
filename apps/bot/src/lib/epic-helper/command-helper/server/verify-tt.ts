@@ -21,15 +21,15 @@ export const _verifyTT = async ({
   author,
   client,
   channelId,
-  timeTravels,
+  timeTravels
 }: ICheckAndAssignTTRole) => {
   const serverAccount = await serverService.getServer({
-    serverId: server.id,
+    serverId: server.id
   });
   if (!serverAccount) return;
 
   const toggleServer = await toggleServerChecker({
-    serverId: server.id,
+    serverId: server.id
   });
   if (!toggleServer?.ttVerification) return;
 
@@ -40,7 +40,7 @@ export const _verifyTT = async ({
   const member = await djsMemberHelper.getMember({
     client,
     serverId: server.id,
-    userId: author.id,
+    userId: author.id
   });
   if (!member) return;
 
@@ -61,7 +61,7 @@ export const _verifyTT = async ({
       client,
       serverId: server.id,
       roleIds: rolesToAssign.map((role) => role.roleId),
-      userId: author.id,
+      userId: author.id
     });
   }
 
@@ -73,7 +73,7 @@ export const _verifyTT = async ({
       client,
       serverId: server.id,
       roleIds: rolesToRemove.map((role) => role.roleId),
-      userId: author.id,
+      userId: author.id
     });
   }
 
@@ -86,10 +86,10 @@ export const _verifyTT = async ({
           server,
           author,
           addedRole: rolesToAssign,
-          removedRole: rolesToRemove,
-        }),
-      ],
-    },
+          removedRole: rolesToRemove
+        })
+      ]
+    }
   });
 };
 
@@ -103,7 +103,7 @@ interface IGetEmbed {
 const getEmbed = ({author, addedRole, removedRole}: IGetEmbed) => {
   const embed = new EmbedBuilder().setColor(BOT_COLOR.embed).setAuthor({
     name: author.username,
-    iconURL: author.avatarURL() || undefined,
+    iconURL: author.avatarURL() || undefined
   });
   if (addedRole.length) {
     embed.addFields({
@@ -111,7 +111,7 @@ const getEmbed = ({author, addedRole, removedRole}: IGetEmbed) => {
       value:
         addedRole
           .map((role) => `- ${messageFormatter.role(role.roleId)}`)
-          .join('\n') || '-',
+          .join('\n') || '-'
     });
   }
   if (removedRole.length) {
@@ -120,7 +120,7 @@ const getEmbed = ({author, addedRole, removedRole}: IGetEmbed) => {
       value:
         removedRole
           .map((role) => `- ${messageFormatter.role(role.roleId)}`)
-          .join('\n') || '-',
+          .join('\n') || '-'
     });
   }
   if (!addedRole.length && !removedRole.length) {
@@ -130,7 +130,7 @@ const getEmbed = ({author, addedRole, removedRole}: IGetEmbed) => {
       name: 'Info',
       value: addedRole.length
         ? addedRole.map((role) => role.message).join('\n')
-        : '-',
+        : '-'
     });
   }
 

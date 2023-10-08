@@ -14,13 +14,13 @@ export function rpgOpenLootbox({
   client,
   message,
   author,
-  isSlashCommand,
+  isSlashCommand
 }: IRpgOpenLootbox) {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     author,
     client,
-    channelId: message.channelId,
+    channelId: message.channelId
   });
   if (!event) return;
   event.on('embed', (embed) => {
@@ -50,14 +50,14 @@ interface IRpgOpenLootboxSuccess {
 
 const rpgOpenLootboxSuccess = async ({
   embed,
-  author,
+  author
 }: IRpgOpenLootboxSuccess) => {
   const openedItems = embedReaders.lootbox({embed});
   if (openedItems.ruby) {
     await userService.updateUserRubyAmount({
       ruby: openedItems.ruby,
       type: 'inc',
-      userId: author.id,
+      userId: author.id
     });
   }
 };
@@ -83,4 +83,4 @@ interface IIsNotEnoughLootbox {
 }
 
 const isNotEnoughLootbox = ({content}: IIsNotEnoughLootbox) =>
-  content.includes("you don't have that many of this lootbox type");
+  content.includes('you don\'t have that many of this lootbox type');

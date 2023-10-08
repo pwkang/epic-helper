@@ -2,7 +2,7 @@ import djsInteractionHelper from '../../../lib/discordjs/interaction';
 import {userService} from '../../../services/database/user.service';
 import {
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS
 } from '@epic-helper/constants';
 import {SLASH_COMMAND} from '../constant';
 
@@ -12,7 +12,7 @@ export default <SlashCommand>{
   type: 'subcommand',
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
-    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
+    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister
   },
   commandName: SLASH_COMMAND.account.name,
   builder: (subcommand) =>
@@ -33,13 +33,13 @@ export default <SlashCommand>{
     let message;
     if (toRemove) {
       await userService.removeUserHealReminder({
-        userId,
+        userId
       });
       message = 'Heal reminder removed';
     } else if (hp) {
       await userService.setUserHealReminder({
         userId,
-        hp,
+        hp
       });
       message = `Heal reminder set to ${hp}`;
     } else {
@@ -50,8 +50,8 @@ export default <SlashCommand>{
       client,
       interaction,
       options: {
-        content: message,
-      },
+        content: message
+      }
     });
-  },
+  }
 };

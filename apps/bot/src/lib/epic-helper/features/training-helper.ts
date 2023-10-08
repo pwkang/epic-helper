@@ -16,7 +16,7 @@ const FOREST: ITrainingAnswer[] = [
   {label: '2', ans: 2},
   {label: '3', ans: 3},
   {label: '4', ans: 4},
-  {label: '5', ans: 5},
+  {label: '5', ans: 5}
 ];
 
 const FIELD: ITrainingAnswer[] = [
@@ -25,18 +25,18 @@ const FIELD: ITrainingAnswer[] = [
   {label: 'E', ans: 'E'},
   {label: 'L', ans: 'L'},
   {label: 'N', ans: 'N'},
-  {label: 'P', ans: 'P'},
+  {label: 'P', ans: 'P'}
 ];
 
 const RIVER: ITrainingAnswer[] = [
   {label: 'normie fish', ans: 'normie'},
   {label: 'golden fish', ans: 'golden'},
-  {label: 'EPIC fish', ans: 'epic'},
+  {label: 'EPIC fish', ans: 'epic'}
 ];
 
 const TRUE_FALSE: ITrainingAnswer[] = [
   {label: 'yes', ans: true},
-  {label: 'no', ans: false},
+  {label: 'no', ans: false}
 ];
 
 interface IGetTrainingAnswer {
@@ -49,12 +49,12 @@ const CASINO_ANSWER_LIST = {
   GIFT: ':gift:',
   DICE: ':game_die:',
   DIAMOND: ':gem:',
-  COIN: ':coin:',
+  COIN: ':coin:'
 };
 
 export default async function getTrainingAnswer({
   content,
-  author,
+  author
 }: IGetTrainingAnswer): Promise<ActionRowBuilder<ButtonBuilder>[] | null> {
   let components: ActionRowBuilder<ButtonBuilder>[] = [];
   const toggleChecker = await toggleUserChecker({userId: author.id});

@@ -12,7 +12,7 @@ export interface IDeleteGuildSlashCommand {
 export const _deleteGuildSlashCommand = async ({
   client,
   guild,
-  commandId,
+  commandId
 }: IDeleteGuildSlashCommand) => {
   if (!client.user) return [];
   try {
@@ -24,7 +24,7 @@ export const _deleteGuildSlashCommand = async ({
       message: e.rawError.message,
       variant: 'delete-guild-slash-command',
       logLevel: 'error',
-      clusterId: client.cluster?.id,
+      clusterId: client.cluster?.id
     });
   }
 };

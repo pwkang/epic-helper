@@ -19,7 +19,7 @@ export default <BotEvent>{
           client,
           author: newMessage.interaction!.user,
           server: newMessage.guild,
-          preCheck: cmd.preCheck,
+          preCheck: cmd.preCheck
         });
         if (!toExecute) return;
         await cmd.execute(client, newMessage, newMessage.interaction!.user);
@@ -27,7 +27,7 @@ export default <BotEvent>{
     }
 
     await emitMessageEdited(newMessage);
-  },
+  }
 };
 
 const isBotSlashCommand = (message: Message) =>

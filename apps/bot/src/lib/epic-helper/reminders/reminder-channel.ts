@@ -9,12 +9,12 @@ interface IUpdateReminderChannel {
 
 export const updateReminderChannel = async ({
   channelId,
-  userId,
+  userId
 }: IUpdateReminderChannel) => {
   await userService.setUserReminderChannel({
     userId,
     channelId,
-    commandType: ['all'],
+    commandType: ['all']
   });
 };
 
@@ -26,10 +26,10 @@ interface IGetReminderChannel {
 
 export const getReminderChannel = async ({
   commandType,
-  userId,
+  userId
 }: IGetReminderChannel) => {
   const settings = await userService.getUserReminderChannel({
-    userId,
+    userId
   });
   if (!settings) return null;
   return settings[commandType] ?? settings.all;

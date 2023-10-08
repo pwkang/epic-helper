@@ -3,7 +3,7 @@ import {
   PREFIX_COMMAND_TYPE,
   RPG_WORKING_TYPE,
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS
 } from '@epic-helper/constants';
 
 export default <PrefixCommand>{
@@ -12,7 +12,7 @@ export default <PrefixCommand>{
   type: PREFIX_COMMAND_TYPE.rpg,
   preCheck: {
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.abort,
-    userAccOff: USER_ACC_OFF_ACTIONS.abort,
+    userAccOff: USER_ACC_OFF_ACTIONS.abort
   },
   execute: async (client, message, args) => {
     const workingType = Object.values(RPG_WORKING_TYPE).find((type) =>
@@ -24,7 +24,7 @@ export default <PrefixCommand>{
       message,
       client,
       isSlashCommand: false,
-      workingType,
+      workingType
     });
-  },
+  }
 };

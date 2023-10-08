@@ -11,12 +11,12 @@ export default <BotEvent>{
     if (!serverInfo) {
       serverService.registerServer({
         serverId: guild.id,
-        name: guild.name,
+        name: guild.name
       });
     }
     redisServerInfo.setServerName({
       serverId: guild.id,
-      name: guild.name,
+      name: guild.name
     });
-  },
+  }
 };

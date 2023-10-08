@@ -19,12 +19,12 @@ export const userPetReminderTimesUp = async ({
   client,
   userAccount,
   userReminder,
-  toggleChecker,
+  toggleChecker
 }: IUserPetReminderTimesUp) => {
   const channelId = await getReminderChannel({
     commandType: RPG_COMMAND_TYPE.pet,
     userId: userAccount.userId,
-    client,
+    client
   });
   if (!channelId || !client.channels.cache.has(channelId)) return;
 
@@ -34,12 +34,12 @@ export const userPetReminderTimesUp = async ({
 
   await userPetServices.updateRemindedPets({
     petIds,
-    userId,
+    userId
   });
   if (!toggleChecker?.reminder.pet) return;
 
   const nextReminder = await userReminderServices.getNextReadyCommand({
-    userId,
+    userId
   });
 
   const reminderMessage = generateUserReminderMessage({
@@ -50,14 +50,14 @@ export const userPetReminderTimesUp = async ({
     type: RPG_COMMAND_TYPE.pet,
     userReminder,
     readyPetsId: petIds,
-    toggleChecker,
+    toggleChecker
   });
 
   await djsMessageHelper.send({
     client,
     channelId,
     options: {
-      content: reminderMessage,
-    },
+      content: reminderMessage
+    }
   });
 };

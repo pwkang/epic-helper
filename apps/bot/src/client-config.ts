@@ -15,13 +15,13 @@ export const DiscordClientConfig: ClientOptions = {
   intents: new IntentsBitField().add([
     IntentsBitField.Flags.Guilds,
     IntentsBitField.Flags.GuildMessages,
-    IntentsBitField.Flags.MessageContent,
+    IntentsBitField.Flags.MessageContent
   ]),
   sweepers: {
     messages: {
       interval: 450,
-      filter: () => messageFilter,
-    },
+      filter: () => messageFilter
+    }
   },
   makeCache: Options.cacheWithLimits({
     BaseGuildEmojiManager: 0,
@@ -41,6 +41,6 @@ export const DiscordClientConfig: ClientOptions = {
     ThreadManager: 0,
     ThreadMemberManager: 0,
     VoiceStateManager: 0,
-    MessageManager: 25,
-  }),
+    MessageManager: 25
+  })
 };

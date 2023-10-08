@@ -2,7 +2,7 @@ import djsInteractionHelper from '../../../../lib/discordjs/interaction';
 import {SLASH_COMMAND} from '../../constant';
 import {
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS
 } from '@epic-helper/constants';
 import commandHelper from '../../../../lib/epic-helper/command-helper';
 
@@ -14,7 +14,7 @@ export default <SlashCommand>{
   type: 'subcommand',
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
-    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,
+    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip
   },
   builder: (subcommand) =>
     subcommand
@@ -40,19 +40,19 @@ export default <SlashCommand>{
       author: interaction.user,
       client,
       server: interaction.guild!,
-      roleId: guildRole.id,
+      roleId: guildRole.id
     });
 
     const messageOptions = await toggleGuild.updateToggle({
       on: onStr ?? undefined,
-      off: offStr ?? undefined,
+      off: offStr ?? undefined
     });
 
     if (!messageOptions) return;
     await djsInteractionHelper.replyInteraction({
       client,
       interaction,
-      options: messageOptions,
+      options: messageOptions
     });
-  },
+  }
 };

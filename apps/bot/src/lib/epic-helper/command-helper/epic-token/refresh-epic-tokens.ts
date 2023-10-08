@@ -14,13 +14,13 @@ interface IServerToUnBoost {
 
 export const _syncBoostedServers = async ({userId}: ISyncBoostedServers) => {
   const donor = await donorService.findDonor({
-    discordUserId: userId,
+    discordUserId: userId
   });
   const freeDonor = await freeDonorService.findFreeDonor({
-    discordUserId: userId,
+    discordUserId: userId
   });
   const boostedServers = await serverService.getUserBoostedServers({
-    userId,
+    userId
   });
   const donorToken = donor?.tier ? DONOR_TOKEN_AMOUNT[donor.tier] : 0;
   const freeToken = freeDonor?.token ?? 0;
@@ -39,13 +39,13 @@ export const _syncBoostedServers = async ({userId}: ISyncBoostedServers) => {
     if (server.token <= extraTokens) {
       serversToUnBoost.push({
         serverId: server.serverId,
-        token: server.token,
+        token: server.token
       });
       extraTokens -= server.token;
     } else {
       serversToUnBoost.push({
         serverId: server.serverId,
-        token: extraTokens,
+        token: extraTokens
       });
       extraTokens = 0;
     }
@@ -54,7 +54,7 @@ export const _syncBoostedServers = async ({userId}: ISyncBoostedServers) => {
     await serverService.removeTokens({
       serverId: server.serverId,
       userId,
-      tokens: server.token,
+      tokens: server.token
     });
   }
 };

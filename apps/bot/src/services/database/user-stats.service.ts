@@ -3,7 +3,7 @@ import {mongoClient} from '@epic-helper/services';
 import {getStartOfLastWeek, getStartOfToday} from '@epic-helper/utils';
 import type {
   IUserStats,
-  USER_STATS_RPG_COMMAND_TYPE,
+  USER_STATS_RPG_COMMAND_TYPE
 } from '@epic-helper/models';
 import {userStatsSchema} from '@epic-helper/models';
 
@@ -21,15 +21,15 @@ const countUserStats = async ({userId, type}: ICountUserStats) => {
   await dbUserStats.findOneAndUpdate(
     {
       userId,
-      statsAt: getStartOfToday(),
+      statsAt: getStartOfToday()
     },
     {
       $inc: {
-        [`rpg.${type}`]: 1,
-      },
+        [`rpg.${type}`]: 1
+      }
     },
     {
-      upsert: true,
+      upsert: true
     }
   );
 };
@@ -42,7 +42,7 @@ interface IGetUserStats {
 
 const getUserStats = ({userId, limit, page}: IGetUserStats) => {
   const query: FilterQuery<IUserStats> = {
-    userId,
+    userId
   };
 
   const options: QueryOptions = {};
@@ -63,8 +63,8 @@ const getUserStatsOfLast2Weeks = ({userId}: IGetUserStatsOfLast2Weeks) => {
   return dbUserStats.find({
     userId,
     statsAt: {
-      $gte: getStartOfLastWeek(),
-    },
+      $gte: getStartOfLastWeek()
+    }
   });
 };
 
@@ -73,13 +73,13 @@ interface IGetUserBestStats {
 }
 
 const getUserBestStats = async ({
-  userId,
+  userId
 }: IGetUserBestStats): Promise<IUserStats['rpg'] | undefined> => {
   const stats = await dbUserStats.aggregate([
     {
       $match: {
-        userId,
-      },
+        userId
+      }
     },
     {
       $project: {
@@ -90,8 +90,8 @@ const getUserBestStats = async ({
         'rpg.training': {$max: '$rpg.training'},
         'rpg.ultraining': {$max: '$rpg.ultraining'},
         'rpg.working': {$max: '$rpg.working'},
-        'rpg.farm': {$max: '$rpg.farm'},
-      },
+        'rpg.farm': {$max: '$rpg.farm'}
+      }
     },
     {
       $group: {
@@ -101,9 +101,9 @@ const getUserBestStats = async ({
         adventure: {$max: '$rpg.adventure'},
         ultraining: {$max: '$rpg.ultraining'},
         working: {$max: '$rpg.working'},
-        farm: {$max: '$rpg.farm'},
-      },
-    },
+        farm: {$max: '$rpg.farm'}
+      }
+    }
   ]);
   return stats[0];
 };
@@ -114,7 +114,7 @@ interface IClearUserStats {
 
 const clearUserStats = async ({userId}: IClearUserStats) => {
   await dbUserStats.deleteMany({
-    userId,
+    userId
   });
 };
 
@@ -123,5 +123,5 @@ export const userStatsService = {
   getUserStats,
   getUserStatsOfLast2Weeks,
   getUserBestStats,
-  clearUserStats,
+  clearUserStats
 };

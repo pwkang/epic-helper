@@ -3,7 +3,7 @@ import type {RPG_DONOR_TIER} from '@epic-helper/constants';
 import {
   BOT_REMINDER_BASE_COOLDOWN,
   RPG_COMMAND_TYPE,
-  RPG_DONOR_CD_REDUCTION,
+  RPG_DONOR_CD_REDUCTION
 } from '@epic-helper/constants';
 import {userService} from '../../../services/database/user.service';
 
@@ -17,7 +17,7 @@ const donorCdReduction = {
   nonDonor: 1,
   donor10: 0.9,
   donor20: 0.8,
-  donor35: 0.65,
+  donor35: 0.65
 } as const;
 
 const canReducedByDonor = {
@@ -35,13 +35,13 @@ const canReducedByDonor = {
   horse: true,
   arena: true,
   dungeon: true,
-  epicItem: false,
+  epicItem: false
 };
 
 export const calcCdReduction = async ({
   commandType,
   userId,
-  cooldown,
+  cooldown
 }: IGetCdReduction) => {
   const userAccount = await userService.getUserAccount(userId);
   if (!userAccount) return cooldown;
@@ -67,7 +67,7 @@ interface ICalcDonorPExtraHuntCd {
 
 export const calcExtraHuntCdWithPartner = ({
   donorP,
-  donor,
+  donor
 }: ICalcDonorPExtraHuntCd) => {
   if (!donorP) return 0;
 

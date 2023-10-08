@@ -3,7 +3,7 @@ import {djsMessageHelper} from '../../../../../lib/discordjs/message';
 import {
   PREFIX_COMMAND_TYPE,
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS
 } from '@epic-helper/constants';
 import {userService} from '../../../../../services/database/user.service';
 
@@ -13,16 +13,16 @@ export default <PrefixCommand>{
   type: PREFIX_COMMAND_TYPE.bot,
   preCheck: {
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
-    userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
+    userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn
   },
   execute: async (client, message) => {
     const userAccount = await userService.resetUserToggle({
-      userId: message.author.id,
+      userId: message.author.id
     });
     if (!userAccount) return;
 
     const userToggle = await commandHelper.toggle.user({
-      author: message.author,
+      author: message.author
     });
     if (!userToggle) return;
 
@@ -31,7 +31,7 @@ export default <PrefixCommand>{
     await djsMessageHelper.send({
       client,
       channelId: message.channel.id,
-      options: messageOptions,
+      options: messageOptions
     });
-  },
+  }
 };

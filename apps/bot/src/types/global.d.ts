@@ -4,13 +4,13 @@ import type {
   Message,
   SlashCommandBuilder,
   SlashCommandSubcommandBuilder,
-  User,
+  User
 } from 'discord.js';
 import type {ChatInputCommandInteraction} from 'discord.js';
 import type {ScheduleOptions} from 'node-cron';
 import type {
   PREFIX_COMMAND_TYPE,
-  SLASH_MESSAGE_BOT_TYPE,
+  SLASH_MESSAGE_BOT_TYPE
 } from '@epic-helper/constants';
 import type {ICommandPreCheck} from './utils';
 

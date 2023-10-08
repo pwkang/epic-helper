@@ -18,20 +18,20 @@ export const _getMessageOptions = async ({
   userAccount,
   author,
   pageType,
-  toggleChecker,
+  toggleChecker
 }: IGetMessageOptions): Promise<BaseMessageOptions> => {
   const embed = await _getCustomMessageEmbed({
     client,
     userAccount,
     author,
     pageType,
-    toggleChecker,
+    toggleChecker
   });
   const buttonRows = _customMessagePageSelector({
-    pageType,
+    pageType
   });
   return {
     embeds: [embed],
-    components: [buttonRows],
+    components: [buttonRows]
   };
 };

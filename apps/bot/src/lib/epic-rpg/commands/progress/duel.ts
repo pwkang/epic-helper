@@ -1,7 +1,7 @@
 import {
   BOT_REMINDER_BASE_COOLDOWN,
   RPG_COMMAND_TYPE,
-  RPG_COOLDOWN_EMBED_TYPE,
+  RPG_COOLDOWN_EMBED_TYPE
 } from '@epic-helper/constants';
 import type {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
@@ -27,14 +27,14 @@ export function rpgDuel({
   message,
   author,
   isSlashCommand,
-  targetUser,
+  targetUser
 }: IRpgDuel) {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     author,
     channelId: message.channel.id,
     client,
-    commandType: RPG_COOLDOWN_EMBED_TYPE.duel,
+    commandType: RPG_COOLDOWN_EMBED_TYPE.duel
   });
   if (!event) return;
   event.on('embed', async (embed, collected) => {
@@ -52,13 +52,13 @@ export function rpgDuel({
           embed,
           author: user,
           channelId: message.channel.id,
-          client,
+          client
         });
       });
       commandHelper.duel.autoAdd({
         users,
         duelMessage: collected,
-        client,
+        client
       });
       event?.stop();
     }
@@ -67,7 +67,7 @@ export function rpgDuel({
     await userReminderServices.updateUserCooldown({
       userId: author.id,
       readyAt: new Date(Date.now() + cooldown),
-      type: RPG_COMMAND_TYPE.duel,
+      type: RPG_COMMAND_TYPE.duel
     });
   });
   event.on('end', () => {
@@ -85,7 +85,7 @@ interface IRpgDuelSuccess {
 
 const rpgDuelSuccess = async ({author, channelId}: IRpgDuelSuccess) => {
   const isUserAccountOn = await userService.isUserAccountOn({
-    userId: author.id,
+    userId: author.id
   });
   if (!isUserAccountOn) return;
   const toggleChecker = await toggleUserChecker({userId: author.id});
@@ -95,17 +95,17 @@ const rpgDuelSuccess = async ({author, channelId}: IRpgDuelSuccess) => {
     const cooldown = await calcCdReduction({
       userId: author.id,
       commandType: RPG_COMMAND_TYPE.duel,
-      cooldown: DUEL_COOLDOWN,
+      cooldown: DUEL_COOLDOWN
     });
     await userReminderServices.saveUserDuelCooldown({
       userId: author.id,
-      readyAt: new Date(Date.now() + cooldown),
+      readyAt: new Date(Date.now() + cooldown)
     });
   }
 
   await updateReminderChannel({
     userId: author.id,
-    channelId,
+    channelId
   });
 };
 

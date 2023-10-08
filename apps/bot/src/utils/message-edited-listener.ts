@@ -12,10 +12,10 @@ interface ICreateMessageEditedListener {
 
 export const createMessageEditedListener = async ({
   messageId,
-  timeout = ms('10m'),
+  timeout = ms('10m')
 }: ICreateMessageEditedListener) => {
   await redisMessageEdited.register({
-    messageId,
+    messageId
   });
 
   messageEditedEvent.on = (
@@ -35,7 +35,7 @@ export const createMessageEditedListener = async ({
 export const emitMessageEdited = async (message: Message) => {
   const messageId = message.id;
   const isEdited = await redisMessageEdited.isEdited({
-    messageId,
+    messageId
   });
   if (!isEdited) return;
   messageEditedEvent.emit(messageId, message);
@@ -50,7 +50,7 @@ interface IRemoveMessageEditedListener {
 export const removeMessageEditedListener = async ({
   timeout = ms('10m'),
   messageId,
-  callback,
+  callback
 }: IRemoveMessageEditedListener) => {
   setTimeout(() => {
     messageEditedEvent.removeListener(messageId, callback);

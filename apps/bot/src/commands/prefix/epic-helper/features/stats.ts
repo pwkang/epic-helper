@@ -1,13 +1,13 @@
 import type {TEventTypes} from '../../../../lib/epic-helper/features/stats';
 import {
   getStatsEmbeds,
-  statsActionRow,
+  statsActionRow
 } from '../../../../lib/epic-helper/features/stats';
 import {djsMessageHelper} from '../../../../lib/discordjs/message';
 import {
   PREFIX_COMMAND_TYPE,
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS
 } from '@epic-helper/constants';
 
 export default <PrefixCommand>{
@@ -16,11 +16,11 @@ export default <PrefixCommand>{
   commands: ['stats', 'stat', 'st'],
   preCheck: {
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
-    userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
+    userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn
   },
   execute: async (client, message) => {
     const embeds = await getStatsEmbeds({
-      author: message.author,
+      author: message.author
     });
     let event = await djsMessageHelper.interactiveSend<TEventTypes>({
       client,
@@ -28,23 +28,23 @@ export default <PrefixCommand>{
       options: {embeds: [embeds.donor], components: [statsActionRow]},
       onStop: () => {
         event = undefined;
-      },
+      }
     });
     if (!event) return;
     event.on('default', async () => {
       return {
-        embeds: [embeds.donor],
+        embeds: [embeds.donor]
       };
     });
     event.on('thisWeek', async () => {
       return {
-        embeds: [embeds.thisWeek],
+        embeds: [embeds.thisWeek]
       };
     });
     event.on('lastWeek', async () => {
       return {
-        embeds: [embeds.lastWeek],
+        embeds: [embeds.lastWeek]
       };
     });
-  },
+  }
 };

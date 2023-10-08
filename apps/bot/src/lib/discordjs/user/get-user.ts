@@ -8,7 +8,7 @@ interface IGetUser {
 
 export const _getUser = async ({
   userId,
-  client,
+  client
 }: IGetUser): Promise<User | null> => {
   const user = client.users.cache.get(userId);
   if (!user) {
@@ -18,7 +18,7 @@ export const _getUser = async ({
       logger({
         clusterId: client.cluster?.id,
         logLevel: 'error',
-        message: `Failed to fetch user ${userId}`,
+        message: `Failed to fetch user ${userId}`
       });
       return null;
     }

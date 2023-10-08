@@ -1,13 +1,13 @@
 import type {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import {
   BOT_CUSTOM_MESSAGE_TYPES,
-  BOT_CUSTOM_MESSAGE_VARIABLES,
+  BOT_CUSTOM_MESSAGE_VARIABLES
 } from '@epic-helper/constants';
 
 export const CUSTOM_MESSAGE_PAGE_TYPE = {
   general: 'general',
   other: 'other',
-  guide: 'guide',
+  guide: 'guide'
 } as const;
 
 interface IPage {
@@ -37,17 +37,17 @@ export const CUSTOM_MESSAGE_PAGES: IPage[] = [
       {label: 'Farm', type: 'farm'},
       {label: 'Horse', type: 'horse'},
       {label: 'Arena', type: 'arena'},
-      {label: 'Dungeon', type: 'dungeon'},
-    ],
+      {label: 'Dungeon', type: 'dungeon'}
+    ]
   },
   {
     id: CUSTOM_MESSAGE_PAGE_TYPE.other,
     label: 'Other',
     rows: [
       {label: 'Pet', type: 'pet'},
-      {label: 'Epic Items', type: 'epicItem'},
-    ],
-  },
+      {label: 'Epic Items', type: 'epicItem'}
+    ]
+  }
 ];
 
 export const CUSTOM_MESSAGE_VARIABLES_DESCRIPTION = {
@@ -57,7 +57,7 @@ export const CUSTOM_MESSAGE_VARIABLES_DESCRIPTION = {
   [BOT_CUSTOM_MESSAGE_VARIABLES.emoji]: 'Default animated emoji',
   [BOT_CUSTOM_MESSAGE_VARIABLES.slash]: 'Clickable slash command',
   [BOT_CUSTOM_MESSAGE_VARIABLES.petId]: 'Ready pets ID',
-  [BOT_CUSTOM_MESSAGE_VARIABLES.nextReminder]: 'Next reminder countdown',
+  [BOT_CUSTOM_MESSAGE_VARIABLES.nextReminder]: 'Next reminder countdown'
 } as const;
 
 export const CUSTOM_MESSAGE_TYPES_DISPLAY_NAME: Record<
@@ -65,5 +65,5 @@ export const CUSTOM_MESSAGE_TYPES_DISPLAY_NAME: Record<
   string
 > = {
   ...BOT_CUSTOM_MESSAGE_TYPES,
-  [BOT_CUSTOM_MESSAGE_TYPES.all]: 'default',
+  [BOT_CUSTOM_MESSAGE_TYPES.all]: 'default'
 } as const;

@@ -5,5 +5,5 @@ export default <SlashCommand>{
   preCheck: {},
   execute: async (client, interaction) => {
     await interaction.reply('Test');
-  },
+  }
 };

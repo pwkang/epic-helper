@@ -15,7 +15,7 @@ const embedReaders = {
   profile: profileReader,
   progress: progressReader,
   wildPet: wildPetReader,
-  duelResult: duelResultReader,
+  duelResult: duelResultReader
 };
 
 export default embedReaders;

@@ -25,7 +25,7 @@ interface RegisterUserProps {
 const registerUserAccount = async ({
   userId,
   username,
-  channelId,
+  channelId
 }: RegisterUserProps): Promise<boolean> => {
   const user = await getUserAccount(userId);
 
@@ -34,8 +34,8 @@ const registerUserAccount = async ({
       userId,
       username,
       channel: {
-        all: channelId,
-      },
+        all: channelId
+      }
     });
 
     await newUser.save();
@@ -47,12 +47,12 @@ const registerUserAccount = async ({
 const userAccountOn = async (userId: string): Promise<void> => {
   await dbUser.findOneAndUpdate(
     {
-      userId,
+      userId
     },
     {
       $set: {
-        'config.onOff': true,
-      },
+        'config.onOff': true
+      }
     },
     {new: true}
   );
@@ -61,12 +61,12 @@ const userAccountOn = async (userId: string): Promise<void> => {
 const userAccountOff = async (userId: string): Promise<void> => {
   await dbUser.findOneAndUpdate(
     {
-      userId,
+      userId
     },
     {
       $set: {
-        'config.onOff': false,
-      },
+        'config.onOff': false
+      }
     },
     {new: true}
   );
@@ -74,14 +74,14 @@ const userAccountOff = async (userId: string): Promise<void> => {
 
 const userAccountDelete = async (userId: string): Promise<void> => {
   await dbUser.findOneAndDelete({
-    userId,
+    userId
   });
   await redisUserAccount.delUser(userId);
 };
 
 const isUserAccountExist = async (userId: string): Promise<boolean> => {
   const user = await dbUser.count({
-    userId,
+    userId
   });
   return user > 0;
 };
@@ -93,16 +93,16 @@ interface IUpdateRpgDonorTier {
 
 const updateRpgDonorTier = async ({
   userId,
-  tier,
+  tier
 }: IUpdateRpgDonorTier): Promise<void> => {
   await dbUser.findOneAndUpdate(
     {
-      userId,
+      userId
     },
     {
       $set: {
-        'config.donor': tier,
-      },
+        'config.donor': tier
+      }
     },
     {new: true}
   );
@@ -115,16 +115,16 @@ interface IUpdateRpgDonorPTier {
 
 const updateRpgDonorPTier = async ({
   userId,
-  tier,
+  tier
 }: IUpdateRpgDonorPTier): Promise<void> => {
   await dbUser.findOneAndUpdate(
     {
-      userId,
+      userId
     },
     {
       $set: {
-        'config.donorP': tier,
-      },
+        'config.donorP': tier
+      }
     },
     {new: true}
   );
@@ -133,12 +133,12 @@ const updateRpgDonorPTier = async ({
 const removeRpgDonorPTier = async (userId: string): Promise<void> => {
   await dbUser.findOneAndUpdate(
     {
-      userId,
+      userId
     },
     {
       $unset: {
-        'config.donorP': '',
-      },
+        'config.donorP': ''
+      }
     },
     {new: true}
   );
@@ -150,7 +150,7 @@ const getUserAccount = async (userId: string): Promise<IUser | null> => {
 
   const user = await dbUser
     .findOne({
-      userId,
+      userId
     })
     .lean({defaults: true});
 
@@ -168,25 +168,25 @@ interface IUpdateUserRubyAmount {
 const updateUserRubyAmount = async ({
   ruby,
   userId,
-  type,
+  type
 }: IUpdateUserRubyAmount): Promise<void> => {
   const query: UpdateQuery<IUser> = {};
   if (type === 'set') {
     query.$set = {
-      'items.ruby': ruby,
+      'items.ruby': ruby
     };
   } else {
     query.$inc = {
-      'items.ruby': type === 'inc' ? ruby : -ruby,
+      'items.ruby': type === 'inc' ? ruby : -ruby
     };
   }
   await dbUser.findOneAndUpdate(
     {
-      userId,
+      userId
     },
     query,
     {
-      new: true,
+      new: true
     }
   );
 };
@@ -203,16 +203,16 @@ interface ISetUserEnchantTier {
 
 const setUserEnchantTier = async ({
   userId,
-  tier,
+  tier
 }: ISetUserEnchantTier): Promise<void> => {
   await dbUser.findOneAndUpdate(
     {
-      userId,
+      userId
     },
     {
       $set: {
-        'config.enchant': tier,
-      },
+        'config.enchant': tier
+      }
     },
     {new: true}
   );
@@ -223,16 +223,16 @@ interface IRemoveUserEnchantTier {
 }
 
 const removeUserEnchantTier = async ({
-  userId,
+  userId
 }: IRemoveUserEnchantTier): Promise<void> => {
   await dbUser.findOneAndUpdate(
     {
-      userId,
+      userId
     },
     {
       $unset: {
-        'config.enchant': '',
-      },
+        'config.enchant': ''
+      }
     },
     {new: true}
   );
@@ -243,7 +243,7 @@ interface IGetUserEnchantTier {
 }
 
 const getUserEnchantTier = async ({
-  userId,
+  userId
 }: IGetUserEnchantTier): Promise<ValuesOf<typeof RPG_ENCHANT_LEVEL> | null> => {
   const user = await getUserAccount(userId);
   return user?.config.enchant ?? null;
@@ -254,16 +254,16 @@ interface IRemoveUserHealReminder {
 }
 
 const removeUserHealReminder = async ({
-  userId,
+  userId
 }: IRemoveUserHealReminder): Promise<void> => {
   await dbUser.findOneAndUpdate(
     {
-      userId,
+      userId
     },
     {
       $unset: {
-        'config.heal': '',
-      },
+        'config.heal': ''
+      }
     },
     {new: true}
   );
@@ -274,7 +274,7 @@ interface IGetUserHealReminder {
 }
 
 const getUserHealReminder = async ({
-  userId,
+  userId
 }: IGetUserHealReminder): Promise<number | null> => {
   const user = await getUserAccount(userId);
   return user?.config.heal ?? null;
@@ -287,16 +287,16 @@ interface ISetUserHealReminder {
 
 const setUserHealReminder = async ({
   userId,
-  hp,
+  hp
 }: ISetUserHealReminder): Promise<void> => {
   await dbUser.findOneAndUpdate(
     {
-      userId,
+      userId
     },
     {
       $set: {
-        'config.heal': hp,
-      },
+        'config.heal': hp
+      }
     },
     {new: true}
   );
@@ -311,7 +311,7 @@ interface ISetUserReminderChannel {
 const setUserReminderChannel = async ({
   userId,
   commandType,
-  channelId,
+  channelId
 }: ISetUserReminderChannel) => {
   const updateQuery: Record<string, string> = {};
   commandType.forEach((type) => {
@@ -319,10 +319,10 @@ const setUserReminderChannel = async ({
   });
   await dbUser.findOneAndUpdate(
     {
-      userId,
+      userId
     },
     {
-      $set: updateQuery,
+      $set: updateQuery
     },
     {new: true}
   );
@@ -335,7 +335,7 @@ interface IRemoveUserReminderChannel {
 
 const removeUserReminderChannel = async ({
   userId,
-  commandType,
+  commandType
 }: IRemoveUserReminderChannel) => {
   const updateQuery: Record<string, string> = {};
   commandType.forEach((type) => {
@@ -344,10 +344,10 @@ const removeUserReminderChannel = async ({
   });
   await dbUser.findOneAndUpdate(
     {
-      userId,
+      userId
     },
     {
-      $unset: updateQuery,
+      $unset: updateQuery
     },
     {new: true}
   );
@@ -358,7 +358,7 @@ interface IGetUserReminderChannel {
 }
 
 const getUserReminderChannel = async ({
-  userId,
+  userId
 }: IGetUserReminderChannel): Promise<IUser['channel'] | null> => {
   const user = await getUserAccount(userId);
   return user?.channel ?? null;
@@ -376,15 +376,15 @@ interface IUpdateUserToggle {
 
 const updateUserToggle = async ({
   userId,
-  query,
+  query
 }: IUpdateUserToggle): Promise<null | IUser> => {
   await dbUser.findOneAndUpdate(
     {
-      userId,
+      userId
     },
     query,
     {
-      new: true,
+      new: true
     }
   );
   return await getUserAccount(userId);
@@ -395,19 +395,19 @@ interface IResetUserToggle {
 }
 
 const resetUserToggle = async ({
-  userId,
+  userId
 }: IResetUserToggle): Promise<IUser | null> => {
   await dbUser.findOneAndUpdate(
     {
-      userId,
+      userId
     },
     {
       $unset: {
-        toggle: '',
-      },
+        toggle: ''
+      }
     },
     {
-      new: true,
+      new: true
     }
   );
 
@@ -419,7 +419,7 @@ interface IGetUserCustomMessage {
 }
 
 const getUserCustomMessage = async ({
-  userId,
+  userId
 }: IGetUserCustomMessage): Promise<IUser['customMessage'] | null> => {
   const user = await getUserAccount(userId);
   return user?.customMessage ?? null;
@@ -434,19 +434,19 @@ interface IUpdateUserCustomMessage {
 const updateUserCustomMessage = async ({
   userId,
   type,
-  message,
+  message
 }: IUpdateUserCustomMessage): Promise<IUser | null> => {
   await dbUser.findOneAndUpdate(
     {
-      userId,
+      userId
     },
     {
       $set: {
-        [`customMessage.${type}`]: message,
-      },
+        [`customMessage.${type}`]: message
+      }
     },
     {
-      new: true,
+      new: true
     }
   );
   return await getUserAccount(userId);
@@ -457,19 +457,19 @@ interface IResetUserCustomMessage {
 }
 
 const resetUserCustomMessage = async ({
-  userId,
+  userId
 }: IResetUserCustomMessage): Promise<IUser | null> => {
   await dbUser.findOneAndUpdate(
     {
-      userId,
+      userId
     },
     {
       $unset: {
-        customMessage: '',
-      },
+        customMessage: ''
+      }
     },
     {
-      new: true,
+      new: true
     }
   );
   return await getUserAccount(userId);
@@ -480,7 +480,7 @@ interface IIsUserAccountOn {
 }
 
 const isUserAccountOn = async ({
-  userId,
+  userId
 }: IIsUserAccountOn): Promise<boolean> => {
   const user = await getUserAccount(userId);
   return user?.config.onOff ?? false;
@@ -513,5 +513,5 @@ export const userService = {
   getUserCustomMessage,
   resetUserCustomMessage,
   updateUserCustomMessage,
-  isUserAccountOn,
+  isUserAccountOn
 };

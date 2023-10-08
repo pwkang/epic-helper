@@ -13,7 +13,7 @@ const setReminderTime: (
 ) => Promise<void> = async (userId, readyAt) => {
   const data: IRedisUserReminder = {
     readyAt,
-    userId,
+    userId
   };
   await redisService.set(`${prefix}${userId}`, JSON.stringify(data));
 };
@@ -42,5 +42,5 @@ const deleteReminderTime: (userId: string) => Promise<void> = async (
 export const redisUserReminder = {
   setReminderTime,
   getReminderTime,
-  deleteReminderTime,
+  deleteReminderTime
 };

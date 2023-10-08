@@ -1,7 +1,7 @@
 import type {
   ActionRow,
   MessageActionRowComponent,
-  MessageActionRowComponentBuilder,
+  MessageActionRowComponentBuilder
 } from 'discord.js';
 import {
   ActionRowBuilder,
@@ -16,7 +16,7 @@ import {
   StringSelectMenuBuilder,
   StringSelectMenuComponent,
   UserSelectMenuBuilder,
-  UserSelectMenuComponent,
+  UserSelectMenuComponent
 } from 'discord.js';
 
 const disableAllComponents = (

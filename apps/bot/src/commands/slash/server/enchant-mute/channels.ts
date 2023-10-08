@@ -5,7 +5,7 @@ import commandHelper from '../../../../lib/epic-helper/command-helper';
 import {SERVER_SETTINGS_PAGE_TYPE} from '../../../../lib/epic-helper/command-helper/server-settings/constant';
 import {
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS
 } from '@epic-helper/constants';
 import {SLASH_COMMAND} from '../../constant';
 
@@ -20,7 +20,7 @@ export default <SlashCommand>{
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,
-    isServerAdmin: true,
+    isServerAdmin: true
   },
   builder: (subcommand) =>
     subcommand
@@ -49,43 +49,43 @@ export default <SlashCommand>{
       interaction.guild?.channels.cache.has(channelId)
     );
     const enchantChannels = await serverService.getEnchantChannels({
-      serverId: interaction.guildId,
+      serverId: interaction.guildId
     });
     switch (action) {
       case 'add':
         await addEnchantChannels({
           channels: validatedChannels,
           serverId: interaction.guildId,
-          existingChannels: enchantChannels,
+          existingChannels: enchantChannels
         });
         break;
       case 'remove':
         await removeEnchantChannels({
           channels: validatedChannels,
           serverId: interaction.guildId,
-          existingChannels: enchantChannels,
+          existingChannels: enchantChannels
         });
         break;
       case 'reset':
         await resetEnchantChannels({
-          serverId: interaction.guildId,
+          serverId: interaction.guildId
         });
         break;
     }
 
     const serverSettings = await commandHelper.serverSettings.settings({
-      server: interaction.guild!,
+      server: interaction.guild!
     });
     if (!serverSettings) return;
     await djsInteractionHelper.replyInteraction({
       client,
       options: serverSettings.render({
         type: SERVER_SETTINGS_PAGE_TYPE.enchantMute,
-        displayOnly: true,
+        displayOnly: true
       }),
-      interaction,
+      interaction
     });
-  },
+  }
 };
 
 const channelMentionRegex = /<#(\d+)>/g;
@@ -105,7 +105,7 @@ interface IAddEnchantChannels {
 const addEnchantChannels = async ({
   channels,
   serverId,
-  existingChannels,
+  existingChannels
 }: IAddEnchantChannels) => {
   const newChannels = channels.filter((channelId) =>
     existingChannels.every(
@@ -115,8 +115,8 @@ const addEnchantChannels = async ({
   await serverService.addEnchantChannels({
     serverId,
     channels: newChannels.map((channelId) => ({
-      channelId,
-    })),
+      channelId
+    }))
   });
 };
 
@@ -129,7 +129,7 @@ interface IRemoveEnchantChannels {
 const removeEnchantChannels = async ({
   channels,
   serverId,
-  existingChannels,
+  existingChannels
 }: IRemoveEnchantChannels) => {
   const newChannels = existingChannels.filter(
     (channel) => !channels.includes(channel.channelId)
@@ -137,8 +137,8 @@ const removeEnchantChannels = async ({
   await serverService.addEnchantChannels({
     serverId,
     channels: newChannels.map((channel) => ({
-      channelId: channel.channelId,
-    })),
+      channelId: channel.channelId
+    }))
   });
 };
 
@@ -148,6 +148,6 @@ interface IResetEnchantChannels {
 
 const resetEnchantChannels = async ({serverId}: IResetEnchantChannels) => {
   await serverService.resetEnchantChannels({
-    serverId,
+    serverId
   });
 };

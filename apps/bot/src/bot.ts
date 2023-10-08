@@ -19,7 +19,7 @@ const shardCount = environment === 'development' ? 1 : getInfo().TOTAL_SHARDS;
 const client = new Client({
   ...DiscordClientConfig,
   shardCount,
-  shards,
+  shards
 });
 
 client.prefixCommands = new Collection();
@@ -36,17 +36,17 @@ Promise.all([
   loadCommands(client),
   loadBotEvents(client),
   loadRedis(),
-  loadCronJob(client),
+  loadCronJob(client)
 ]).then(() => {
   logger({
     message: 'All handlers loaded, connecting to Discord...',
-    clusterId: client.cluster?.id,
+    clusterId: client.cluster?.id
   });
   client.login(process.env.BOT_TOKEN).catch((error) => {
     logger({
       message: error.message,
       clusterId: client.cluster?.id,
-      logLevel: 'error',
+      logLevel: 'error'
     });
   });
 });

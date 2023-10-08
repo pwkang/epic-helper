@@ -5,7 +5,7 @@ import {
   BOT_CLICKABLE_SLASH_COMMANDS,
   BOT_COLOR,
   RPG_CLICKABLE_SLASH_COMMANDS,
-  SUPPORT_SERVER_INVITE_LINK,
+  SUPPORT_SERVER_INVITE_LINK
 } from '@epic-helper/constants';
 
 interface IRegisterAccount {
@@ -15,20 +15,20 @@ interface IRegisterAccount {
 
 export const _registerAccount = async ({
   author,
-  channelId,
+  channelId
 }: IRegisterAccount): Promise<BaseMessageOptions> => {
   const created = await userService.registerUserAccount({
     userId: author.id,
     username: author.username,
-    channelId,
+    channelId
   });
   if (created) {
     return {
-      embeds: [registeredEmbed],
+      embeds: [registeredEmbed]
     };
   } else {
     return {
-      content: 'You have already registered!',
+      content: 'You have already registered!'
     };
   }
 };
@@ -45,7 +45,7 @@ const registeredEmbed = new EmbedBuilder()
 - Use ${RPG_CLICKABLE_SLASH_COMMANDS.inventory} to track ruby amount
 - Use ${RPG_CLICKABLE_SLASH_COMMANDS.petList}, go through all pages to register pet reminder
 - Start grinding !`,
-      inline: true,
+      inline: true
     },
     {
       name: 'More Settings',
@@ -53,13 +53,13 @@ const registeredEmbed = new EmbedBuilder()
 - ${BOT_CLICKABLE_SLASH_COMMANDS.toggleShow} - customise the helper
 - ${BOT_CLICKABLE_SLASH_COMMANDS.stats} - view command counter
 `,
-      inline: true,
+      inline: true
     },
     {
       name: 'Need Help ?',
       value: `
         Use ${BOT_CLICKABLE_SLASH_COMMANDS.help} to explore more commands
         Or Join our [support server](${SUPPORT_SERVER_INVITE_LINK})`,
-      inline: false,
+      inline: false
     }
   );

@@ -18,13 +18,13 @@ export default <BotEvent>{
         preCheck: command.preCheck,
         author: interaction.user,
         server: interaction.guild,
-        interaction,
+        interaction
       });
       if (!toExecute) return;
 
       await command.execute(client, interaction);
     }
-  },
+  }
 };
 
 const searchSlashCommand = (client: Client, interaction: BaseInteraction) => {

@@ -21,11 +21,11 @@ const addLog = async ({duelAt, user, source}: IAddLog) => {
     await dbUserDuel.create({
       source,
       duelAt: duelAt ?? new Date(),
-      users: [user],
+      users: [user]
     });
     return {
       isExists: false,
-      expGained: user.guildExp,
+      expGained: user.guildExp
     };
   }
   if (!log.users.some((logUser) => logUser.userId === user.userId)) {
@@ -33,7 +33,7 @@ const addLog = async ({duelAt, user, source}: IAddLog) => {
     await log.save();
     return {
       isExists: false,
-      expGained: user.guildExp,
+      expGained: user.guildExp
     };
   }
   const prevRecord =
@@ -48,7 +48,7 @@ const addLog = async ({duelAt, user, source}: IAddLog) => {
   await log.save();
   return {
     isExists: true,
-    expGained,
+    expGained
   };
 };
 
@@ -61,12 +61,12 @@ interface IFindLogBySource {
 const findLogBySource = async ({
   serverId,
   channelId,
-  messageId,
+  messageId
 }: IFindLogBySource) => {
   const log = await dbUserDuel.findOne({
     'source.serverId': serverId,
     'source.channelId': channelId,
-    'source.messageId': messageId,
+    'source.messageId': messageId
   });
   return log ?? null;
 };
@@ -80,14 +80,14 @@ const findLatestLog = async ({userId}: IFindLatestLog) => {
     {
       'users.userId': userId,
       duelAt: {
-        $gte: getGuildWeek(),
-      },
+        $gte: getGuildWeek()
+      }
     },
     null,
     {
       sort: {
-        duelAt: -1,
-      },
+        duelAt: -1
+      }
     }
   );
   return log ?? null;
@@ -107,7 +107,7 @@ const undoDuelRecord = async ({userId}: IUndoDuelRecord) => {
   await log.save();
   return {
     expRemoved: expGained,
-    reportGuild: user.reportGuild,
+    reportGuild: user.reportGuild
   };
 };
 
@@ -115,5 +115,5 @@ export const userDuelService = {
   addLog,
   findLogBySource,
   findLatestLog,
-  undoDuelRecord,
+  undoDuelRecord
 };

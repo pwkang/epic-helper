@@ -1,7 +1,7 @@
 import {SLASH_COMMAND} from '../constant';
 import {
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS
 } from '@epic-helper/constants';
 import commandHelper from '../../../lib/epic-helper/command-helper';
 import djsInteractionHelper from '../../../lib/discordjs/interaction';
@@ -40,7 +40,7 @@ export default <SlashCommand>{
       ),
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
-    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,
+    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip
   },
   execute: async (client, interaction) => {
     const exp = interaction.options.getNumber('exp', true);
@@ -55,14 +55,14 @@ export default <SlashCommand>{
       hasWon: result === 'win',
       user: interaction.user,
       source: messageSource ?? undefined,
-      commandChannelId: interaction.channelId,
+      commandChannelId: interaction.channelId
     });
     await djsInteractionHelper.replyInteraction({
       client,
       interaction,
       options: {
-        embeds: [embed],
-      },
+        embeds: [embed]
+      }
     });
-  },
+  }
 };

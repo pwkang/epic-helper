@@ -21,13 +21,13 @@ export const rpgProfile = ({
   message,
   author,
   isSlashCommand,
-  server,
+  server
 }: IRpgProfile) => {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     client,
     channelId: message.channel.id,
-    author,
+    author
   });
   if (!event) return;
   event.on('embed', async (embed) => {
@@ -37,7 +37,7 @@ export const rpgProfile = ({
         embed,
         server,
         channel: message.channel,
-        author,
+        author
       });
       event?.stop();
     }
@@ -47,7 +47,7 @@ export const rpgProfile = ({
       channelId: message.channel.id,
       server,
       client,
-      author,
+      author
     });
     event?.stop();
   });
@@ -70,17 +70,17 @@ const rpgProfileSuccess = async ({
   server,
   client,
   channel,
-  author,
+  author
 }: IRpgProfileSuccess) => {
   const profile = embedReaders.profile({
-    embed,
+    embed
   });
   await commandHelper.server.verifyTT({
     client,
     author,
     server,
     channelId: channel.id,
-    timeTravels: profile.timeTravels,
+    timeTravels: profile.timeTravels
   });
 };
 
@@ -98,14 +98,14 @@ const rpgProfileAttachment = async ({
   server,
   channelId,
   client,
-  author,
+  author
 }: IRpgProfileAttachment) => {
   const serverAccount = await serverService.getServer({
-    serverId: server.id,
+    serverId: server.id
   });
   if (!serverAccount) return;
   const toggleServer = await toggleServerChecker({
-    serverId: server.id,
+    serverId: server.id
   });
   if (!toggleServer?.ttVerification) return;
   const ttVerificationSettings = serverAccount.settings.ttVerification;
@@ -118,9 +118,9 @@ const rpgProfileAttachment = async ({
     options: {
       embeds: [
         embedProvider.profileBackgroundNotSupported({
-          author,
-        }),
-      ],
-    },
+          author
+        })
+      ]
+    }
   });
 };

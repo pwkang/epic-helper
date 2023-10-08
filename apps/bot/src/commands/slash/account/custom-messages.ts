@@ -5,7 +5,7 @@ import {CUSTOM_MESSAGE_PAGE_TYPE} from '../../../lib/epic-helper/command-helper/
 import toggleUserChecker from '../../../lib/epic-helper/toggle-checker/user';
 import {
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS
 } from '@epic-helper/constants';
 import {SLASH_COMMAND} from '../constant';
 
@@ -15,14 +15,14 @@ export default <SlashCommand>{
   type: 'subcommand',
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
-    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
+    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister
   },
   commandName: SLASH_COMMAND.account.name,
   builder: (subcommand) => subcommand,
   execute: async (client, interaction) => {
     const userAccount = await userService.getUserAccount(interaction.user.id);
     const toggleChecker = await toggleUserChecker({
-      userId: interaction.user.id,
+      userId: interaction.user.id
     });
     if (!userAccount || !toggleChecker) return;
     let event = await djsInteractionHelper.replyInteraction({
@@ -33,11 +33,11 @@ export default <SlashCommand>{
         author: interaction.user,
         client,
         userAccount,
-        toggleChecker,
+        toggleChecker
       }),
       onStop: () => {
         event = undefined;
-      },
+      }
     });
     if (!event) return;
     for (const pageType of Object.values(CUSTOM_MESSAGE_PAGE_TYPE)) {
@@ -50,9 +50,9 @@ export default <SlashCommand>{
           pageType: customId as ValuesOf<typeof CUSTOM_MESSAGE_PAGE_TYPE>,
           userAccount,
           client,
-          toggleChecker,
+          toggleChecker
         });
       });
     }
-  },
+  }
 };

@@ -13,16 +13,16 @@ interface IGetGuildToggle {
 export const getGuildToggle = async ({serverId, roleId}: IGetGuildToggle) => {
   const guildAccount = await guildService.findGuild({
     serverId,
-    roleId,
+    roleId
   });
   if (!guildAccount) return null;
 
   const render = (guildAccount: IGuild) => {
     const embed = getGuildToggleEmbed({
-      guildAccount,
+      guildAccount
     });
     return {
-      embeds: [embed],
+      embeds: [embed]
     };
   };
 
@@ -30,12 +30,12 @@ export const getGuildToggle = async ({serverId, roleId}: IGetGuildToggle) => {
     const query = getUpdateQuery<IGuild>({
       on,
       off,
-      toggleInfo: toggleDisplayList.guild(guildAccount.toggle),
+      toggleInfo: toggleDisplayList.guild(guildAccount.toggle)
     });
     const updatedGuildAccount = await guildService.updateToggle({
       query,
       roleId,
-      serverId,
+      serverId
     });
     if (!updatedGuildAccount) return null;
     return render(updatedGuildAccount);
@@ -44,7 +44,7 @@ export const getGuildToggle = async ({serverId, roleId}: IGetGuildToggle) => {
   const reset = async () => {
     const updatedGuildAccount = await guildService.resetToggle({
       roleId,
-      serverId,
+      serverId
     });
     if (!updatedGuildAccount) return null;
     return render(updatedGuildAccount);
@@ -53,7 +53,7 @@ export const getGuildToggle = async ({serverId, roleId}: IGetGuildToggle) => {
   return {
     render: () => render(guildAccount),
     update,
-    reset,
+    reset
   };
 };
 
@@ -63,8 +63,8 @@ interface IGetGuildToggleEmbed {
 
 export const getGuildToggleEmbed = ({guildAccount}: IGetGuildToggleEmbed) => {
   return renderEmbed({
-    embedsInfo: toggleDisplayList.guild(guildAccount.toggle),
+    embedsInfo: toggleDisplayList.guild(guildAccount.toggle)
   }).setAuthor({
-    name: `${guildAccount.info.name ?? ''} Toggle Settings`,
+    name: `${guildAccount.info.name ?? ''} Toggle Settings`
   });
 };

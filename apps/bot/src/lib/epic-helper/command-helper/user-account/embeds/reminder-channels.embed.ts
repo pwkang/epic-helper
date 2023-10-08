@@ -4,7 +4,7 @@ import {EmbedBuilder} from 'discord.js';
 import {
   BOT_CLICKABLE_SLASH_COMMANDS,
   BOT_COLOR,
-  RPG_COMMAND_TYPE,
+  RPG_COMMAND_TYPE
 } from '@epic-helper/constants';
 import messageFormatter from '../../../../discordjs/message-formatter';
 
@@ -30,95 +30,95 @@ const cmd: ICooldown[] = [
     value: [
       {
         type: RPG_COMMAND_TYPE.daily,
-        name: 'Daily',
+        name: 'Daily'
       },
       {
         type: RPG_COMMAND_TYPE.weekly,
-        name: 'Weekly',
+        name: 'Weekly'
       },
       {
         type: RPG_COMMAND_TYPE.lootbox,
-        name: 'Lootbox',
+        name: 'Lootbox'
       },
       {
         type: RPG_COMMAND_TYPE.vote,
-        name: 'Vote',
-      },
-    ],
+        name: 'Vote'
+      }
+    ]
   },
   {
     name: '<:sword:886278799975678043> Experience',
     value: [
       {
         type: RPG_COMMAND_TYPE.hunt,
-        name: 'Hunt',
+        name: 'Hunt'
       },
       {
         type: RPG_COMMAND_TYPE.adventure,
-        name: 'Adventure',
+        name: 'Adventure'
       },
       {
         type: RPG_COMMAND_TYPE.training,
-        name: 'Training',
+        name: 'Training'
       },
       {
         type: RPG_COMMAND_TYPE.duel,
-        name: 'Duel',
+        name: 'Duel'
       },
       {
         type: RPG_COMMAND_TYPE.quest,
-        name: 'Quest',
-      },
-    ],
+        name: 'Quest'
+      }
+    ]
   },
   {
     name: '✨ Progress',
     value: [
       {
         type: RPG_COMMAND_TYPE.working,
-        name: 'Working',
+        name: 'Working'
       },
       {
         type: RPG_COMMAND_TYPE.farm,
-        name: 'Farm',
+        name: 'Farm'
       },
       {
         type: RPG_COMMAND_TYPE.horse,
-        name: 'Horse',
+        name: 'Horse'
       },
       {
         type: RPG_COMMAND_TYPE.arena,
-        name: 'Arena',
+        name: 'Arena'
       },
       {
         type: RPG_COMMAND_TYPE.dungeon,
-        name: 'Dungeon',
-      },
-    ],
+        name: 'Dungeon'
+      }
+    ]
   },
   {
     name: '🧩 Other',
     value: [
       {
         type: RPG_COMMAND_TYPE.pet,
-        name: 'Pet',
+        name: 'Pet'
       },
       {
         type: RPG_COMMAND_TYPE.epicItem,
-        name: 'Epic Items',
-      },
-    ],
-  },
+        name: 'Epic Items'
+      }
+    ]
+  }
 ];
 
 export const _getUserReminderChannelEmbed = ({
   userProfile,
-  author,
+  author
 }: IGetUserReminderChannelEmbed) => {
   const embed = new EmbedBuilder()
     .setAuthor({
       name: `${author.username}'s reminder channel`,
-      iconURL: author.avatarURL() ?? undefined,
+      iconURL: author.avatarURL() ?? undefined
     })
     .setColor(BOT_COLOR.embed)
     .setThumbnail(author.avatarURL())
@@ -140,12 +140,12 @@ export const _getUserReminderChannelEmbed = ({
     embed.addFields({
       name: fieldName,
       value: channels.join('\n'),
-      inline: false,
+      inline: false
     });
   }
   embed.addFields({
     name: 'Info',
-    value: `Use ${BOT_CLICKABLE_SLASH_COMMANDS.accountReminderChannel} to customize your reminder channel.`,
+    value: `Use ${BOT_CLICKABLE_SLASH_COMMANDS.accountReminderChannel} to customize your reminder channel.`
   });
   return embed;
 };
