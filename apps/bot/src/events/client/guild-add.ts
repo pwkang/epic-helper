@@ -6,7 +6,7 @@ export default <BotEvent>{
   eventName: Events.GuildCreate,
   once: false,
   execute: async (client, guild: Guild) => {
-    const serverInfo = await serverService.findServerById(guild.id);
+    const serverInfo = await serverService.getServer({serverId: guild.id});
     if (!serverInfo) {
       serverService.registerServer({
         serverId: guild.id,

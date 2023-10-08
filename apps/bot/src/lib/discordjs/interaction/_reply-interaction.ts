@@ -52,7 +52,7 @@ export default async function _replyInteraction<T>({
   let allEventsFn: TEventCB | null = null;
   if (!channel) return;
   const collector = interactionResponse.createMessageComponentCollector({
-    idle: ms('5s'),
+    idle: ms('3m'),
   });
 
   function on(customId: T extends undefined ? string : T, callback: TEventCB) {
