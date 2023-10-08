@@ -1,5 +1,10 @@
-import {Client, EmbedBuilder, Guild} from 'discord.js';
-import {BOT_COLOR, BOT_INVITE_LINK, SUPPORT_SERVER_INVITE_LINK} from '@epic-helper/constants';
+import type {Client, Guild} from 'discord.js';
+import {EmbedBuilder} from 'discord.js';
+import {
+  BOT_COLOR,
+  BOT_INVITE_LINK,
+  SUPPORT_SERVER_INVITE_LINK,
+} from '@epic-helper/constants';
 
 interface IInfo {
   client: Client;

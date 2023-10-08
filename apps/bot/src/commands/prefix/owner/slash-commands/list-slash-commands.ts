@@ -15,16 +15,24 @@ export default <PrefixCommand>{
       client,
       guild: message.guild!,
     });
-    const globalSlashCommands = await djsRestHelper.slashCommand.global.getAll({client});
+    const globalSlashCommands = await djsRestHelper.slashCommand.global.getAll({
+      client,
+    });
 
     const registeredGlobalSlashCommands: SlashCommand['name'][] = [];
     const registeredGuildSlashCommands: SlashCommand['name'][] = [];
 
     for (const slashCommand of slashCommands) {
-      if (globalSlashCommands.find((gsc) => gsc.name === slashCommand.builder.name)) {
+      if (
+        globalSlashCommands.find(
+          (gsc) => gsc.name === slashCommand.builder.name
+        )
+      ) {
         registeredGlobalSlashCommands.push(slashCommand.name);
       }
-      if (guildSlashCommands.find((gsc) => gsc.name === slashCommand.builder.name)) {
+      if (
+        guildSlashCommands.find((gsc) => gsc.name === slashCommand.builder.name)
+      ) {
         registeredGuildSlashCommands.push(slashCommand.name);
       }
     }
@@ -38,13 +46,15 @@ export default <PrefixCommand>{
 | global |  guild | name 
 | --------------------------------
 ${slashCommands
-          .map(
-            (sc) =>
-              `| ${registeredGlobalSlashCommands.includes(sc.name) ? '  ✓   ' : '  ✗   '} | ${
-                registeredGuildSlashCommands.includes(sc.name) ? '  ✓   ' : '  ✗   '
-              } | ${sc.name}`
-          )
-          .join('\n')}
+  .map(
+    (sc) =>
+      `| ${
+        registeredGlobalSlashCommands.includes(sc.name) ? '  ✓   ' : '  ✗   '
+      } | ${
+        registeredGuildSlashCommands.includes(sc.name) ? '  ✓   ' : '  ✗   '
+      } | ${sc.name}`
+  )
+  .join('\n')}
 \`\`\` 
       `
       )

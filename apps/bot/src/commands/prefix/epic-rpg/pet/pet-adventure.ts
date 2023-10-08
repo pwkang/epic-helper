@@ -9,7 +9,11 @@ const args1 = ['pets', 'pet'];
 const args2 = ['adventure', 'adv'];
 const args3 = ['learn', 'drill', 'find', 'cancel'];
 
-function generateAllPossibleCommands(args1: string[], args2: string[], args3: string[]) {
+function generateAllPossibleCommands(
+  args1: string[],
+  args2: string[],
+  args3: string[]
+) {
   return args1.flatMap((arg1) =>
     args2.flatMap((arg2) => args3.map((arg3) => `${arg1} ${arg2} ${arg3}`))
   );

@@ -1,4 +1,4 @@
-import {IUser} from '@epic-helper/models';
+import type {IUser} from '@epic-helper/models';
 import {redisService} from './redis.service';
 import {toUser} from '../transformer/user.transformer';
 
@@ -10,7 +10,10 @@ const findUser = async (userId: string) => {
 };
 
 const setUser = async (userId: string, user: IUser) => {
-  await redisService.set(`${userAccPrefix}:${userId}`, JSON.stringify(toUser(user)));
+  await redisService.set(
+    `${userAccPrefix}:${userId}`,
+    JSON.stringify(toUser(user))
+  );
 };
 
 const delUser = async (userId: string) => {

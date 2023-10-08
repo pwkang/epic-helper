@@ -1,4 +1,4 @@
-import {Client, Embed, Message, User} from 'discord.js';
+import type {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {RPG_ITEMS} from '@epic-helper/constants';
 import {userService} from '../../../../services/database/user.service';
@@ -10,7 +10,12 @@ interface IRpgSuccess {
   isSlashCommand: boolean;
 }
 
-export const rpgTrade = ({client, message, author, isSlashCommand}: IRpgSuccess) => {
+export const rpgTrade = ({
+  client,
+  message,
+  author,
+  isSlashCommand,
+}: IRpgSuccess) => {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     author,
@@ -95,4 +100,5 @@ interface IIsNotEnoughItems {
 }
 
 const isNotEnoughItems = ({author, message}: IIsNotEnoughItems) =>
-  message.content.includes('you don\'t have enough') && message.mentions.has(author.id);
+  message.content.includes("you don't have enough") &&
+  message.mentions.has(author.id);

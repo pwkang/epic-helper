@@ -1,5 +1,8 @@
 import {SLASH_COMMAND} from '../constant';
-import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
+import {
+  USER_ACC_OFF_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS,
+} from '@epic-helper/constants';
 import commandHelper from '../../../lib/epic-helper/command-helper';
 import djsInteractionHelper from '../../../lib/discordjs/interaction';
 
@@ -17,11 +20,16 @@ export default <SlashCommand>{
       option
         .setName('filter')
         .setDescription('Select filter')
-        .addChoices({name: 'Tier', value: 'tier'}, {name: 'Skill', value: 'skill'})
+        .addChoices(
+          {name: 'Tier', value: 'tier'},
+          {name: 'Skill', value: 'skill'}
+        )
         .setRequired(true)
     ),
   execute: async (client, interaction) => {
-    const filter = interaction.options.getString('filter', true) as 'tier' | 'skill';
+    const filter = interaction.options.getString('filter', true) as
+      | 'tier'
+      | 'skill';
     const petSummary = await commandHelper.pet.summary({
       author: interaction.user,
       type: filter,

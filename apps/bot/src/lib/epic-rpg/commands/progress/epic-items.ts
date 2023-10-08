@@ -5,8 +5,8 @@ import {
   RPG_EPIC_ITEM_TYPES,
 } from '@epic-helper/constants';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {Client, Message, User} from 'discord.js';
-import {IMessageContentChecker} from '../../../../types/utils';
+import type {Client, Message, User} from 'discord.js';
+import type {IMessageContentChecker} from '../../../../types/utils';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
@@ -21,7 +21,12 @@ interface IRpgUseEpicItem {
   isSlashCommand: boolean;
 }
 
-export function rpgUseEpicItem({author, message, isSlashCommand, client}: IRpgUseEpicItem) {
+export function rpgUseEpicItem({
+  author,
+  message,
+  isSlashCommand,
+  client,
+}: IRpgUseEpicItem) {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     channelId: message.channel.id,
@@ -69,7 +74,11 @@ interface IRpgUseEpicItemSuccess {
   type: ValuesOf<typeof RPG_EPIC_ITEM_TYPES>;
 }
 
-const rpgUseEpicItemSuccess = async ({author, type, channelId}: IRpgUseEpicItemSuccess) => {
+const rpgUseEpicItemSuccess = async ({
+  author,
+  type,
+  channelId,
+}: IRpgUseEpicItemSuccess) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker) return;
 
@@ -93,10 +102,16 @@ const rpgUseEpicItemSuccess = async ({author, type, channelId}: IRpgUseEpicItemS
 };
 
 const isPlantingEpicSeed = ({message}: IMessageContentChecker) =>
-  ['planting the', 'epic seed'].every((word) => message.content.toLowerCase().includes(word));
+  ['planting the', 'epic seed'].every((word) =>
+    message.content.toLowerCase().includes(word)
+  );
 
 const isSummoningCoinRain = ({message}: IMessageContentChecker) =>
-  ['summoning the', 'coin rain'].every((word) => message.content.toLowerCase().includes(word));
+  ['summoning the', 'coin rain'].every((word) =>
+    message.content.toLowerCase().includes(word)
+  );
 
 const isPlacingUltraBait = ({message}: IMessageContentChecker) =>
-  ['placing the', 'ultra bait'].every((word) => message.content.toLowerCase().includes(word));
+  ['placing the', 'ultra bait'].every((word) =>
+    message.content.toLowerCase().includes(word)
+  );

@@ -1,4 +1,7 @@
-import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
+import {
+  USER_ACC_OFF_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS,
+} from '@epic-helper/constants';
 import {SLASH_COMMAND} from '../../constant';
 import commandHelper from '../../../../lib/epic-helper/command-helper';
 import djsInteractionHelper from '../../../../lib/discordjs/interaction';
@@ -16,7 +19,10 @@ export default <SlashCommand>{
   },
   builder: (subcommand) =>
     subcommand.addUserOption((option) =>
-      option.setName('user').setDescription('The user to add as admin').setRequired(true)
+      option
+        .setName('user')
+        .setDescription('The user to add as admin')
+        .setRequired(true)
     ),
   execute: async (client, interaction) => {
     const user = interaction.options.getUser('user', true);

@@ -1,4 +1,5 @@
-import {ActionRowBuilder, ButtonBuilder, ButtonStyle, User} from 'discord.js';
+import type {User} from 'discord.js';
+import {ActionRowBuilder, ButtonBuilder, ButtonStyle} from 'discord.js';
 import {userService} from '../../../services/database/user.service';
 import toggleUserChecker from '../toggle-checker/user';
 
@@ -62,9 +63,12 @@ export default async function getTrainingAnswer({
   if (content.includes('is training in the river')) {
     if (!toggleChecker?.trainingBasic) return null;
 
-    if (content.includes(':normiefish:')) components = generateRows(RIVER, 'normie');
-    if (content.includes(':goldenfish:')) components = generateRows(RIVER, 'golden');
-    if (content.includes(':EPICfish:')) components = generateRows(RIVER, 'epic');
+    if (content.includes(':normiefish:'))
+      components = generateRows(RIVER, 'normie');
+    if (content.includes(':goldenfish:'))
+      components = generateRows(RIVER, 'golden');
+    if (content.includes(':EPICfish:'))
+      components = generateRows(RIVER, 'epic');
   } else if (content.includes('is training in the field')) {
     if (!toggleChecker?.trainingBasic) return null;
 
@@ -88,13 +92,17 @@ export default async function getTrainingAnswer({
     const questionLogs = content.split('\n')[1].match(/<:[A-Za-z]+log:\d+>/g);
     const targetLog = content.split('\n')[2].match(/<:[A-Za-z]+log:\d+>/g);
     if (questionLogs && targetLog) {
-      components = generateRows(FOREST, questionLogs.filter((log) => log === targetLog[0]).length);
+      components = generateRows(
+        FOREST,
+        questionLogs.filter((log) => log === targetLog[0]).length
+      );
     }
   } else if (content.includes('is training in the... casino?')) {
     if (!toggleChecker?.trainingBasic) return null;
 
     const matched = Object.entries(CASINO_ANSWER_LIST).some(
-      ([key, value]) => content.split('\n')[1].includes(value) && content.includes(key)
+      ([key, value]) =>
+        content.split('\n')[1].includes(value) && content.includes(key)
     );
     components = generateRows(TRUE_FALSE, matched);
   } else if (content.includes('in the mine')) {
@@ -125,7 +133,11 @@ function generateButton(label: string, style: boolean) {
     .setCustomId(label)
     .setDisabled(true)
     .setStyle(
-      style ? (label === 'no' ? ButtonStyle.Danger : ButtonStyle.Success) : ButtonStyle.Secondary
+      style
+        ? label === 'no'
+          ? ButtonStyle.Danger
+          : ButtonStyle.Success
+        : ButtonStyle.Secondary
     );
 }
 

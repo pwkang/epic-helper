@@ -1,4 +1,4 @@
-import {Client, Embed, EmbedField, Message, User} from 'discord.js';
+import type {Client, Embed, EmbedField, Message, User} from 'discord.js';
 import ms from 'ms';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {calcExtraHuntCdWithPartner} from '../../../epic-helper/reminders/commands-cooldown';
@@ -44,7 +44,12 @@ interface IRpgCooldown {
   isSlashCommand: boolean;
 }
 
-export const rpgCooldown = ({client, message, author, isSlashCommand}: IRpgCooldown) => {
+export const rpgCooldown = ({
+  client,
+  message,
+  author,
+  isSlashCommand,
+}: IRpgCooldown) => {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     client,
@@ -73,7 +78,9 @@ interface IRpgCooldownSuccess {
 }
 
 const rpgCooldownSuccess = async ({author, embed}: IRpgCooldownSuccess) => {
-  const currentCooldowns = await userReminderServices.getUserAllCooldowns(author.id);
+  const currentCooldowns = await userReminderServices.getUserAllCooldowns(
+    author.id
+  );
   const userAccount = await userService.getUserAccount(author.id);
   if (!userAccount) return;
 
@@ -104,7 +111,9 @@ const rpgCooldownSuccess = async ({author, embed}: IRpgCooldownSuccess) => {
       if (!toggleChecker.reminder[commandType]) readyIn = 0;
 
       const readyAt = new Date(Date.now() + readyIn);
-      const currentCooldown = currentCooldowns.find((cooldown) => cooldown.type === commandType);
+      const currentCooldown = currentCooldowns.find(
+        (cooldown) => cooldown.type === commandType
+      );
       if (
         currentCooldown?.readyAt &&
         Math.abs(currentCooldown.readyAt.getTime() - readyAt.getTime()) > 1000

@@ -25,7 +25,10 @@ export const _syncBoostedServers = async ({userId}: ISyncBoostedServers) => {
   const donorToken = donor?.tier ? DONOR_TOKEN_AMOUNT[donor.tier] : 0;
   const freeToken = freeDonor?.token ?? 0;
   const totalToken = donorToken + freeToken;
-  const usedToken = boostedServers.reduce((acc, server) => acc + server.token, 0);
+  const usedToken = boostedServers.reduce(
+    (acc, server) => acc + server.token,
+    0
+  );
 
   if (totalToken > usedToken) return;
 

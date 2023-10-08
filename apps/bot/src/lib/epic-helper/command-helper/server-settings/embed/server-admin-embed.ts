@@ -1,9 +1,12 @@
-import {IServerSettings} from '../type';
+import type {IServerSettings} from '../type';
 import {EmbedBuilder} from 'discord.js';
 import {BOT_COLOR} from '@epic-helper/constants';
 import messageFormatter from '../../../../discordjs/message-formatter';
 
-export const _getServerAdminEmbed = ({serverAccount, guild}: IServerSettings) => {
+export const _getServerAdminEmbed = ({
+  serverAccount,
+  guild,
+}: IServerSettings) => {
   const admins = serverAccount?.settings.admin.usersId ?? [];
 
   return new EmbedBuilder()

@@ -1,14 +1,16 @@
 import {BOT_COLOR} from '@epic-helper/constants';
-import {
-  ActionRowBuilder,
+import type {
   BaseInteraction,
   BaseMessageOptions,
   Client,
-  EmbedBuilder,
   StringSelectMenuInteraction,
+} from 'discord.js';
+import {
+  ActionRowBuilder,
+  EmbedBuilder,
   UserSelectMenuBuilder,
 } from 'discord.js';
-import {IFreeDonor} from '@epic-helper/models';
+import type {IFreeDonor} from '@epic-helper/models';
 import messageFormatter from '../../../discordjs/message-formatter';
 import {djsUserHelper} from '../../../discordjs/user';
 import timestampHelper from '../../../discordjs/timestamp';
@@ -101,7 +103,12 @@ interface IBuildEmbed {
   client: Client;
 }
 
-const buildFreeDonorsEmbed = async ({freeDonors, page, total, client}: IBuildEmbed) => {
+const buildFreeDonorsEmbed = async ({
+  freeDonors,
+  page,
+  total,
+  client,
+}: IBuildEmbed) => {
   const embed = new EmbedBuilder().setColor(BOT_COLOR.embed).setFooter({
     text: `Page ${page + 1}/${Math.ceil(total / PAGE_SIZE)} • total: ${total}`,
   });
@@ -128,9 +135,10 @@ const buildFreeDonorsEmbed = async ({freeDonors, page, total, client}: IBuildEmb
   return embed;
 };
 
-const userSelector = new ActionRowBuilder<UserSelectMenuBuilder>().addComponents(
-  new UserSelectMenuBuilder().setCustomId('user').setPlaceholder('User')
-);
+const userSelector =
+  new ActionRowBuilder<UserSelectMenuBuilder>().addComponents(
+    new UserSelectMenuBuilder().setCustomId('user').setPlaceholder('User')
+  );
 
 interface IBuildDonorEmbed {
   freeDonor?: IFreeDonor;
@@ -138,7 +146,11 @@ interface IBuildDonorEmbed {
   userId: string;
 }
 
-const buildFreeDonorEmbed = async ({freeDonor, userId, client}: IBuildDonorEmbed) => {
+const buildFreeDonorEmbed = async ({
+  freeDonor,
+  userId,
+  client,
+}: IBuildDonorEmbed) => {
   const embed = new EmbedBuilder().setColor(BOT_COLOR.embed);
   const user = await fetchUser(client, userId);
   if (user) {
@@ -163,7 +175,11 @@ const buildFreeDonorEmbed = async ({freeDonor, userId, client}: IBuildDonorEmbed
               : 'Expired'
             : 'Non-donor'
         }`,
-        `**Expires:** ${freeDonor ? timestampHelper.relative({time: freeDonor.expiresAt}) : '-'}`,
+        `**Expires:** ${
+          freeDonor
+            ? timestampHelper.relative({time: freeDonor.expiresAt})
+            : '-'
+        }`,
         `**Token:** ${freeDonor?.token ?? '0'}`,
       ].join('\n'),
       inline: false,
@@ -172,8 +188,11 @@ const buildFreeDonorEmbed = async ({freeDonor, userId, client}: IBuildDonorEmbed
       name: 'BOOSTED GUILDS',
       value: boostedGuilds.length
         ? boostedGuilds
-          .map((guild, index) => `\`[${index + 1}]\` **${guild.name}**- ${guild.token}`)
-          .join('\n')
+            .map(
+              (guild, index) =>
+                `\`[${index + 1}]\` **${guild.name}**- ${guild.token}`
+            )
+            .join('\n')
         : '-',
       inline: false,
     }
@@ -188,7 +207,7 @@ const buildFreeDonorEmbed = async ({freeDonor, userId, client}: IBuildDonorEmbed
 const fetchUser = async (client: Client, userId?: string) =>
   userId
     ? await djsUserHelper.getUser({
-      userId,
-      client,
-    })
+        userId,
+        client,
+      })
     : null;

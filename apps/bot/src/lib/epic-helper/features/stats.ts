@@ -1,10 +1,9 @@
+import type {EmbedField, User} from 'discord.js';
 import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
   EmbedBuilder,
-  EmbedField,
-  User,
 } from 'discord.js';
 import {
   getDayOfWeek,
@@ -15,7 +14,8 @@ import {
   typedObjectEntries,
 } from '@epic-helper/utils';
 import {BOT_COLOR} from '@epic-helper/constants';
-import {IUserStats, USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
+import type {IUserStats} from '@epic-helper/models';
+import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {userStatsService} from '../../../services/database/user-stats.service';
 
 interface IGetDonorStatsEmbed {
@@ -23,7 +23,9 @@ interface IGetDonorStatsEmbed {
 }
 
 export const getStatsEmbeds = async ({author}: IGetDonorStatsEmbed) => {
-  const stats = await userStatsService.getUserStatsOfLast2Weeks({userId: author.id});
+  const stats = await userStatsService.getUserStatsOfLast2Weeks({
+    userId: author.id,
+  });
   const bestStats = await userStatsService.getUserBestStats({
     userId: author.id,
   });
@@ -61,7 +63,9 @@ const getThisWeekStats = ({stats, author}: IGetThisWeekStats) => {
     })
     .setThumbnail(author.avatarURL());
   for (const [, value] of Object.entries(weekDays)) {
-    const dayStats = stats.find((stat) => stat.statsAt.getTime() === startOfWeek.getTime());
+    const dayStats = stats.find(
+      (stat) => stat.statsAt.getTime() === startOfWeek.getTime()
+    );
     embed.addFields(generateStatsField(value, dayStats?.rpg));
     startOfWeek.setDate(startOfWeek.getDate() + 1);
   }
@@ -83,7 +87,9 @@ const getLastWeekStats = ({stats, author}: IGetLastWeekStats) => {
     })
     .setThumbnail(author.avatarURL());
   for (const [, value] of Object.entries(weekDays)) {
-    const dayStats = stats.find((stat) => stat.statsAt.getTime() === startOfWeek.getTime());
+    const dayStats = stats.find(
+      (stat) => stat.statsAt.getTime() === startOfWeek.getTime()
+    );
     embed.addFields(generateStatsField(value, dayStats?.rpg));
     startOfWeek.setDate(startOfWeek.getDate() + 1);
   }
@@ -96,7 +102,11 @@ interface getDonorDefaultEmbed {
   bestStats?: IUserStats['rpg'];
 }
 
-const getDonorDefaultEmbed = ({stats, author, bestStats}: getDonorDefaultEmbed) => {
+const getDonorDefaultEmbed = ({
+  stats,
+  author,
+  bestStats,
+}: getDonorDefaultEmbed) => {
   const embed = new EmbedBuilder()
     .setColor(BOT_COLOR.embed)
     .setAuthor({
@@ -105,7 +115,9 @@ const getDonorDefaultEmbed = ({stats, author, bestStats}: getDonorDefaultEmbed) 
     })
     .setThumbnail(author.avatarURL());
 
-  const todayStats = stats.find((stat) => stat.statsAt.getTime() === getStartOfToday().getTime());
+  const todayStats = stats.find(
+    (stat) => stat.statsAt.getTime() === getStartOfToday().getTime()
+  );
   const yesterdayStats = stats.find(
     (stat) => stat.statsAt.getTime() === getStartOfYesterday().getTime()
   );
@@ -119,7 +131,11 @@ const getDonorDefaultEmbed = ({stats, author, bestStats}: getDonorDefaultEmbed) 
     generateStatsField('Today', todayStats?.rpg),
     generateStatsField('Yesterday', yesterdayStats?.rpg),
     generateStatsField('Best', bestStats),
-    generateWeeklyStatsField('This week', getDayOfWeek(), calculateTotal(thisWeekAvg)),
+    generateWeeklyStatsField(
+      'This week',
+      getDayOfWeek(),
+      calculateTotal(thisWeekAvg)
+    ),
     generateWeeklyStatsField('Last week', 7, calculateTotal(lastWeekAvg))
   );
 
@@ -132,7 +148,11 @@ interface IGetNonDonorStatsEmbed {
   bestStats?: IUserStats['rpg'];
 }
 
-const getNonDonorStatsEmbed = ({stats, author, bestStats}: IGetNonDonorStatsEmbed) => {
+const getNonDonorStatsEmbed = ({
+  stats,
+  author,
+  bestStats,
+}: IGetNonDonorStatsEmbed) => {
   const embed = new EmbedBuilder()
     .setColor(BOT_COLOR.embed)
     .setAuthor({
@@ -169,14 +189,21 @@ const statsToShow = {
   [USER_STATS_RPG_COMMAND_TYPE.farm]: 'Farm',
 } as const;
 
-const generateStatsField = (name: string, stats?: Partial<IUserStats['rpg']>): EmbedField => {
+const generateStatsField = (
+  name: string,
+  stats?: Partial<IUserStats['rpg']>
+): EmbedField => {
   const row: string[] = [];
 
-  for (const [type, label] of Object.entries(statsToShow) as [keyof typeof statsToShow, string][]) {
+  for (const [type, label] of Object.entries(statsToShow) as [
+    keyof typeof statsToShow,
+    string
+  ][]) {
     if (
-      [USER_STATS_RPG_COMMAND_TYPE.huntTogether, USER_STATS_RPG_COMMAND_TYPE.ultraining].some(
-        (_type) => type === _type
-      ) &&
+      [
+        USER_STATS_RPG_COMMAND_TYPE.huntTogether,
+        USER_STATS_RPG_COMMAND_TYPE.ultraining,
+      ].some((_type) => type === _type) &&
       !stats?.[type]
     )
       continue;
@@ -197,11 +224,15 @@ const generateWeeklyStatsField = (
 ): EmbedField => {
   const row: string[] = [];
 
-  for (const [type, label] of Object.entries(statsToShow) as [keyof typeof statsToShow, string][]) {
+  for (const [type, label] of Object.entries(statsToShow) as [
+    keyof typeof statsToShow,
+    string
+  ][]) {
     if (
-      [USER_STATS_RPG_COMMAND_TYPE.huntTogether, USER_STATS_RPG_COMMAND_TYPE.ultraining].some(
-        (_type) => type === _type
-      ) &&
+      [
+        USER_STATS_RPG_COMMAND_TYPE.huntTogether,
+        USER_STATS_RPG_COMMAND_TYPE.ultraining,
+      ].some((_type) => type === _type) &&
       !stats?.[type]
     )
       continue;
@@ -217,7 +248,9 @@ const generateWeeklyStatsField = (
   };
 };
 
-const calculateTotal = (stats: IUserStats['rpg'][]): Partial<IUserStats['rpg']> => {
+const calculateTotal = (
+  stats: IUserStats['rpg'][]
+): Partial<IUserStats['rpg']> => {
   const avg: Partial<IUserStats['rpg']> = {};
 
   for (const [type] of typedObjectEntries(statsToShow)) {
@@ -231,11 +264,20 @@ export type TEventTypes = 'default' | 'thisWeek' | 'lastWeek';
 
 export const statsActionRow = new ActionRowBuilder<ButtonBuilder>()
   .addComponents(
-    new ButtonBuilder().setCustomId('default').setLabel('Default').setStyle(ButtonStyle.Primary)
+    new ButtonBuilder()
+      .setCustomId('default')
+      .setLabel('Default')
+      .setStyle(ButtonStyle.Primary)
   )
   .addComponents(
-    new ButtonBuilder().setCustomId('thisWeek').setLabel('This Week').setStyle(ButtonStyle.Primary)
+    new ButtonBuilder()
+      .setCustomId('thisWeek')
+      .setLabel('This Week')
+      .setStyle(ButtonStyle.Primary)
   )
   .addComponents(
-    new ButtonBuilder().setCustomId('lastWeek').setLabel('Last Week').setStyle(ButtonStyle.Primary)
+    new ButtonBuilder()
+      .setCustomId('lastWeek')
+      .setLabel('Last Week')
+      .setStyle(ButtonStyle.Primary)
   );

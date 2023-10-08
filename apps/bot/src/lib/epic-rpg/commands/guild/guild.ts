@@ -1,6 +1,6 @@
-import {Client, Embed, Message, User} from 'discord.js';
+import type {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {IMessageEmbedChecker} from '../../../../types/utils';
+import type {IMessageEmbedChecker} from '../../../../types/utils';
 import embedReaders from '../../embed-readers';
 import {guildService} from '../../../../services/database/guild.service';
 import {toggleGuildChecker} from '../../../epic-helper/toggle-checker/guild';
@@ -14,7 +14,12 @@ export interface IRpgGuild {
   isSlashCommand: boolean;
 }
 
-export const rpgGuild = ({author, client, message, isSlashCommand}: IRpgGuild) => {
+export const rpgGuild = ({
+  author,
+  client,
+  message,
+  isSlashCommand,
+}: IRpgGuild) => {
   if (!message.inGuild() || !!message.mentions.users.size) return;
   let event = createRpgCommandListener({
     channelId: message.channel.id,
@@ -104,9 +109,11 @@ const rpgGuildSuccess = async ({
     serverId: guildServerId,
     roleId: guildRoleId,
     name: guildInfo.name === guild.info.name ? undefined : guildInfo.name,
-    stealth: guildInfo.stealth === guild.info.stealth ? undefined : guildInfo.stealth,
+    stealth:
+      guildInfo.stealth === guild.info.stealth ? undefined : guildInfo.stealth,
     level: guildInfo.level === guild.info.level ? undefined : guildInfo.level,
-    energy: guildInfo.energy === guild.info.energy ? undefined : guildInfo.energy,
+    energy:
+      guildInfo.energy === guild.info.energy ? undefined : guildInfo.energy,
   });
 };
 

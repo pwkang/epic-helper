@@ -1,6 +1,6 @@
 import {mongoClient} from '@epic-helper/services';
 import {freeDonorSchema} from '@epic-helper/models';
-import {QueryOptions} from 'mongoose';
+import type {QueryOptions} from 'mongoose';
 
 const dbFreeDonor = mongoClient.model('freeDonors', freeDonorSchema);
 
@@ -10,7 +10,11 @@ interface ICreateFreeDonors {
   token: number;
 }
 
-const createFreeDonors = async ({usersId, expiresAt, token}: ICreateFreeDonors): Promise<void> => {
+const createFreeDonors = async ({
+  usersId,
+  expiresAt,
+  token,
+}: ICreateFreeDonors): Promise<void> => {
   const bulk = dbFreeDonor.collection.initializeUnorderedBulkOp();
   for (const userId of usersId) {
     bulk

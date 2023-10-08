@@ -1,4 +1,4 @@
-import {Client, Embed, Message, User} from 'discord.js';
+import type {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {
@@ -19,7 +19,12 @@ interface IRpgEpicQuest {
   isSlashCommand: boolean;
 }
 
-export function rpgEpicQuest({client, message, author, isSlashCommand}: IRpgEpicQuest) {
+export function rpgEpicQuest({
+  client,
+  message,
+  author,
+  isSlashCommand,
+}: IRpgEpicQuest) {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     author,
@@ -67,7 +72,10 @@ interface IRpgEpicQuestSuccess {
 
 const QUEST_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.epicQuest;
 
-const rpgEpicQuestSuccess = async ({author, channelId}: IRpgEpicQuestSuccess) => {
+const rpgEpicQuestSuccess = async ({
+  author,
+  channelId,
+}: IRpgEpicQuestSuccess) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker) return;
 
@@ -102,13 +110,16 @@ interface IIsEpicQuestSuccess {
 
 const isEpicQuestSuccess = ({embed, author}: IIsEpicQuestSuccess) =>
   embed.author?.name === `${author.username} — epic quest` &&
-  ['You failed the quest', 'Your profit was'].some((str) => embed.fields[0]?.value.includes(str));
+  ['You failed the quest', 'Your profit was'].some((str) =>
+    embed.fields[0]?.value.includes(str)
+  );
 
 interface IIsEpicHorseMissing {
   content: string;
 }
 
-const isEpicHorseMissing = ({content}: IIsEpicHorseMissing) => content.includes('special horse');
+const isEpicHorseMissing = ({content}: IIsEpicHorseMissing) =>
+  content.includes('special horse');
 
 interface IIsHavingQuest {
   content: string;

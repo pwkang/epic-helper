@@ -11,7 +11,12 @@ interface IGenerateNavigationRow {
   all?: boolean;
 }
 
-export const generateNavigationRow = ({page, total, itemsPerPage, all}: IGenerateNavigationRow) => {
+export const generateNavigationRow = ({
+  page,
+  total,
+  itemsPerPage,
+  all,
+}: IGenerateNavigationRow) => {
   const row = new ActionRowBuilder<ButtonBuilder>();
   const prevPage = Math.max(page - 1, 0);
   const lastPage = Math.ceil(total / itemsPerPage) - 1;

@@ -1,7 +1,7 @@
-import wildPetReader from '../embed-readers/wild-pet.reader';
+import type wildPetReader from '../embed-readers/wild-pet.reader';
+import type {BaseMessageOptions} from 'discord.js';
 import {
   ActionRowBuilder,
-  BaseMessageOptions,
   ButtonBuilder,
   ButtonStyle,
   EmbedBuilder,
@@ -118,7 +118,12 @@ const getCommands = (hunger: number, happiness: number, clicked: number) => {
   const list: ICmd[] = [];
   let loop = true;
   while (loop) {
-    const percentage = generatePercentage(hunger, happiness, feedAmount, patAmount);
+    const percentage = generatePercentage(
+      hunger,
+      happiness,
+      feedAmount,
+      patAmount
+    );
     if (percentage.min === 100 && list[0]?.isMax) {
       list.pop();
     }
@@ -191,7 +196,10 @@ const calcPercentage = (
   type: 'min' | 'max' | 'avg'
 ) => {
   const finalHunger = Math.max(0, hunger - feedAmount * hungerTimes[type]);
-  const finalHappiness = Math.min(100, happiness + patAmount * happinessTimes[type]);
+  const finalHappiness = Math.min(
+    100,
+    happiness + patAmount * happinessTimes[type]
+  );
   const value = finalHappiness - finalHunger;
   return value >= 85 ? 100 : calcFinalPercentage(value);
 };

@@ -11,7 +11,10 @@ export default <PrefixCommand>{
   execute: async (client, message, args) => {
     const mentionedUsers = message.mentions.users;
     const mentionedUsersId = args.filter((arg) => arg.match(/^(\d{15,})$/));
-    const usersId = [...mentionedUsers.map((user) => user.id), ...mentionedUsersId];
+    const usersId = [
+      ...mentionedUsers.map((user) => user.id),
+      ...mentionedUsersId,
+    ];
     await freeDonorService.deleteFreeDonors({
       usersId,
     });

@@ -3,7 +3,7 @@ import {
   RPG_COMMAND_TYPE,
   RPG_COOLDOWN_EMBED_TYPE,
 } from '@epic-helper/constants';
-import {Client, Embed, Message, User} from 'discord.js';
+import type {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';

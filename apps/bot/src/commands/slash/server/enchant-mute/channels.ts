@@ -1,9 +1,12 @@
 import djsInteractionHelper from '../../../../lib/discordjs/interaction';
-import {IEnchantChannel} from '@epic-helper/models';
+import type {IEnchantChannel} from '@epic-helper/models';
 import {serverService} from '../../../../services/database/server.service';
 import commandHelper from '../../../../lib/epic-helper/command-helper';
 import {SERVER_SETTINGS_PAGE_TYPE} from '../../../../lib/epic-helper/command-helper/server-settings/constant';
-import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
+import {
+  USER_ACC_OFF_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS,
+} from '@epic-helper/constants';
 import {SLASH_COMMAND} from '../../constant';
 
 type TActionType = 'add' | 'remove' | 'reset';
@@ -99,9 +102,15 @@ interface IAddEnchantChannels {
   existingChannels: IEnchantChannel[];
 }
 
-const addEnchantChannels = async ({channels, serverId, existingChannels}: IAddEnchantChannels) => {
+const addEnchantChannels = async ({
+  channels,
+  serverId,
+  existingChannels,
+}: IAddEnchantChannels) => {
   const newChannels = channels.filter((channelId) =>
-    existingChannels.every((existingChannel) => existingChannel.channelId !== channelId)
+    existingChannels.every(
+      (existingChannel) => existingChannel.channelId !== channelId
+    )
   );
   await serverService.addEnchantChannels({
     serverId,
@@ -122,7 +131,9 @@ const removeEnchantChannels = async ({
   serverId,
   existingChannels,
 }: IRemoveEnchantChannels) => {
-  const newChannels = existingChannels.filter((channel) => !channels.includes(channel.channelId));
+  const newChannels = existingChannels.filter(
+    (channel) => !channels.includes(channel.channelId)
+  );
   await serverService.addEnchantChannels({
     serverId,
     channels: newChannels.map((channel) => ({

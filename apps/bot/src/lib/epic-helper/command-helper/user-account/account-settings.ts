@@ -1,10 +1,9 @@
-import {
-  ActionRowBuilder,
+import type {
   BaseMessageOptions,
-  StringSelectMenuBuilder,
   StringSelectMenuInteraction,
   User,
 } from 'discord.js';
+import {ActionRowBuilder, StringSelectMenuBuilder} from 'discord.js';
 import {userService} from '../../../../services/database/user.service';
 import {_getUserSettingsEmbed} from './embeds/user-settings.embed';
 import {_getUserReminderChannelEmbed} from './embeds/reminder-channels.embed';
@@ -78,7 +77,9 @@ export const _accountSettings = async ({author}: IAccountSettings) => {
     }
   }
 
-  function responseInteraction(interaction: StringSelectMenuInteraction): BaseMessageOptions {
+  function responseInteraction(
+    interaction: StringSelectMenuInteraction
+  ): BaseMessageOptions {
     const selected = interaction.values[0] as ValuesOf<typeof PAGE_TYPE>;
     return render({type: selected});
   }

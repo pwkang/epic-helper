@@ -1,4 +1,4 @@
-import {Client, Message} from 'discord.js';
+import type {Client, Message} from 'discord.js';
 import {logger} from '@epic-helper/utils';
 
 export interface DeleteMessageProps {
@@ -6,7 +6,10 @@ export interface DeleteMessageProps {
   message: Message;
 }
 
-export default async function _deleteMessage({client, message}: DeleteMessageProps) {
+export default async function _deleteMessage({
+  client,
+  message,
+}: DeleteMessageProps) {
   if (message.author.id !== client.user?.id) return;
   if (!message.deletable) return;
   try {

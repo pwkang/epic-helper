@@ -1,5 +1,8 @@
-import {IMessageContentChecker, IMessageEmbedChecker} from '../../../../types/utils';
-import {Client, Embed, Message, User} from 'discord.js';
+import type {
+  IMessageContentChecker,
+  IMessageEmbedChecker,
+} from '../../../../types/utils';
+import type {Client, Embed, Message, User} from 'discord.js';
 import {userPetServices} from '../../../../services/database/user-pet.service';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 
@@ -10,7 +13,12 @@ interface IRpgPetClaim {
   isSlashCommand: boolean;
 }
 
-export const rpgPetClaim = async ({author, message, client, isSlashCommand}: IRpgPetClaim) => {
+export const rpgPetClaim = async ({
+  author,
+  message,
+  client,
+  isSlashCommand,
+}: IRpgPetClaim) => {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     channelId: message.channel.id,
@@ -52,8 +60,9 @@ const rpgPetClaimSuccess = async ({author}: IRpgPetClaimSuccess) => {
 };
 
 const isSuccessfullyClaimedPet = ({embed, author}: IMessageEmbedChecker) =>
-  ['Reward summary', 'Pet adventure rewards'].some((str) => embed.title?.includes(str)) &&
-  embed.author?.name === `${author.username} — pets`;
+  ['Reward summary', 'Pet adventure rewards'].some((str) =>
+    embed.title?.includes(str)
+  ) && embed.author?.name === `${author.username} — pets`;
 
 const isNoPetsToClaim = ({message, author}: IMessageContentChecker) =>
   message.content.includes('there are no pet adventure rewards to claim') &&

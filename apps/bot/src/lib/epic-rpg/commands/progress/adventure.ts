@@ -1,4 +1,4 @@
-import {Client, Message, User} from 'discord.js';
+import type {Client, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {
@@ -23,7 +23,12 @@ interface IRpgAdventure {
   isSlashCommand: boolean;
 }
 
-export function rpgAdventure({client, message, author, isSlashCommand}: IRpgAdventure) {
+export function rpgAdventure({
+  client,
+  message,
+  author,
+  isSlashCommand,
+}: IRpgAdventure) {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     channelId: message.channel.id,
@@ -71,7 +76,11 @@ interface IRpgAdventureSuccess {
 
 const ADVENTURE_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.adventure;
 
-const rpgAdventureSuccess = async ({author, content, channelId}: IRpgAdventureSuccess) => {
+const rpgAdventureSuccess = async ({
+  author,
+  content,
+  channelId,
+}: IRpgAdventureSuccess) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker) return;
   const hardMode = content.includes('(but stronger)');
@@ -107,7 +116,12 @@ interface IHealReminder {
   content: Message['content'];
 }
 
-async function healReminder({client, channelId, author, content}: IHealReminder) {
+async function healReminder({
+  client,
+  channelId,
+  author,
+  content,
+}: IHealReminder) {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker?.heal) return;
 
@@ -115,7 +129,10 @@ async function healReminder({client, channelId, author, content}: IHealReminder)
     userId: author.id,
   });
   if (!healReminder) return;
-  const healReminderMsg = await getHealReminderMsg({content, target: healReminder});
+  const healReminderMsg = await getHealReminderMsg({
+    content,
+    target: healReminder,
+  });
   if (!healReminderMsg) return;
   await djsMessageHelper.send({
     channelId,
@@ -143,7 +160,10 @@ interface IGetHealReminderMsg {
   target: number | undefined;
 }
 
-const getHealReminderMsg = ({content, target}: IGetHealReminderMsg): string | void => {
+const getHealReminderMsg = ({
+  content,
+  target,
+}: IGetHealReminderMsg): string | void => {
   let hp: string | undefined;
   let hpLost: string | undefined;
   let horseSaved = false;

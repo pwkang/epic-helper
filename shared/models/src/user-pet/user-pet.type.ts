@@ -15,6 +15,9 @@ export interface IUserPet {
   readyAt: Date | null;
   status: ValuesOf<typeof RPG_PET_ADV_STATUS>;
   skills: Partial<
-    Record<keyof typeof RPG_PET_SKILL_ASCEND | keyof typeof RPG_PET_SKILL_SPECIAL, TSkillTierNumber>
+    Record<
+      keyof typeof RPG_PET_SKILL_ASCEND | keyof typeof RPG_PET_SKILL_SPECIAL,
+      TSkillTierNumber
+    >
   >;
 }

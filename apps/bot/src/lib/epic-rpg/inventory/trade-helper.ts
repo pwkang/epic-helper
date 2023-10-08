@@ -1,5 +1,8 @@
-import {IInventoryItem, TRpgItemName} from '../embed-readers/inventory.reader';
-import {RpgArea} from '../../../types/rpg.types';
+import type {
+  IInventoryItem,
+  TRpgItemName,
+} from '../embed-readers/inventory.reader';
+import type {RpgArea} from '../../../types/rpg.types';
 import dismantleHelper from './dismantle-helper';
 import {RPG_TRADE_RATE} from '@epic-helper/constants';
 
@@ -10,7 +13,12 @@ interface IStartTrading {
   tradeTo: 'normieFish' | 'woodenLog' | 'apple' | 'ruby';
 }
 
-export const startTrading = ({startArea, endArea, inventory, tradeTo}: IStartTrading) => {
+export const startTrading = ({
+  startArea,
+  endArea,
+  inventory,
+  tradeTo,
+}: IStartTrading) => {
   const _tradeTo = endArea === 'top' ? 15 : endArea;
   const newInventory = new InitTrade(inventory);
   if (typeof startArea === 'number') {

@@ -1,7 +1,8 @@
 import {mongoClient} from '@epic-helper/services';
-import {donorSchema, IDonor} from '@epic-helper/models';
-import {DONOR_TIER} from '@epic-helper/constants';
-import {FilterQuery, QueryOptions} from 'mongoose';
+import type {IDonor} from '@epic-helper/models';
+import {donorSchema} from '@epic-helper/models';
+import type {DONOR_TIER} from '@epic-helper/constants';
+import type {FilterQuery, QueryOptions} from 'mongoose';
 
 const dbDonor = mongoClient.model<IDonor>('donors', donorSchema);
 
@@ -33,7 +34,9 @@ const registerDonors = async (donors: IRegisterDonor[]): Promise<void> => {
           'discord.userId': donor.discord.userId,
           'discord.username': donor.discord.username,
           'patreon.email': donor.patreon.email,
-          'patreon.fullName': donor.patreon.fullName?.trim().replace(/\s+/g, ' '),
+          'patreon.fullName': donor.patreon.fullName
+            ?.trim()
+            .replace(/\s+/g, ' '),
           'patreon.userId': donor.patreon.userId,
           'patreon.memberId': donor.patreon.memberId,
           tier: donor.tier,

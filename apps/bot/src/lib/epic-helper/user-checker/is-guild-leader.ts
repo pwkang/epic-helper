@@ -6,7 +6,11 @@ interface IsGuildLeader {
   userId: string;
 }
 
-export const _isGuildLeader = async ({serverId, guildRoleId, userId}: IsGuildLeader) => {
+export const _isGuildLeader = async ({
+  serverId,
+  guildRoleId,
+  userId,
+}: IsGuildLeader) => {
   const guildAccount = await guildService.findGuild({
     roleId: guildRoleId,
     serverId,

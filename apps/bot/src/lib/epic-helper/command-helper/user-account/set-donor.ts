@@ -1,12 +1,15 @@
+import type {BaseMessageOptions, User} from 'discord.js';
 import {
   ActionRowBuilder,
-  BaseMessageOptions,
   ButtonBuilder,
   ButtonStyle,
   EmbedBuilder,
-  User,
 } from 'discord.js';
-import {BOT_CLICKABLE_SLASH_COMMANDS, BOT_COLOR, RPG_DONOR_TIER} from '@epic-helper/constants';
+import {
+  BOT_CLICKABLE_SLASH_COMMANDS,
+  BOT_COLOR,
+  RPG_DONOR_TIER,
+} from '@epic-helper/constants';
 import {userService} from '../../../../services/database/user.service';
 
 interface ISetDonor {
@@ -21,7 +24,9 @@ export const _setDonor = ({author}: ISetDonor) => {
     };
   }
 
-  async function responseInteraction(customId: string): Promise<BaseMessageOptions | null> {
+  async function responseInteraction(
+    customId: string
+  ): Promise<BaseMessageOptions | null> {
     let tier: ValuesOf<typeof RPG_DONOR_TIER> | null = null;
     if (customId === 'non-donor') {
       tier = RPG_DONOR_TIER.nonDonor;
@@ -51,10 +56,22 @@ export const _setDonor = ({author}: ISetDonor) => {
 };
 
 const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-  new ButtonBuilder().setCustomId('non-donor').setLabel('Non-donor').setStyle(ButtonStyle.Primary),
-  new ButtonBuilder().setCustomId('0.9').setLabel('-10%').setStyle(ButtonStyle.Primary),
-  new ButtonBuilder().setCustomId('0.8').setLabel('-20%').setStyle(ButtonStyle.Primary),
-  new ButtonBuilder().setCustomId('0.65').setLabel('-35%').setStyle(ButtonStyle.Primary)
+  new ButtonBuilder()
+    .setCustomId('non-donor')
+    .setLabel('Non-donor')
+    .setStyle(ButtonStyle.Primary),
+  new ButtonBuilder()
+    .setCustomId('0.9')
+    .setLabel('-10%')
+    .setStyle(ButtonStyle.Primary),
+  new ButtonBuilder()
+    .setCustomId('0.8')
+    .setLabel('-20%')
+    .setStyle(ButtonStyle.Primary),
+  new ButtonBuilder()
+    .setCustomId('0.65')
+    .setLabel('-35%')
+    .setStyle(ButtonStyle.Primary)
 );
 
 const RESPONSE_MSG = {

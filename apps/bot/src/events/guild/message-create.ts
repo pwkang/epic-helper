@@ -1,5 +1,11 @@
-import {Client, Events, Message} from 'discord.js';
-import {DEVS_ID, EPIC_RPG_ID, PREFIX, PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
+import type {Client, Message} from 'discord.js';
+import {Events} from 'discord.js';
+import {
+  DEVS_ID,
+  EPIC_RPG_ID,
+  PREFIX,
+  PREFIX_COMMAND_TYPE,
+} from '@epic-helper/constants';
 import {preCheckCommand} from '../../utils/command-precheck';
 
 export default <BotEvent>{
@@ -7,7 +13,11 @@ export default <BotEvent>{
   once: false,
   execute: async (client, message: Message) => {
     if (!message.inGuild()) return;
-    if (isBotSlashCommand(message) && isNotDeferred(message) && message.interaction) {
+    if (
+      isBotSlashCommand(message) &&
+      isNotDeferred(message) &&
+      message.interaction
+    ) {
       const messages = searchSlashMessages(client, message);
       if (!messages.size) return;
 
@@ -49,28 +59,39 @@ export default <BotEvent>{
 const searchSlashMessages = (client: Client, message: Message) =>
   client.slashMessages.filter((cmd) =>
     cmd.commandName.some(
-      (name) => name.toLowerCase() === message.interaction?.commandName?.toLowerCase()
+      (name) =>
+        name.toLowerCase() === message.interaction?.commandName?.toLowerCase()
     )
   );
 
-const trimWhitespace = (str: string) => str.split('\n').join('').replace(/\s+/g, ' ').trim();
+const trimWhitespace = (str: string) =>
+  str.split('\n').join('').replace(/\s+/g, ' ').trim();
 
 const isRpgCommand = (message: Message) =>
-  trimWhitespace(message.content).toLowerCase().startsWith(`${PREFIX.rpg.toLowerCase()} `) ||
+  trimWhitespace(message.content)
+    .toLowerCase()
+    .startsWith(`${PREFIX.rpg.toLowerCase()} `) ||
   message.mentions.has(EPIC_RPG_ID);
 
 const isBotCommand = (message: Message) =>
-  PREFIX.bot && trimWhitespace(message.content).toLowerCase().startsWith(PREFIX.bot.toLowerCase());
+  PREFIX.bot &&
+  trimWhitespace(message.content)
+    .toLowerCase()
+    .startsWith(PREFIX.bot.toLowerCase());
 
 const validateCommand = (commands: string[], args: string[]) => {
   return commands.some((cmd) =>
-    cmd.split(' ').every((name, i) => name?.toLowerCase() === args[i]?.toLowerCase())
+    cmd
+      .split(' ')
+      .every((name, i) => name?.toLowerCase() === args[i]?.toLowerCase())
   );
 };
 
 const getMatchedCommandLength = (commands: string[], args: string[]) => {
   const matched = commands.find((cmd) =>
-    cmd.split(' ').every((name, i) => name?.toLowerCase() === args[i]?.toLowerCase())
+    cmd
+      .split(' ')
+      .every((name, i) => name?.toLowerCase() === args[i]?.toLowerCase())
   );
   return matched?.split(' ').length ?? 0;
 };
@@ -103,7 +124,11 @@ function searchCommand(
 
     commandType = PREFIX_COMMAND_TYPE.bot;
   }
-  if (DEVS_ID.includes(message.author.id) && PREFIX.dev && messageContent.startsWith(PREFIX.dev)) {
+  if (
+    DEVS_ID.includes(message.author.id) &&
+    PREFIX.dev &&
+    messageContent.startsWith(PREFIX.dev)
+  ) {
     args = messageContent.slice(PREFIX.dev.length).trim().split(' ');
 
     commandType = PREFIX_COMMAND_TYPE.dev;
@@ -118,7 +143,8 @@ function searchCommand(
     command = matchedCommands
       .sort(
         (a, b) =>
-          getMatchedCommandLength(b.commands, args) - getMatchedCommandLength(a.commands, args)
+          getMatchedCommandLength(b.commands, args) -
+          getMatchedCommandLength(a.commands, args)
       )
       .first();
   }
@@ -126,12 +152,16 @@ function searchCommand(
   return command ? {command, args} : null;
 }
 
-const isBotSlashCommand = (message: Message) => message.interaction && message.author.bot;
+const isBotSlashCommand = (message: Message) =>
+  message.interaction && message.author.bot;
 const isSentByUser = (message: Message) => !message.author.bot;
 
 const isSentByBot = (message: Message) => message.author.bot;
 
-const isNotDeferred = (message: Message) => !(message.content === '' && !message.embeds.length);
+const isNotDeferred = (message: Message) =>
+  !(message.content === '' && !message.embeds.length);
 
 const searchBotMatchedCommands = (client: Client, message: Message) =>
-  client.botMessages.filter((cmd) => message.author.id === cmd.bot && cmd.match(message));
+  client.botMessages.filter(
+    (cmd) => message.author.id === cmd.bot && cmd.match(message)
+  );

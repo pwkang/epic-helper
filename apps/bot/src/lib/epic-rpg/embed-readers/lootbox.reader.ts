@@ -1,4 +1,4 @@
-import {Embed} from 'discord.js';
+import type {Embed} from 'discord.js';
 import {RPG_ITEMS} from '@epic-helper/constants';
 import {typedObjectEntries} from '@epic-helper/utils';
 
@@ -20,7 +20,9 @@ const lootboxReader = ({embed}: IScanLootbox) => {
       row.toLowerCase().includes(value)
     )?.[0] as ItemName;
     if (!itemName) continue;
-    items[itemName] = Number((row.split(' ')[0] ?? '').replaceAll(',', '').replace('+', '')) ?? 0;
+    items[itemName] =
+      Number((row.split(' ')[0] ?? '').replaceAll(',', '').replace('+', '')) ??
+      0;
   }
 
   return items;

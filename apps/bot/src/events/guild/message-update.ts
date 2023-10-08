@@ -1,4 +1,5 @@
-import {Client, Events, Message} from 'discord.js';
+import type {Client, Message} from 'discord.js';
+import {Events} from 'discord.js';
 import {emitMessageEdited} from '../../utils/message-edited-listener';
 import {preCheckCommand} from '../../utils/command-precheck';
 
@@ -29,7 +30,8 @@ export default <BotEvent>{
   },
 };
 
-const isBotSlashCommand = (message: Message) => message.interaction && message.author.bot;
+const isBotSlashCommand = (message: Message) =>
+  message.interaction && message.author.bot;
 
 const isFirstUpdateAfterDeferred = (oldMessage: Message) =>
   oldMessage.content === '' && oldMessage.embeds.length === 0;
@@ -37,6 +39,7 @@ const isFirstUpdateAfterDeferred = (oldMessage: Message) =>
 const searchSlashMessages = (client: Client, message: Message) =>
   client.slashMessages.filter((cmd) =>
     cmd.commandName.some(
-      (name) => name.toLowerCase() === message.interaction?.commandName?.toLowerCase()
+      (name) =>
+        name.toLowerCase() === message.interaction?.commandName?.toLowerCase()
     )
   );

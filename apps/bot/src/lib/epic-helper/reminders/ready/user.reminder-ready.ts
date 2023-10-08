@@ -1,4 +1,4 @@
-import {Client} from 'discord.js';
+import type {Client} from 'discord.js';
 import ms from 'ms';
 import {userPetReminderTimesUp} from './user-pet.reminder-ready';
 import {getReminderChannel} from '../reminder-channel';
@@ -17,7 +17,9 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
   const toggleChecker = await toggleUserChecker({userId});
   if (!toggleChecker) return;
 
-  const readyCommands = await userReminderServices.findUserReadyCommands(userId);
+  const readyCommands = await userReminderServices.findUserReadyCommands(
+    userId
+  );
   for (const command of readyCommands) {
     if (command.readyAt && Date.now() - command.readyAt.getTime() > ms('5s')) {
       await userReminderServices.updateRemindedCooldowns({

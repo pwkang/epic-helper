@@ -1,4 +1,4 @@
-import {
+import type {
   PATREON_INCLUDE_TYPE,
   PATREON_PATRON_STATUS,
   PATREON_PAYMENT_STATUS,
@@ -8,7 +8,9 @@ import {
 
 export interface IFetchPatreonCampaignMembersResponse {
   data: IPatreonMember[];
-  included: IIncludeItem<IUserAttributes | ITierAttributes | ICampaignAttributes>[];
+  included: IIncludeItem<
+    IUserAttributes | ITierAttributes | ICampaignAttributes
+  >[];
   links: IPatreonResponseLinks;
   meta: IPatreonResponseMeta;
 }

@@ -1,4 +1,4 @@
-import {Embed} from 'discord.js';
+import type {Embed} from 'discord.js';
 import ms from 'ms';
 
 export interface IGuildReader {
@@ -10,8 +10,10 @@ const guildReader = ({embed}: IGuildReader) => {
   const level = embed.fields?.[0].value.split('\n')[0].match(/\d+/g)?.[0] ?? 0;
   const xp = embed.fields?.[0].value.split('\n')[1].match(/\d+/g)?.[0] ?? 0;
   const energy = embed.fields?.[1].value.split('\n')[0].match(/\d+/g)?.[0] ?? 0;
-  const stealth = embed.fields?.[1].value.split('\n')[1].match(/\d+/g)?.[0] ?? 0;
-  const time = embed.fields?.[1].value.split('\n')[3]?.split('**')[1]?.split(' ') ?? [];
+  const stealth =
+    embed.fields?.[1].value.split('\n')[1].match(/\d+/g)?.[0] ?? 0;
+  const time =
+    embed.fields?.[1].value.split('\n')[3]?.split('**')[1]?.split(' ') ?? [];
 
   return {
     name,

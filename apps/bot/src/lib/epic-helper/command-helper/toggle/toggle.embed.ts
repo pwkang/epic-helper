@@ -62,7 +62,9 @@ const renderFieldValue = ({info, index}: IRenderFieldValue): EmbedField => {
         const {value, label} = subChild;
         const emoji = renderEmoji({status: value, grey: toGreySubChildren});
         const subChildId = String.fromCharCode(97 + Number(j));
-        embedValue.push(`${emoji}--\`${groupId}${childId}${subChildId}\` ${label}`);
+        embedValue.push(
+          `${emoji}--\`${groupId}${childId}${subChildId}\` ${label}`
+        );
       }
     }
   }

@@ -1,12 +1,12 @@
-import {BaseMessageOptions, Client, Message, User} from 'discord.js';
+import type {BaseMessageOptions, Client, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {IMessageContentChecker} from '../../../../types/utils';
+import type {IMessageContentChecker} from '../../../../types/utils';
 import ms from 'ms';
 import {djsMessageHelper} from '../../../discordjs/message';
 import {convertNumToPetId, convertPetIdToNum} from '@epic-helper/utils';
 import {userPetServices} from '../../../../services/database/user-pet.service';
 import {RPG_PET_ADV_STATUS, RPG_PET_TYPE} from '@epic-helper/constants';
-import {IUserPet} from '@epic-helper/models';
+import type {IUserPet} from '@epic-helper/models';
 import convertMsToHumanReadableString from '../../../../utils/convert-ms-to-human-readable-string';
 import {collectSelectedPets} from './_shared';
 import {rpgPetAdvCancelSuccess} from './pet-cancel';
@@ -163,7 +163,9 @@ export const registerPetsToAdventure = async ({
         });
       }
     }
-    petsToSend = petsToSend.filter((p) => !returnedPets.map(convertPetIdToNum).includes(p.petId));
+    petsToSend = petsToSend.filter(
+      (p) => !returnedPets.map(convertPetIdToNum).includes(p.petId)
+    );
   }
 
   for (const pet of petsToSend) {
@@ -219,7 +221,8 @@ const fetchPetsToSend = async ({selectedPets, userId}: IFetchPetsToSend) => {
  *  ===================================================
  */
 
-const hasSentEpic = (pets: string[]) => pets.map((p) => p.toLowerCase()).includes('epic');
+const hasSentEpic = (pets: string[]) =>
+  pets.map((p) => p.toLowerCase()).includes('epic');
 
 /*
  *  ===================================================
@@ -279,7 +282,10 @@ const REDUCE_TIME_PER_FAST_SKILL = ms('9m') + ms('36s');
 const calcAdventureTime = ({pet}: ICalcAdventureTime) => {
   const fastSkillTier = pet.skills.fast ?? 0;
   const isGoldenBunny = pet.name === RPG_PET_TYPE.goldenBunny ? 2 : 1;
-  return BASE_ADVENTURE_TIME - fastSkillTier * REDUCE_TIME_PER_FAST_SKILL * isGoldenBunny;
+  return (
+    BASE_ADVENTURE_TIME -
+    fastSkillTier * REDUCE_TIME_PER_FAST_SKILL * isGoldenBunny
+  );
 };
 
 /*
@@ -292,7 +298,9 @@ const generateResult = (result: ISentResult[]) => {
   const results: string[] = ['Reminding the following pets:'];
   for (const r of result) {
     const petId = convertNumToPetId(r.petId);
-    const duration = r.duration ? convertMsToHumanReadableString(r.duration) : '**Ready To Claim**';
+    const duration = r.duration
+      ? convertMsToHumanReadableString(r.duration)
+      : '**Ready To Claim**';
     results.push(`\`ID: ${petId}\` - ${duration}`);
   }
   return results.join('\n');
@@ -304,7 +312,10 @@ const generateResult = (result: ISentResult[]) => {
  *  ===================================================
  */
 
-const isFailToSendPetsToAdventure = ({message, author}: IMessageContentChecker) =>
+const isFailToSendPetsToAdventure = ({
+  message,
+  author,
+}: IMessageContentChecker) =>
   isNoAvailablePetToSend({message, author}) ||
   isSendingMultipleNonEpicPets({message, author}) ||
   isSelectedPetsInAdventure({message, author}) ||
@@ -316,18 +327,27 @@ const isNoAvailablePetToSend = ({message, author}: IMessageContentChecker) =>
   message.content.includes('you cannot send another pet to an adventure') &&
   message.mentions.has(author.id);
 
-const isSendingMultipleNonEpicPets = ({message, author}: IMessageContentChecker) =>
-  message.content.includes('you cannot send more than one pet') && message.mentions.has(author.id);
+const isSendingMultipleNonEpicPets = ({
+  message,
+  author,
+}: IMessageContentChecker) =>
+  message.content.includes('you cannot send more than one pet') &&
+  message.mentions.has(author.id);
 
 const isSelectedPetsInAdventure = ({message, author}: IMessageContentChecker) =>
-  message.content.includes('is already in an adventure!') && message.mentions.has(author.id);
+  message.content.includes('is already in an adventure!') &&
+  message.mentions.has(author.id);
 
 const isSelectingInvalidPets = ({message, author}: IMessageContentChecker) =>
   message.content.includes('what pets are you trying to select?') &&
   message.mentions.has(author.id);
 
-const isSelectingPetsMultipleTimes = ({message, author}: IMessageContentChecker) =>
-  message.content.includes('has been selected more than once') && message.mentions.has(author.id);
+const isSelectingPetsMultipleTimes = ({
+  message,
+  author,
+}: IMessageContentChecker) =>
+  message.content.includes('has been selected more than once') &&
+  message.mentions.has(author.id);
 
 /*
  *  ===================================================
@@ -335,14 +355,20 @@ const isSelectingPetsMultipleTimes = ({message, author}: IMessageContentChecker)
  *  ===================================================
  */
 
-const isSuccessfullySentPetsToAdventure = ({message, author}: IMessageContentChecker) =>
+const isSuccessfullySentPetsToAdventure = ({
+  message,
+  author,
+}: IMessageContentChecker) =>
   isSentSinglePetToAdventure({message, author}) ||
   isSentMultiplePetsToAdventure({
     message,
     author,
   });
 
-const isSentSinglePetToAdventure = ({message, author}: IMessageContentChecker) =>
+const isSentSinglePetToAdventure = ({
+  message,
+  author,
+}: IMessageContentChecker) =>
   message.content.includes('will be back in') ||
   isPetComebackInstantly({
     message,
@@ -368,17 +394,20 @@ const isFailToCancelPet = ({message, author}: IChecker): boolean =>
   isSelectedPetHasTimeTraveller({message, author});
 
 const isPetSelectedMultipleTimes = ({message, author}: IChecker): boolean =>
-  message.mentions.has(author.id) && message.content.includes('has been selected more than once');
+  message.mentions.has(author.id) &&
+  message.content.includes('has been selected more than once');
 
 const isInvalidCancelPetId = ({message, author}: IChecker): boolean =>
   message.mentions.has(author.id) &&
   message.content.includes('what pet(s) are you trying to select?');
 
 const isPetNotOnAdventure = ({message, author}: IChecker): boolean =>
-  message.mentions.has(author.id) && message.content.includes('is not in an adventure');
+  message.mentions.has(author.id) &&
+  message.content.includes('is not in an adventure');
 
 const isNoPetMeetRequirement = ({message, author}: IChecker): boolean =>
-  message.mentions.has(author.id) && message.content.includes('no pets met the requirement');
+  message.mentions.has(author.id) &&
+  message.content.includes('no pets met the requirement');
 
 const isSelectedPetHasTimeTraveller = ({message, author}: IChecker): boolean =>
   message.mentions.has(author.id) &&
@@ -389,8 +418,12 @@ interface IIsPetSuccessfullyCancelled {
   author: User;
 }
 
-const isPetSuccessfullyCancelled = ({message, author}: IIsPetSuccessfullyCancelled): boolean =>
-  message.mentions.has(author.id) && message.content.includes('pet adventure(s) cancelled');
+const isPetSuccessfullyCancelled = ({
+  message,
+  author,
+}: IIsPetSuccessfullyCancelled): boolean =>
+  message.mentions.has(author.id) &&
+  message.content.includes('pet adventure(s) cancelled');
 
 /*
  *  ================================================================
@@ -401,7 +434,9 @@ const isPetSuccessfullyCancelled = ({message, author}: IIsPetSuccessfullyCancell
 const extractSentPets = ({message, author}: IMessageContentChecker) => {
   if (isSentSinglePetToAdventure({message, author})) return 1;
   if (isSentMultiplePetsToAdventure({message, author})) {
-    const amount = message.content.match(/\*\*(\d+)\*\* of your pets have started an adventure!/);
+    const amount = message.content.match(
+      /\*\*(\d+)\*\* of your pets have started an adventure!/
+    );
     if (amount) return parseInt(amount[1]);
   }
   return 1;
@@ -412,7 +447,8 @@ const hasPetsReturnedInstantly = (content: string) =>
 
 const extractReturnedPetsId = ({message}: IMessageContentChecker) => {
   if (!hasPetsReturnedInstantly(message.content)) return [];
-  const targetRow = message.content.split('\n').find(hasPetsReturnedInstantly) ?? '';
+  const targetRow =
+    message.content.split('\n').find(hasPetsReturnedInstantly) ?? '';
   const petIds = targetRow.match(/`(\w+)`/g);
   if (!petIds) return [];
   return petIds.map((p) => p.replace(/`/g, ''));

@@ -1,5 +1,5 @@
 import {listSlashCommands} from '../../../../utils/slash-commands-listing';
-import {ApplicationCommand, Message} from 'discord.js';
+import type {ApplicationCommand, Message} from 'discord.js';
 import {sleep} from '@epic-helper/utils';
 import {djsMessageHelper} from '../../../../lib/discordjs/message';
 import djsRestHelper from '../../../../lib/discordjs/slash-commands';
@@ -16,7 +16,9 @@ export default <PrefixCommand>{
     const isGuild = checkIsGuild(message);
     const isGlobal = checkIsGlobal(message);
 
-    const commandsToDelete = slashCommands.filter((sc) => args.includes(sc.name));
+    const commandsToDelete = slashCommands.filter((sc) =>
+      args.includes(sc.name)
+    );
     if (!commandsToDelete.length)
       return djsMessageHelper.send({
         client,
@@ -49,10 +51,11 @@ export default <PrefixCommand>{
     let registeredGlobalSlashCommands: ApplicationCommand[] = [];
 
     if (isGuild) {
-      registeredGuildSlashCommands = await djsRestHelper.slashCommand.guild.getAll({
-        guild: message.guild!,
-        client,
-      });
+      registeredGuildSlashCommands =
+        await djsRestHelper.slashCommand.guild.getAll({
+          guild: message.guild!,
+          client,
+        });
       for (const command of commandsToDelete) {
         const guildCommand = registeredGuildSlashCommands.find(
           (gsc) => gsc.name === command.builder.name
@@ -74,7 +77,8 @@ export default <PrefixCommand>{
         await sleep(1000);
       }
     } else {
-      registeredGlobalSlashCommands = await djsRestHelper.slashCommand.global.getAll({client});
+      registeredGlobalSlashCommands =
+        await djsRestHelper.slashCommand.global.getAll({client});
       for (const command of commandsToDelete) {
         const globalCommand = registeredGlobalSlashCommands.find(
           (gsc) => gsc.name === command.builder.name
@@ -103,4 +107,5 @@ export default <PrefixCommand>{
 };
 
 const checkIsGuild = (message: Message) => message.content.includes('--guild');
-const checkIsGlobal = (message: Message) => message.content.includes('--global');
+const checkIsGlobal = (message: Message) =>
+  message.content.includes('--global');

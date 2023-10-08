@@ -24,37 +24,53 @@ export default <SlashCommand>{
     subcommand
       .addStringOption((option) =>
         option
-          .setName(RPG_RANDOM_EVENTS_COMMAND.log.replaceAll(' ', '-').toLowerCase())
+          .setName(
+            RPG_RANDOM_EVENTS_COMMAND.log.replaceAll(' ', '-').toLowerCase()
+          )
           .setDescription(RPG_RANDOM_EVENTS_NAME.log)
       )
       .addStringOption((option) =>
         option
-          .setName(RPG_RANDOM_EVENTS_COMMAND.fish.replaceAll(' ', '-').toLowerCase())
+          .setName(
+            RPG_RANDOM_EVENTS_COMMAND.fish.replaceAll(' ', '-').toLowerCase()
+          )
           .setDescription(RPG_RANDOM_EVENTS_NAME.fish)
       )
       .addStringOption((option) =>
         option
-          .setName(RPG_RANDOM_EVENTS_COMMAND.coin.replaceAll(' ', '-').toLowerCase())
+          .setName(
+            RPG_RANDOM_EVENTS_COMMAND.coin.replaceAll(' ', '-').toLowerCase()
+          )
           .setDescription(RPG_RANDOM_EVENTS_NAME.coin)
       )
       .addStringOption((option) =>
         option
-          .setName(RPG_RANDOM_EVENTS_COMMAND.lootbox.replaceAll(' ', '-').toLowerCase())
+          .setName(
+            RPG_RANDOM_EVENTS_COMMAND.lootbox.replaceAll(' ', '-').toLowerCase()
+          )
           .setDescription(RPG_RANDOM_EVENTS_NAME.lootbox)
       )
       .addStringOption((option) =>
         option
-          .setName(RPG_RANDOM_EVENTS_COMMAND.boss.replaceAll(' ', '-').toLowerCase())
+          .setName(
+            RPG_RANDOM_EVENTS_COMMAND.boss.replaceAll(' ', '-').toLowerCase()
+          )
           .setDescription(RPG_RANDOM_EVENTS_NAME.boss)
       )
       .addStringOption((option) =>
         option
-          .setName(RPG_RANDOM_EVENTS_COMMAND.arena.replaceAll(' ', '-').toLowerCase())
+          .setName(
+            RPG_RANDOM_EVENTS_COMMAND.arena.replaceAll(' ', '-').toLowerCase()
+          )
           .setDescription(RPG_RANDOM_EVENTS_NAME.arena)
       )
       .addStringOption((option) =>
         option
-          .setName(RPG_RANDOM_EVENTS_COMMAND.miniboss.replaceAll(' ', '-').toLowerCase())
+          .setName(
+            RPG_RANDOM_EVENTS_COMMAND.miniboss
+              .replaceAll(' ', '-')
+              .toLowerCase()
+          )
           .setDescription(RPG_RANDOM_EVENTS_NAME.miniboss)
       ),
   execute: async (client, interaction) => {
@@ -89,7 +105,11 @@ export default <SlashCommand>{
         lootbox: lootbox ? (lootbox === 'clear' ? null : lootbox) : undefined,
         boss: boss ? (boss === 'clear' ? null : boss) : undefined,
         arena: arena ? (arena === 'clear' ? null : arena) : undefined,
-        miniboss: miniboss ? (miniboss === 'clear' ? null : miniboss) : undefined,
+        miniboss: miniboss
+          ? miniboss === 'clear'
+            ? null
+            : miniboss
+          : undefined,
       },
     });
     if (!serverAccount) return null;

@@ -1,4 +1,4 @@
-import {Client} from 'discord.js';
+import type {Client} from 'discord.js';
 import {djsMessageHelper} from '../../../discordjs/message';
 import {guildService} from '../../../../services/database/guild.service';
 import {toggleGuildChecker} from '../../toggle-checker/guild';

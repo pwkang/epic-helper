@@ -1,12 +1,12 @@
-import {
-  RPG_COMMAND_TYPE,
+import type {
   RPG_EPIC_ITEM_TYPES,
   RPG_FARM_SEED,
   RPG_LOOTBOX_TYPE,
   RPG_WORKING_TYPE,
 } from '@epic-helper/constants';
-import {IUserReminder} from '@epic-helper/models';
-import {IToggleUserCheckerReturnType} from '../../toggle-checker/user';
+import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
+import type {IUserReminder} from '@epic-helper/models';
+import type {IToggleUserCheckerReturnType} from '../../toggle-checker/user';
 
 const getDailyCommandStr = () => {
   return 'RPG DAILY';
@@ -22,7 +22,11 @@ interface IGetHuntCommandStr {
   toggleChecker: IToggleUserCheckerReturnType;
 }
 
-const getHuntCommandStr = ({hardMode, together, toggleChecker}: IGetHuntCommandStr) => {
+const getHuntCommandStr = ({
+  hardMode,
+  together,
+  toggleChecker,
+}: IGetHuntCommandStr) => {
   if (toggleChecker?.huntSwitch) together = !together;
 
   return `RPG HUNT${hardMode ? ' HARDMODE' : ''}${together ? ' TOGETHER' : ''}`;
@@ -112,7 +116,11 @@ type IGetPetTrainCommandStr = IUserReminder & {
   toggleChecker: IToggleUserCheckerReturnType;
 };
 
-export const _parseCommandString = ({props, type, toggleChecker}: IGetPetTrainCommandStr) => {
+export const _parseCommandString = ({
+  props,
+  type,
+  toggleChecker,
+}: IGetPetTrainCommandStr) => {
   switch (type) {
     case RPG_COMMAND_TYPE.daily:
       return getDailyCommandStr();

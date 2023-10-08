@@ -1,17 +1,20 @@
-import {EmbedBuilder, EmbedField, User} from 'discord.js';
+import type {EmbedField, User} from 'discord.js';
+import {EmbedBuilder} from 'discord.js';
 import {convertNumToPetId, typedObjectEntries} from '@epic-helper/utils';
-import {IUserPet} from '@epic-helper/models';
+import type {IUserPet} from '@epic-helper/models';
+import type {
+  RPG_PET_SKILL_ASCEND,
+  RPG_PET_SKILL_SPECIAL,
+  TSkillTierNumber,
+} from '@epic-helper/constants';
 import {
   BOT_COLOR,
   BOT_EMOJI,
   RPG_PET_LABEL,
-  RPG_PET_SKILL_ASCEND,
   RPG_PET_SKILL_EVENT,
   RPG_PET_SKILL_LABEL,
-  RPG_PET_SKILL_SPECIAL,
   RPG_PET_SKILL_TIER_REVERSE,
   RPG_PET_TYPE_EVENT,
-  TSkillTierNumber,
 } from '@epic-helper/constants';
 import {convertNumberToRoman} from '../../../../utils/roman-conversion';
 import {userPetServices} from '../../../../services/database/user-pet.service';
@@ -105,6 +108,7 @@ const generatePetSkillsRows = (pet: IUserPet) => {
 
     str.push(`${skillEmoji} **${skillName}**`);
   }
-  if (!str.length) str.push(`${BOT_EMOJI.petSkill.normie} ${RPG_PET_SKILL_LABEL.normie}`);
+  if (!str.length)
+    str.push(`${BOT_EMOJI.petSkill.normie} ${RPG_PET_SKILL_LABEL.normie}`);
   return str.join('\n');
 };

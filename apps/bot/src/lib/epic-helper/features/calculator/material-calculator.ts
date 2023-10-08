@@ -1,8 +1,14 @@
-import {Embed, EmbedBuilder, MessageCreateOptions, User} from 'discord.js';
-import {RpgArea} from '../../../../types/rpg.types';
+import type {Embed, MessageCreateOptions, User} from 'discord.js';
+import {EmbedBuilder} from 'discord.js';
+import type {RpgArea} from '../../../../types/rpg.types';
 import tradeHelper from '../../../epic-rpg/inventory/trade-helper';
 import embedReaders from '../../../epic-rpg/embed-readers';
-import {BOT_COLOR, BOT_EMOJI, PREFIX, RPG_CLICKABLE_SLASH_COMMANDS} from '@epic-helper/constants';
+import {
+  BOT_COLOR,
+  BOT_EMOJI,
+  PREFIX,
+  RPG_CLICKABLE_SLASH_COMMANDS,
+} from '@epic-helper/constants';
 
 interface ICalcOptions {
   embed: Embed;
@@ -74,16 +80,28 @@ export const getCalcMaterialMessage: TCalcFunc = ({embed, area, author}) => {
       name: `${author.username}'s Material Calculator (Current Area ${area})`,
       iconURL: author.displayAvatarURL(),
     })
-    .setDescription('Assuming you dismantle all the materials and follow the trade rate')
+    .setDescription(
+      'Assuming you dismantle all the materials and follow the trade rate'
+    )
     .addFields([
       {
         name: 'Materials',
         value:
-          `${BOT_EMOJI.working.normieFish} \`[  A3  ]\`: ${a3Fish?.toLocaleString()}\n` +
-          `${BOT_EMOJI.working.apple} \`[  A5  ]\`: ${a5Apple?.toLocaleString()}\n` +
-          `${BOT_EMOJI.working.woodenLog} \`[ A10+ ]\`: ${a10Log?.toLocaleString()}\n` +
-          `${BOT_EMOJI.working.apple} \`[ A11+ ]\`: ${a11Apple?.toLocaleString()}\n` +
-          `${BOT_EMOJI.working.ruby} \`[ A12+ ]\`: ${a12Ruby?.toLocaleString()}`,
+          `${
+            BOT_EMOJI.working.normieFish
+          } \`[  A3  ]\`: ${a3Fish?.toLocaleString()}\n` +
+          `${
+            BOT_EMOJI.working.apple
+          } \`[  A5  ]\`: ${a5Apple?.toLocaleString()}\n` +
+          `${
+            BOT_EMOJI.working.woodenLog
+          } \`[ A10+ ]\`: ${a10Log?.toLocaleString()}\n` +
+          `${
+            BOT_EMOJI.working.apple
+          } \`[ A11+ ]\`: ${a11Apple?.toLocaleString()}\n` +
+          `${
+            BOT_EMOJI.working.ruby
+          } \`[ A12+ ]\`: ${a12Ruby?.toLocaleString()}`,
         inline: true,
       },
       {

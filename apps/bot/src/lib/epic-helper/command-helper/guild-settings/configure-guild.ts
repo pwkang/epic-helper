@@ -1,15 +1,17 @@
-import {
-  ActionRowBuilder,
+import type {
   BaseInteraction,
   BaseMessageOptions,
-  ButtonBuilder,
-  ButtonStyle,
   Client,
-  EmbedBuilder,
   Guild,
-  PermissionsBitField,
   StringSelectMenuInteraction,
   User,
+} from 'discord.js';
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  EmbedBuilder,
+  PermissionsBitField,
 } from 'discord.js';
 import {guildService} from '../../../../services/database/guild.service';
 import {_getGuildSettingsEmbed} from './embed/guild-settings.embed';
@@ -19,7 +21,7 @@ import {getUpdateQuery} from '../toggle/toggle.helper';
 import {toggleDisplayList} from '../toggle/toggle.list';
 import {getGuildToggleEmbed} from '../toggle/type/guild.toggle';
 import {BOT_COLOR} from '@epic-helper/constants';
-import {IGuild} from '@epic-helper/models';
+import type {IGuild} from '@epic-helper/models';
 
 interface IConfigureGuild {
   client: Client;
@@ -57,7 +59,12 @@ interface IUpdateToggle {
   off?: string;
 }
 
-export const _configureGuild = async ({author, server, client, roleId}: IConfigureGuild) => {
+export const _configureGuild = async ({
+  author,
+  server,
+  client,
+  roleId,
+}: IConfigureGuild) => {
   const guildAccount = await guildService.findGuild({
     roleId,
     serverId: server.id,
@@ -68,7 +75,9 @@ export const _configureGuild = async ({author, server, client, roleId}: IConfigu
     serverId: server.id,
     userId: author.id,
   });
-  const isServerAdmin = member?.permissions.has(PermissionsBitField.Flags.ManageGuild);
+  const isServerAdmin = member?.permissions.has(
+    PermissionsBitField.Flags.ManageGuild
+  );
   const isGuildLeader = guildAccount?.leaderId === author.id;
 
   const deleteGuild = async (): Promise<BaseMessageOptions> => {
@@ -107,7 +116,9 @@ export const _configureGuild = async ({author, server, client, roleId}: IConfigu
         content: '',
         embeds: [
           new EmbedBuilder()
-            .setDescription(`Successfully deleted guild - ${messageFormatter.role(roleId)}`)
+            .setDescription(
+              `Successfully deleted guild - ${messageFormatter.role(roleId)}`
+            )
             .setColor(BOT_COLOR.embed),
         ],
         components: [],
@@ -122,7 +133,9 @@ export const _configureGuild = async ({author, server, client, roleId}: IConfigu
     return {};
   };
 
-  const setLeader = async ({leader}: ISetLeader): Promise<BaseMessageOptions> => {
+  const setLeader = async ({
+    leader,
+  }: ISetLeader): Promise<BaseMessageOptions> => {
     if (!roleUsed) {
       return {
         content: 'There is no guild with this role.',
@@ -153,7 +166,9 @@ export const _configureGuild = async ({author, server, client, roleId}: IConfigu
     };
   };
 
-  const setupNewGuild = async ({leader}: ISetupNewGuild): Promise<BaseMessageOptions> => {
+  const setupNewGuild = async ({
+    leader,
+  }: ISetupNewGuild): Promise<BaseMessageOptions> => {
     if (!isServerAdmin) {
       return {
         content: 'You do not have permission to setup a new guild.',
@@ -220,7 +235,10 @@ export const _configureGuild = async ({author, server, client, roleId}: IConfigu
     };
   };
 
-  const updateToggle = async ({on, off}: IUpdateToggle): Promise<BaseMessageOptions> => {
+  const updateToggle = async ({
+    on,
+    off,
+  }: IUpdateToggle): Promise<BaseMessageOptions> => {
     if (!isGuildLeader && !isServerAdmin) {
       return {
         content: 'You do not have permission to use this command.',
@@ -278,7 +296,9 @@ export const _configureGuild = async ({author, server, client, roleId}: IConfigu
     };
   };
 
-  const updateDuelLog = async ({channelId}: IUpdateDuelLog): Promise<BaseMessageOptions> => {
+  const updateDuelLog = async ({
+    channelId,
+  }: IUpdateDuelLog): Promise<BaseMessageOptions> => {
     if (!isGuildLeader && !isServerAdmin) {
       return {
         content: 'You do not have permission to use this command.',
@@ -318,6 +338,14 @@ export const _configureGuild = async ({author, server, client, roleId}: IConfigu
 
 const guildDeletionConfirmation = new ActionRowBuilder<ButtonBuilder>()
   .addComponents(
-    new ButtonBuilder().setCustomId('yes').setLabel('Yes').setStyle(ButtonStyle.Success)
+    new ButtonBuilder()
+      .setCustomId('yes')
+      .setLabel('Yes')
+      .setStyle(ButtonStyle.Success)
   )
-  .addComponents(new ButtonBuilder().setCustomId('no').setLabel('No').setStyle(ButtonStyle.Danger));
+  .addComponents(
+    new ButtonBuilder()
+      .setCustomId('no')
+      .setLabel('No')
+      .setStyle(ButtonStyle.Danger)
+  );

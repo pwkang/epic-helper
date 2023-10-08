@@ -1,4 +1,4 @@
-import {BaseMessageOptions, Guild} from 'discord.js';
+import type {BaseMessageOptions, Guild} from 'discord.js';
 import {serverService} from '../../../../services/database/server.service';
 import {_getTTVerificationSettingsEmbed} from './embed/tt-verification.embed';
 
@@ -21,7 +21,9 @@ interface IRemoveRule {
   roleId: string;
 }
 
-export const _ttVerificationSettings = async ({server}: ITTVerificationSettings) => {
+export const _ttVerificationSettings = async ({
+  server,
+}: ITTVerificationSettings) => {
   let serverAccount = await serverService.getServer({
     serverId: server.id,
   });
@@ -38,7 +40,9 @@ export const _ttVerificationSettings = async ({server}: ITTVerificationSettings)
     };
   };
 
-  const setChannel = async ({channelId}: ISetChannel): Promise<BaseMessageOptions> => {
+  const setChannel = async ({
+    channelId,
+  }: ISetChannel): Promise<BaseMessageOptions> => {
     serverAccount = await serverService.setTTVerificationChannel({
       channelId,
       serverId: server.id,

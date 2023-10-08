@@ -1,6 +1,6 @@
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {Channel, Client, Embed, Guild, Message, User} from 'discord.js';
-import {IMessageEmbedChecker} from '../../../../types/utils';
+import type {Channel, Client, Embed, Guild, Message, User} from 'discord.js';
+import type {IMessageEmbedChecker} from '../../../../types/utils';
 import embedReaders from '../../embed-readers';
 import commandHelper from '../../../epic-helper/command-helper';
 import {serverService} from '../../../../services/database/server.service';
@@ -16,7 +16,13 @@ interface IRpgProfile {
   isSlashCommand: boolean;
 }
 
-export const rpgProfile = ({client, message, author, isSlashCommand, server}: IRpgProfile) => {
+export const rpgProfile = ({
+  client,
+  message,
+  author,
+  isSlashCommand,
+  server,
+}: IRpgProfile) => {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     client,
@@ -59,7 +65,13 @@ interface IRpgProfileSuccess {
   author: User;
 }
 
-const rpgProfileSuccess = async ({embed, server, client, channel, author}: IRpgProfileSuccess) => {
+const rpgProfileSuccess = async ({
+  embed,
+  server,
+  client,
+  channel,
+  author,
+}: IRpgProfileSuccess) => {
   const profile = embedReaders.profile({
     embed,
   });
@@ -82,7 +94,12 @@ interface IRpgProfileAttachment {
   author: User;
 }
 
-const rpgProfileAttachment = async ({server, channelId, client, author}: IRpgProfileAttachment) => {
+const rpgProfileAttachment = async ({
+  server,
+  channelId,
+  client,
+  author,
+}: IRpgProfileAttachment) => {
   const serverAccount = await serverService.getServer({
     serverId: server.id,
   });

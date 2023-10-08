@@ -1,5 +1,9 @@
-import {
+import type {
   ActionRow,
+  MessageActionRowComponent,
+  MessageActionRowComponentBuilder,
+} from 'discord.js';
+import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonComponent,
@@ -7,8 +11,6 @@ import {
   ChannelSelectMenuBuilder,
   MentionableSelectMenuBuilder,
   MentionableSelectMenuComponent,
-  MessageActionRowComponent,
-  MessageActionRowComponentBuilder,
   RoleSelectMenuBuilder,
   RoleSelectMenuComponent,
   StringSelectMenuBuilder,
@@ -17,12 +19,16 @@ import {
   UserSelectMenuComponent,
 } from 'discord.js';
 
-const disableAllComponents = (components: ActionRow<MessageActionRowComponent>[]) => {
+const disableAllComponents = (
+  components: ActionRow<MessageActionRowComponent>[]
+) => {
   const row: ActionRowBuilder<MessageActionRowComponentBuilder>[] = [];
   for (const component of components) {
     const _components = component.components.map((component) => {
       if (component instanceof ButtonComponent) {
-        return ButtonBuilder.from(component).setDisabled(component.style !== ButtonStyle.Link);
+        return ButtonBuilder.from(component).setDisabled(
+          component.style !== ButtonStyle.Link
+        );
       } else if (component instanceof StringSelectMenuComponent) {
         return StringSelectMenuBuilder.from(component).setDisabled(true);
       } else if (component instanceof UserSelectMenuComponent) {
@@ -35,7 +41,11 @@ const disableAllComponents = (components: ActionRow<MessageActionRowComponent>[]
         return ChannelSelectMenuBuilder.from(component).setDisabled(true);
       }
     });
-    row.push(new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(_components));
+    row.push(
+      new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(
+        _components
+      )
+    );
   }
 
   return row;

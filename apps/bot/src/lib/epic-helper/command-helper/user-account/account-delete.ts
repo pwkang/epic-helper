@@ -1,10 +1,9 @@
+import type {BaseMessageOptions, User} from 'discord.js';
 import {
   ActionRowBuilder,
-  BaseMessageOptions,
   ButtonBuilder,
   ButtonStyle,
   EmbedBuilder,
-  User,
 } from 'discord.js';
 import {userService} from '../../../../services/database/user.service';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
@@ -24,7 +23,9 @@ export const _deleteAccount = ({author}: ISlashAccountDelete) => {
     };
   }
 
-  async function responseInteraction(customId: string): Promise<BaseMessageOptions> {
+  async function responseInteraction(
+    customId: string
+  ): Promise<BaseMessageOptions> {
     if (customId === 'confirm') {
       await userService.userAccountDelete(author.id);
       await userReminderServices.clearUserCooldowns(author.id);
@@ -51,8 +52,14 @@ export const _deleteAccount = ({author}: ISlashAccountDelete) => {
 };
 
 const actionRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
-  new ButtonBuilder().setCustomId('confirm').setLabel('Confirm').setStyle(ButtonStyle.Primary),
-  new ButtonBuilder().setCustomId('cancel').setLabel('Cancel').setStyle(ButtonStyle.Secondary)
+  new ButtonBuilder()
+    .setCustomId('confirm')
+    .setLabel('Confirm')
+    .setStyle(ButtonStyle.Primary),
+  new ButtonBuilder()
+    .setCustomId('cancel')
+    .setLabel('Cancel')
+    .setStyle(ButtonStyle.Secondary)
 );
 
 const embed = new EmbedBuilder()

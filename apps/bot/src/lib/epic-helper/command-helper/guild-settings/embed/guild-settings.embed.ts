@@ -1,4 +1,4 @@
-import {IGuild} from '@epic-helper/models';
+import type {IGuild} from '@epic-helper/models';
 import {EmbedBuilder} from 'discord.js';
 import {BOT_COLOR} from '@epic-helper/constants';
 import messageFormatter from '../../../../discordjs/message-formatter';
@@ -8,14 +8,18 @@ export interface IGetGuildReminderEmbed {
   guildAccount: IGuild;
 }
 
-export const _getGuildSettingsEmbed = ({guildAccount}: IGetGuildReminderEmbed): EmbedBuilder => {
+export const _getGuildSettingsEmbed = ({
+  guildAccount,
+}: IGetGuildReminderEmbed): EmbedBuilder => {
   const embed = new EmbedBuilder()
     .setColor(BOT_COLOR.embed)
     .setTitle(`${guildAccount.info.name ?? ''} Settings`)
     .addFields(
       {
         name: 'Leader',
-        value: guildAccount.leaderId ? messageFormatter.user(guildAccount.leaderId) : '-',
+        value: guildAccount.leaderId
+          ? messageFormatter.user(guildAccount.leaderId)
+          : '-',
         inline: true,
       },
       {
@@ -35,7 +39,8 @@ export const _getGuildSettingsEmbed = ({guildAccount}: IGetGuildReminderEmbed): 
           `**Raid Message:** ${guildAccount.upgraid.message.raid ?? '-'}`,
           `**Target Stealth:** ${guildAccount.upgraid.targetStealth ?? '-'}`,
           `**Status:** ${
-            guildAccount.upgraid.readyAt && guildAccount.upgraid.readyAt.getTime() > Date.now()
+            guildAccount.upgraid.readyAt &&
+            guildAccount.upgraid.readyAt.getTime() > Date.now()
               ? timestampHelper.relative({time: guildAccount.upgraid.readyAt})
               : 'Ready'
           }`,

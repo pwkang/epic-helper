@@ -1,5 +1,6 @@
 import {mongoClient} from '@epic-helper/services';
-import {IUserDuelUser, userDuelSchema} from '@epic-helper/models';
+import type {IUserDuelUser} from '@epic-helper/models';
+import {userDuelSchema} from '@epic-helper/models';
 import {getGuildWeek} from '@epic-helper/utils';
 
 const dbUserDuel = mongoClient.model('user-duel', userDuelSchema);
@@ -35,7 +36,8 @@ const addLog = async ({duelAt, user, source}: IAddLog) => {
       expGained: user.guildExp,
     };
   }
-  const prevRecord = log.users.find((logUser) => logUser.userId === user.userId)?.guildExp ?? 0;
+  const prevRecord =
+    log.users.find((logUser) => logUser.userId === user.userId)?.guildExp ?? 0;
   const expGained = user.guildExp - prevRecord;
   log.users = log.users.map((logUser) => {
     if (logUser.userId === user.userId) {
@@ -56,7 +58,11 @@ interface IFindLogBySource {
   messageId: string;
 }
 
-const findLogBySource = async ({serverId, channelId, messageId}: IFindLogBySource) => {
+const findLogBySource = async ({
+  serverId,
+  channelId,
+  messageId,
+}: IFindLogBySource) => {
   const log = await dbUserDuel.findOne({
     'source.serverId': serverId,
     'source.channelId': channelId,

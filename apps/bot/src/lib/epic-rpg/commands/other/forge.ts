@@ -1,4 +1,4 @@
-import {Client, Message, User} from 'discord.js';
+import type {Client, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {RPG_EQUIPMENTS} from '@epic-helper/constants';
 import {userService} from '../../../../services/database/user.service';
@@ -15,7 +15,12 @@ interface IRpgForge {
   isSlashCommand: boolean;
 }
 
-export const rpgForge = ({client, message, author, isSlashCommand}: IRpgForge) => {
+export const rpgForge = ({
+  client,
+  message,
+  author,
+  isSlashCommand,
+}: IRpgForge) => {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     channelId: message.channel.id,

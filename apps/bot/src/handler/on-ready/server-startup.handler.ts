@@ -1,4 +1,4 @@
-import {Client} from 'discord.js';
+import type {Client} from 'discord.js';
 import {serverService} from '../../services/database/server.service';
 import {redisServerInfo} from '../../services/redis/server-info.redis';
 import {EPIC_RPG_SERVER_INFO} from '@epic-helper/constants';

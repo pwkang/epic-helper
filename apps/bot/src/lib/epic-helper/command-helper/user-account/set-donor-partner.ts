@@ -1,12 +1,15 @@
+import type {BaseMessageOptions, User} from 'discord.js';
 import {
   ActionRowBuilder,
-  BaseMessageOptions,
   ButtonBuilder,
   ButtonStyle,
   EmbedBuilder,
-  User,
 } from 'discord.js';
-import {BOT_CLICKABLE_SLASH_COMMANDS, BOT_COLOR, RPG_DONOR_TIER} from '@epic-helper/constants';
+import {
+  BOT_CLICKABLE_SLASH_COMMANDS,
+  BOT_COLOR,
+  RPG_DONOR_TIER,
+} from '@epic-helper/constants';
 import {userService} from '../../../../services/database/user.service';
 
 interface ISetDonor {
@@ -21,7 +24,9 @@ export const _setDonorP = ({author}: ISetDonor) => {
     };
   }
 
-  async function responseInteraction(customId: string): Promise<BaseMessageOptions | null> {
+  async function responseInteraction(
+    customId: string
+  ): Promise<BaseMessageOptions | null> {
     let tier: ValuesOf<typeof RPG_DONOR_TIER> | 'remove' | null = null;
     if (customId === 'remove') {
       await userService.removeRpgDonorPTier(author.id);
@@ -55,11 +60,26 @@ export const _setDonorP = ({author}: ISetDonor) => {
 };
 
 const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-  new ButtonBuilder().setCustomId('non-donor').setLabel('Non-donor').setStyle(ButtonStyle.Primary),
-  new ButtonBuilder().setCustomId('0.9').setLabel('-10%').setStyle(ButtonStyle.Primary),
-  new ButtonBuilder().setCustomId('0.8').setLabel('-20%').setStyle(ButtonStyle.Primary),
-  new ButtonBuilder().setCustomId('0.65').setLabel('-35%').setStyle(ButtonStyle.Primary),
-  new ButtonBuilder().setCustomId('remove').setLabel('Remove').setStyle(ButtonStyle.Secondary)
+  new ButtonBuilder()
+    .setCustomId('non-donor')
+    .setLabel('Non-donor')
+    .setStyle(ButtonStyle.Primary),
+  new ButtonBuilder()
+    .setCustomId('0.9')
+    .setLabel('-10%')
+    .setStyle(ButtonStyle.Primary),
+  new ButtonBuilder()
+    .setCustomId('0.8')
+    .setLabel('-20%')
+    .setStyle(ButtonStyle.Primary),
+  new ButtonBuilder()
+    .setCustomId('0.65')
+    .setLabel('-35%')
+    .setStyle(ButtonStyle.Primary),
+  new ButtonBuilder()
+    .setCustomId('remove')
+    .setLabel('Remove')
+    .setStyle(ButtonStyle.Secondary)
 );
 
 const tierLabel = {
@@ -78,11 +98,15 @@ const getSuccessEmbed = (tier: ValuesOf<typeof RPG_DONOR_TIER> | 'remove') => {
     case RPG_DONOR_TIER.donor10:
     case RPG_DONOR_TIER.donor20:
     case RPG_DONOR_TIER.donor35:
-      embed.setTitle(`You have set your partner donor tier to ${tierLabel[tier]}\n`).setDescription(
-        'You will now hunt with your partner\'s cooldown reduction\n\n' +
-          `If you wish to hunt with your own cooldown
+      embed
+        .setTitle(
+          `You have set your partner donor tier to ${tierLabel[tier]}\n`
+        )
+        .setDescription(
+          "You will now hunt with your partner's cooldown reduction\n\n" +
+            `If you wish to hunt with your own cooldown
 You may use ${BOT_CLICKABLE_SLASH_COMMANDS.accountDonorPartner} and select "Remove"`
-      );
+        );
       break;
     case 'remove':
       embed
@@ -98,5 +122,5 @@ const embed = new EmbedBuilder()
   .setColor(BOT_COLOR.embed)
   .setTitle('Select your partner EPIC RPG donor tier')
   .setDescription(
-    'By setting your partner donor tier,\nyou will hunt will your partner\'s cooldown'
+    "By setting your partner donor tier,\nyou will hunt will your partner's cooldown"
   );

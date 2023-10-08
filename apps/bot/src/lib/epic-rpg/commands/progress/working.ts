@@ -1,10 +1,10 @@
+import type {RPG_WORKING_TYPE} from '@epic-helper/constants';
 import {
   BOT_REMINDER_BASE_COOLDOWN,
   RPG_COMMAND_TYPE,
   RPG_COOLDOWN_EMBED_TYPE,
-  RPG_WORKING_TYPE,
 } from '@epic-helper/constants';
-import {Client, Embed, Message, User} from 'discord.js';
+import type {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {djsMessageHelper} from '../../../discordjs/message';
@@ -43,7 +43,13 @@ interface IRpgWorking {
   workingType: ValuesOf<typeof RPG_WORKING_TYPE>;
 }
 
-export function rpgWorking({client, message, author, isSlashCommand, workingType}: IRpgWorking) {
+export function rpgWorking({
+  client,
+  message,
+  author,
+  isSlashCommand,
+  workingType,
+}: IRpgWorking) {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     channelId: message.channel.id,
@@ -85,7 +91,8 @@ export function rpgWorking({client, message, author, isSlashCommand, workingType
         client,
         message,
         options: {
-          content: 'You were moved to another area, remember to go back your area!',
+          content:
+            'You were moved to another area, remember to go back your area!',
         },
       });
     }
@@ -116,7 +123,11 @@ interface IRpgWorkingSuccess {
   workingType?: ValuesOf<typeof RPG_WORKING_TYPE>;
 }
 
-const rpgWorkingSuccess = async ({author, workingType, channelId}: IRpgWorkingSuccess) => {
+const rpgWorkingSuccess = async ({
+  author,
+  workingType,
+  channelId,
+}: IRpgWorkingSuccess) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker) return;
 
@@ -172,7 +183,9 @@ interface IIsRubyMined {
 }
 
 const isRubyMined = ({content, author}: IIsRubyMined) =>
-  [author.username, 'GOT', '<:ruby:603456286184701953>'].every((msg) => content.includes(msg));
+  [author.username, 'GOT', '<:ruby:603456286184701953>'].every((msg) =>
+    content.includes(msg)
+  );
 
 interface IRubyAmountMined {
   content: string;
@@ -200,4 +213,6 @@ interface IIsFoughtRubyDragon {
 }
 
 const isFoughtRubyDragon = ({content, author}: IIsFoughtRubyDragon) =>
-  [author.username, 'fights', 'THE RUBY DRAGON'].every((msg) => content.includes(msg));
+  [author.username, 'fights', 'THE RUBY DRAGON'].every((msg) =>
+    content.includes(msg)
+  );

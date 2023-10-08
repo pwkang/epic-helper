@@ -1,4 +1,4 @@
-import {Client, Embed, Message, User} from 'discord.js';
+import type {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {
@@ -19,7 +19,12 @@ interface IRpgUltraining {
   isSlashCommand: boolean;
 }
 
-export function rpgUltraining({client, message, author, isSlashCommand}: IRpgUltraining) {
+export function rpgUltraining({
+  client,
+  message,
+  author,
+  isSlashCommand,
+}: IRpgUltraining) {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     channelId: message.channel.id,
@@ -64,7 +69,10 @@ interface IRpgTrainingSuccess {
 
 const TRAINING_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.training;
 
-const rpgUlTrainingSuccess = async ({author, channelId}: IRpgTrainingSuccess) => {
+const rpgUlTrainingSuccess = async ({
+  author,
+  channelId,
+}: IRpgTrainingSuccess) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker) return;
 
@@ -93,5 +101,7 @@ const rpgUlTrainingSuccess = async ({author, channelId}: IRpgTrainingSuccess) =>
 };
 
 const isRpgUltrainingSuccess = ({author, embed}: IIsRpgUltrainingSuccess) => {
-  return [author.username, 'Well done'].every((msg) => embed.description?.includes(msg));
+  return [author.username, 'Well done'].every((msg) =>
+    embed.description?.includes(msg)
+  );
 };

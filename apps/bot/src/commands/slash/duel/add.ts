@@ -1,5 +1,8 @@
 import {SLASH_COMMAND} from '../constant';
-import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
+import {
+  USER_ACC_OFF_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS,
+} from '@epic-helper/constants';
 import commandHelper from '../../../lib/epic-helper/command-helper';
 import djsInteractionHelper from '../../../lib/discordjs/interaction';
 import messageFormatter from '../../../lib/discordjs/message-formatter';
@@ -30,7 +33,10 @@ export default <SlashCommand>{
         option
           .setName('result')
           .setDescription('Duel result')
-          .addChoices({name: 'win', value: 'win'}, {name: 'lose', value: 'lose'})
+          .addChoices(
+            {name: 'win', value: 'win'},
+            {name: 'lose', value: 'lose'}
+          )
       ),
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
@@ -40,7 +46,9 @@ export default <SlashCommand>{
     const exp = interaction.options.getNumber('exp', true);
     const link = interaction.options.getString('link');
     const result = interaction.options.getString('result');
-    const messageSource = link ? messageFormatter.getInfoFromMessageUrl(link) : null;
+    const messageSource = link
+      ? messageFormatter.getInfoFromMessageUrl(link)
+      : null;
     const embed = await commandHelper.duel.manualAdd({
       client,
       expGained: exp,

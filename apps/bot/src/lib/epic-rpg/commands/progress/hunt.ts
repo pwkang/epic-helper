@@ -1,4 +1,4 @@
-import {Client, Embed, Message, User} from 'discord.js';
+import type {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {djsMessageHelper} from '../../../discordjs/message';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
@@ -33,7 +33,10 @@ export function rpgHunt({author, message, client, isSlashCommand}: IRpgHunt) {
   });
   if (!event) return;
   event.on('content', async (content) => {
-    if (isRpgHuntSuccess({author, content}) || isZombieHordeEnded({author, content})) {
+    if (
+      isRpgHuntSuccess({author, content}) ||
+      isZombieHordeEnded({author, content})
+    ) {
       await rpgHuntSuccess({
         client,
         channelId: message.channel.id,
@@ -62,7 +65,11 @@ export function rpgHunt({author, message, client, isSlashCommand}: IRpgHunt) {
       });
     }
 
-    if (isPartnerUnderCommand({author, message}) || isHardModeNotUnlocked({content})) event?.stop();
+    if (
+      isPartnerUnderCommand({author, message}) ||
+      isHardModeNotUnlocked({content})
+    )
+      event?.stop();
   });
   event.on('embed', (embed) => {
     if (isUserEncounterZombieHorde({author, embed})) {
@@ -92,7 +99,11 @@ interface IRpgHuntSuccess {
 
 const HUNT_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.hunt;
 
-const rpgHuntSuccess = async ({author, content, channelId}: IRpgHuntSuccess) => {
+const rpgHuntSuccess = async ({
+  author,
+  content,
+  channelId,
+}: IRpgHuntSuccess) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker) return;
   const hardMode = content.includes('(but stronger)');
@@ -119,7 +130,9 @@ const rpgHuntSuccess = async ({author, content, channelId}: IRpgHuntSuccess) => 
 
   await userStatsService.countUserStats({
     userId: author.id,
-    type: together ? USER_STATS_RPG_COMMAND_TYPE.huntTogether : USER_STATS_RPG_COMMAND_TYPE.hunt,
+    type: together
+      ? USER_STATS_RPG_COMMAND_TYPE.huntTogether
+      : USER_STATS_RPG_COMMAND_TYPE.hunt,
   });
 };
 
@@ -130,7 +143,12 @@ interface IHealReminder {
   content: Message['content'];
 }
 
-const healReminder = async ({client, channelId, author, content}: IHealReminder) => {
+const healReminder = async ({
+  client,
+  channelId,
+  author,
+  content,
+}: IHealReminder) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker?.heal) return;
 
@@ -180,7 +198,9 @@ interface IIsPartnerUnderCommand {
 }
 
 function isPartnerUnderCommand({author, message}: IIsPartnerUnderCommand) {
-  return message.mentions.has(author.id) && message.content.includes('in the middle');
+  return (
+    message.mentions.has(author.id) && message.content.includes('in the middle')
+  );
 }
 
 interface IIsZombieHordeEnded {
@@ -191,7 +211,9 @@ interface IIsZombieHordeEnded {
 function isZombieHordeEnded({content, author}: IIsZombieHordeEnded) {
   return (
     content.includes(author.username) &&
-    ['cried', 'fights the horde', 'the horde did not notice'].some((text) => content.includes(text))
+    ['cried', 'fights the horde', 'the horde did not notice'].some((text) =>
+      content.includes(text)
+    )
   );
 }
 
@@ -200,7 +222,10 @@ interface IIsUserEncounterZombieHorde {
   author: User;
 }
 
-function isUserEncounterZombieHorde({embed, author}: IIsUserEncounterZombieHorde) {
+function isUserEncounterZombieHorde({
+  embed,
+  author,
+}: IIsUserEncounterZombieHorde) {
   return (
     embed.author?.name === `${author.username} — hunt` &&
     embed.description?.includes('a zombie horde coming your way')
@@ -215,7 +240,9 @@ interface IIsUserJoinedTheHorde {
 function isUserJoinedTheHorde({content, author}: IIsUserJoinedTheHorde) {
   return (
     content.includes(author.username) &&
-    ['pretends to be a zombie', 'area #2'].some((text) => content.includes(text))
+    ['pretends to be a zombie', 'area #2'].some((text) =>
+      content.includes(text)
+    )
   );
 }
 
@@ -263,13 +290,17 @@ const getHealReminderMsg = ({
       //Both Enemy were Killed
       hp = content
         .split('\n')
-        .find((msg) => [author.username, 'remaining HP is'].every((m) => msg.includes(m)))
+        .find((msg) =>
+          [author.username, 'remaining HP is'].every((m) => msg.includes(m))
+        )
         ?.split('HP is')[1]
         .trim()
         .split('/')[0];
       hpLost = content
         .split('\n')
-        .find((msg) => [author.username, 'remaining HP is'].every((m) => msg.includes(m)))
+        .find((msg) =>
+          [author.username, 'remaining HP is'].every((m) => msg.includes(m))
+        )
         ?.split('HP')[0]
         .trim()
         .split(' ')
@@ -278,7 +309,9 @@ const getHealReminderMsg = ({
       //one of the player died
       const playerSurvived = content
         .split('\n')
-        .find((msg) => [author.username, 'remaining HP is'].every((m) => msg.includes(m)));
+        .find((msg) =>
+          [author.username, 'remaining HP is'].every((m) => msg.includes(m))
+        );
       if (playerSurvived) {
         //player is survived
         hp = playerSurvived.split('HP is')[1].trim().split('/')[0];

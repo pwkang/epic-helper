@@ -125,7 +125,16 @@ export const RPG_PET_ADV_STATUS = {
   back: 'back',
 } as const;
 
-export type TSkillTierStr = 'f' | 'e' | 'd' | 'c' | 'b' | 'a' | 's' | 'ss' | 'ss+';
+export type TSkillTierStr =
+  | 'f'
+  | 'e'
+  | 'd'
+  | 'c'
+  | 'b'
+  | 'a'
+  | 's'
+  | 'ss'
+  | 'ss+';
 export type TSkillTierNumber = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
 export const RPG_PET_SKILL_TIER: Record<TSkillTierStr, TSkillTierNumber> = {
@@ -140,7 +149,10 @@ export const RPG_PET_SKILL_TIER: Record<TSkillTierStr, TSkillTierNumber> = {
   'ss+': 9,
 } as const;
 
-export const RPG_PET_SKILL_TIER_REVERSE: Record<TSkillTierNumber, TSkillTierStr> = {
+export const RPG_PET_SKILL_TIER_REVERSE: Record<
+  TSkillTierNumber,
+  TSkillTierStr
+> = {
   1: 'f',
   2: 'e',
   3: 'd',
@@ -157,5 +169,6 @@ export const RPG_PET_THUMBNAIL = {
   dog: 'https://cdn.discordapp.com/emojis/703152291540369450.png?v=1',
   dragon: 'https://cdn.discordapp.com/emojis/705963075576135691.png?v=1',
   bunny: 'https://cdn.discordapp.com/emojis/690094269125361672.png?v=1',
-  fakeGoldenBunny: 'https://cdn.discordapp.com/emojis/690840027420295248.webp?size=44',
+  fakeGoldenBunny:
+    'https://cdn.discordapp.com/emojis/690840027420295248.webp?size=44',
 } as const;

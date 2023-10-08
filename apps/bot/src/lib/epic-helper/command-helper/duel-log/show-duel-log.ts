@@ -1,17 +1,17 @@
-import {
+import type {
   BaseInteraction,
   BaseMessageOptions,
   Client,
-  EmbedBuilder,
   Guild,
   StringSelectMenuInteraction,
   User,
 } from 'discord.js';
+import {EmbedBuilder} from 'discord.js';
 import {guildDuelService} from '../../../../services/database/guild-duel.service';
 import {guildService} from '../../../../services/database/guild.service';
-import {IGuildDuel} from '@epic-helper/models/dist/guild-duel/guild-duel.type';
+import type {IGuildDuel} from '@epic-helper/models/dist/guild-duel/guild-duel.type';
 import {BOT_COLOR} from '@epic-helper/constants';
-import {IGuild} from '@epic-helper/models';
+import type {IGuild} from '@epic-helper/models';
 import {getGuildWeek} from '@epic-helper/utils';
 import ms from 'ms';
 import messageFormatter from '../../../discordjs/message-formatter';
@@ -65,7 +65,9 @@ export const _showDuelLog = async ({server, client, author}: IShowDuelLog) => {
         content: 'You do not have permissions to access this command',
       };
     }
-    const guild = filteredGuilds.find((guild) => guild.roleId === guildSelector.getGuildId());
+    const guild = filteredGuilds.find(
+      (guild) => guild.roleId === guildSelector.getGuildId()
+    );
     if (!guild)
       return {
         content: 'No guilds found',
@@ -77,11 +79,15 @@ export const _showDuelLog = async ({server, client, author}: IShowDuelLog) => {
     };
   };
 
-  const replyInteraction = ({interaction}: IReplyInteraction): BaseMessageOptions => {
+  const replyInteraction = ({
+    interaction,
+  }: IReplyInteraction): BaseMessageOptions => {
     guildSelector.readInteraction({
       interaction,
     });
-    const guild = filteredGuilds.find((guild) => guild.roleId === guildSelector.getGuildId());
+    const guild = filteredGuilds.find(
+      (guild) => guild.roleId === guildSelector.getGuildId()
+    );
     if (!guild)
       return {
         content: 'No guilds found',
@@ -111,7 +117,9 @@ const generateEmbed = ({duelLogs, guild}: IGenerateEmbed) => {
   const currentCycle = {
     label: 'Current Cycle',
     logs: duelLogs.find(
-      (log) => log.guildRoleId === guild.roleId && log.weekAt.getTime() === getGuildWeek().getTime()
+      (log) =>
+        log.guildRoleId === guild.roleId &&
+        log.weekAt.getTime() === getGuildWeek().getTime()
     ),
   };
   const previousCycle = {
@@ -127,14 +135,14 @@ const generateEmbed = ({duelLogs, guild}: IGenerateEmbed) => {
       name: cycle.label,
       value: cycle.logs?.users?.length
         ? cycle.logs.users
-          .sort((a, b) => b.totalExp - a.totalExp)
-          .map(
-            (user, index) =>
-              `\`[${index + 1}]\` ${messageFormatter.user(user.userId)} \`${user.totalExp} XP | ${
-                user.duelCount
-              } duels\``
-          )
-          .join('\n')
+            .sort((a, b) => b.totalExp - a.totalExp)
+            .map(
+              (user, index) =>
+                `\`[${index + 1}]\` ${messageFormatter.user(user.userId)} \`${
+                  user.totalExp
+                } XP | ${user.duelCount} duels\``
+            )
+            .join('\n')
         : 'None',
       inline: true,
     });

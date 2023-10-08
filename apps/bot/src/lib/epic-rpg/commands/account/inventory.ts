@@ -1,4 +1,4 @@
-import {Client, Embed, Message, User} from 'discord.js';
+import type {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import materialCalculator from '../../../epic-helper/features/calculator/material-calculator';
 import sttScoreCalculator from '../../../epic-helper/features/calculator/stt-score-calculator';
@@ -14,7 +14,13 @@ interface IRpg {
   args?: string[];
 }
 
-export function rpgInventory({client, message, author, isSlashCommand, args}: IRpg) {
+export function rpgInventory({
+  client,
+  message,
+  author,
+  isSlashCommand,
+  args,
+}: IRpg) {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     client,
@@ -30,17 +36,24 @@ export function rpgInventory({client, message, author, isSlashCommand, args}: IR
       });
       event?.stop();
       if (!isSlashCommand && args) {
-        if (materialCalculator.isCalcMaterial(args) || sttScoreCalculator.isCalcSTT(args)) {
+        if (
+          materialCalculator.isCalcMaterial(args) ||
+          sttScoreCalculator.isCalcSTT(args)
+        ) {
           const calcInfo = sttScoreCalculator.getCalcInfo(args);
           if (!calcInfo.area) return;
           const options = materialCalculator.isCalcMaterial(args)
-            ? materialCalculator.getCalcMaterialMessage({embed, area: calcInfo.area ?? 0, author})
+            ? materialCalculator.getCalcMaterialMessage({
+                embed,
+                area: calcInfo.area ?? 0,
+                author,
+              })
             : sttScoreCalculator.getCalcSTTMessage({
-              embed,
-              area: calcInfo.area ?? 0,
-              author,
-              level: calcInfo?.level ?? 0,
-            });
+                embed,
+                area: calcInfo.area ?? 0,
+                author,
+                level: calcInfo?.level ?? 0,
+              });
 
           djsMessageHelper.send({
             client,

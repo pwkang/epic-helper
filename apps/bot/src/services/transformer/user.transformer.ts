@@ -1,4 +1,4 @@
-import {IUser} from '@epic-helper/models';
+import type {IUser} from '@epic-helper/models';
 import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import {typedObjectEntries} from '@epic-helper/utils';
 

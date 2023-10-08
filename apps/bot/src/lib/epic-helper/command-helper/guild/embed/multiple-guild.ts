@@ -1,4 +1,5 @@
-import {Collection, EmbedBuilder, Role} from 'discord.js';
+import type {Collection, Role} from 'discord.js';
+import {EmbedBuilder} from 'discord.js';
 import {BOT_COLOR} from '@epic-helper/constants';
 import messageFormatter from '../../../../discordjs/message-formatter';
 

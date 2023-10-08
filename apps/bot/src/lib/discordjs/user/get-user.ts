@@ -1,12 +1,15 @@
 import {logger} from '@epic-helper/utils';
-import {User} from 'discord.js';
+import type {User} from 'discord.js';
 
 interface IGetUser {
   userId: string;
   client: any;
 }
 
-export const _getUser = async ({userId, client}: IGetUser): Promise<User | null> => {
+export const _getUser = async ({
+  userId,
+  client,
+}: IGetUser): Promise<User | null> => {
   const user = client.users.cache.get(userId);
   if (!user) {
     try {

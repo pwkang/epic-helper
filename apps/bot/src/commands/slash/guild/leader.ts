@@ -1,5 +1,8 @@
 import {SLASH_COMMAND} from '../constant';
-import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
+import {
+  USER_ACC_OFF_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS,
+} from '@epic-helper/constants';
 import commandHelper from '../../../lib/epic-helper/command-helper';
 import djsInteractionHelper from '../../../lib/discordjs/interaction';
 
@@ -24,7 +27,9 @@ export default <SlashCommand>{
       .addUserOption((option) =>
         option
           .setName('leader')
-          .setDescription('User that can modify the guild settings without admin permission')
+          .setDescription(
+            'User that can modify the guild settings without admin permission'
+          )
           .setRequired(true)
       ),
   execute: async (client, interaction) => {

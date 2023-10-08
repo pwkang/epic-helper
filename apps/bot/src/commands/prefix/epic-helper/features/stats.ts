@@ -1,7 +1,7 @@
+import type {TEventTypes} from '../../../../lib/epic-helper/features/stats';
 import {
   getStatsEmbeds,
   statsActionRow,
-  TEventTypes,
 } from '../../../../lib/epic-helper/features/stats';
 import {djsMessageHelper} from '../../../../lib/discordjs/message';
 import {

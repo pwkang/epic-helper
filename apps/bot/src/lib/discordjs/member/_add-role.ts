@@ -1,4 +1,4 @@
-import {Client} from 'discord.js';
+import type {Client} from 'discord.js';
 import {djsServerHelper} from '../server';
 import {_fetchMember} from './_fetch-member';
 import {logger} from '@epic-helper/utils';
@@ -10,7 +10,12 @@ interface IAddRoles {
   roleIds: string[];
 }
 
-export const _addRoles = async ({client, serverId, userId, roleIds}: IAddRoles) => {
+export const _addRoles = async ({
+  client,
+  serverId,
+  userId,
+  roleIds,
+}: IAddRoles) => {
   const server = await djsServerHelper.getServer({
     serverId,
     client,
@@ -32,7 +37,9 @@ export const _addRoles = async ({client, serverId, userId, roleIds}: IAddRoles) 
     logger({
       clusterId: client.cluster?.id,
       logLevel: 'error',
-      message: `Failed to add roles ${roleIds.join(', ')} to ${userId} in ${serverId}`,
+      message: `Failed to add roles ${roleIds.join(
+        ', '
+      )} to ${userId} in ${serverId}`,
       variant: 'add-roles',
     });
   }

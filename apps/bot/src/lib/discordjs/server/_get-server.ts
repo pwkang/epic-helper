@@ -1,4 +1,4 @@
-import {Client} from 'discord.js';
+import type {Client} from 'discord.js';
 import {logger} from '@epic-helper/utils';
 
 interface IGetServer {

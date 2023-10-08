@@ -18,7 +18,10 @@ export default <PrefixCommand>{
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
   },
   execute: (client, message, args) => {
-    if (!sttScoreCalculator.isCalcSTT(args) && !materialCalculator.isCalcMaterial(args))
+    if (
+      !sttScoreCalculator.isCalcSTT(args) &&
+      !materialCalculator.isCalcMaterial(args)
+    )
       return djsMessageHelper.reply({
         client,
         message,
@@ -40,23 +43,25 @@ export default <PrefixCommand>{
     });
     if (!event) return;
     event.on('embed', async (embed) => {
-      if (rpgInventoryChecker.isUserInventory({author: message.author, embed})) {
+      if (
+        rpgInventoryChecker.isUserInventory({author: message.author, embed})
+      ) {
         event?.stop();
         await djsMessageHelper.send({
           client,
           channelId: message.channel.id,
           options: materialCalculator.isCalcMaterial(args)
             ? materialCalculator.getCalcMaterialMessage({
-              embed,
-              area: calcInfo.area ?? 0,
-              author: message.author,
-            })
+                embed,
+                area: calcInfo.area ?? 0,
+                author: message.author,
+              })
             : sttScoreCalculator.getCalcSTTMessage({
-              embed,
-              area: calcInfo.area ?? 0,
-              author: message.author,
-              level: calcInfo.level ?? 0,
-            }),
+                embed,
+                area: calcInfo.area ?? 0,
+                author: message.author,
+                level: calcInfo.level ?? 0,
+              }),
         });
       }
     });

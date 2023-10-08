@@ -1,4 +1,5 @@
-import {EmbedBuilder, User} from 'discord.js';
+import type {User} from 'discord.js';
+import {EmbedBuilder} from 'discord.js';
 import {BOT_COLOR} from '@epic-helper/constants';
 import messageFormatter from '../../../../discordjs/message-formatter';
 import convertMsToHumanReadableString from '../../../../../utils/convert-ms-to-human-readable-string';
@@ -37,7 +38,9 @@ export const generateDuelLogEmbed = ({
   } else {
     embed.setTitle(`Added ${expGained} XP`);
   }
-  const description = [`**New:** \`${newTotalExp} XP | ${newTotalDuel} duels\``];
+  const description = [
+    `**New:** \`${newTotalExp} XP | ${newTotalDuel} duels\``,
+  ];
   if (source) {
     description.push(
       `[Jump to duel result](${messageFormatter.messageUrl({
@@ -50,7 +53,9 @@ export const generateDuelLogEmbed = ({
   embed.setDescription(description.join('\n'));
 
   const timeStr = lastDuel
-    ? convertMsToHumanReadableString(new Date().getTime() - lastDuel.getTime()) + ' ago'
+    ? convertMsToHumanReadableString(
+        new Date().getTime() - lastDuel.getTime()
+      ) + ' ago'
     : 'N/A';
   embed.setFooter({
     text: `Last duel: ${timeStr}`,

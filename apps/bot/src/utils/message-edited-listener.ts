@@ -1,4 +1,4 @@
-import {Message} from 'discord.js';
+import type {Message} from 'discord.js';
 import {redisMessageEdited} from '../services/redis/message-edited.redis';
 import {EventEmitter} from 'events';
 import ms from 'ms';

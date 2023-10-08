@@ -1,8 +1,7 @@
 import {serverService} from '../../../../services/database/server.service';
+import type {BaseInteraction, BaseMessageOptions} from 'discord.js';
 import {
   ActionRowBuilder,
-  BaseInteraction,
-  BaseMessageOptions,
   EmbedBuilder,
   StringSelectMenuBuilder,
 } from 'discord.js';
@@ -36,7 +35,9 @@ export const _removeEpicTokens = async ({userId}: IRemoveEpicTokens) => {
   ): Promise<BaseMessageOptions | null> => {
     if (interaction.isStringSelectMenu() && interaction.customId === 'server') {
       const serverId = interaction.values[0];
-      const removedServer = boostedServers.find((server) => server.serverId === serverId);
+      const removedServer = boostedServers.find(
+        (server) => server.serverId === serverId
+      );
       await removeTokens({
         serverId,
         userId,
@@ -73,7 +74,9 @@ const removeTokens = async ({serverId, userId}: IRemoveTokens) => {
 
 interface IGetInteraction {
   page: number;
-  boostedServers: Awaited<ReturnType<typeof serverService.getUserBoostedServers>>;
+  boostedServers: Awaited<
+    ReturnType<typeof serverService.getUserBoostedServers>
+  >;
 }
 
 const getInteraction = ({boostedServers, page}: IGetInteraction) => {
@@ -106,7 +109,10 @@ interface IGetServerSelector {
 }
 
 const getServerSelector = ({servers, page}: IGetServerSelector) => {
-  const serversToShow = servers.slice(page * SERVERS_PER_PAGE, (page + 1) * SERVERS_PER_PAGE);
+  const serversToShow = servers.slice(
+    page * SERVERS_PER_PAGE,
+    (page + 1) * SERVERS_PER_PAGE
+  );
   return new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
     new StringSelectMenuBuilder()
       .setCustomId('server')
@@ -122,7 +128,9 @@ const getServerSelector = ({servers, page}: IGetServerSelector) => {
 };
 
 interface IGetSelectServerEmbed {
-  boostedServers: Awaited<ReturnType<typeof serverService.getUserBoostedServers>>;
+  boostedServers: Awaited<
+    ReturnType<typeof serverService.getUserBoostedServers>
+  >;
 }
 
 const getSelectServerEmbed = ({boostedServers}: IGetSelectServerEmbed) => {
@@ -134,7 +142,9 @@ const getSelectServerEmbed = ({boostedServers}: IGetSelectServerEmbed) => {
   return new EmbedBuilder()
     .setTitle('Select a server to remove tokens from.')
     .setColor(BOT_COLOR.embed)
-    .setDescription('This will remove all tokens from the selected server immediately.');
+    .setDescription(
+      'This will remove all tokens from the selected server immediately.'
+    );
 };
 
 interface IGetSuccessEmbed {
@@ -143,6 +153,10 @@ interface IGetSuccessEmbed {
 
 const getSuccessEmbed = ({serverName}: IGetSuccessEmbed) => {
   return new EmbedBuilder()
-    .setDescription(`Successfully removed tokens${serverName ? ` from **${serverName}**` : ''}.`)
+    .setDescription(
+      `Successfully removed tokens${
+        serverName ? ` from **${serverName}**` : ''
+      }.`
+    )
     .setColor(BOT_COLOR.embed);
 };

@@ -1,6 +1,9 @@
 import commandHelper from '../../../../lib/epic-helper/command-helper';
 import djsInteractionHelper from '../../../../lib/discordjs/interaction';
-import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
+import {
+  USER_ACC_OFF_ACTIONS,
+  USER_NOT_REGISTERED_ACTIONS,
+} from '@epic-helper/constants';
 import {SLASH_COMMAND} from '../../constant';
 
 export default <SlashCommand>{
@@ -17,7 +20,10 @@ export default <SlashCommand>{
   builder: (subcommand) =>
     subcommand
       .addRoleOption((option) =>
-        option.setName('role').setDescription('Role to assign to verified users').setRequired(true)
+        option
+          .setName('role')
+          .setDescription('Role to assign to verified users')
+          .setRequired(true)
       )
       .addNumberOption((option) =>
         option
@@ -35,7 +41,9 @@ export default <SlashCommand>{
           .setMaxValue(999)
       )
       .addStringOption((option) =>
-        option.setName('message').setDescription('Custom message to be attached in the embed')
+        option
+          .setName('message')
+          .setDescription('Custom message to be attached in the embed')
       ),
   execute: async (client, interaction) => {
     if (!interaction.inGuild() || !interaction.guild) return;

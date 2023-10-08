@@ -1,4 +1,5 @@
-import {ApplicationCommand, Client, Guild, Routes} from 'discord.js';
+import type {ApplicationCommand, Client, Guild} from 'discord.js';
+import {Routes} from 'discord.js';
 import {djsRestClient} from '@epic-helper/services';
 import {logger} from '@epic-helper/utils';
 
@@ -7,11 +8,16 @@ export interface IGetGuildSlashCommands {
   guild: Guild;
 }
 
-export const _getGuildSlashCommands = async ({guild, client}: IGetGuildSlashCommands) => {
+export const _getGuildSlashCommands = async ({
+  guild,
+  client,
+}: IGetGuildSlashCommands) => {
   if (!client.user) return [];
 
   try {
-    const data = await djsRestClient.get(Routes.applicationGuildCommands(client.user.id, guild.id));
+    const data = await djsRestClient.get(
+      Routes.applicationGuildCommands(client.user.id, guild.id)
+    );
 
     return data as ApplicationCommand[];
   } catch (e: any) {

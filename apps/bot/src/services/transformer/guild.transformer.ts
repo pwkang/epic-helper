@@ -1,4 +1,4 @@
-import {IGuild} from '@epic-helper/models';
+import type {IGuild} from '@epic-helper/models';
 
 export const toGuild = (guild: IGuild): IGuild => {
   return {

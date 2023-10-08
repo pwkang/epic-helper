@@ -1,6 +1,7 @@
-import {EmbedBuilder, User} from 'discord.js';
+import type {User} from 'discord.js';
+import {EmbedBuilder} from 'discord.js';
 import {BOT_COLOR} from '@epic-helper/constants';
-import {IUser} from '@epic-helper/models';
+import type {IUser} from '@epic-helper/models';
 
 export interface IGetUserSettingsEmbed {
   author: User;
@@ -44,14 +45,18 @@ export const _getUserSettingsEmbed = ({
     },
     {
       icon: ':alarm_clock:',
-      value: `**${DONOR_DISPLAY[userProfile.config.donor]}** cooldown on all commands`,
+      value: `**${
+        DONOR_DISPLAY[userProfile.config.donor]
+      }** cooldown on all commands`,
     },
   ];
 
   if (userProfile.config.donorP) {
     helperSettings.push({
       icon: '👥',
-      value: `\`hunt t\` with **${DONOR_DISPLAY[userProfile.config.donorP]}** cooldown`,
+      value: `\`hunt t\` with **${
+        DONOR_DISPLAY[userProfile.config.donorP]
+      }** cooldown`,
     });
   }
 
@@ -93,7 +98,9 @@ export const _getUserSettingsEmbed = ({
 
   embed.addFields({
     name: 'EPIC HELPER Settings',
-    value: helperSettings.map((setting) => `${setting.icon} - ${setting.value}`).join('\n'),
+    value: helperSettings
+      .map((setting) => `${setting.icon} - ${setting.value}`)
+      .join('\n'),
   });
 
   return embed;

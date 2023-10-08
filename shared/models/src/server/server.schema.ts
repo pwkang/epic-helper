@@ -1,5 +1,10 @@
 import {Schema} from 'mongoose';
-import {IEnchantChannel, IServer, IToken, ITTVerificationRules} from './server.type';
+import {
+  IEnchantChannel,
+  IServer,
+  IToken,
+  ITTVerificationRules,
+} from './server.type';
 
 const enchantChannelSchema = new Schema<IEnchantChannel>({
   channelId: {type: String, required: true},

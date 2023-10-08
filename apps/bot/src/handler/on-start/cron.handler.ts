@@ -1,4 +1,4 @@
-import {Client} from 'discord.js';
+import type {Client} from 'discord.js';
 import {schedule} from 'node-cron';
 import {handlerFileFilter, handlerRoot} from './constant';
 import {importFiles, logger} from '@epic-helper/utils';

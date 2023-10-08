@@ -80,7 +80,8 @@ export const SLASH_COMMAND = {
     },
     leader: {
       name: 'leader',
-      description: 'Leader of the guild, can modify guild settings without admin permission',
+      description:
+        'Leader of the guild, can modify guild settings without admin permission',
     },
     delete: {
       name: 'delete',
@@ -132,7 +133,8 @@ export const SLASH_COMMAND = {
     },
     randomEvents: {
       name: 'random-events',
-      description: 'set message to send when random events occur (type "clear" to remove)',
+      description:
+        'set message to send when random events occur (type "clear" to remove)',
     },
     ttVerification: {
       name: 'tt-verification',
@@ -265,7 +267,8 @@ export const SLASH_COMMAND = {
   },
   invite: {
     name: 'invite',
-    description: 'Invite EPIC Helper to another server or join the official server',
+    description:
+      'Invite EPIC Helper to another server or join the official server',
   },
   info: {
     name: 'info',

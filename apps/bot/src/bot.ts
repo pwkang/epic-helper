@@ -32,18 +32,21 @@ if (environment === 'production') {
   initSentry();
 }
 
-Promise.all([loadCommands(client), loadBotEvents(client), loadRedis(), loadCronJob(client)]).then(
-  () => {
+Promise.all([
+  loadCommands(client),
+  loadBotEvents(client),
+  loadRedis(),
+  loadCronJob(client),
+]).then(() => {
+  logger({
+    message: 'All handlers loaded, connecting to Discord...',
+    clusterId: client.cluster?.id,
+  });
+  client.login(process.env.BOT_TOKEN).catch((error) => {
     logger({
-      message: 'All handlers loaded, connecting to Discord...',
+      message: error.message,
       clusterId: client.cluster?.id,
+      logLevel: 'error',
     });
-    client.login(process.env.BOT_TOKEN).catch((error) => {
-      logger({
-        message: error.message,
-        clusterId: client.cluster?.id,
-        logLevel: 'error',
-      });
-    });
-  }
-);
+  });
+});

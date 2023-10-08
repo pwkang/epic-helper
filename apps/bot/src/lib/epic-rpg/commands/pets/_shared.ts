@@ -1,4 +1,5 @@
-import {ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Message, User} from 'discord.js';
+import type {Client, Message, User} from 'discord.js';
+import {ActionRowBuilder, ButtonBuilder, ButtonStyle} from 'discord.js';
 import timestampHelper from '../../../discordjs/timestamp';
 import ms from 'ms';
 import {djsMessageHelper} from '../../../discordjs/message';
@@ -67,7 +68,11 @@ export const collectSelectedPets = async ({
           content: 'Insert IDs',
         },
       });
-      const selectedPetsId = await collectSelectedPetsId({client, message, author});
+      const selectedPetsId = await collectSelectedPetsId({
+        client,
+        message,
+        author,
+      });
       clearTimeout(autoSelectTimeout);
       resolve(selectedPetsId);
       return null;
@@ -77,13 +82,22 @@ export const collectSelectedPets = async ({
 
 const row = new ActionRowBuilder<ButtonBuilder>()
   .addComponents(
-    new ButtonBuilder().setCustomId('epic').setLabel('EPIC').setStyle(ButtonStyle.Primary)
+    new ButtonBuilder()
+      .setCustomId('epic')
+      .setLabel('EPIC')
+      .setStyle(ButtonStyle.Primary)
   )
   .addComponents(
-    new ButtonBuilder().setCustomId('ids').setLabel('IDs').setStyle(ButtonStyle.Secondary)
+    new ButtonBuilder()
+      .setCustomId('ids')
+      .setLabel('IDs')
+      .setStyle(ButtonStyle.Secondary)
   );
 
-const collectSelectedPetsId = ({message, author}: ICollectSelectedPets): Promise<string[]> => {
+const collectSelectedPetsId = ({
+  message,
+  author,
+}: ICollectSelectedPets): Promise<string[]> => {
   return new Promise((resolve) => {
     const event = message.channel.createMessageCollector({
       filter: (m) => m.author.id === author.id,

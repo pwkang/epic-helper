@@ -1,12 +1,12 @@
-import {Client} from 'discord.js';
+import type {Client} from 'discord.js';
 import {getReminderChannel} from '../reminder-channel';
 import {djsMessageHelper} from '../../../discordjs/message';
-import {IUser, IUserReminder} from '@epic-helper/models';
+import type {IUser, IUserReminder} from '@epic-helper/models';
 import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import {userPetServices} from '../../../../services/database/user-pet.service';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {generateUserReminderMessage} from '../message-generator/custom-message-generator';
-import toggleUserChecker from '../../toggle-checker/user';
+import type toggleUserChecker from '../../toggle-checker/user';
 
 interface IUserPetReminderTimesUp {
   client: Client;

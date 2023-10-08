@@ -1,4 +1,5 @@
-import {ApplicationCommand, Client, Routes, SlashCommandBuilder} from 'discord.js';
+import type {ApplicationCommand, Client, SlashCommandBuilder} from 'discord.js';
+import {Routes} from 'discord.js';
 import {logger} from '@epic-helper/utils';
 import {djsRestClient} from '@epic-helper/services';
 
@@ -7,11 +8,17 @@ export interface ICreateGlobalSlashCommand {
   commands: ReturnType<SlashCommandBuilder['toJSON']>;
 }
 
-export const _createGlobalSlashCommand = async ({commands, client}: ICreateGlobalSlashCommand) => {
+export const _createGlobalSlashCommand = async ({
+  commands,
+  client,
+}: ICreateGlobalSlashCommand) => {
   try {
-    const data = await djsRestClient.post(Routes.applicationCommands(client.user!.id), {
-      body: commands,
-    });
+    const data = await djsRestClient.post(
+      Routes.applicationCommands(client.user!.id),
+      {
+        body: commands,
+      }
+    );
     return data as ApplicationCommand;
   } catch (e: any) {
     logger({

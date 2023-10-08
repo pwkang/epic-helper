@@ -1,6 +1,11 @@
-import {IUser} from '@epic-helper/models';
-import {EmbedBuilder, User} from 'discord.js';
-import {BOT_CLICKABLE_SLASH_COMMANDS, BOT_COLOR, RPG_COMMAND_TYPE} from '@epic-helper/constants';
+import type {IUser} from '@epic-helper/models';
+import type {User} from 'discord.js';
+import {EmbedBuilder} from 'discord.js';
+import {
+  BOT_CLICKABLE_SLASH_COMMANDS,
+  BOT_COLOR,
+  RPG_COMMAND_TYPE,
+} from '@epic-helper/constants';
 import messageFormatter from '../../../../discordjs/message-formatter';
 
 export interface IGetUserReminderChannelEmbed {
@@ -117,7 +122,9 @@ export const _getUserReminderChannelEmbed = ({
     })
     .setColor(BOT_COLOR.embed)
     .setThumbnail(author.avatarURL())
-    .setDescription(`**Default**: ${messageFormatter.channel(userProfile.channel.all)}`);
+    .setDescription(
+      `**Default**: ${messageFormatter.channel(userProfile.channel.all)}`
+    );
 
   for (const field of cmd) {
     const fieldName = field.name;

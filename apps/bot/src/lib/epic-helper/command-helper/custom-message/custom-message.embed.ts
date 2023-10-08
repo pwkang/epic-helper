@@ -1,5 +1,6 @@
-import {Client, EmbedBuilder, User} from 'discord.js';
-import {IUser} from '@epic-helper/models';
+import type {Client, User} from 'discord.js';
+import {EmbedBuilder} from 'discord.js';
+import type {IUser} from '@epic-helper/models';
 import {BOT_COLOR, PREFIX} from '@epic-helper/constants';
 import {
   CUSTOM_MESSAGE_PAGE_TYPE,
@@ -9,7 +10,7 @@ import {
 } from './custom-message.constant';
 import {generateUserReminderMessage} from '../../reminders/message-generator/custom-message-generator';
 import ms from 'ms';
-import {IToggleUserCheckerReturnType} from '../../toggle-checker/user';
+import type {IToggleUserCheckerReturnType} from '../../toggle-checker/user';
 
 export interface IGetCustomMessageEmbed {
   client: Client;
@@ -33,7 +34,9 @@ export const _getCustomMessageEmbed = ({
     })
     .setColor(BOT_COLOR.embed);
 
-  const pageToRender = CUSTOM_MESSAGE_PAGES.find((page) => page.id === pageType)!;
+  const pageToRender = CUSTOM_MESSAGE_PAGES.find(
+    (page) => page.id === pageType
+  )!;
 
   switch (pageType) {
     case 'general':

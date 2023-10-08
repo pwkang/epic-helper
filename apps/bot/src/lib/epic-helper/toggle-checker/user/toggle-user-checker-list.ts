@@ -1,5 +1,5 @@
-import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
-import {IUserToggle} from '@epic-helper/models';
+import type {RPG_COMMAND_TYPE} from '@epic-helper/constants';
+import type {IUserToggle} from '@epic-helper/models';
 
 interface IToggleUserCheckerItem {
   toggle: IUserToggle;
@@ -18,25 +18,30 @@ interface IToggleReminder extends IToggleUserCheckerItem {
 }
 
 export const _toggleReminder = ({toggle, isDonor, type}: IToggleReminder) =>
-  (isDonor && toggle.reminder.all && toggle.reminder[type]) || (!isDonor && toggle.reminder.all);
+  (isDonor && toggle.reminder.all && toggle.reminder[type]) ||
+  (!isDonor && toggle.reminder.all);
 
 interface IToggleMentions extends IToggleUserCheckerItem {
   type: ValuesOf<typeof RPG_COMMAND_TYPE> | 'trainingAnswer' | 'petCatch';
 }
 
 export const _toggleMentions = ({toggle, isDonor, type}: IToggleMentions) =>
-  (isDonor && toggle.mentions.all && toggle.mentions[type]) || (!isDonor && toggle.mentions.all);
+  (isDonor && toggle.mentions.all && toggle.mentions[type]) ||
+  (!isDonor && toggle.mentions.all);
 
 interface IToggleTraining extends IToggleUserCheckerItem {
   type: 'ruby' | 'basic';
 }
 
 export const _toggleTraining = ({toggle, isDonor, type}: IToggleTraining) =>
-  (isDonor && toggle.training.all && toggle.training[type]) || (!isDonor && toggle.training.all);
+  (isDonor && toggle.training.all && toggle.training[type]) ||
+  (!isDonor && toggle.training.all);
 
-export const _toggleHuntSwitch = ({toggle}: IToggleUserCheckerItem) => toggle.huntSwitch;
+export const _toggleHuntSwitch = ({toggle}: IToggleUserCheckerItem) =>
+  toggle.huntSwitch;
 
-export const _togglePetCatch = ({toggle}: IToggleUserCheckerItem) => toggle.petCatch;
+export const _togglePetCatch = ({toggle}: IToggleUserCheckerItem) =>
+  toggle.petCatch;
 
 export const _toggleEmoji = ({toggle}: IToggleUserCheckerItem) => toggle.emoji;
 
@@ -45,10 +50,12 @@ interface IToggleQuest extends IToggleUserCheckerItem {
 }
 
 export const _toggleQuest = ({toggle, isDonor, type}: IToggleQuest) =>
-  (isDonor && toggle.quest.all && toggle.quest[type]) || (!isDonor && toggle.quest.all);
+  (isDonor && toggle.quest.all && toggle.quest[type]) ||
+  (!isDonor && toggle.quest.all);
 
 export const _toggleHeal = ({toggle}: IToggleUserCheckerItem) => toggle.heal;
 
 export const _toggleSlash = ({toggle}: IToggleUserCheckerItem) => toggle.slash;
 
-export const _toggleCountdown = ({toggle}: IToggleUserCheckerItem) => toggle.countdown.all;
+export const _toggleCountdown = ({toggle}: IToggleUserCheckerItem) =>
+  toggle.countdown.all;

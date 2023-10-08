@@ -1,4 +1,5 @@
-import {Client, PermissionsBitField, TextChannel} from 'discord.js';
+import type {Client} from 'discord.js';
+import {PermissionsBitField, TextChannel} from 'discord.js';
 import {djsMessageHelper} from '../message';
 import _unMuteUser from './_unmute-ser';
 
@@ -16,7 +17,9 @@ const _muteUser = async ({userId, client, channelId, unMuteIn}: IMuteUser) => {
   if (!channel) return;
   if (!(channel instanceof TextChannel)) return;
 
-  if (!channel.permissionsFor(client.user?.id ?? '')?.has(requiredPermissions)) {
+  if (
+    !channel.permissionsFor(client.user?.id ?? '')?.has(requiredPermissions)
+  ) {
     await djsMessageHelper.send({
       channelId,
       client,

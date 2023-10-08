@@ -4,7 +4,7 @@ import {
   RPG_COOLDOWN_EMBED_TYPE,
   RPG_LOOTBOX_TYPE,
 } from '@epic-helper/constants';
-import {Client, Message, User} from 'discord.js';
+import type {Client, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
@@ -22,7 +22,12 @@ interface IRpgLootbox {
   isSlashCommand: boolean;
 }
 
-export function rpgBuyLootbox({client, message, author, isSlashCommand}: IRpgLootbox) {
+export function rpgBuyLootbox({
+  client,
+  message,
+  author,
+  isSlashCommand,
+}: IRpgLootbox) {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     author,
@@ -68,7 +73,11 @@ interface IRpgBuyLootboxSuccess {
   content: Message['content'];
 }
 
-const rpgBuyLootboxSuccess = async ({author, content, channelId}: IRpgBuyLootboxSuccess) => {
+const rpgBuyLootboxSuccess = async ({
+  author,
+  content,
+  channelId,
+}: IRpgBuyLootboxSuccess) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker) return;
   const lootboxType = Object.values(RPG_LOOTBOX_TYPE).find((type) =>
@@ -104,21 +113,28 @@ interface IIsLootboxSuccessfullyBought {
 }
 
 const isLootboxSuccessfullyBought = ({content}: IIsLootboxSuccessfullyBought) =>
-  Object.values(RPG_LOOTBOX_TYPE).some((lb) => content.toLowerCase().includes(lb)) &&
-  content.includes('successfully bought for');
+  Object.values(RPG_LOOTBOX_TYPE).some((lb) =>
+    content.toLowerCase().includes(lb)
+  ) && content.includes('successfully bought for');
 
 interface IIsNotEligibleToBuyLootbox {
   message: Message;
   author: User;
 }
 
-const isNotEligibleToBuyLootbox = ({message, author}: IIsNotEligibleToBuyLootbox) =>
-  message.mentions.has(author.id) && message.content.includes('to buy this lootbox');
+const isNotEligibleToBuyLootbox = ({
+  message,
+  author,
+}: IIsNotEligibleToBuyLootbox) =>
+  message.mentions.has(author.id) &&
+  message.content.includes('to buy this lootbox');
 
 interface IIsNotEnoughMoneyToBuyLootbox {
   content: Message['content'];
   author: User;
 }
 
-const isNotEnoughMoneyToBuyLootbox = ({content}: IIsNotEnoughMoneyToBuyLootbox) =>
-  content.includes('You don\'t have enough money');
+const isNotEnoughMoneyToBuyLootbox = ({
+  content,
+}: IIsNotEnoughMoneyToBuyLootbox) =>
+  content.includes("You don't have enough money");
