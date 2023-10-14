@@ -1,11 +1,13 @@
 import type {Client} from 'discord.js';
 import type {evalOptions} from 'discord-hybrid-sharding';
 import {getInfo} from 'discord-hybrid-sharding';
+import {logger} from '@epic-helper/utils';
 
-interface IBroadcastEval<T> {
+interface IBroadcastEval<T, K> {
   client: Client;
-  fn: (client: Client) => T;
+  fn: (client: Client, context: K) => T;
   target?: evalOptions['cluster'];
+  context?: K;
 }
 
 interface IBroadcastEvalResult<T> {
@@ -13,12 +15,14 @@ interface IBroadcastEvalResult<T> {
   data: T | null;
 }
 
-export const broadcastEval = async <T>({
+export const broadcastEval = async <T, K>({
   fn,
-  client
-}: IBroadcastEval<T>): Promise<IBroadcastEvalResult<T>[] | null> => {
+  client,
+  context
+}: IBroadcastEval<T, K>): Promise<IBroadcastEvalResult<T>[] | null> => {
+  if (!context) context = {} as K;
   if (!client.cluster) {
-    const result = fn(client);
+    const result = fn(client, context);
     return [
       {
         data: result,
@@ -30,8 +34,9 @@ export const broadcastEval = async <T>({
 
   for (let i = 0; i < getInfo().CLUSTER_COUNT; i++) {
     try {
-      const result = (await client.cluster.broadcastEval(fn, {
-        cluster: i
+      const result = (await client.cluster.broadcastEval(fn as any, {
+        cluster: i,
+        context
       })) as T[];
 
       results.push({
@@ -39,6 +44,12 @@ export const broadcastEval = async <T>({
         clusterId: i
       });
     } catch (err) {
+      logger({
+        message: 'broadcastEval error' + err,
+        clusterId: i,
+        variant: 'broadcastEval',
+        logLevel: 'error'
+      });
       results.push({
         data: null,
         clusterId: i
