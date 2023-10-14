@@ -9,6 +9,7 @@ import {initSentry} from './handler/on-start/sentry.handler';
 import {logger} from '@epic-helper/utils';
 import {loadRedis} from './handler/on-start/redis.handler';
 import {DiscordClientConfig} from './client-config';
+import {registerUtilsFn} from './handler/on-start/utils.handler';
 
 dotenv.config();
 const environment = process.env.NODE_ENV || 'development';
@@ -36,7 +37,8 @@ Promise.all([
   loadCommands(client),
   loadBotEvents(client),
   loadRedis(),
-  loadCronJob(client)
+  loadCronJob(client),
+  registerUtilsFn(client)
 ]).then(() => {
   logger({
     message: 'All handlers loaded, connecting to Discord...',

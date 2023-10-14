@@ -28,7 +28,7 @@ export const broadcastEval = async <T>({
   }
   const results: IBroadcastEvalResult<T>[] = [];
 
-  for (let i = 0; i < getInfo().TOTAL_SHARDS; i++) {
+  for (let i = 0; i < getInfo().CLUSTER_COUNT; i++) {
     try {
       const result = (await client.cluster.broadcastEval(fn, {
         cluster: i
