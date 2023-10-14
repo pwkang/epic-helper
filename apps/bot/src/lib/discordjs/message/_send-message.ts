@@ -7,6 +7,7 @@ import type {
 } from 'discord.js';
 import {PermissionsBitField, TextChannel} from 'discord.js';
 import {logger} from '@epic-helper/utils';
+import {broadcastEval} from '../../../utils/broadcast-eval';
 
 const requiredPermissions = [PermissionsBitField.Flags.SendMessages];
 
@@ -14,17 +15,37 @@ export interface SendMessageProps {
   client: Client;
   channelId: string;
   options: string | MessagePayload | MessageCreateOptions;
+  skipIfChannelNotFound?: boolean;
 }
 
 export default async function _sendMessage({
   channelId,
   options,
-  client
+  client,
+  skipIfChannelNotFound = false
 }: SendMessageProps): Promise<Message | undefined> {
   const channel = client.channels.cache.get(channelId);
-  if (!channel) return;
+  if (!channel && skipIfChannelNotFound) return;
 
-  return checkTypeAndSend({channel, options, client});
+  if (channel) {
+    return checkTypeAndSend({channel, options, client});
+  } else {
+    await broadcastEval({
+      client,
+      fn: async (client, context) => {
+        await client.utils.djsMessageHelper.send({
+          client,
+          options: context.messageOptions,
+          channelId: context.channelId,
+          skipIfChannelNotFound: true
+        });
+      },
+      context: {
+        messageOptions: options,
+        channelId
+      }
+    });
+  }
 }
 
 interface CheckTypeAndSendProps {
