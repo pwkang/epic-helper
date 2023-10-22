@@ -19,6 +19,8 @@ export const toGuild = (guild: IGuild): IGuild => {
         raid: guild?.upgraid?.message?.raid
       },
       readyAt: guild?.upgraid?.readyAt
+        ? new Date(guild?.upgraid?.readyAt)
+        : undefined
     },
     toggle: {
       onOff: guild?.toggle?.onOff ?? true,
