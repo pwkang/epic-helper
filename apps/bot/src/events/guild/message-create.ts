@@ -45,6 +45,7 @@ export default <BotEvent>{
         message
       });
       if (!toExecute) return;
+      console.log(result.command.name);
       await result.command.execute(client, message, result.args);
     }
 
@@ -64,20 +65,16 @@ const searchSlashMessages = (client: Client, message: Message) =>
     )
   );
 
-const trimWhitespace = (str: string) =>
-  str.split('\n').join('').replace(/\s+/g, ' ').trim();
-
 const isRpgCommand = (message: Message) =>
-  trimWhitespace(message.content)
+  message.content
+    .trim()
     .toLowerCase()
-    .startsWith(`${PREFIX.rpg.toLowerCase()} `) ||
+    .startsWith(`${PREFIX.rpg.toLowerCase()}`) ||
   message.mentions.has(EPIC_RPG_ID);
 
 const isBotCommand = (message: Message) =>
   PREFIX.bot &&
-  trimWhitespace(message.content)
-    .toLowerCase()
-    .startsWith(PREFIX.bot.toLowerCase());
+  message.content.trim().toLowerCase().startsWith(PREFIX.bot.toLowerCase());
 
 const validateCommand = (commands: string[], args: string[]) => {
   return commands.some((cmd) =>
@@ -100,19 +97,19 @@ function searchCommand(
   client: Client,
   message: Message
 ): {command: PrefixCommand; args: string[]} | null {
-  const messageContent = trimWhitespace(message.content.toLowerCase());
+  const messageContent = message.content.toLowerCase().trim();
   if (messageContent === '') return null;
   let args: string[] = [];
   let command;
   let commandType: ValuesOf<typeof PREFIX_COMMAND_TYPE>;
 
   if (isRpgCommand(message)) {
-    if (messageContent.startsWith(`${PREFIX.rpg} `)) {
-      args = messageContent.split(' ').slice(1);
+    if (messageContent.startsWith(`${PREFIX.rpg}`)) {
+      args = messageContent.split(/[\n\s]/).slice(1);
     } else if (message.mentions.has(EPIC_RPG_ID)) {
       args = messageContent
         .replace(`<@${EPIC_RPG_ID}>`, '')
-        .split(' ')
+        .split(/[\n\s]/)
         .filter((arg) => arg !== '');
     }
 
@@ -120,7 +117,10 @@ function searchCommand(
   }
 
   if (PREFIX.bot && isBotCommand(message)) {
-    args = messageContent.slice(PREFIX.bot.length).trim().split(' ');
+    args = messageContent
+      .slice(PREFIX.bot.length)
+      .trim()
+      .split(/[\n\s]/);
 
     commandType = PREFIX_COMMAND_TYPE.bot;
   }
@@ -129,7 +129,10 @@ function searchCommand(
     PREFIX.dev &&
     messageContent.startsWith(PREFIX.dev)
   ) {
-    args = messageContent.slice(PREFIX.dev.length).trim().split(' ');
+    args = messageContent
+      .slice(PREFIX.dev.length)
+      .trim()
+      .split(/[\n\s]/);
 
     commandType = PREFIX_COMMAND_TYPE.dev;
   }
