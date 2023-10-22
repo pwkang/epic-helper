@@ -4,17 +4,17 @@ dotenv.config();
 export const PREFIX = {
   bot: process.env.BOT_PREFIX,
   dev: process.env.DEV_PREFIX,
-  rpg: 'rpg',
+  rpg: 'rpg '
 } as const;
 
 export const PREFIX_COMMAND_TYPE = {
   rpg: 'rpg',
   dev: 'dev',
-  bot: 'bot',
+  bot: 'bot'
 } as const;
 
 export const SLASH_MESSAGE_BOT_TYPE = {
-  rpg: 'rpg',
+  rpg: 'rpg'
 } as const;
 
 export const EPIC_RPG_ID = '555955826880413696';

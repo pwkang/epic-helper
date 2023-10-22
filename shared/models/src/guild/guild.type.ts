@@ -34,7 +34,7 @@ export interface IGuild {
       upgrade: string;
       raid: string;
     };
-    readyAt: Date;
+    readyAt?: Date;
   };
   duel: {
     channelId: string;

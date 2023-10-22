@@ -22,7 +22,7 @@ export const _ownerInfo = async ({client}: IOwnerInfo) => {
   }
   const summary = clusters.reduce(
     (acc, cluster) => {
-      if (cluster.data) {
+      if (cluster.data && typeof cluster.data !== 'string') {
         acc.totalGuilds += cluster.data.totalGuilds;
         acc.totalRam += cluster.data.ramUsage;
       }
@@ -43,7 +43,7 @@ export const _ownerInfo = async ({client}: IOwnerInfo) => {
     inline: true
   });
   for (const cluster of clusters) {
-    if (cluster.data) {
+    if (cluster.data && typeof cluster.data !== 'string') {
       const value = [
         `**Guilds**: ${cluster.data.totalGuilds.toLocaleString()}`,
         `**Uptime**: ${cluster.data.uptime}`,
