@@ -136,9 +136,6 @@ importers:
       '@epic-helper/constants':
         specifier: workspace:*
         version: link:../../shared/constants
-      '@epic-helper/contentful':
-        specifier: workspace:*
-        version: link:../../shared/contentful
       '@epic-helper/models':
         specifier: workspace:*
         version: link:../../shared/models
@@ -157,16 +154,6 @@ importers:
         version: link:../../shared/tsconfig
 
   shared/constants:
-    devDependencies:
-      '@epic-helper/tsconfig':
-        specifier: workspace:*
-        version: link:../tsconfig
-
-  shared/contentful:
-    dependencies:
-      '@epic-helper/constants':
-        specifier: workspace:*
-        version: link:../constants
     devDependencies:
       '@epic-helper/tsconfig':
         specifier: workspace:*
