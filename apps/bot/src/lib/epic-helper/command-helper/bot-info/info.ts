@@ -3,7 +3,7 @@ import {EmbedBuilder} from 'discord.js';
 import {
   BOT_COLOR,
   BOT_INVITE_LINK,
-  SUPPORT_SERVER_INVITE_LINK
+  SUPPORT_SERVER_INVITE_LINK,
 } from '@epic-helper/constants';
 import {getUptime} from '../../../../utils/uptime';
 
@@ -24,28 +24,28 @@ export const _info = async ({client, server}: IInfo): Promise<EmbedBuilder> => {
     {
       name: '**Uptime**',
       value: uptime,
-      inline: true
+      inline: true,
     },
     {
       name: '**Servers**',
       value: totalGuilds.toLocaleString(),
-      inline: true
+      inline: true,
     },
     {
       name: '**Shard**',
       value: `${shardId + 1}/${totalShard}`,
-      inline: true
+      inline: true,
     },
     {
       name: '**Cluster**',
       value: `${clusterId + 1}/${totalCluster}`,
-      inline: true
-    }
+      inline: true,
+    },
   );
 
   embed.addFields({
     name: '**Links**',
-    value: `**[Invite Link](${BOT_INVITE_LINK}) | [Support Server](${SUPPORT_SERVER_INVITE_LINK})**`
+    value: `**[Invite Link](${BOT_INVITE_LINK}) | [Support Server](${SUPPORT_SERVER_INVITE_LINK})**`,
   });
 
   return embed;
@@ -77,12 +77,12 @@ const getClusterInfo = (client: Client): IClusterInfoResult => {
     const clusterId = client.cluster?.id;
     return {
       clusterId,
-      totalCluster
+      totalCluster,
     };
   } else {
     return {
       clusterId: 0,
-      totalCluster: 1
+      totalCluster: 1,
     };
   }
 };
@@ -98,12 +98,12 @@ const getShardInfo = (client: Client, server: Guild): IShardInfoResult => {
     const shardId = server.shard.id;
     return {
       shardId,
-      totalShard
+      totalShard,
     };
   } else {
     return {
       shardId: 0,
-      totalShard: 1
+      totalShard: 1,
     };
   }
 };

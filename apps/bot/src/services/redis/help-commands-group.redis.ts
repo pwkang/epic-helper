@@ -18,5 +18,5 @@ const del = async () => {
 export const redisHelpCommandsGroup = {
   get,
   set,
-  del
+  del,
 };

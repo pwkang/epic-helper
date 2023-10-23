@@ -17,16 +17,16 @@ interface ISetReminderTime {
 const setReminderTime = async ({
   serverId,
   guildRoleId,
-  readyAt
+  readyAt,
 }: ISetReminderTime) => {
   const data: IRedisGuildReminder = {
     readyAt,
     guildRoleId,
-    serverId
+    serverId,
   };
   await redisService.set(
     `${prefix}${serverId}:${guildRoleId}`,
-    JSON.stringify(data)
+    JSON.stringify(data),
   );
 };
 
@@ -45,9 +45,9 @@ const getReadyGuild = async (): Promise<
       if (new Date(readyAt) > new Date()) return null;
       return {
         guildRoleId,
-        serverId
+        serverId,
       };
-    })
+    }),
   );
   return reminderList.filter((item) => item !== null) as Pick<
     ISetReminderTime,
@@ -62,7 +62,7 @@ interface IDeleteReminderTime {
 
 const deleteReminderTime = async ({
   guildRoleId,
-  serverId
+  serverId,
 }: IDeleteReminderTime) => {
   await redisService.del(`${prefix}${serverId}:${guildRoleId}`);
 };
@@ -80,9 +80,9 @@ const getAllGuildReminder = async () => {
       return {
         guildRoleId,
         serverId,
-        readyAt: new Date(readyAt)
+        readyAt: new Date(readyAt),
       };
-    })
+    }),
   );
   return reminderList.filter((item) => item !== null) as IRedisGuildReminder[];
 };
@@ -91,5 +91,5 @@ export const redisGuildReminder = {
   setReminderTime,
   getReadyGuild,
   deleteReminderTime,
-  getAllGuildReminder
+  getAllGuildReminder,
 };

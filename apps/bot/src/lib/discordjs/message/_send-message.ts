@@ -3,7 +3,7 @@ import type {
   Client,
   Message,
   MessageCreateOptions,
-  MessagePayload
+  MessagePayload,
 } from 'discord.js';
 import {PermissionsBitField, TextChannel} from 'discord.js';
 import {logger} from '@epic-helper/utils';
@@ -22,7 +22,7 @@ export default async function _sendMessage({
   channelId,
   options,
   client,
-  skipIfChannelNotFound = false
+  skipIfChannelNotFound = false,
 }: SendMessageProps): Promise<Message | undefined> {
   const channel = client.channels.cache.get(channelId);
   if (!channel && skipIfChannelNotFound) return;
@@ -37,13 +37,13 @@ export default async function _sendMessage({
           client,
           options: context.messageOptions,
           channelId: context.channelId,
-          skipIfChannelNotFound: true
+          skipIfChannelNotFound: true,
         });
       },
       context: {
         messageOptions: options,
-        channelId
-      }
+        channelId,
+      },
     });
   }
 }
@@ -57,7 +57,7 @@ interface CheckTypeAndSendProps {
 async function checkTypeAndSend({
   channel,
   options,
-  client
+  client,
 }: CheckTypeAndSendProps): Promise<Message | undefined> {
   let sentMessage;
   if (channel instanceof TextChannel) {
@@ -71,7 +71,7 @@ async function checkTypeAndSend({
         message: error.message,
         logLevel: 'warn',
         variant: 'sendMessage',
-        clusterId: client.cluster?.id
+        clusterId: client.cluster?.id,
       });
       return;
     }

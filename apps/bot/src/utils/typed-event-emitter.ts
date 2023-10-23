@@ -12,14 +12,14 @@ export class TypedEventEmitter<TEvents extends Record<string, any>> {
 
   on<TEventName extends keyof TEvents & string>(
     eventName: TEventName,
-    handler: (...eventArg: TEvents[TEventName]) => void
+    handler: (...eventArg: TEvents[TEventName]) => void,
   ) {
     this.emitter.on(eventName, handler as any);
   }
 
   off<TEventName extends keyof TEvents & string>(
     eventName: TEventName,
-    handler: (...eventArg: TEvents[TEventName]) => void
+    handler: (...eventArg: TEvents[TEventName]) => void,
   ) {
     this.emitter.off(eventName, handler as any);
   }

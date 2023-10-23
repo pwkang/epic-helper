@@ -12,13 +12,13 @@ export interface IGetGuildSlashCommands {
 export const _findGuildSlashCommand = async ({
   guild,
   client,
-  commandId
+  commandId,
 }: IGetGuildSlashCommands) => {
   if (!client.user) return [];
 
   try {
     const data = await djsRestClient.get(
-      Routes.applicationGuildCommand(client.user.id, guild.id, commandId)
+      Routes.applicationGuildCommand(client.user.id, guild.id, commandId),
     );
 
     return data as ApplicationCommand;
@@ -27,7 +27,7 @@ export const _findGuildSlashCommand = async ({
       message: e.rawError.message,
       variant: 'find-guild-slash-command',
       logLevel: 'error',
-      clusterId: client.cluster?.id
+      clusterId: client.cluster?.id,
     });
     return null;
   }

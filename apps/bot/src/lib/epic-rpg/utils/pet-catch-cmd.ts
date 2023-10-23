@@ -4,7 +4,7 @@ import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  EmbedBuilder
+  EmbedBuilder,
 } from 'discord.js';
 import {BOT_COLOR, BOT_EMOJI, RPG_PET_THUMBNAIL} from '@epic-helper/constants';
 
@@ -24,26 +24,26 @@ interface ICmd {
 
 export const generatePetCatchMessageOptions = ({
   info,
-  clicked = 0
+  clicked = 0,
 }: IGeneratePetCatchCommand): BaseMessageOptions => {
   const {hunger, petName, owner, happiness} = info;
   const commands = getCommands(hunger, happiness, clicked);
 
   return {
     embeds: [getEmbed(commands, owner ?? undefined, petName)],
-    components: getComponents(commands)
+    components: getComponents(commands),
   };
 };
 
 const getEmbed = (
   commands: ICmd[],
   owner?: string,
-  petName?: ReturnType<typeof wildPetReader>['petName']
+  petName?: ReturnType<typeof wildPetReader>['petName'],
 ) => {
   const embed = new EmbedBuilder().setColor(BOT_COLOR.embed);
   if (owner) {
     embed.setFooter({
-      text: `${owner}'s pet`
+      text: `${owner}'s pet`,
     });
   }
   if (petName) {
@@ -59,7 +59,7 @@ const getEmbed = (
 
     embed.addFields({
       name,
-      value
+      value,
     });
   }
   return embed;
@@ -84,7 +84,7 @@ const getComponents = (commands: ICmd[]) => {
       .setCustomId('feed1')
       .setStyle(feed1 ? ButtonStyle.Success : ButtonStyle.Secondary)
       .setEmoji(BOT_EMOJI.utils.taco)
-      .setDisabled(true)
+      .setDisabled(true),
   );
   const actionRow2 = new ActionRowBuilder<ButtonBuilder>().setComponents(
     new ButtonBuilder()
@@ -104,7 +104,7 @@ const getComponents = (commands: ICmd[]) => {
       .setCustomId('tame')
       .setStyle(toTame ? ButtonStyle.Success : ButtonStyle.Secondary)
       .setDisabled(true)
-      .setEmoji(BOT_EMOJI.pet.cat)
+      .setEmoji(BOT_EMOJI.pet.cat),
   );
 
   return [actionRow, actionRow2];
@@ -122,7 +122,7 @@ const getCommands = (hunger: number, happiness: number, clicked: number) => {
       hunger,
       happiness,
       feedAmount,
-      patAmount
+      patAmount,
     );
     if (percentage.min === 100 && list[0]?.isMax) {
       list.pop();
@@ -133,7 +133,7 @@ const getCommands = (hunger: number, happiness: number, clicked: number) => {
       max: percentage.max,
       feed: feedAmount,
       pat: patAmount,
-      isMax: percentage.min === 100
+      isMax: percentage.min === 100,
     });
     if (percentage.min !== 100 || !patAmount) {
       loop = false;
@@ -164,7 +164,7 @@ const generatePercentage = (
   hunger: number,
   happiness: number,
   feedAmount: number,
-  patAmount: number
+  patAmount: number,
 ) => {
   const min = calcPercentage(hunger, happiness, feedAmount, patAmount, 'min');
   const max = calcPercentage(hunger, happiness, feedAmount, patAmount, 'max');
@@ -172,20 +172,20 @@ const generatePercentage = (
   return {
     min,
     max,
-    avg
+    avg,
   };
 };
 
 const hungerTimes = {
   min: 18,
   max: 22,
-  avg: 20
+  avg: 20,
 } as const;
 
 const happinessTimes = {
   min: 8,
   max: 12,
-  avg: 10
+  avg: 10,
 } as const;
 
 const calcPercentage = (
@@ -193,12 +193,12 @@ const calcPercentage = (
   happiness: number,
   feedAmount: number,
   patAmount: number,
-  type: 'min' | 'max' | 'avg'
+  type: 'min' | 'max' | 'avg',
 ) => {
   const finalHunger = Math.max(0, hunger - feedAmount * hungerTimes[type]);
   const finalHappiness = Math.min(
     100,
-    happiness + patAmount * happinessTimes[type]
+    happiness + patAmount * happinessTimes[type],
   );
   const value = finalHappiness - finalHunger;
   return value >= 85 ? 100 : calcFinalPercentage(value);

@@ -15,10 +15,10 @@ interface ICollectSelectedPets {
 export const collectSelectedPets = async ({
   client,
   message,
-  author
+  author,
 }: ICollectSelectedPets): Promise<string[] | undefined> => {
   const readyIn = timestampHelper.relative({
-    time: new Date(Date.now() + ms('5s'))
+    time: new Date(Date.now() + ms('5s')),
   });
   let event = await djsMessageHelper.interactiveSend({
     client,
@@ -26,13 +26,13 @@ export const collectSelectedPets = async ({
     options: {
       content: [
         'Select EPIC or insert IDs to select pets',
-        `**EPIC** will be auto select if no response ${readyIn}`
+        `**EPIC** will be auto select if no response ${readyIn}`,
       ].join('\n'),
-      components: [row]
+      components: [row],
     },
     onStop: () => {
       event = undefined;
-    }
+    },
   });
   if (!event) return undefined;
   return new Promise((resolve) => {
@@ -45,8 +45,8 @@ export const collectSelectedPets = async ({
         message: event?.message,
         options: {
           components: [],
-          content: '**EPIC** selected'
-        }
+          content: '**EPIC** selected',
+        },
       });
     }, ms('5s'));
 
@@ -55,7 +55,7 @@ export const collectSelectedPets = async ({
       event?.stop();
       return {
         components: [],
-        content: '**EPIC** selected'
+        content: '**EPIC** selected',
       };
     });
     event?.on('ids', async (interaction) => {
@@ -65,13 +65,13 @@ export const collectSelectedPets = async ({
         interaction,
         options: {
           components: [],
-          content: 'Insert IDs'
-        }
+          content: 'Insert IDs',
+        },
       });
       const selectedPetsId = await collectSelectedPetsId({
         client,
         message,
-        author
+        author,
       });
       clearTimeout(autoSelectTimeout);
       resolve(selectedPetsId);
@@ -85,23 +85,23 @@ const row = new ActionRowBuilder<ButtonBuilder>()
     new ButtonBuilder()
       .setCustomId('epic')
       .setLabel('EPIC')
-      .setStyle(ButtonStyle.Primary)
+      .setStyle(ButtonStyle.Primary),
   )
   .addComponents(
     new ButtonBuilder()
       .setCustomId('ids')
       .setLabel('IDs')
-      .setStyle(ButtonStyle.Secondary)
+      .setStyle(ButtonStyle.Secondary),
   );
 
 const collectSelectedPetsId = ({
   message,
-  author
+  author,
 }: ICollectSelectedPets): Promise<string[]> => {
   return new Promise((resolve) => {
     const event = message.channel.createMessageCollector({
       filter: (m) => m.author.id === author.id,
-      idle: ms('30s')
+      idle: ms('30s'),
     });
     event.on('collect', (collected) => {
       const args = collected.content.toLowerCase().split(' ');

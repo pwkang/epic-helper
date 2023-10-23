@@ -2,7 +2,7 @@ import {
   RPG_RANDOM_EVENTS_COMMAND,
   RPG_RANDOM_EVENTS_NAME,
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS
+  USER_NOT_REGISTERED_ACTIONS,
 } from '@epic-helper/constants';
 import djsInteractionHelper from '../../../lib/discordjs/interaction';
 import {serverService} from '../../../services/database/server.service';
@@ -18,82 +18,82 @@ export default <SlashCommand>{
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,
-    isServerAdmin: true
+    isServerAdmin: true,
   },
   builder: (subcommand) =>
     subcommand
       .addStringOption((option) =>
         option
           .setName(
-            RPG_RANDOM_EVENTS_COMMAND.log.replaceAll(' ', '-').toLowerCase()
+            RPG_RANDOM_EVENTS_COMMAND.log.replaceAll(' ', '-').toLowerCase(),
           )
-          .setDescription(RPG_RANDOM_EVENTS_NAME.log)
+          .setDescription(RPG_RANDOM_EVENTS_NAME.log),
       )
       .addStringOption((option) =>
         option
           .setName(
-            RPG_RANDOM_EVENTS_COMMAND.fish.replaceAll(' ', '-').toLowerCase()
+            RPG_RANDOM_EVENTS_COMMAND.fish.replaceAll(' ', '-').toLowerCase(),
           )
-          .setDescription(RPG_RANDOM_EVENTS_NAME.fish)
+          .setDescription(RPG_RANDOM_EVENTS_NAME.fish),
       )
       .addStringOption((option) =>
         option
           .setName(
-            RPG_RANDOM_EVENTS_COMMAND.coin.replaceAll(' ', '-').toLowerCase()
+            RPG_RANDOM_EVENTS_COMMAND.coin.replaceAll(' ', '-').toLowerCase(),
           )
-          .setDescription(RPG_RANDOM_EVENTS_NAME.coin)
+          .setDescription(RPG_RANDOM_EVENTS_NAME.coin),
       )
       .addStringOption((option) =>
         option
           .setName(
-            RPG_RANDOM_EVENTS_COMMAND.lootbox.replaceAll(' ', '-').toLowerCase()
+            RPG_RANDOM_EVENTS_COMMAND.lootbox.replaceAll(' ', '-').toLowerCase(),
           )
-          .setDescription(RPG_RANDOM_EVENTS_NAME.lootbox)
+          .setDescription(RPG_RANDOM_EVENTS_NAME.lootbox),
       )
       .addStringOption((option) =>
         option
           .setName(
-            RPG_RANDOM_EVENTS_COMMAND.boss.replaceAll(' ', '-').toLowerCase()
+            RPG_RANDOM_EVENTS_COMMAND.boss.replaceAll(' ', '-').toLowerCase(),
           )
-          .setDescription(RPG_RANDOM_EVENTS_NAME.boss)
+          .setDescription(RPG_RANDOM_EVENTS_NAME.boss),
       )
       .addStringOption((option) =>
         option
           .setName(
-            RPG_RANDOM_EVENTS_COMMAND.arena.replaceAll(' ', '-').toLowerCase()
+            RPG_RANDOM_EVENTS_COMMAND.arena.replaceAll(' ', '-').toLowerCase(),
           )
-          .setDescription(RPG_RANDOM_EVENTS_NAME.arena)
+          .setDescription(RPG_RANDOM_EVENTS_NAME.arena),
       )
       .addStringOption((option) =>
         option
           .setName(
             RPG_RANDOM_EVENTS_COMMAND.miniboss
               .replaceAll(' ', '-')
-              .toLowerCase()
+              .toLowerCase(),
           )
-          .setDescription(RPG_RANDOM_EVENTS_NAME.miniboss)
+          .setDescription(RPG_RANDOM_EVENTS_NAME.miniboss),
       ),
   execute: async (client, interaction) => {
     const log = interaction.options.getString(
-      RPG_RANDOM_EVENTS_COMMAND.log.replaceAll(' ', '-').toLowerCase()
+      RPG_RANDOM_EVENTS_COMMAND.log.replaceAll(' ', '-').toLowerCase(),
     );
     const fish = interaction.options.getString(
-      RPG_RANDOM_EVENTS_COMMAND.fish.replaceAll(' ', '-').toLowerCase()
+      RPG_RANDOM_EVENTS_COMMAND.fish.replaceAll(' ', '-').toLowerCase(),
     );
     const coin = interaction.options.getString(
-      RPG_RANDOM_EVENTS_COMMAND.coin.replaceAll(' ', '-').toLowerCase()
+      RPG_RANDOM_EVENTS_COMMAND.coin.replaceAll(' ', '-').toLowerCase(),
     );
     const lootbox = interaction.options.getString(
-      RPG_RANDOM_EVENTS_COMMAND.lootbox.replaceAll(' ', '-').toLowerCase()
+      RPG_RANDOM_EVENTS_COMMAND.lootbox.replaceAll(' ', '-').toLowerCase(),
     );
     const boss = interaction.options.getString(
-      RPG_RANDOM_EVENTS_COMMAND.boss.replaceAll(' ', '-').toLowerCase()
+      RPG_RANDOM_EVENTS_COMMAND.boss.replaceAll(' ', '-').toLowerCase(),
     );
     const arena = interaction.options.getString(
-      RPG_RANDOM_EVENTS_COMMAND.arena.replaceAll(' ', '-').toLowerCase()
+      RPG_RANDOM_EVENTS_COMMAND.arena.replaceAll(' ', '-').toLowerCase(),
     );
     const miniboss = interaction.options.getString(
-      RPG_RANDOM_EVENTS_COMMAND.miniboss.replaceAll(' ', '-').toLowerCase()
+      RPG_RANDOM_EVENTS_COMMAND.miniboss.replaceAll(' ', '-').toLowerCase(),
     );
 
     const serverAccount = await serverService.updateRandomEvents({
@@ -109,12 +109,12 @@ export default <SlashCommand>{
           ? miniboss === 'clear'
             ? null
             : miniboss
-          : undefined
-      }
+          : undefined,
+      },
     });
     if (!serverAccount) return null;
     const serverSettings = await commandHelper.serverSettings.settings({
-      server: interaction.guild!
+      server: interaction.guild!,
     });
     if (!serverSettings) return null;
     await djsInteractionHelper.replyInteraction({
@@ -122,8 +122,8 @@ export default <SlashCommand>{
       interaction,
       options: serverSettings.render({
         type: SERVER_SETTINGS_PAGE_TYPE.randomEvent,
-        displayOnly: true
-      })
+        displayOnly: true,
+      }),
     });
-  }
+  },
 };

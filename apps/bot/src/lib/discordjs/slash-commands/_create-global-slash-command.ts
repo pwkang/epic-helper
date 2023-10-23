@@ -10,14 +10,14 @@ export interface ICreateGlobalSlashCommand {
 
 export const _createGlobalSlashCommand = async ({
   commands,
-  client
+  client,
 }: ICreateGlobalSlashCommand) => {
   try {
     const data = await djsRestClient.post(
       Routes.applicationCommands(client.user!.id),
       {
-        body: commands
-      }
+        body: commands,
+      },
     );
     return data as ApplicationCommand;
   } catch (e: any) {
@@ -25,7 +25,7 @@ export const _createGlobalSlashCommand = async ({
       message: e.rawError.message,
       variant: 'create-global-slash-command',
       logLevel: 'error',
-      clusterId: client.cluster?.id
+      clusterId: client.cluster?.id,
     });
     return null;
   }

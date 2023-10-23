@@ -25,14 +25,14 @@ const _muteUser = async ({userId, client, channelId, unMuteIn}: IMuteUser) => {
       client,
       options: {
         content:
-          'I do not have permission to mute this user. Please make sure I have the `Manage Roles` permission.'
-      }
+          'I do not have permission to mute this user. Please make sure I have the `Manage Roles` permission.',
+      },
     });
     return;
   }
 
   await channel.permissionOverwrites.edit(userId, {
-    SendMessages: false
+    SendMessages: false,
   });
 
   if (unMuteIn) {
@@ -41,7 +41,7 @@ const _muteUser = async ({userId, client, channelId, unMuteIn}: IMuteUser) => {
         client,
         channelId,
         userId,
-        removeUser: !channel.permissionOverwrites.cache.has(userId)
+        removeUser: !channel.permissionOverwrites.cache.has(userId),
       });
     }, unMuteIn);
   }

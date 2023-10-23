@@ -1,7 +1,7 @@
 import type {
   Client,
   InteractionUpdateOptions,
-  MessageComponentInteraction
+  MessageComponentInteraction,
 } from 'discord.js';
 import {logger} from '@epic-helper/utils';
 
@@ -14,7 +14,7 @@ export interface IUpdateInteraction {
 export default async function _updateInteraction({
   interaction,
   options,
-  client
+  client,
 }: IUpdateInteraction) {
   try {
     await interaction.update(options);
@@ -23,7 +23,7 @@ export default async function _updateInteraction({
       message: error.rawError,
       variant: 'updateInteraction',
       logLevel: 'warn',
-      clusterId: client.cluster?.id
+      clusterId: client.cluster?.id,
     });
   }
 }

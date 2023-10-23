@@ -12,16 +12,16 @@ interface IGuildReminderTimesUp {
 export const guildReminderTimesUp = async ({
   guildRoleId,
   client,
-  serverId
+  serverId,
 }: IGuildReminderTimesUp) => {
   const guild = await guildService.findGuild({
     serverId,
-    roleId: guildRoleId
+    roleId: guildRoleId,
   });
   if (!guild) return;
   const guildToggle = await toggleGuildChecker({
     roleId: guildRoleId,
-    serverId
+    serverId,
   });
   if (!guildToggle?.upgraid.reminder) return;
 
@@ -34,7 +34,7 @@ export const guildReminderTimesUp = async ({
     client,
     channelId: guild.upgraid.channelId,
     options: {
-      content: messageToSend
-    }
+      content: messageToSend,
+    },
   });
 };

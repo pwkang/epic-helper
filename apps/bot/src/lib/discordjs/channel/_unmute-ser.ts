@@ -15,7 +15,7 @@ const _unMuteUser = async ({
   userId,
   client,
   channelId,
-  removeUser
+  removeUser,
 }: IUnMuteUser) => {
   const channel = client.channels.cache.get(channelId);
   if (!channel) return;
@@ -29,8 +29,8 @@ const _unMuteUser = async ({
       client,
       options: {
         content:
-          'I do not have permission to unmute this user. Please make sure I have the `Manage Roles` permission.'
-      }
+          'I do not have permission to unmute this user. Please make sure I have the `Manage Roles` permission.',
+      },
     });
     return;
   }
@@ -38,7 +38,7 @@ const _unMuteUser = async ({
   if (removeUser) await channel.permissionOverwrites.delete(userId);
   else
     await channel.permissionOverwrites.edit(userId, {
-      SendMessages: null
+      SendMessages: null,
     });
 };
 

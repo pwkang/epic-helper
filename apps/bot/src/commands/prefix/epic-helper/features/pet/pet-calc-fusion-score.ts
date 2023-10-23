@@ -3,7 +3,7 @@ import {djsMessageHelper} from '../../../../../lib/discordjs/message';
 import {
   PREFIX_COMMAND_TYPE,
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS
+  USER_NOT_REGISTERED_ACTIONS,
 } from '@epic-helper/constants';
 
 export default <PrefixCommand>{
@@ -12,19 +12,19 @@ export default <PrefixCommand>{
   commands: ['petFuse', 'petFusion', 'pf'],
   preCheck: {
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
-    userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn
+    userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
   },
   execute: async (client, message, args) => {
     const embeds = await generateFusionScoreEmbed({
       author: message.author,
-      petIds: args
+      petIds: args,
     });
     djsMessageHelper.send({
       client,
       options: {
-        embeds
+        embeds,
       },
-      channelId: message.channel.id
+      channelId: message.channel.id,
     });
-  }
+  },
 };

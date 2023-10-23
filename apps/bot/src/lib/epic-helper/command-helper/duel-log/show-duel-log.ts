@@ -4,7 +4,7 @@ import type {
   Client,
   Guild,
   StringSelectMenuInteraction,
-  User
+  User,
 } from 'discord.js';
 import {EmbedBuilder} from 'discord.js';
 import {guildDuelService} from '../../../../services/database/guild-duel.service';
@@ -27,20 +27,20 @@ interface IShowDuelLog {
 
 export const _showDuelLog = async ({server, client, author}: IShowDuelLog) => {
   const duelLogs = await guildDuelService.getLastTwoWeeksGuildsDuelLogs({
-    serverId: server.id
+    serverId: server.id,
   });
   const guilds = await guildService.getAllGuilds({
-    serverId: server.id
+    serverId: server.id,
   });
   const isServerAdmin = await userChecker.isServerAdmin({
     client,
     serverId: server.id,
-    userId: author.id
+    userId: author.id,
   });
   const member = await djsMemberHelper.getMember({
     userId: author.id,
     serverId: server.id,
-    client
+    client,
   });
   const filteredGuilds = guilds.filter((guild) => {
     if (isServerAdmin) return true;
@@ -49,59 +49,59 @@ export const _showDuelLog = async ({server, client, author}: IShowDuelLog) => {
       member &&
       userChecker.isGuildMember({
         guild,
-        member
+        member,
       })
     );
   });
   const guildSelector = guildSelectorHelper({
     guilds: filteredGuilds,
     server,
-    currentGuildRoleId: filteredGuilds[0]?.roleId
+    currentGuildRoleId: filteredGuilds[0]?.roleId,
   });
 
   const render = (): BaseMessageOptions => {
     if (!filteredGuilds.length && guilds.length) {
       return {
-        content: 'You do not have permissions to access this command'
+        content: 'You do not have permissions to access this command',
       };
     }
     const guild = filteredGuilds.find(
-      (guild) => guild.roleId === guildSelector.getGuildId()
+      (guild) => guild.roleId === guildSelector.getGuildId(),
     );
     if (!guild)
       return {
-        content: 'No guilds found'
+        content: 'No guilds found',
       };
 
     return {
       embeds: [generateEmbed({duelLogs, guild})],
-      components: guildSelector.getSelector()
+      components: guildSelector.getSelector(),
     };
   };
 
   const replyInteraction = ({
-    interaction
+    interaction,
   }: IReplyInteraction): BaseMessageOptions => {
     guildSelector.readInteraction({
-      interaction
+      interaction,
     });
     const guild = filteredGuilds.find(
-      (guild) => guild.roleId === guildSelector.getGuildId()
+      (guild) => guild.roleId === guildSelector.getGuildId(),
     );
     if (!guild)
       return {
-        content: 'No guilds found'
+        content: 'No guilds found',
       };
 
     return {
       embeds: [generateEmbed({duelLogs, guild})],
-      components: guildSelector.getSelector()
+      components: guildSelector.getSelector(),
     };
   };
 
   return {
     render,
-    replyInteraction
+    replyInteraction,
   };
 };
 
@@ -112,23 +112,23 @@ interface IGenerateEmbed {
 
 const generateEmbed = ({duelLogs, guild}: IGenerateEmbed) => {
   const embed = new EmbedBuilder().setColor(BOT_COLOR.embed).setAuthor({
-    name: guild.info.name ? `${guild.info.name} - Duel List` : 'Duel List'
+    name: guild.info.name ? `${guild.info.name} - Duel List` : 'Duel List',
   });
   const currentCycle = {
     label: 'Current Cycle',
     logs: duelLogs.find(
       (log) =>
         log.guildRoleId === guild.roleId &&
-        log.weekAt.getTime() === getGuildWeek().getTime()
-    )
+        log.weekAt.getTime() === getGuildWeek().getTime(),
+    ),
   };
   const previousCycle = {
     label: 'Previous Cycle',
     logs: duelLogs.find(
       (log) =>
         log.guildRoleId === guild.roleId &&
-        log.weekAt.getTime() == getGuildWeek().getTime() - ms('7d')
-    )
+        log.weekAt.getTime() == getGuildWeek().getTime() - ms('7d'),
+    ),
   };
   [currentCycle, previousCycle].forEach((cycle) => {
     embed.addFields({
@@ -140,11 +140,11 @@ const generateEmbed = ({duelLogs, guild}: IGenerateEmbed) => {
             (user, index) =>
               `\`[${index + 1}]\` ${messageFormatter.user(user.userId)} \`${
                 user.totalExp
-              } XP | ${user.duelCount} duels\``
+              } XP | ${user.duelCount} duels\``,
           )
           .join('\n')
         : 'None',
-      inline: true
+      inline: true,
     });
   });
 

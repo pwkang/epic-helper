@@ -3,7 +3,7 @@ import {
   RPG_COMMAND_TYPE,
   RPG_WORKING_TYPE,
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS
+  USER_NOT_REGISTERED_ACTIONS,
 } from '@epic-helper/constants';
 import {userService} from '../../../services/database/user.service';
 import {SLASH_COMMAND} from '../constant';
@@ -14,7 +14,7 @@ export default <SlashCommand>{
   type: 'subcommand',
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
-    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister
+    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
   },
   commandName: SLASH_COMMAND.account.name,
   builder: (subcommand) =>
@@ -23,9 +23,9 @@ export default <SlashCommand>{
         option
           .setName('reminder-type')
           .setDescription(
-            'Type of reminder, separate different type with space. e.g. hunt adv use'
+            'Type of reminder, separate different type with space. e.g. hunt adv use',
           )
-          .setRequired(true)
+          .setRequired(true),
       )
       .addStringOption((option) =>
         option
@@ -35,13 +35,13 @@ export default <SlashCommand>{
           .setChoices(
             {
               name: 'Set',
-              value: 'set'
+              value: 'set',
             },
             {
               name: 'Remove',
-              value: 'remove'
-            }
-          )
+              value: 'remove',
+            },
+          ),
       ),
   execute: async (client, interaction) => {
     const optionReminderType = interaction.options.getString('reminder-type')!;
@@ -57,11 +57,11 @@ export default <SlashCommand>{
         interaction,
         options: {
           content: `Invalid reminder type. Valid reminder types are: ${Object.keys(
-            RPG_COMMAND_TYPE
+            RPG_COMMAND_TYPE,
           )
             .map((i) => `\`${i}\``)
-            .join(', ')}`
-        }
+            .join(', ')}`,
+        },
       });
 
     let message: string;
@@ -71,7 +71,7 @@ export default <SlashCommand>{
         await userService.setUserReminderChannel({
           channelId: interaction.channelId,
           userId: interaction.user.id,
-          commandType: reminderType
+          commandType: reminderType,
         });
         message = `Successfully set reminder channel for ${reminderType
           .map((i) => `\`${i}\``)
@@ -80,7 +80,7 @@ export default <SlashCommand>{
       case 'remove':
         await userService.removeUserReminderChannel({
           userId: interaction.user.id,
-          commandType: reminderType
+          commandType: reminderType,
         });
         message = `Successfully removed reminder channel for ${reminderType
           .map((i) => `\`${i}\``)
@@ -92,10 +92,10 @@ export default <SlashCommand>{
       client,
       interaction,
       options: {
-        content: message
-      }
+        content: message,
+      },
     });
-  }
+  },
 };
 
 type IKeyword = Record<keyof typeof RPG_COMMAND_TYPE, string[]>;
@@ -116,7 +116,7 @@ const keyWords: IKeyword = {
   training: ['training', 'tr'],
   vote: ['vote'],
   weekly: ['weekly'],
-  working: ['working', ...Object.keys(RPG_WORKING_TYPE)]
+  working: ['working', ...Object.keys(RPG_WORKING_TYPE)],
 };
 
 const matchReminderType = (reminderType: string) => {
@@ -127,7 +127,7 @@ const matchReminderType = (reminderType: string) => {
     const _key = key as keyof typeof keyWords;
     if (
       keyWords[_key].some((keyword) =>
-        reminderTypeLower.includes(keyword.toLowerCase())
+        reminderTypeLower.includes(keyword.toLowerCase()),
       )
     ) {
       if (!matched.includes(_key)) {

@@ -1,4 +1,4 @@
-import {Handler, Request, Response} from 'express';
+import type {Handler, Request, Response} from 'express';
 
 export default <Handler[]>[healthCheckSuccess];
 

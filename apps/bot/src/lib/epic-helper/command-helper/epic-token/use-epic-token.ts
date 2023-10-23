@@ -13,38 +13,38 @@ interface IUseEpicToken {
 export const _useEpicToken = async ({
   token,
   userId,
-  serverId
+  serverId,
 }: IUseEpicToken): Promise<BaseMessageOptions> => {
   const freeDonor = await freeDonorService.findFreeDonor({
-    discordUserId: userId
+    discordUserId: userId,
   });
   const freeDonorTokens = freeDonor?.token ?? 0;
   const donor = await donorService.findDonor({
-    discordUserId: userId
+    discordUserId: userId,
   });
   const donorTokens = donor?.tier ? DONOR_TOKEN_AMOUNT[donor.tier] : 0;
   const boosted = await serverService.getUserBoostedServers({
-    userId
+    userId,
   });
   const totalTokens = freeDonorTokens + donorTokens;
   const usedTokens = boosted.reduce((acc, curr) => acc + curr.token, 0);
   const remainingTokens = totalTokens - usedTokens;
   if (totalTokens === 0) {
     return {
-      content: 'You don\'t have any tokens to boost servers.'
+      content: 'You don\'t have any tokens to boost servers.',
     };
   }
   if (remainingTokens < token) {
     return {
-      content: `You don't have enough tokens. You have ${remainingTokens} tokens left.`
+      content: `You don't have enough tokens. You have ${remainingTokens} tokens left.`,
     };
   }
   await serverService.addTokens({
     amount: token,
     serverId,
-    userId
+    userId,
   });
   return {
-    content: `You have successfully added ${token} tokens to this server.`
+    content: `You have successfully added ${token} tokens to this server.`,
   };
 };

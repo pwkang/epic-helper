@@ -20,7 +20,7 @@ export const manualAddDuelRecord = async ({
   expGained,
   client,
   hasWon,
-  commandChannelId
+  commandChannelId,
 }: IManualAddDuelRecord): Promise<EmbedBuilder> => {
   return await registerUserDuelLog({
     client,
@@ -28,6 +28,6 @@ export const manualAddDuelRecord = async ({
     expGained,
     author: user,
     isWinner: hasWon,
-    commandChannelId
+    commandChannelId,
   });
 };

@@ -7,7 +7,7 @@ interface IIsDonor {
 
 export const _isDonor = async ({userId}: IIsDonor) => {
   const donor = await donorService.findDonor({
-    discordUserId: userId
+    discordUserId: userId,
   });
   if (
     donor?.tier &&
@@ -17,7 +17,7 @@ export const _isDonor = async ({userId}: IIsDonor) => {
     return true;
   }
   const freeDonor = await freeDonorService.findFreeDonor({
-    discordUserId: userId
+    discordUserId: userId,
   });
   return !!freeDonor?.expiresAt && freeDonor?.expiresAt.getTime() > Date.now();
 };

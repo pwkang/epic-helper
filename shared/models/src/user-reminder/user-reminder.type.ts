@@ -1,11 +1,11 @@
-import {
+import type {
   RPG_EPIC_ITEM_TYPES,
   RPG_FARM_SEED,
   RPG_LOOTBOX_TYPE,
   RPG_WORKING_TYPE,
   RPG_COMMAND_TYPE,
 } from '@epic-helper/constants';
-import {ValuesOf} from '../type';
+import type {ValuesOf} from '../type';
 
 export interface IHuntReminderProps {
   together: boolean;

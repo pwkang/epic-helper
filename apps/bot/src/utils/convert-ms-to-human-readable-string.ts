@@ -23,7 +23,7 @@ function getHours(milliseconds: number) {
 
   // Calculate the number of hours
   return Math.floor(
-    ((seconds % (365 * 24 * 60 * 60)) % (24 * 60 * 60)) / (60 * 60)
+    ((seconds % (365 * 24 * 60 * 60)) % (24 * 60 * 60)) / (60 * 60),
   );
 }
 
@@ -34,7 +34,7 @@ function getMinutes(milliseconds: number) {
 
   // Calculate the number of minutes
   return Math.floor(
-    (((seconds % (365 * 24 * 60 * 60)) % (24 * 60 * 60)) % (60 * 60)) / 60
+    (((seconds % (365 * 24 * 60 * 60)) % (24 * 60 * 60)) % (60 * 60)) / 60,
   );
 }
 

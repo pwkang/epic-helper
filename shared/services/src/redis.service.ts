@@ -1,4 +1,5 @@
-import {createClient, RedisClientType} from 'redis';
+import type {RedisClientType} from 'redis';
+import {createClient} from 'redis';
 import * as dotenv from 'dotenv';
 import {logger} from '@epic-helper/utils';
 

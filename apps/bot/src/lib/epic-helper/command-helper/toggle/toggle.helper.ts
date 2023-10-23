@@ -19,20 +19,20 @@ const filterKeyword = (keyword: string): string[] =>
     .toLowerCase()
     .split(' ')
     .filter(
-      (item) => regexParent.test(item) || regexChild.test(item) || regexRange
+      (item) => regexParent.test(item) || regexChild.test(item) || regexRange,
     );
 
 export const getUpdateQuery = <T>({
   on,
   off,
-  toggleInfo
+  toggleInfo,
 }: IGetUpdateQuery): UpdateQuery<T> => {
   const itemOn = on
     ? filterKeyword(on).flatMap((item) => getPathsFromKeyword(item, toggleInfo))
     : [];
   const itemOff = off
     ? filterKeyword(off).flatMap((item) =>
-      getPathsFromKeyword(item, toggleInfo)
+      getPathsFromKeyword(item, toggleInfo),
     )
     : [];
   const query: Record<string, boolean> = {};
@@ -47,13 +47,13 @@ export const getUpdateQuery = <T>({
     query[item] = false;
   }
   return {
-    $set: query
+    $set: query,
   };
 };
 
 const getPathsFromKeyword = (
   key: string,
-  toggleInfo: IToggleEmbedsInfo[]
+  toggleInfo: IToggleEmbedsInfo[],
 ): string | string[] | null => {
   if (regexParent.test(key)) {
     const _key = key.match(regexParent);
@@ -61,7 +61,7 @@ const getPathsFromKeyword = (
     return findPath({
       toggleInfo,
       groupIndex: parseGroupIndex(_key[1]),
-      parentIndex: parseParentIndex(_key[2])
+      parentIndex: parseParentIndex(_key[2]),
     });
   } else if (regexChild.test(key)) {
     const _key = key.match(regexChild);
@@ -70,7 +70,7 @@ const getPathsFromKeyword = (
       toggleInfo,
       groupIndex: parseGroupIndex(_key[1]),
       parentIndex: parseParentIndex(_key[2]),
-      childIndex: parseChildIndex(_key[3])
+      childIndex: parseChildIndex(_key[3]),
     });
   } else if (regexRange.test(key)) {
     const _key = key.match(regexRange);
@@ -85,7 +85,7 @@ const getPathsFromKeyword = (
       const path = findPath({
         toggleInfo,
         groupIndex: fromGroupIndex,
-        parentIndex: i
+        parentIndex: i,
       });
       if (path) items.push(path);
     }
@@ -109,7 +109,7 @@ const findPath = ({
   toggleInfo,
   groupIndex,
   parentIndex,
-  childIndex
+  childIndex,
 }: IFindPath): string | null => {
   const parent = toggleInfo[groupIndex]?.children[parentIndex] ?? null;
 
@@ -130,5 +130,5 @@ export interface IUpdateToggle {
 export const _toggleHelper = {
   user: getUserToggle,
   server: getServerToggle,
-  guild: getGuildToggle
+  guild: getGuildToggle,
 };

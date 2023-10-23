@@ -2,7 +2,7 @@ import {serverService} from '../../../../services/database/server.service';
 import {
   _toggleEnchantMute,
   _toggleRandomEvent,
-  _toggleTTVerification
+  _toggleTTVerification,
 } from './toggle-server-checker-list';
 
 interface IToggleServerChecker {
@@ -16,7 +16,7 @@ const toggleServerChecker = async ({serverId}: IToggleServerChecker) => {
   return {
     enchantMute: _toggleEnchantMute({toggle: serverAccount.toggle}),
     randomEvent: _toggleRandomEvent({toggle: serverAccount.toggle}),
-    ttVerification: _toggleTTVerification({toggle: serverAccount.toggle})
+    ttVerification: _toggleTTVerification({toggle: serverAccount.toggle}),
   };
 };
 

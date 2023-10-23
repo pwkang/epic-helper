@@ -1,4 +1,4 @@
-import {RPG_RANDOM_EVENTS} from '@epic-helper/constants';
+import type {RPG_RANDOM_EVENTS} from '@epic-helper/constants';
 
 export interface IEnchantChannel {
   channelId: string;

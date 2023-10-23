@@ -2,7 +2,7 @@ import type {RPG_WORKING_TYPE} from '@epic-helper/constants';
 import {
   BOT_REMINDER_BASE_COOLDOWN,
   RPG_COMMAND_TYPE,
-  RPG_COOLDOWN_EMBED_TYPE
+  RPG_COOLDOWN_EMBED_TYPE,
 } from '@epic-helper/constants';
 import type {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
@@ -30,7 +30,7 @@ const WORKING_ITEMS = [
   'ruby',
   'coins',
   'rubies',
-  'nothing'
+  'nothing',
 ];
 
 const WORKING_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.working;
@@ -48,14 +48,14 @@ export function rpgWorking({
   message,
   author,
   isSlashCommand,
-  workingType
+  workingType,
 }: IRpgWorking) {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     channelId: message.channel.id,
     client,
     author,
-    commandType: RPG_COOLDOWN_EMBED_TYPE.working
+    commandType: RPG_COOLDOWN_EMBED_TYPE.working,
   });
   if (!event) return;
   event.on('content', async (content) => {
@@ -64,7 +64,7 @@ export function rpgWorking({
         client,
         channelId: message.channel.id,
         author,
-        workingType
+        workingType,
       });
       event?.stop();
     }
@@ -76,7 +76,7 @@ export function rpgWorking({
       await userService.updateUserRubyAmount({
         userId: author.id,
         type: 'inc',
-        ruby: mined
+        ruby: mined,
       });
       event?.stop();
     }
@@ -84,7 +84,7 @@ export function rpgWorking({
       await userService.updateUserRubyAmount({
         userId: author.id,
         type: 'inc',
-        ruby: 10
+        ruby: 10,
       });
       event?.stop();
       await djsMessageHelper.reply({
@@ -92,8 +92,8 @@ export function rpgWorking({
         message,
         options: {
           content:
-            'You were moved to another area, remember to go back your area!'
-        }
+            'You were moved to another area, remember to go back your area!',
+        },
       });
     }
   });
@@ -101,7 +101,7 @@ export function rpgWorking({
     await userReminderServices.updateUserCooldown({
       userId: author.id,
       type: RPG_COMMAND_TYPE.working,
-      readyAt: new Date(Date.now() + cooldown)
+      readyAt: new Date(Date.now() + cooldown),
     });
   });
   event.on('embed', (embed) => {
@@ -126,7 +126,7 @@ interface IRpgWorkingSuccess {
 const rpgWorkingSuccess = async ({
   author,
   workingType,
-  channelId
+  channelId,
 }: IRpgWorkingSuccess) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker) return;
@@ -135,23 +135,23 @@ const rpgWorkingSuccess = async ({
     const cooldown = await calcCdReduction({
       userId: author.id,
       commandType: RPG_COMMAND_TYPE.working,
-      cooldown: WORKING_COOLDOWN
+      cooldown: WORKING_COOLDOWN,
     });
     await userReminderServices.saveUserWorkingCooldown({
       userId: author.id,
       workingType,
-      readyAt: new Date(Date.now() + cooldown)
+      readyAt: new Date(Date.now() + cooldown),
     });
   }
 
   await updateReminderChannel({
     userId: author.id,
-    channelId
+    channelId,
   });
 
   await userStatsService.countUserStats({
     userId: author.id,
-    type: USER_STATS_RPG_COMMAND_TYPE.working
+    type: USER_STATS_RPG_COMMAND_TYPE.working,
   });
 };
 
@@ -174,7 +174,7 @@ const isWorkingInSpace = ({content}: IIsWorkingInSpace) =>
     'no trees to chop',
     'what are you going to mine?',
     'you can\'t pick "up" stuff',
-    'there are fish in space'
+    'there are fish in space',
   ].some((msg) => content.includes(msg));
 
 interface IIsRubyMined {
@@ -184,7 +184,7 @@ interface IIsRubyMined {
 
 const isRubyMined = ({content, author}: IIsRubyMined) =>
   [author.username, 'GOT', '<:ruby:603456286184701953>'].every((msg) =>
-    content.includes(msg)
+    content.includes(msg),
   );
 
 interface IRubyAmountMined {
@@ -214,5 +214,5 @@ interface IIsFoughtRubyDragon {
 
 const isFoughtRubyDragon = ({content, author}: IIsFoughtRubyDragon) =>
   [author.username, 'fights', 'THE RUBY DRAGON'].every((msg) =>
-    content.includes(msg)
+    content.includes(msg),
   );

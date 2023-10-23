@@ -18,14 +18,14 @@ interface IRemoveAdmin {
 export const _serverAdmin = async ({server}: IServerAdmin) => {
   const render = (serverAccount: IServer): BaseMessageOptions => {
     return {
-      embeds: [_getServerAdminEmbed({serverAccount, guild: server})]
+      embeds: [_getServerAdminEmbed({serverAccount, guild: server})],
     };
   };
 
   const addAdmin = async ({userId}: IAddAdmin) => {
     const serverAccount = await serverService.addServerAdmins({
       serverId: server.id,
-      usersId: [userId]
+      usersId: [userId],
     });
     if (!serverAccount) return;
     return render(serverAccount);
@@ -34,7 +34,7 @@ export const _serverAdmin = async ({server}: IServerAdmin) => {
   const removeAdmin = async ({userId}: IRemoveAdmin) => {
     const serverAccount = await serverService.removeServerAdmins({
       serverId: server.id,
-      usersId: [userId]
+      usersId: [userId],
     });
     if (!serverAccount) return;
     return render(serverAccount);
@@ -42,7 +42,7 @@ export const _serverAdmin = async ({server}: IServerAdmin) => {
 
   const reset = async () => {
     const serverAccount = await serverService.clearServerAdmins({
-      serverId: server.id
+      serverId: server.id,
     });
     if (!serverAccount) return;
     return render(serverAccount);
@@ -51,6 +51,6 @@ export const _serverAdmin = async ({server}: IServerAdmin) => {
   return {
     addAdmin,
     removeAdmin,
-    reset
+    reset,
   };
 };

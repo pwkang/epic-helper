@@ -5,7 +5,7 @@ interface IInterpolateMessage {
 
 export const interpolateMessage = ({
   message,
-  variables
+  variables,
 }: IInterpolateMessage) => {
   const regex = /{([^}]+)}/g;
 

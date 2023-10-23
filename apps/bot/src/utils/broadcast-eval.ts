@@ -23,7 +23,7 @@ interface IBroadcastEvalResult<T> {
 }
 
 export const broadcastEval = async <T, K>(
-  props: IBroadcastEval<T, K>
+  props: IBroadcastEval<T, K>,
 ): Promise<IBroadcastEvalResult<T>[]> => {
   const {client, target} = props;
 
@@ -38,7 +38,7 @@ const broadcastTargets = async <T, K>({
   fn,
   client,
   target,
-  context
+  context,
 }: IBroadcastEval<T, K>): Promise<IBroadcastEvalResult<T>[]> => {
   if (!client.cluster || !target) return [];
   const results: IBroadcastEvalResult<T>[] = [];
@@ -49,23 +49,23 @@ const broadcastTargets = async <T, K>({
     try {
       const result = (await client.cluster.broadcastEval(fn as any, {
         cluster: clusterId,
-        context
+        context,
       })) as T[];
 
       results.push({
         data: result[0],
-        clusterId
+        clusterId,
       });
     } catch (err) {
       logger({
         message: 'broadcastEval error' + err,
         clusterId,
         variant: 'broadcastEvalTarget',
-        logLevel: 'error'
+        logLevel: 'error',
       });
       results.push({
         data: String(err),
-        clusterId
+        clusterId,
       });
     }
   }
@@ -75,7 +75,7 @@ const broadcastTargets = async <T, K>({
 const evalOnly = async <T, K>({
   fn,
   client,
-  context
+  context,
 }: IBroadcastEval<T, K>): Promise<IBroadcastEvalResult<T>[]> => {
   if (!context) context = {} as K;
   try {
@@ -83,21 +83,21 @@ const evalOnly = async <T, K>({
     return [
       {
         data: result,
-        clusterId: client.cluster?.id ?? 0
-      }
+        clusterId: client.cluster?.id ?? 0,
+      },
     ];
   } catch (err) {
     logger({
       message: 'broadcastEval error' + err,
       clusterId: client.cluster?.id ?? 0,
       variant: 'broadcastEvalOnly',
-      logLevel: 'error'
+      logLevel: 'error',
     });
     return [
       {
         data: String(err),
-        clusterId: client.cluster?.id ?? 0
-      }
+        clusterId: client.cluster?.id ?? 0,
+      },
     ];
   }
 };
@@ -105,7 +105,7 @@ const evalOnly = async <T, K>({
 const broadcastAll = async <T, K>({
   fn,
   client,
-  context
+  context,
 }: IBroadcastEval<T, K>): Promise<IBroadcastEvalResult<T>[]> => {
   if (!client.cluster) return [];
   const results: IBroadcastEvalResult<T>[] = [];
@@ -114,23 +114,23 @@ const broadcastAll = async <T, K>({
     try {
       const result = (await client.cluster.broadcastEval(fn as any, {
         cluster: i,
-        context
+        context,
       })) as T[];
 
       results.push({
         data: result[0],
-        clusterId: i
+        clusterId: i,
       });
     } catch (err) {
       logger({
         message: 'broadcastEval error' + err,
         clusterId: i,
         variant: 'broadcastEvalAll',
-        logLevel: 'error'
+        logLevel: 'error',
       });
       results.push({
         data: String(err),
-        clusterId: i
+        clusterId: i,
       });
     }
   }

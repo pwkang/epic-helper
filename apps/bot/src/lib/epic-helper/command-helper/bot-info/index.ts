@@ -7,5 +7,5 @@ export const _botInfoHelper = {
   info: _info,
   invite: _invite,
   ownerInfo: _ownerInfo,
-  help: _help
+  help: _help,
 };

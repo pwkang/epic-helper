@@ -78,7 +78,7 @@ class InitDismantle {
 
   constructor(inventory: IInventoryItem) {
     this.inventory = {
-      ...inventory
+      ...inventory,
     };
   }
 
@@ -153,7 +153,7 @@ class InitDismantle {
 
 const dismantleHelper = {
   dismantleRecommend,
-  InitDismantle
+  InitDismantle,
 };
 
 export default dismantleHelper;

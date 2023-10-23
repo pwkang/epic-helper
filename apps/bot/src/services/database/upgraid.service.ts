@@ -23,12 +23,12 @@ const addRecord = async ({
   actionMessageId,
   userId,
   commandType,
-  upgraidAt
+  upgraidAt,
 }: IAddRecord) => {
   const existingRecord = await dbUpgraid.findOne({
     serverId,
     roleId: guildRoleId,
-    weekAt: getGuildWeek()
+    weekAt: getGuildWeek(),
   });
   let query = {};
   const arrayFilters: {[p: string]: any}[] = [];
@@ -40,12 +40,12 @@ const addRecord = async ({
           upgraidAt,
           serverId: actionServerId,
           channelID: actionChannelId,
-          messageID: actionMessageId
-        }
-      }
+          messageID: actionMessageId,
+        },
+      },
     };
     arrayFilters.push({
-      'user.uId': userId
+      'user.uId': userId,
     });
   } else {
     query = {
@@ -58,11 +58,11 @@ const addRecord = async ({
               upgraidAt,
               serverId: actionServerId,
               channelID: actionChannelId,
-              messageID: actionMessageId
-            }
-          ]
-        }
-      }
+              messageID: actionMessageId,
+            },
+          ],
+        },
+      },
     };
   }
 
@@ -70,20 +70,20 @@ const addRecord = async ({
     {
       serverId,
       roleId: guildRoleId,
-      weekAt: getGuildWeek()
+      weekAt: getGuildWeek(),
     },
     {
       $set: {
         serverId,
         roleId: guildRoleId,
-        weekAt: getGuildWeek()
+        weekAt: getGuildWeek(),
       },
-      ...query
+      ...query,
     },
     {
       upsert: true,
-      arrayFilters
-    }
+      arrayFilters,
+    },
   );
 };
 
@@ -94,16 +94,16 @@ interface IFindCurrentUpgraid {
 
 const findCurrentUpgraid = async ({
   serverId,
-  guildRoleId
+  guildRoleId,
 }: IFindCurrentUpgraid) => {
   return dbUpgraid.findOne({
     serverId,
     roleId: guildRoleId,
-    weekAt: getGuildWeek()
+    weekAt: getGuildWeek(),
   });
 };
 
 export const upgraidService = {
   addRecord,
-  findCurrentUpgraid
+  findCurrentUpgraid,
 };

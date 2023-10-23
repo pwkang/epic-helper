@@ -7,7 +7,7 @@ import {
   HUNT_MONSTER_LIST,
   RPG_CLICKABLE_SLASH_COMMANDS,
   RPG_COMMAND_TYPE,
-  RPG_COOLDOWN_EMBED_TYPE
+  RPG_COOLDOWN_EMBED_TYPE,
 } from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
@@ -29,7 +29,7 @@ export function rpgHunt({author, message, client, isSlashCommand}: IRpgHunt) {
     client,
     channelId: message.channel.id,
     author,
-    commandType: RPG_COOLDOWN_EMBED_TYPE.hunt
+    commandType: RPG_COOLDOWN_EMBED_TYPE.hunt,
   });
   if (!event) return;
   event.on('content', async (content) => {
@@ -41,7 +41,7 @@ export function rpgHunt({author, message, client, isSlashCommand}: IRpgHunt) {
         client,
         channelId: message.channel.id,
         author,
-        content
+        content,
       });
       event?.stop();
     }
@@ -51,7 +51,7 @@ export function rpgHunt({author, message, client, isSlashCommand}: IRpgHunt) {
         client,
         author,
         content,
-        channelId: message.channel.id
+        channelId: message.channel.id,
       });
     }
 
@@ -60,8 +60,8 @@ export function rpgHunt({author, message, client, isSlashCommand}: IRpgHunt) {
         message,
         client,
         options: {
-          content: 'You were moved to area 2, remember to go back your area!'
-        }
+          content: 'You were moved to area 2, remember to go back your area!',
+        },
       });
     }
 
@@ -81,7 +81,7 @@ export function rpgHunt({author, message, client, isSlashCommand}: IRpgHunt) {
     await userReminderServices.updateUserCooldown({
       userId: author.id,
       type: RPG_COMMAND_TYPE.hunt,
-      readyAt: new Date(Date.now() + cooldown)
+      readyAt: new Date(Date.now() + cooldown),
     });
   });
   event.on('end', () => {
@@ -102,7 +102,7 @@ const HUNT_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.hunt;
 const rpgHuntSuccess = async ({
   author,
   content,
-  channelId
+  channelId,
 }: IRpgHuntSuccess) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker) return;
@@ -113,26 +113,26 @@ const rpgHuntSuccess = async ({
     const cooldown = await calcCdReduction({
       userId: author.id,
       commandType: RPG_COMMAND_TYPE.hunt,
-      cooldown: HUNT_COOLDOWN
+      cooldown: HUNT_COOLDOWN,
     });
     await userReminderServices.saveUserHuntCooldown({
       userId: author.id,
       hardMode,
       together,
-      readyAt: new Date(Date.now() + cooldown)
+      readyAt: new Date(Date.now() + cooldown),
     });
   }
 
   updateReminderChannel({
     userId: author.id,
-    channelId
+    channelId,
   });
 
   await userStatsService.countUserStats({
     userId: author.id,
     type: together
       ? USER_STATS_RPG_COMMAND_TYPE.huntTogether
-      : USER_STATS_RPG_COMMAND_TYPE.hunt
+      : USER_STATS_RPG_COMMAND_TYPE.hunt,
   });
 };
 
@@ -147,29 +147,29 @@ const healReminder = async ({
   client,
   channelId,
   author,
-  content
+  content,
 }: IHealReminder) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker?.heal) return;
 
   const together = content.includes('hunting together');
   const healReminder = await userService.getUserHealReminder({
-    userId: author.id
+    userId: author.id,
   });
   if (!healReminder) return;
   const healReminderMsg = await getHealReminderMsg({
     content,
     author,
     together,
-    target: healReminder
+    target: healReminder,
   });
   if (!healReminderMsg) return;
   await djsMessageHelper.send({
     channelId,
     options: {
-      content: author + healReminderMsg
+      content: author + healReminderMsg,
     },
-    client
+    client,
   });
 };
 
@@ -212,7 +212,7 @@ function isZombieHordeEnded({content, author}: IIsZombieHordeEnded) {
   return (
     content.includes(author.username) &&
     ['cried', 'fights the horde', 'the horde did not notice'].some((text) =>
-      content.includes(text)
+      content.includes(text),
     )
   );
 }
@@ -224,7 +224,7 @@ interface IIsUserEncounterZombieHorde {
 
 function isUserEncounterZombieHorde({
   embed,
-  author
+  author,
 }: IIsUserEncounterZombieHorde) {
   return (
     embed.author?.name === `${author.username} — hunt` &&
@@ -241,7 +241,7 @@ function isUserJoinedTheHorde({content, author}: IIsUserJoinedTheHorde) {
   return (
     content.includes(author.username) &&
     ['pretends to be a zombie', 'area #2'].some((text) =>
-      content.includes(text)
+      content.includes(text),
     )
   );
 }
@@ -257,7 +257,7 @@ const getHealReminderMsg = ({
   content,
   author,
   together,
-  target
+  target,
 }: IGetHealReminderMsg): string | void => {
   let hp: string | undefined;
   let partnerSaved: boolean | undefined = false;
@@ -294,7 +294,7 @@ const getHealReminderMsg = ({
       hp = content
         .split('\n')
         .find((msg) =>
-          [author.username, 'remaining HP is'].every((m) => msg.includes(m))
+          [author.username, 'remaining HP is'].every((m) => msg.includes(m)),
         )
         ?.split('HP is')[1]
         .trim()
@@ -302,7 +302,7 @@ const getHealReminderMsg = ({
       hpLost = content
         .split('\n')
         .find((msg) =>
-          [author.username, 'remaining HP is'].every((m) => msg.includes(m))
+          [author.username, 'remaining HP is'].every((m) => msg.includes(m)),
         )
         ?.split('HP')[0]
         .trim()
@@ -314,7 +314,7 @@ const getHealReminderMsg = ({
       const playerSurvived = content
         .split('\n')
         .find((msg) =>
-          [author.username, 'remaining HP is'].every((m) => msg.includes(m))
+          [author.username, 'remaining HP is'].every((m) => msg.includes(m)),
         );
       if (playerSurvived) {
 

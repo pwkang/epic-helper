@@ -11,6 +11,7 @@ const API_PORT = process.env.API_PORT || 3000;
 export const startServer = async () => {
   const app = express();
   app.use(bodyParser.json());
+
   // app.use(morgan('combined'));
   app.use('/', await loadRoutes());
 

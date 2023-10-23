@@ -1,20 +1,20 @@
 import {
   BOT_COLOR,
   DONOR_TIER,
-  DONOR_TOKEN_AMOUNT
+  DONOR_TOKEN_AMOUNT,
 } from '@epic-helper/constants';
 import donorService from '../../../../services/database/donor.service';
 import type {
   BaseInteraction,
   BaseMessageOptions,
   Client,
-  StringSelectMenuInteraction
+  StringSelectMenuInteraction,
 } from 'discord.js';
 import {
   ActionRowBuilder,
   EmbedBuilder,
   StringSelectMenuBuilder,
-  UserSelectMenuBuilder
+  UserSelectMenuBuilder,
 } from 'discord.js';
 import type {IDonor} from '@epic-helper/models';
 import messageFormatter from '../../../discordjs/message-formatter';
@@ -48,8 +48,8 @@ export const _listDonors = ({client}: IListDonors) => {
           page,
           total,
           all: false,
-          itemsPerPage: PAGE_SIZE
-        })
+          itemsPerPage: PAGE_SIZE,
+        }),
       );
     }
 
@@ -60,36 +60,36 @@ export const _listDonors = ({client}: IListDonors) => {
     let embed: EmbedBuilder;
     if (userId) {
       const donor = await donorService.findDonor({
-        discordUserId: userId
+        discordUserId: userId,
       });
       total = 0;
       embed = await buildDonorEmbed({
         client,
         donor: donor ?? undefined,
-        userId
+        userId,
       });
     } else {
       const donors = await donorService.getDonors({
         tier,
         page,
-        limit: PAGE_SIZE
+        limit: PAGE_SIZE,
       });
       total = donors.total;
       embed = await buildDonorsEmbed({
         donors: donors.data,
         total: donors.total,
         client,
-        page
+        page,
       });
     }
     return {
       embeds: [embed],
-      components: generateComponents()
+      components: generateComponents(),
     };
   };
 
   const responseInteraction = async (
-    interaction: BaseInteraction | StringSelectMenuInteraction
+    interaction: BaseInteraction | StringSelectMenuInteraction,
   ): Promise<BaseMessageOptions | null> => {
     if (interaction.isStringSelectMenu()) {
       tier =
@@ -110,7 +110,7 @@ export const _listDonors = ({client}: IListDonors) => {
 
   return {
     render,
-    responseInteraction
+    responseInteraction,
   };
 };
 
@@ -123,7 +123,7 @@ interface IBuildEmbed {
 
 const buildDonorsEmbed = async ({donors, page, total, client}: IBuildEmbed) => {
   const embed = new EmbedBuilder().setColor(BOT_COLOR.embed).setFooter({
-    text: `Page ${page + 1}/${Math.ceil(total / PAGE_SIZE)} • total: ${total}`
+    text: `Page ${page + 1}/${Math.ceil(total / PAGE_SIZE)} • total: ${total}`,
   });
 
   for (const donor of donors) {
@@ -135,11 +135,11 @@ const buildDonorsEmbed = async ({donors, page, total, client}: IBuildEmbed) => {
         user ? `**${user.tag}**` : null,
         `**Tier:** ${donor.tier ?? '-'}`,
         `**Expires:** ${timestampHelper.relative({time: donor.expiresAt})}`,
-        `**Token:** ${donor.tier ? DONOR_TOKEN_AMOUNT[donor.tier] : '0'}`
+        `**Token:** ${donor.tier ? DONOR_TOKEN_AMOUNT[donor.tier] : '0'}`,
       ]
         .filter((value) => !!value)
         .join('\n'),
-      inline: true
+      inline: true,
     });
   }
   if (!donors.length) {
@@ -159,21 +159,21 @@ const generateTierSelector = (tier?: ValuesOf<typeof DONOR_TIER>) => {
           label: 'No filter',
           value: 'all',
           default: !tier,
-          description: 'Show all donors'
+          description: 'Show all donors',
         },
         ...typedObjectEntries(DONOR_TIER).map(([key, value]) => ({
           value,
           label: capitalizeFirstLetters(key),
           default: value === tier,
-          description: `Token: ${DONOR_TOKEN_AMOUNT[value]}`
-        }))
-      )
+          description: `Token: ${DONOR_TOKEN_AMOUNT[value]}`,
+        })),
+      ),
   );
 };
 
 const userSelector =
   new ActionRowBuilder<UserSelectMenuBuilder>().addComponents(
-    new UserSelectMenuBuilder().setCustomId('user').setPlaceholder('User')
+    new UserSelectMenuBuilder().setCustomId('user').setPlaceholder('User'),
   );
 
 interface IBuildDonorEmbed {
@@ -188,13 +188,13 @@ const buildDonorEmbed = async ({donor, userId, client}: IBuildDonorEmbed) => {
   if (user) {
     embed.setAuthor({
       name: user.tag,
-      iconURL: user.displayAvatarURL()
+      iconURL: user.displayAvatarURL(),
     });
     embed.setThumbnail(user.displayAvatarURL());
     embed.setDescription(messageFormatter.user(user.id));
   }
   const boostedServers = await serverService.getUserBoostedServers({
-    userId
+    userId,
   });
   embed.addFields(
     {
@@ -211,9 +211,9 @@ const buildDonorEmbed = async ({donor, userId, client}: IBuildDonorEmbed) => {
         `**Expires:** ${
           donor ? timestampHelper.relative({time: donor.expiresAt}) : '-'
         }`,
-        `**Token:** ${donor?.tier ? DONOR_TOKEN_AMOUNT[donor.tier] : '0'}`
+        `**Token:** ${donor?.tier ? DONOR_TOKEN_AMOUNT[donor.tier] : '0'}`,
       ].join('\n'),
-      inline: false
+      inline: false,
     },
     {
       name: 'BOOSTED GUILDS',
@@ -221,16 +221,16 @@ const buildDonorEmbed = async ({donor, userId, client}: IBuildDonorEmbed) => {
         ? boostedServers
           .map(
             (guild, index) =>
-              `\`[${index + 1}]\` **${guild.name}** - ${guild.token}`
+              `\`[${index + 1}]\` **${guild.name}** - ${guild.token}`,
           )
           .join('\n')
         : '-',
-      inline: false
-    }
+      inline: false,
+    },
   );
 
   embed.setFooter({
-    text: userId
+    text: userId,
   });
   return embed;
 };
@@ -239,6 +239,6 @@ const fetchUser = async (client: Client, userId?: string) =>
   userId
     ? await djsUserHelper.getUser({
       userId,
-      client
+      client,
     })
     : null;

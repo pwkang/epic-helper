@@ -11,7 +11,7 @@ interface IFetchMember {
 export const _fetchMember = async ({
   serverId,
   userId,
-  client
+  client,
 }: IFetchMember) => {
   const server = await djsServerHelper.getServer({serverId, client});
   if (!server) return;
@@ -24,7 +24,7 @@ export const _fetchMember = async ({
         clusterId: client.cluster?.id,
         logLevel: 'error',
         message: `Failed to fetch member ${userId} in ${serverId}`,
-        variant: 'fetch-member'
+        variant: 'fetch-member',
       });
     }
   }

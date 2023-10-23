@@ -1,7 +1,7 @@
 import type {
   BaseMessageOptions,
   StringSelectMenuInteraction,
-  User
+  User,
 } from 'discord.js';
 import {ActionRowBuilder, StringSelectMenuBuilder} from 'discord.js';
 import {userService} from '../../../../services/database/user.service';
@@ -26,16 +26,16 @@ export const _accountSettings = async ({author}: IAccountSettings) => {
   const userProfile = await userService.getUserAccount(author.id);
   if (!userProfile) return null;
   const donor = await donorService.findDonor({
-    discordUserId: author.id
+    discordUserId: author.id,
   });
   const freeDonor = await freeDonorService.findFreeDonor({
-    discordUserId: author.id
+    discordUserId: author.id,
   });
   const boostedServers = await serverService.getUserBoostedServers({
-    userId: author.id
+    userId: author.id,
   });
   const guild = await guildService.findUserGuild({
-    userId: author.id
+    userId: author.id,
   });
   const guildServer = guild
     ? await redisServerInfo.getServerInfo({serverId: guild?.serverId})
@@ -44,17 +44,17 @@ export const _accountSettings = async ({author}: IAccountSettings) => {
     author,
     userProfile,
     guildName: guild?.info.name,
-    guildServerName: guildServer?.name
+    guildServerName: guildServer?.name,
   });
   const userReminderChannelEmbed = _getUserReminderChannelEmbed({
     userProfile,
-    author
+    author,
   });
   const donorInfoEmbed = _getDonorInfoEmbed({
     author,
     donor,
     freeDonor,
-    boostedServers
+    boostedServers,
   });
 
   function render({type}: IRender) {
@@ -62,23 +62,23 @@ export const _accountSettings = async ({author}: IAccountSettings) => {
       case PAGE_TYPE.settings:
         return {
           embeds: [userSettingsEmbed],
-          components: [getActionRow({selected: PAGE_TYPE.settings})]
+          components: [getActionRow({selected: PAGE_TYPE.settings})],
         };
       case PAGE_TYPE.reminderChannel:
         return {
           embeds: [userReminderChannelEmbed],
-          components: [getActionRow({selected: PAGE_TYPE.reminderChannel})]
+          components: [getActionRow({selected: PAGE_TYPE.reminderChannel})],
         };
       case PAGE_TYPE.donorInfo:
         return {
           embeds: [donorInfoEmbed],
-          components: [getActionRow({selected: PAGE_TYPE.donorInfo})]
+          components: [getActionRow({selected: PAGE_TYPE.donorInfo})],
         };
     }
   }
 
   function responseInteraction(
-    interaction: StringSelectMenuInteraction
+    interaction: StringSelectMenuInteraction,
   ): BaseMessageOptions {
     const selected = interaction.values[0] as ValuesOf<typeof PAGE_TYPE>;
     return render({type: selected});
@@ -86,14 +86,14 @@ export const _accountSettings = async ({author}: IAccountSettings) => {
 
   return {
     render,
-    responseInteraction
+    responseInteraction,
   };
 };
 
 const PAGE_TYPE = {
   settings: 'settings',
   reminderChannel: 'reminder_channel',
-  donorInfo: 'donor_info'
+  donorInfo: 'donor_info',
 } as const;
 
 interface IGetActionRow {
@@ -109,18 +109,18 @@ const getActionRow = ({selected}: IGetActionRow) => {
         {
           label: 'Settings',
           value: 'settings',
-          default: selected === PAGE_TYPE.settings
+          default: selected === PAGE_TYPE.settings,
         },
         {
           label: 'Reminder Channel',
           value: 'reminder_channel',
-          default: selected === PAGE_TYPE.reminderChannel
+          default: selected === PAGE_TYPE.reminderChannel,
         },
         {
           label: 'Donor Info',
           value: 'donor_info',
-          default: selected === PAGE_TYPE.donorInfo
-        }
-      )
+          default: selected === PAGE_TYPE.donorInfo,
+        },
+      ),
   );
 };

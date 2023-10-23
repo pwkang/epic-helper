@@ -4,7 +4,7 @@ import type {
   InteractionReplyOptions,
   InteractionResponse,
   InteractionUpdateOptions,
-  StringSelectMenuInteraction
+  StringSelectMenuInteraction,
 } from 'discord.js';
 import {Collection} from 'discord.js';
 import ms from 'ms';
@@ -30,7 +30,7 @@ export default async function _replyInteraction<T>({
   interactive,
   options,
   client,
-  onStop
+  onStop,
 }: IReplyInteraction) {
   if (!interaction.isRepliable() || interaction.replied) return;
   let interactionResponse: InteractionResponse | undefined;
@@ -42,7 +42,7 @@ export default async function _replyInteraction<T>({
       message: error.rawError,
       variant: 'replyInteraction',
       logLevel: 'warn',
-      clusterId: client.cluster?.id
+      clusterId: client.cluster?.id,
     });
   }
   if (!interactive || !interactionResponse) return;
@@ -52,7 +52,7 @@ export default async function _replyInteraction<T>({
   let allEventsFn: TEventCB | null = null;
   if (!channel) return;
   const collector = interactionResponse.createMessageComponentCollector({
-    idle: ms('3m')
+    idle: ms('3m'),
   });
 
   function on(customId: T extends undefined ? string : T, callback: TEventCB) {
@@ -76,7 +76,7 @@ export default async function _replyInteraction<T>({
     await _updateInteraction({
       client,
       interaction: collected,
-      options: replyOptions
+      options: replyOptions,
     });
   });
 
@@ -91,14 +91,14 @@ export default async function _replyInteraction<T>({
     if (reason === 'idle') {
       try {
         await interactionResponse?.edit({
-          components: disableAllComponents(lastMessage.components)
+          components: disableAllComponents(lastMessage.components),
         });
       } catch (error: any) {
         logger({
           message: error.message,
           logLevel: 'warn',
           variant: 'replyInteraction',
-          clusterId: client.cluster?.id
+          clusterId: client.cluster?.id,
         });
       }
     }
@@ -107,6 +107,6 @@ export default async function _replyInteraction<T>({
   return {
     on,
     stop,
-    every
+    every,
   };
 }

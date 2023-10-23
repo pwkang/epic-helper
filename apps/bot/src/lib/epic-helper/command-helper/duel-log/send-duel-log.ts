@@ -15,11 +15,11 @@ export const sendDuelLog = async ({
   serverId,
   roleId,
   client,
-  ignoreChannel
+  ignoreChannel,
 }: ISendDuelLog) => {
   const guild = await guildService.findGuild({
     roleId,
-    serverId
+    serverId,
   });
   const logChannel = guild?.duel?.channelId;
 
@@ -28,8 +28,8 @@ export const sendDuelLog = async ({
   await djsMessageHelper.send({
     client,
     options: {
-      embeds: [embed]
+      embeds: [embed],
     },
-    channelId: logChannel
+    channelId: logChannel,
   });
 };

@@ -1,5 +1,6 @@
 import * as dotenv from 'dotenv';
-import pino, {Level, Logger} from 'pino';
+import type {Level, Logger} from 'pino';
+import pino from 'pino';
 import pretty from 'pino-pretty';
 
 dotenv.config();
@@ -40,7 +41,7 @@ export const logger = (props: ILogger | string) => {
       pretty({
         translateTime: 'SYS:yyyy-mm-dd hh:MM:ss TT',
         messageFormat: `${clusterIdMsg}${variantMsg}{msg}`,
-      })
+      }),
     );
   }
 

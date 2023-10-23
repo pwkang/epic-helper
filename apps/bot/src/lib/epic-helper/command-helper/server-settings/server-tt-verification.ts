@@ -22,10 +22,10 @@ interface IRemoveRule {
 }
 
 export const _ttVerificationSettings = async ({
-  server
+  server,
 }: ITTVerificationSettings) => {
   let serverAccount = await serverService.getServer({
-    serverId: server.id
+    serverId: server.id,
   });
   if (!serverAccount) return null;
 
@@ -34,18 +34,18 @@ export const _ttVerificationSettings = async ({
       embeds: [
         _getTTVerificationSettingsEmbed({
           serverAccount,
-          guild: server
-        })
-      ]
+          guild: server,
+        }),
+      ],
     };
   };
 
   const setChannel = async ({
-    channelId
+    channelId,
   }: ISetChannel): Promise<BaseMessageOptions> => {
     serverAccount = await serverService.setTTVerificationChannel({
       channelId,
-      serverId: server.id
+      serverId: server.id,
     });
     return render();
   };
@@ -56,7 +56,7 @@ export const _ttVerificationSettings = async ({
       serverId: server.id,
       maxTT,
       minTT,
-      message
+      message,
     });
     return render();
   };
@@ -64,7 +64,7 @@ export const _ttVerificationSettings = async ({
   const removeRule = async ({roleId}: IRemoveRule) => {
     serverAccount = await serverService.removeTTVerificationRule({
       roleId,
-      serverId: server.id
+      serverId: server.id,
     });
     return render();
   };
@@ -72,6 +72,6 @@ export const _ttVerificationSettings = async ({
   return {
     setChannel,
     setRule,
-    removeRule
+    removeRule,
   };
 };

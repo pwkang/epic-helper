@@ -20,9 +20,9 @@ const wildPetReader = ({embed}: IWildPetReader) => {
     petName:
       typedObjectEntries(RPG_PET_TYPE_WILD).find(
         ([, value]) =>
-          value.toLowerCase() === petName.toLowerCase().replaceAll(' ', '')
+          value.toLowerCase() === petName.toLowerCase().replaceAll(' ', ''),
       )?.[0] ?? null,
-    owner: owner.trim() === '' ? null : owner.trim()
+    owner: owner.trim() === '' ? null : owner.trim(),
   };
 };
 

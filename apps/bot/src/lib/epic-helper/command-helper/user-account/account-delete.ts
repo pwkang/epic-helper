@@ -3,7 +3,7 @@ import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  EmbedBuilder
+  EmbedBuilder,
 } from 'discord.js';
 import {userService} from '../../../../services/database/user.service';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
@@ -19,35 +19,35 @@ export const _deleteAccount = ({author}: ISlashAccountDelete) => {
   function render(): BaseMessageOptions {
     return {
       embeds: [embed],
-      components: [actionRow]
+      components: [actionRow],
     };
   }
 
   async function responseInteraction(
-    customId: string
+    customId: string,
   ): Promise<BaseMessageOptions> {
     if (customId === 'confirm') {
       await userService.userAccountDelete(author.id);
       await userReminderServices.clearUserCooldowns(author.id);
       await userPetServices.clearUserPets({
-        userId: author.id
+        userId: author.id,
       });
       await userStatsService.clearUserStats({userId: author.id});
       return {
         components: [],
-        embeds: [deletedEmbed]
+        embeds: [deletedEmbed],
       };
     } else {
       return {
         components: [],
-        embeds: [cancelledEmbed]
+        embeds: [cancelledEmbed],
       };
     }
   }
 
   return {
     render,
-    responseInteraction
+    responseInteraction,
   };
 };
 
@@ -59,7 +59,7 @@ const actionRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
   new ButtonBuilder()
     .setCustomId('cancel')
     .setLabel('Cancel')
-    .setStyle(ButtonStyle.Secondary)
+    .setStyle(ButtonStyle.Secondary),
 );
 
 const embed = new EmbedBuilder()
@@ -75,14 +75,14 @@ const embed = new EmbedBuilder()
       '\n' +
       'Except for the following:\n' +
       '- Guild upgrade/raid logs\n' +
-      '- Guild duel logs\n'
+      '- Guild duel logs\n',
   );
 
 const deletedEmbed = new EmbedBuilder()
   .setColor(BOT_COLOR.embed)
   .setTitle('Successfully deleted your account!')
   .setDescription(
-    `You can create a new account by using ${BOT_CLICKABLE_SLASH_COMMANDS.accountRegister} again`
+    `You can create a new account by using ${BOT_CLICKABLE_SLASH_COMMANDS.accountRegister} again`,
   );
 
 const cancelledEmbed = new EmbedBuilder()

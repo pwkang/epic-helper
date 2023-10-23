@@ -4,5 +4,5 @@ export const BOT_HELP_COMMANDS_GROUPS = {
   guild: 'guild',
   donor: 'donor',
   utils: 'utils',
-  'bot-info': 'bot-info'
+  'bot-info': 'bot-info',
 } as const;

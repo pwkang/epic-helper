@@ -24,8 +24,8 @@ export const getAllCommands = async () => {
     await contentfulService.withoutUnresolvableLinks.getEntries<BotHelpSkeleton>(
       {
         content_type: 'epicHelperCommand',
-        limit: 1000
-      }
+        limit: 1000,
+      },
     );
 
   await redisHelpCommands.set(data);
@@ -52,8 +52,8 @@ export const getAllCommandsGroup = async () => {
       {
         content_type: 'epicHelperCommandsGroup',
         order: ['fields.order'],
-        limit: 1000
-      }
+        limit: 1000,
+      },
     );
   await redisHelpCommandsGroup.set(data);
   return toHelpCommandsGroup(data);

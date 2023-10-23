@@ -15,5 +15,5 @@ export default <CronJob>{
     usersId.forEach((userId) => {
       userReminderTimesUp(client, userId);
     });
-  }
+  },
 };

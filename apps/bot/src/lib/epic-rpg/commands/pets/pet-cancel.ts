@@ -17,17 +17,17 @@ export const rpgPetAdvCancelSuccess = async ({
   author,
   selectedPets,
   message,
-  client
+  client,
 }: IRpgPetAdvCancelSuccess) => {
   const amountOfPetCancelled = extractCancelledPetAmount({
-    message
+    message,
   });
 
   if (!selectedPets) {
     selectedPets = await collectSelectedPets({
       author,
       client,
-      message
+      message,
     });
   }
   if (!selectedPets) return;
@@ -35,13 +35,13 @@ export const rpgPetAdvCancelSuccess = async ({
   const messageOptions = await unregisterPetFromAdventure({
     author,
     amountOfPetCancelled,
-    selectedPets
+    selectedPets,
   });
 
   await djsMessageHelper.send({
     client,
     channelId: message.channel.id,
-    options: messageOptions
+    options: messageOptions,
   });
 };
 
@@ -54,22 +54,22 @@ interface IUnregisterPetFromAdventure {
 const unregisterPetFromAdventure = async ({
   selectedPets,
   amountOfPetCancelled,
-  author
+  author,
 }: IUnregisterPetFromAdventure) => {
   const petsToCancel = await fetchPetsToCancel({
     userId: author.id,
-    selectedPets
+    selectedPets,
   });
 
   if (petsToCancel.length !== amountOfPetCancelled) {
     return {
-      content: `**${amountOfPetCancelled}** pets were cancelled, but found **${petsToCancel.length}** available pets to cancel.`
+      content: `**${amountOfPetCancelled}** pets were cancelled, but found **${petsToCancel.length}** available pets to cancel.`,
     };
   }
 
   await userPetServices.cancelAdventurePets({
     petIds: petsToCancel.map((p) => p.petId),
-    userId: author.id
+    userId: author.id,
   });
 
   return {
@@ -77,7 +77,7 @@ const unregisterPetFromAdventure = async ({
       petsToCancel.length
     }** adventure(s) cancelled (\`${petsToCancel
       .map((p) => convertNumToPetId(p.petId))
-      .join(' ')}\`)`
+      .join(' ')}\`)`,
   };
 };
 
@@ -88,7 +88,7 @@ interface IIsPetSuccessfullyCancelled {
 
 const isPetSuccessfullyCancelled = ({
   message,
-  author
+  author,
 }: IIsPetSuccessfullyCancelled): boolean =>
   message.mentions.has(author.id) &&
   message.content.includes('pet adventure(s) cancelled');
@@ -99,7 +99,7 @@ interface IExtractCancelledPetAmount {
 
 const extractCancelledPetAmount = ({message}: IExtractCancelledPetAmount) => {
   const amount = message.content.match(
-    /\*\*(\d+)\*\* pet adventure\(s\) cancelled/
+    /\*\*(\d+)\*\* pet adventure\(s\) cancelled/,
   )?.[1];
   return amount ? parseInt(amount) : 0;
 };
@@ -118,13 +118,13 @@ interface IFetchPetsToCancel {
 
 const fetchPetsToCancel = async ({
   selectedPets,
-  userId
+  userId,
 }: IFetchPetsToCancel) => {
   const nonEpicPetsId = selectedPets.filter((p) => p !== 'epic');
   const petsToCancel: IUserPet[] = [];
   if (hasCancelEpic(selectedPets)) {
     const availableEpicPets = await userPetServices.getAdventureEpicPets({
-      userId
+      userId,
     });
     petsToCancel.push(...availableEpicPets);
   }
@@ -134,7 +134,7 @@ const fetchPetsToCancel = async ({
       petsId: nonEpicPetsId
         .map(convertPetIdToNum)
         .filter((p) => petsToCancel.every((p2) => p2.petId !== p)),
-      status: [RPG_PET_ADV_STATUS.adventure]
+      status: [RPG_PET_ADV_STATUS.adventure],
     });
     petsToCancel.push(...nonEpicPets);
   }
@@ -185,5 +185,5 @@ const isSelectedPetHasTimeTraveller = ({message, author}: IChecker): boolean =>
 export const rpgPetCancelChecker = {
   isFailToCancelPet,
   extractCancelledPetAmount,
-  isPetSuccessfullyCancelled
+  isPetSuccessfullyCancelled,
 };

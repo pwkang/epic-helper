@@ -12,24 +12,24 @@ const registerNewServers = async (client: Client) => {
   const registeredServersId = await serverService.listRegisteredServersId();
 
   const serversToRegister = cachedServers.filter(
-    (server) => !registeredServersId.includes(server.id)
+    (server) => !registeredServersId.includes(server.id),
   );
   serversToRegister.forEach((server) => {
     serverService.registerServer({
       serverId: server.id,
-      name: server.name
+      name: server.name,
     });
   });
 
   cachedServers.forEach((server) => {
     redisServerInfo.setServerName({
       serverId: server.id,
-      name: server.name
+      name: server.name,
     });
   });
   redisServerInfo.setServerName({
     serverId: EPIC_RPG_SERVER_INFO.id,
-    name: EPIC_RPG_SERVER_INFO.name
+    name: EPIC_RPG_SERVER_INFO.name,
   });
 };
 

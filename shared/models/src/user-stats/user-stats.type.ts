@@ -1,4 +1,4 @@
-import {ValuesOf} from '../type';
+import type {ValuesOf} from '../type';
 
 export const USER_STATS_RPG_COMMAND_TYPE = {
   lootbox: 'lootbox',

@@ -17,13 +17,13 @@ export const rpgProgress = ({
   message,
   author,
   isSlashCommand,
-  server
+  server,
 }: IRpgProfile) => {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     client,
     channelId: message.channel.id,
-    author
+    author,
   });
   if (!event) return;
   event.on('embed', async (embed) => {
@@ -33,7 +33,7 @@ export const rpgProgress = ({
         embed,
         server,
         channel: message.channel,
-        author
+        author,
       });
       event?.stop();
     }
@@ -57,17 +57,17 @@ const rpgProgressSuccess = async ({
   server,
   client,
   channel,
-  author
+  author,
 }: IRpgProfileSuccess) => {
   const progress = embedReaders.progress({
-    embed
+    embed,
   });
   await commandHelper.server.verifyTT({
     client,
     author,
     server,
     channelId: channel.id,
-    timeTravels: progress.timeTravels
+    timeTravels: progress.timeTravels,
   });
 };
 

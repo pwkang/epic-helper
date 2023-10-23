@@ -1,5 +1,5 @@
 import {Schema} from 'mongoose';
-import {IUserStats} from './user-stats.type';
+import type {IUserStats} from './user-stats.type';
 
 export const userStatsSchema = new Schema<IUserStats>({
   userId: {type: String, required: true, index: true},

@@ -3,11 +3,11 @@ import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  EmbedBuilder
+  EmbedBuilder,
 } from 'discord.js';
 import {
   getAllCommands,
-  getAllCommandsGroup
+  getAllCommandsGroup,
 } from '../../../../services/contentful/bot-help.contentful';
 import {
   BOT_COLOR,
@@ -15,7 +15,7 @@ import {
   PATREON_LINK,
   PREFIX,
   SUPPORT_SERVER_INVITE_LINK,
-  TOPGG_LINK
+  TOPGG_LINK,
 } from '@epic-helper/constants';
 import Fuse from 'fuse.js';
 import type {IHelpCommand} from '../../../../services/transformer/help-commands.transformer';
@@ -28,7 +28,7 @@ interface IHelp {
 
 export const _help = async ({
   client,
-  search
+  search,
 }: IHelp): Promise<BaseMessageOptions> => {
   const commands = await getAllCommands();
   const groups = await getAllCommandsGroup();
@@ -36,11 +36,11 @@ export const _help = async ({
   if (!search) {
     const embed = generateEmbedHome({
       groups,
-      client
+      client,
     });
     return {
       embeds: [embed],
-      components: [generateButtons()]
+      components: [generateButtons()],
     };
   }
 
@@ -49,12 +49,12 @@ export const _help = async ({
   if (searchResult.length) {
     const embed = generateEmbedCommand(searchResult[0].item);
     return {
-      embeds: [embed]
+      embeds: [embed],
     };
   }
 
   return {
-    content: 'No command found'
+    content: 'No command found',
   };
 };
 
@@ -68,15 +68,15 @@ const searchCommand = ({search, commands}: ISearchCommand) => {
     commands.filter((cmd) => cmd.type === 'command'),
     {
       keys: ['prefixCommands'],
-      threshold: 0.4
-    }
+      threshold: 0.4,
+    },
   );
   const fuseFeatures = new Fuse(
     commands.filter((cmd) => cmd.type === 'feature'),
     {
       keys: ['name'],
-      threshold: 0.4
-    }
+      threshold: 0.4,
+    },
   );
 
   return [...fuseCommand.search(search), ...fuseFeatures.search(search)];
@@ -101,20 +101,20 @@ export const generateEmbedHome = ({groups, client}: IGenerateEmbed) => {
         value: group.commands
           .filter((command) => command?.prefixCommands?.length)
           .map((command) => `\`${command?.prefixCommands?.[0]}\``)
-          .join(', ')
+          .join(', '),
       });
     if (group.type === 'features')
       embed.addFields({
         name: group.fieldLabel,
         value: group.commands
           .map((command) => `\`${command?.name}\``)
-          .join(', ')
+          .join(', '),
       });
   }
 
   embed.addFields({
     name: '\u200b',
-    value: `Type \`${PREFIX.bot}help [command /feature]\` to get more information`
+    value: `Type \`${PREFIX.bot}help [command /feature]\` to get more information`,
   });
 
   return embed;
@@ -126,25 +126,25 @@ export const generateButtons = () => {
       new ButtonBuilder()
         .setStyle(ButtonStyle.Link)
         .setLabel('Invite')
-        .setURL(BOT_INVITE_LINK)
+        .setURL(BOT_INVITE_LINK),
     )
     .addComponents(
       new ButtonBuilder()
         .setStyle(ButtonStyle.Link)
         .setLabel('Support Server')
-        .setURL(SUPPORT_SERVER_INVITE_LINK)
+        .setURL(SUPPORT_SERVER_INVITE_LINK),
     )
     .addComponents(
       new ButtonBuilder()
         .setStyle(ButtonStyle.Link)
         .setLabel('Donate')
-        .setURL(PATREON_LINK)
+        .setURL(PATREON_LINK),
     )
     .addComponents(
       new ButtonBuilder()
         .setStyle(ButtonStyle.Link)
         .setLabel('Vote')
-        .setURL(TOPGG_LINK)
+        .setURL(TOPGG_LINK),
     );
 };
 
@@ -160,12 +160,12 @@ const generateEmbedCommand = (command: IHelpCommand) => {
       name: 'Commands',
       value: command.prefixCommands
         ? command.prefixCommands.map((prefix) => `\`${prefix}\``).join(', ')
-        : '-'
+        : '-',
     },
     {
       name: 'Usage',
-      value: command.usage ?? '-'
-    }
+      value: command.usage ?? '-',
+    },
   );
 
   return embed;

@@ -3,7 +3,7 @@ import type {
   BaseInteraction,
   BaseMessageOptions,
   Guild,
-  StringSelectMenuInteraction
+  StringSelectMenuInteraction,
 } from 'discord.js';
 import {ActionRowBuilder, StringSelectMenuBuilder} from 'discord.js';
 import {generateNavigationRow} from './pagination-row';
@@ -21,7 +21,7 @@ interface IGetGuildSelectorComponents {
 export const guildSelectorHelper = ({
   guilds,
   currentGuildRoleId,
-  server
+  server,
 }: IGetGuildSelectorComponents) => {
   const totalGuilds = guilds.length;
   let page = 0;
@@ -33,13 +33,13 @@ export const guildSelectorHelper = ({
       guilds,
       page,
       server,
-      selectedGuildRoleId: guildId
+      selectedGuildRoleId: guildId,
     });
 
     const paginator = generateNavigationRow({
       page,
       itemsPerPage: GUILDS_PER_PAGE,
-      total: totalGuilds
+      total: totalGuilds,
     });
 
     if (guilds.length > 1) components.push(selector);
@@ -50,7 +50,7 @@ export const guildSelectorHelper = ({
   };
 
   const readInteraction = ({
-    interaction
+    interaction,
   }: {
     interaction: BaseInteraction | StringSelectMenuInteraction;
   }) => {
@@ -68,7 +68,7 @@ export const guildSelectorHelper = ({
   return {
     getGuildId: () => guildId,
     getSelector,
-    readInteraction
+    readInteraction,
   };
 };
 
@@ -83,7 +83,7 @@ const _getPageSelector = ({
   page,
   guilds,
   selectedGuildRoleId,
-  server
+  server,
 }: IGetPageSelector) => {
   const actionRow = new ActionRowBuilder<StringSelectMenuBuilder>();
   const menu = new StringSelectMenuBuilder()
@@ -102,7 +102,7 @@ const _getPageSelector = ({
         ? `Role: ${roleName ?? 'Not found'}`
         : undefined,
       value: guild.roleId,
-      default: guild.roleId === selectedGuildRoleId
+      default: guild.roleId === selectedGuildRoleId,
     });
   });
   actionRow.addComponents(menu);

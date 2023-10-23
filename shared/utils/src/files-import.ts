@@ -1,4 +1,5 @@
-import readdirp, {EntryInfo, ReaddirpOptions} from 'readdirp';
+import type {EntryInfo, ReaddirpOptions} from 'readdirp';
+import readdirp from 'readdirp';
 
 interface IImportFiles {
   path: string;
@@ -27,7 +28,7 @@ export const importFiles = <T>({
                 path,
               });
             });
-          })
+          }),
         );
       })
       .on('end', () => {

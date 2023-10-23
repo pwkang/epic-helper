@@ -16,8 +16,8 @@ export default <CronJob>{
       guildReminderTimesUp({guildRoleId, serverId, client});
       redisGuildReminder.deleteReminderTime({
         serverId,
-        guildRoleId
+        guildRoleId,
       });
     });
-  }
+  },
 };

@@ -1,7 +1,7 @@
 import {SLASH_COMMAND} from '../constant';
 import {
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS
+  USER_NOT_REGISTERED_ACTIONS,
 } from '@epic-helper/constants';
 import commandHelper from '../../../lib/epic-helper/command-helper';
 import djsInteractionHelper from '../../../lib/discordjs/interaction';
@@ -17,16 +17,16 @@ export default <SlashCommand>{
         option
           .setName('role')
           .setDescription('Select the role of the guild to update')
-          .setRequired(true)
+          .setRequired(true),
       )
       .addChannelOption((option) =>
         option
           .setName('channel')
-          .setDescription('Channel to send duel log message')
+          .setDescription('Channel to send duel log message'),
       ),
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
-    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip
+    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,
   },
   execute: async (client, interaction) => {
     const channel = interaction.options.getChannel('channel');
@@ -35,15 +35,15 @@ export default <SlashCommand>{
       server: interaction.guild!,
       roleId: role.id,
       author: interaction.user,
-      client
+      client,
     });
     const messageOptions = await configureGuild.updateDuelLog({
-      channelId: channel?.id
+      channelId: channel?.id,
     });
     await djsInteractionHelper.replyInteraction({
       client,
       interaction,
-      options: messageOptions
+      options: messageOptions,
     });
-  }
+  },
 };

@@ -5,17 +5,17 @@ import messageFormatter from '../../../../discordjs/message-formatter';
 
 export const _getServerAdminRoleEmbed = ({
   serverAccount,
-  guild
+  guild,
 }: IServerSettings) => {
   const roles = serverAccount?.settings.admin.rolesId ?? [];
   return new EmbedBuilder()
     .setColor(BOT_COLOR.embed)
     .setAuthor({
       name: `${guild.name}'s admin roles`,
-      iconURL: guild.iconURL() ?? undefined
+      iconURL: guild.iconURL() ?? undefined,
     })
     .addFields({
       name: 'Roles',
-      value: roles.length ? roles.map(messageFormatter.role).join('\n') : '-'
+      value: roles.length ? roles.map(messageFormatter.role).join('\n') : '-',
     });
 };

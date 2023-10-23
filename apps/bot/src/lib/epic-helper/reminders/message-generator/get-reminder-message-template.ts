@@ -10,7 +10,7 @@ interface IGetReminderMessageTemplate {
 
 export const getReminderMessageTemplate = ({
   userAccount,
-  type
+  type,
 }: IGetReminderMessageTemplate) => {
   const customMessage = userAccount.customMessage;
   return (

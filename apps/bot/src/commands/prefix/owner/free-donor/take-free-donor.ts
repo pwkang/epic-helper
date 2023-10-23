@@ -13,22 +13,22 @@ export default <PrefixCommand>{
     const mentionedUsersId = args.filter((arg) => arg.match(/^(\d{15,})$/));
     const usersId = [
       ...mentionedUsers.map((user) => user.id),
-      ...mentionedUsersId
+      ...mentionedUsersId,
     ];
     await freeDonorService.deleteFreeDonors({
-      usersId
+      usersId,
     });
     await djsMessageHelper.send({
       options: {
-        content: 'Done'
+        content: 'Done',
       },
       channelId: message.channel.id,
-      client
+      client,
     });
     for (const userId of usersId) {
       await commandHelper.epicToken.syncBoostedServers({
-        userId
+        userId,
       });
     }
-  }
+  },
 };

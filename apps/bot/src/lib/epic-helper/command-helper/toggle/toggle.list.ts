@@ -16,24 +16,24 @@ export const donor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
             {
               value: userToggle.training.ruby,
               path: 'toggle.training.ruby',
-              label: 'Ruby question'
+              label: 'Ruby question',
             },
             {
               value: userToggle.training.basic,
               path: 'toggle.training.basic',
-              label: 'Other questions'
-            }
-          ]
+              label: 'Other questions',
+            },
+          ],
         },
         {
           value: userToggle.petCatch,
           path: 'toggle.petCatch',
-          label: 'Give actions to catch pet'
+          label: 'Give actions to catch pet',
         },
         {
           value: userToggle.emoji,
           path: 'toggle.emoji',
-          label: 'Reminder emoji'
+          label: 'Reminder emoji',
         },
         {
           value: userToggle.quest.all,
@@ -43,36 +43,36 @@ export const donor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
             {
               value: userToggle.quest.arena,
               path: 'toggle.quest.arena',
-              label: 'Arena'
+              label: 'Arena',
             },
             {
               value: userToggle.quest.miniboss,
               path: 'toggle.quest.miniboss',
-              label: 'Miniboss'
-            }
-          ]
+              label: 'Miniboss',
+            },
+          ],
         },
         {
           value: userToggle.heal,
           path: 'toggle.heal',
-          label: 'Heal reminder'
+          label: 'Heal reminder',
         },
         {
           value: userToggle.slash,
           path: 'toggle.slash',
-          label: 'Reminder with slash commands'
+          label: 'Reminder with slash commands',
         },
         {
           value: userToggle.countdown.all,
           path: 'toggle.countdown.all',
-          label: 'Show upcoming reminder countdown'
+          label: 'Show upcoming reminder countdown',
         },
         {
           value: userToggle.huntSwitch,
           path: 'toggle.huntSwitch',
-          label: 'Switch hunt reminder between `hunt` & `hunt t`'
-        }
-      ]
+          label: 'Switch hunt reminder between `hunt` & `hunt t`',
+        },
+      ],
     },
     {
       id: 'reminder',
@@ -84,89 +84,89 @@ export const donor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
         {
           value: userToggle.reminder.all,
           path: 'toggle.reminder.all',
-          label: 'All'
+          label: 'All',
         },
         {
           value: userToggle.reminder.daily,
           path: 'toggle.reminder.daily',
-          label: 'Daily'
+          label: 'Daily',
         },
         {
           value: userToggle.reminder.weekly,
           path: 'toggle.reminder.weekly',
-          label: 'Weekly'
+          label: 'Weekly',
         },
         {
           value: userToggle.reminder.lootbox,
           path: 'toggle.reminder.lootbox',
-          label: 'Lootbox'
+          label: 'Lootbox',
         },
         {
           value: userToggle.reminder.vote,
           path: 'toggle.reminder.vote',
-          label: 'Vote'
+          label: 'Vote',
         },
         {
           value: userToggle.reminder.hunt,
           path: 'toggle.reminder.hunt',
-          label: 'Hunt'
+          label: 'Hunt',
         },
         {
           value: userToggle.reminder.adventure,
           path: 'toggle.reminder.adventure',
-          label: 'Adventure'
+          label: 'Adventure',
         },
         {
           value: userToggle.reminder.training,
           path: 'toggle.reminder.training',
-          label: 'Training'
+          label: 'Training',
         },
         {
           value: userToggle.reminder.duel,
           path: 'toggle.reminder.duel',
-          label: 'Duel'
+          label: 'Duel',
         },
         {
           value: userToggle.reminder.quest,
           path: 'toggle.reminder.quest',
-          label: 'Quest'
+          label: 'Quest',
         },
         {
           value: userToggle.reminder.working,
           path: 'toggle.reminder.working',
-          label: 'Working'
+          label: 'Working',
         },
         {
           value: userToggle.reminder.farm,
           path: 'toggle.reminder.farm',
-          label: 'Farm'
+          label: 'Farm',
         },
         {
           value: userToggle.reminder.horse,
           path: 'toggle.reminder.horse',
-          label: 'Horse'
+          label: 'Horse',
         },
         {
           value: userToggle.reminder.arena,
           path: 'toggle.reminder.arena',
-          label: 'Arena'
+          label: 'Arena',
         },
         {
           value: userToggle.reminder.dungeon,
           path: 'toggle.reminder.dungeon',
-          label: 'Dungeon'
+          label: 'Dungeon',
         },
         {
           value: userToggle.reminder.epicItem,
           path: 'toggle.reminder.epicItem',
-          label: 'Epic Items'
+          label: 'Epic Items',
         },
         {
           value: userToggle.reminder.pet,
           path: 'toggle.reminder.pet',
-          label: 'Pets'
-        }
-      ]
+          label: 'Pets',
+        },
+      ],
     },
     {
       id: 'dm',
@@ -178,89 +178,89 @@ export const donor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
         {
           value: userToggle.dm.all,
           path: 'toggle.dm.all',
-          label: 'All'
+          label: 'All',
         },
         {
           value: userToggle.dm.daily,
           path: 'toggle.dm.daily',
-          label: 'Daily'
+          label: 'Daily',
         },
         {
           value: userToggle.dm.weekly,
           path: 'toggle.dm.weekly',
-          label: 'Weekly'
+          label: 'Weekly',
         },
         {
           value: userToggle.dm.lootbox,
           path: 'toggle.dm.lootbox',
-          label: 'Lootbox'
+          label: 'Lootbox',
         },
         {
           value: userToggle.dm.vote,
           path: 'toggle.dm.vote',
-          label: 'Vote'
+          label: 'Vote',
         },
         {
           value: userToggle.dm.hunt,
           path: 'toggle.dm.hunt',
-          label: 'Hunt'
+          label: 'Hunt',
         },
         {
           value: userToggle.dm.adventure,
           path: 'toggle.dm.adventure',
-          label: 'Adventure'
+          label: 'Adventure',
         },
         {
           value: userToggle.dm.training,
           path: 'toggle.dm.training',
-          label: 'Training'
+          label: 'Training',
         },
         {
           value: userToggle.dm.duel,
           path: 'toggle.dm.duel',
-          label: 'Duel'
+          label: 'Duel',
         },
         {
           value: userToggle.dm.quest,
           path: 'toggle.dm.quest',
-          label: 'Quest'
+          label: 'Quest',
         },
         {
           value: userToggle.dm.working,
           path: 'toggle.dm.working',
-          label: 'Working'
+          label: 'Working',
         },
         {
           value: userToggle.dm.farm,
           path: 'toggle.dm.farm',
-          label: 'Farm'
+          label: 'Farm',
         },
         {
           value: userToggle.dm.horse,
           path: 'toggle.dm.horse',
-          label: 'Horse'
+          label: 'Horse',
         },
         {
           value: userToggle.dm.arena,
           path: 'toggle.dm.arena',
-          label: 'Arena'
+          label: 'Arena',
         },
         {
           value: userToggle.dm.dungeon,
           path: 'toggle.dm.dungeon',
-          label: 'Dungeon'
+          label: 'Dungeon',
         },
         {
           value: userToggle.dm.epicItem,
           path: 'toggle.dm.epicItem',
-          label: 'Epic Items'
+          label: 'Epic Items',
         },
         {
           value: userToggle.dm.pet,
           path: 'toggle.dm.pet',
-          label: 'Pets'
-        }
-      ]
+          label: 'Pets',
+        },
+      ],
     },
     {
       id: 'mentions',
@@ -272,100 +272,100 @@ export const donor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
         {
           value: userToggle.mentions.all,
           path: 'toggle.mentions.all',
-          label: 'All'
+          label: 'All',
         },
         {
           value: userToggle.mentions.daily,
           path: 'toggle.mentions.daily',
-          label: 'Daily'
+          label: 'Daily',
         },
         {
           value: userToggle.mentions.weekly,
           path: 'toggle.mentions.weekly',
-          label: 'Weekly'
+          label: 'Weekly',
         },
         {
           value: userToggle.mentions.lootbox,
           path: 'toggle.mentions.lootbox',
-          label: 'Lootbox'
+          label: 'Lootbox',
         },
         {
           value: userToggle.mentions.vote,
           path: 'toggle.mentions.vote',
-          label: 'Vote'
+          label: 'Vote',
         },
         {
           value: userToggle.mentions.hunt,
           path: 'toggle.mentions.hunt',
-          label: 'Hunt'
+          label: 'Hunt',
         },
         {
           value: userToggle.mentions.adventure,
           path: 'toggle.mentions.adventure',
-          label: 'Adventure'
+          label: 'Adventure',
         },
         {
           value: userToggle.mentions.training,
           path: 'toggle.mentions.training',
-          label: 'Training'
+          label: 'Training',
         },
         {
           value: userToggle.mentions.duel,
           path: 'toggle.mentions.duel',
-          label: 'Duel'
+          label: 'Duel',
         },
         {
           value: userToggle.mentions.quest,
           path: 'toggle.mentions.quest',
-          label: 'Quest'
+          label: 'Quest',
         },
         {
           value: userToggle.mentions.working,
           path: 'toggle.mentions.working',
-          label: 'Working'
+          label: 'Working',
         },
         {
           value: userToggle.mentions.farm,
           path: 'toggle.mentions.farm',
-          label: 'Farm'
+          label: 'Farm',
         },
         {
           value: userToggle.mentions.horse,
           path: 'toggle.mentions.horse',
-          label: 'Horse'
+          label: 'Horse',
         },
         {
           value: userToggle.mentions.arena,
           path: 'toggle.mentions.arena',
-          label: 'Arena'
+          label: 'Arena',
         },
         {
           value: userToggle.mentions.dungeon,
           path: 'toggle.mentions.dungeon',
-          label: 'Dungeon'
+          label: 'Dungeon',
         },
         {
           value: userToggle.mentions.epicItem,
           path: 'toggle.mentions.epicItem',
-          label: 'Epic Items'
+          label: 'Epic Items',
         },
         {
           value: userToggle.mentions.pet,
           path: 'toggle.mentions.pet',
-          label: 'Pets'
+          label: 'Pets',
         },
         {
           value: userToggle.mentions.petCatch,
           path: 'toggle.mentions.petCatch',
-          label: 'Pet Catch'
+          label: 'Pet Catch',
         },
         {
           value: userToggle.mentions.trainingAnswer,
           path: 'toggle.mentions.trainingAnswer',
-          label: 'Training Answer'
-        }
-      ]
-    }
+          label: 'Training Answer',
+        },
+      ],
+    },
   ];
 };
 
@@ -379,60 +379,60 @@ export const nonDonor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
         {
           value: userToggle.reminder.all,
           path: 'toggle.reminder.all',
-          label: 'Commands Reminder'
+          label: 'Commands Reminder',
         },
         {
           value: userToggle.reminder.pet,
           path: 'toggle.reminder.pet',
-          label: 'Pets Reminder'
+          label: 'Pets Reminder',
         },
         {
           value: userToggle.dm.all,
           path: 'toggle.dm.all',
-          label: 'Send all reminder in DMs'
+          label: 'Send all reminder in DMs',
         },
         {
           value: userToggle.training.all,
           path: 'toggle.training.all',
-          label: 'Give answer on training'
+          label: 'Give answer on training',
         },
         {
           value: userToggle.petCatch,
           path: 'toggle.petCatch',
-          label: 'Give actions to catch pet'
+          label: 'Give actions to catch pet',
         },
         {
           value: userToggle.emoji,
           path: 'toggle.emoji',
-          label: 'Reminder Emoji'
+          label: 'Reminder Emoji',
         },
         {
           value: userToggle.mentions.all,
           path: 'toggle.mentions.all',
-          label: 'Message with mentions'
+          label: 'Message with mentions',
         },
         {
           value: userToggle.quest.all,
           path: 'toggle.quest.all',
-          label: 'Show arena/miniboss cooldown on quest'
+          label: 'Show arena/miniboss cooldown on quest',
         },
         {
           value: userToggle.heal,
           path: 'toggle.heal',
-          label: 'Heal reminder'
+          label: 'Heal reminder',
         },
         {
           value: userToggle.slash,
           path: 'toggle.slash',
-          label: 'Reminder with slash commands'
+          label: 'Reminder with slash commands',
         },
         {
           value: userToggle.countdown.all,
           path: 'toggle.countdown.all',
-          label: 'Show countdown to upcoming reminder'
-        }
-      ]
-    }
+          label: 'Show countdown to upcoming reminder',
+        },
+      ],
+    },
   ];
 };
 
@@ -446,9 +446,9 @@ const guild = (guildToggle: IGuild['toggle']): IToggleEmbedsInfo[] => {
         {
           label: 'Enable / Disable Guild',
           value: guildToggle.onOff,
-          path: 'toggle.onOff'
-        }
-      ]
+          path: 'toggle.onOff',
+        },
+      ],
     },
     {
       id: 'upgraid',
@@ -458,19 +458,19 @@ const guild = (guildToggle: IGuild['toggle']): IToggleEmbedsInfo[] => {
         {
           label: 'Enable / Disable',
           value: guildToggle.upgraid.reminder,
-          path: 'toggle.upgraid.reminder'
+          path: 'toggle.upgraid.reminder',
         },
         {
           label: 'Send weekly count after upgrade / raid',
           value: guildToggle.upgraid.sendUpgraidList,
-          path: 'toggle.upgraid.sendUpgraidList'
+          path: 'toggle.upgraid.sendUpgraidList',
         },
         {
           label: 'Allow reserved',
           value: guildToggle.upgraid.allowReserved,
-          path: 'toggle.upgraid.allowReserved'
-        }
-      ]
+          path: 'toggle.upgraid.allowReserved',
+        },
+      ],
     },
     {
       id: 'duel',
@@ -485,32 +485,32 @@ const guild = (guildToggle: IGuild['toggle']): IToggleEmbedsInfo[] => {
             {
               label: '`duel add`',
               value: guildToggle.duel.log.duelAdd,
-              path: 'toggle.duel.log.add'
+              path: 'toggle.duel.log.add',
             },
             {
               label: '`duel undo`',
               value: guildToggle.duel.log.duelUndo,
-              path: 'toggle.duel.log.undo'
+              path: 'toggle.duel.log.undo',
             },
             {
               label: '`duel reset`',
               value: guildToggle.duel.log.duelReset,
-              path: 'toggle.duel.log.reset'
+              path: 'toggle.duel.log.reset',
             },
             {
               label: '`duel modify`',
               value: guildToggle.duel.log.duelModify,
-              path: 'toggle.duel.log.modify'
-            }
-          ]
+              path: 'toggle.duel.log.modify',
+            },
+          ],
         },
         {
           label: 'Duel result message link is required',
           value: guildToggle.duel.refRequired,
-          path: 'toggle.duel.refRequired'
-        }
-      ]
-    }
+          path: 'toggle.duel.refRequired',
+        },
+      ],
+    },
   ];
 };
 
@@ -524,20 +524,20 @@ const server = (serverToggle: IServerToggle): IToggleEmbedsInfo[] => {
         {
           label: 'Enchant Mute',
           value: serverToggle.enchantMute,
-          path: 'toggle.enchantMute'
+          path: 'toggle.enchantMute',
         },
         {
           label: 'Random event ping',
           value: serverToggle.randomEvent,
-          path: 'toggle.randomEvent'
+          path: 'toggle.randomEvent',
         },
         {
           label: 'TT Verification',
           value: serverToggle.ttVerification,
-          path: 'toggle.ttVerification'
-        }
-      ]
-    }
+          path: 'toggle.ttVerification',
+        },
+      ],
+    },
   ];
 };
 
@@ -545,5 +545,5 @@ export const toggleDisplayList = {
   donor,
   nonDonor,
   guild,
-  server
+  server,
 };

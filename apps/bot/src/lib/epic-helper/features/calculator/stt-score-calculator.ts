@@ -28,11 +28,11 @@ export const getCalcSTTMessage: TCalcFunc = ({embed, area, level, author}) => {
     startArea: area,
     endArea: 15,
     tradeTo: 'ruby',
-    inventory
+    inventory,
   });
   const dismantleAll = dismantleHelper.dismantleRecommend(a15Inventory);
   const score: ICalcSTTScore = {
-    level: level * RPG_STT_SCORE.level
+    level: level * RPG_STT_SCORE.level,
   };
   for (const [key, rate] of typedObjectEntries(RPG_STT_SCORE)) {
     if (key === 'level') {
@@ -53,7 +53,7 @@ export const getCalcSTTMessage: TCalcFunc = ({embed, area, level, author}) => {
   const resultEmbed = buildCalcSTTEmbed({items: score, author, total});
 
   return {
-    embeds: [resultEmbed]
+    embeds: [resultEmbed],
   };
 };
 
@@ -76,16 +76,16 @@ const buildCalcSTTEmbed = ({items, author, total}: IBuildCalcSTTEmbed) => {
     .setColor(BOT_COLOR.embed)
     .setAuthor({
       name: `${author.username}'s STT Score Calculator`,
-      iconURL: author.displayAvatarURL()
+      iconURL: author.displayAvatarURL(),
     })
     .setDescription(
       `:small_orange_diamond: Assuming you dismantle all the materials, follow the trade rate and trade all materials to ruby
       
       Time Travel Score: ≈ ${total.toLocaleString()}
-      `
+      `,
     )
     .setFooter({
-      text: 'Feel free to report to support server if you have more accurate value,'
+      text: 'Feel free to report to support server if you have more accurate value,',
     });
 
   const fields: EmbedField[] = [];
@@ -102,7 +102,7 @@ const buildCalcSTTEmbed = ({items, author, total}: IBuildCalcSTTEmbed) => {
         })
         .filter((value) => value)
         .join('\n'),
-      inline: true
+      inline: true,
     };
     fields.push(field);
   }
@@ -133,13 +133,13 @@ export const getCalcInfo: IGetCalcInfo = (args) => ({
     : Number(args[1]) <= 15 && Number(args[1]) >= 1
       ? (Number(args[1]) as RpgArea)
       : null,
-  level: isNaN(Number(args[2])) ? null : Number(args[2])
+  level: isNaN(Number(args[2])) ? null : Number(args[2]),
 });
 
 const sttScoreCalculator = {
   isCalcSTT,
   getCalcInfo,
-  getCalcSTTMessage
+  getCalcSTTMessage,
 };
 
 export default sttScoreCalculator;
@@ -170,121 +170,121 @@ const groupItems: IGroupItems[] = [
       {
         key: 'ultimateLog',
         label: 'Ultimate Log',
-        emoji: BOT_EMOJI.working.ultimateLog
+        emoji: BOT_EMOJI.working.ultimateLog,
       },
 
       // 'superFish',
       {
         key: 'superFish',
         label: 'Super Fish',
-        emoji: BOT_EMOJI.working.superFish
+        emoji: BOT_EMOJI.working.superFish,
       },
 
       // 'ruby',
       {
         key: 'ruby',
         label: 'Ruby',
-        emoji: BOT_EMOJI.working.ruby
+        emoji: BOT_EMOJI.working.ruby,
       },
 
       // 'wolfSkin',
       {
         key: 'wolfSkin',
         label: 'Wolf Skin',
-        emoji: BOT_EMOJI.drops.wolfSkin
+        emoji: BOT_EMOJI.drops.wolfSkin,
       },
 
       // 'zombieEye',
       {
         key: 'zombieEye',
         label: 'Zombie Eye',
-        emoji: BOT_EMOJI.drops.zombieEye
+        emoji: BOT_EMOJI.drops.zombieEye,
       },
 
       // 'unicornHorn',
       {
         key: 'unicornHorn',
         label: 'Unicorn Horn',
-        emoji: BOT_EMOJI.drops.unicornHorn
+        emoji: BOT_EMOJI.drops.unicornHorn,
       },
 
       // 'mermaidHair',
       {
         key: 'mermaidHair',
         label: 'Mermaid Hair',
-        emoji: BOT_EMOJI.drops.mermaidHair
+        emoji: BOT_EMOJI.drops.mermaidHair,
       },
 
       // 'chip',
       {
         key: 'chip',
         label: 'Chip',
-        emoji: BOT_EMOJI.drops.chip
+        emoji: BOT_EMOJI.drops.chip,
       },
 
       // 'dragonScale',
       {
         key: 'dragonScale',
         label: 'Dragon Scale',
-        emoji: BOT_EMOJI.drops.dragonScale
+        emoji: BOT_EMOJI.drops.dragonScale,
       },
 
       // 'darkEnergy',
       {
         key: 'darkEnergy',
         label: 'Dark Energy',
-        emoji: BOT_EMOJI.drops.darkEnergy
+        emoji: BOT_EMOJI.drops.darkEnergy,
       },
 
       // 'potato',
       {
         key: 'potato',
         label: 'Potato',
-        emoji: BOT_EMOJI.farming.potato
+        emoji: BOT_EMOJI.farming.potato,
       },
 
       // 'carrot',
       {
         key: 'carrot',
         label: 'Carrot',
-        emoji: BOT_EMOJI.farming.carrot
+        emoji: BOT_EMOJI.farming.carrot,
       },
 
       // 'bread',
       {
         key: 'bread',
         label: 'Bread',
-        emoji: BOT_EMOJI.farming.bread
+        emoji: BOT_EMOJI.farming.bread,
       },
 
       // 'seed',
       {
         key: 'seed',
         label: 'Seed',
-        emoji: BOT_EMOJI.farming.seed
+        emoji: BOT_EMOJI.farming.seed,
       },
 
       // 'potatoSeed',
       {
         key: 'potatoSeed',
         label: 'Potato Seed',
-        emoji: BOT_EMOJI.farming.potatoSeed
+        emoji: BOT_EMOJI.farming.potatoSeed,
       },
 
       // 'carrotSeed',
       {
         key: 'carrotSeed',
         label: 'Carrot Seed',
-        emoji: BOT_EMOJI.farming.carrotSeed
+        emoji: BOT_EMOJI.farming.carrotSeed,
       },
 
       // 'breadSeed',
       {
         key: 'breadSeed',
         label: 'Bread Seed',
-        emoji: BOT_EMOJI.farming.breadSeed
-      }
-    ]
+        emoji: BOT_EMOJI.farming.breadSeed,
+      },
+    ],
   },
   {
     label: 'Consumables Score',
@@ -294,65 +294,65 @@ const groupItems: IGroupItems[] = [
       {
         key: 'lifePotion',
         label: 'Life Potion',
-        emoji: BOT_EMOJI.items.lifePotion
+        emoji: BOT_EMOJI.items.lifePotion,
       },
 
       // 'lotteryTicket',
       {
         key: 'lotteryTicket',
         label: 'Lottery Ticket',
-        emoji: BOT_EMOJI.items.lotteryTicket
+        emoji: BOT_EMOJI.items.lotteryTicket,
       },
 
       // 'commonLootbox',
       {
         key: 'commonLootbox',
         label: 'Common Lootbox',
-        emoji: BOT_EMOJI.lootbox.commonLootbox
+        emoji: BOT_EMOJI.lootbox.commonLootbox,
       },
 
       // 'uncommonLootbox',
       {
         key: 'uncommonLootbox',
         label: 'Uncommon Lootbox',
-        emoji: BOT_EMOJI.lootbox.uncommonLootbox
+        emoji: BOT_EMOJI.lootbox.uncommonLootbox,
       },
 
       // 'rareLootbox',
       {
         key: 'rareLootbox',
         label: 'Rare Lootbox',
-        emoji: BOT_EMOJI.lootbox.rareLootbox
+        emoji: BOT_EMOJI.lootbox.rareLootbox,
       },
 
       // 'epicLootbox',
       {
         key: 'epicLootbox',
         label: 'Epic Lootbox',
-        emoji: BOT_EMOJI.lootbox.epicLootbox
+        emoji: BOT_EMOJI.lootbox.epicLootbox,
       },
 
       // 'edgyLootbox',
       {
         key: 'edgyLootbox',
         label: 'Edgy Lootbox',
-        emoji: BOT_EMOJI.lootbox.edgyLootbox
+        emoji: BOT_EMOJI.lootbox.edgyLootbox,
       },
 
       // 'omegaLootbox',
       {
         key: 'omegaLootbox',
         label: 'Omega Lootbox',
-        emoji: BOT_EMOJI.lootbox.omegaLootbox
+        emoji: BOT_EMOJI.lootbox.omegaLootbox,
       },
 
       // 'godlyLootbox',
       {
         key: 'godlyLootbox',
         label: 'Godly Lootbox',
-        emoji: BOT_EMOJI.lootbox.godlyLootbox
-      }
-    ]
+        emoji: BOT_EMOJI.lootbox.godlyLootbox,
+      },
+    ],
   },
   {
     label: 'Extra Score',
@@ -362,8 +362,8 @@ const groupItems: IGroupItems[] = [
       {
         key: 'level',
         label: 'Level',
-        emoji: ':up:'
-      }
-    ]
-  }
+        emoji: ':up:',
+      },
+    ],
+  },
 ];

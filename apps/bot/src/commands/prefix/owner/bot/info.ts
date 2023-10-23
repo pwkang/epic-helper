@@ -9,14 +9,14 @@ export default <PrefixCommand>{
   preCheck: {},
   execute: async (client, message) => {
     const embed = await commandHelper.information.ownerInfo({
-      client
+      client,
     });
     djsMessageHelper.send({
       client,
       options: {
-        embeds: [embed]
+        embeds: [embed],
       },
-      channelId: message.channelId
+      channelId: message.channelId,
     });
-  }
+  },
 };

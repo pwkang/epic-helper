@@ -18,13 +18,13 @@ export const rpgGuild = ({
   author,
   client,
   message,
-  isSlashCommand
+  isSlashCommand,
 }: IRpgGuild) => {
   if (!message.inGuild() || !!message.mentions.users.size) return;
   let event = createRpgCommandListener({
     channelId: message.channel.id,
     client,
-    author
+    author,
   });
   if (!event) return;
   event.on('embed', async (embed) => {
@@ -33,15 +33,15 @@ export const rpgGuild = ({
       const result = await verifyGuild({
         client,
         server: message.guild,
-        userId: author.id
+        userId: author.id,
       });
       if (result.errorEmbed) {
         await djsMessageHelper.send({
           client,
           channelId: message.channel.id,
           options: {
-            embeds: [result.errorEmbed]
-          }
+            embeds: [result.errorEmbed],
+          },
         });
         return;
       }
@@ -52,7 +52,7 @@ export const rpgGuild = ({
         embed,
         guildServerId: userGuild.serverId,
         guildRoleId: userGuild.roleId,
-        isSlashCommand
+        isSlashCommand,
       });
     }
   });
@@ -74,14 +74,14 @@ const rpgGuildSuccess = async ({
   embed,
   guildServerId,
   guildRoleId,
-  isSlashCommand
+  isSlashCommand,
 }: IRpgGuildSuccess) => {
   const guildInfo = embedReaders.guild({
-    embed
+    embed,
   });
   const guildToggle = await toggleGuildChecker({
     serverId: guildServerId,
-    roleId: guildRoleId
+    roleId: guildRoleId,
   });
 
   if (isSlashCommand) {
@@ -89,20 +89,20 @@ const rpgGuildSuccess = async ({
     // return if guild name is not matched in slash command
     const currentGuild = await guildService.findGuild({
       serverId: guildServerId,
-      roleId: guildRoleId
+      roleId: guildRoleId,
     });
     if (currentGuild && currentGuild.info.name !== guildInfo.name) return;
   }
   const guild = await guildService.findGuild({
     serverId: guildServerId,
-    roleId: guildRoleId
+    roleId: guildRoleId,
   });
   if (!guild) return;
   if (guildToggle?.upgraid.reminder) {
     await guildService.registerReminder({
       readyIn: guildInfo.readyIn,
       roleId: guildRoleId,
-      serverId: guildServerId
+      serverId: guildServerId,
     });
     if (!guild) return;
   }
@@ -114,7 +114,7 @@ const rpgGuildSuccess = async ({
       guildInfo.stealth === guild.info.stealth ? undefined : guildInfo.stealth,
     level: guildInfo.level === guild.info.level ? undefined : guildInfo.level,
     energy:
-      guildInfo.energy === guild.info.energy ? undefined : guildInfo.energy
+      guildInfo.energy === guild.info.energy ? undefined : guildInfo.energy,
   });
 };
 

@@ -2,7 +2,7 @@ import type {
   Client,
   Message,
   MessageEditOptions,
-  MessagePayload
+  MessagePayload,
 } from 'discord.js';
 import {logger} from '@epic-helper/utils';
 
@@ -15,7 +15,7 @@ export interface EditMessageProps {
 export default async function _editMessage({
   client,
   message,
-  options
+  options,
 }: EditMessageProps) {
   if (message.author.id !== client.user?.id) return;
   if (!message.editable) return;
@@ -26,7 +26,7 @@ export default async function _editMessage({
       message: e.rawError.message,
       variant: 'edit-message',
       logLevel: 'warn',
-      clusterId: client.cluster?.id
+      clusterId: client.cluster?.id,
     });
   }
 }

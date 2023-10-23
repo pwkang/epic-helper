@@ -2,7 +2,7 @@ import {SLASH_COMMAND} from '../constant';
 import djsInteractionHelper from '../../../lib/discordjs/interaction';
 import {
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS
+  USER_NOT_REGISTERED_ACTIONS,
 } from '@epic-helper/constants';
 import commandHelper from '../../../lib/epic-helper/command-helper';
 
@@ -13,7 +13,7 @@ export default <SlashCommand>{
   type: 'subcommand',
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
-    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip
+    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,
   },
   builder: (subcommand) =>
     subcommand
@@ -21,33 +21,33 @@ export default <SlashCommand>{
         option
           .setName('role')
           .setDescription('Select the role of the guild to update')
-          .setRequired(true)
+          .setRequired(true),
       )
       .addChannelOption((option) =>
         option
           .setName('channel')
-          .setDescription('Channel to send reminder message')
+          .setDescription('Channel to send reminder message'),
       )
       .addNumberOption((option) =>
         option
           .setName('target-stealth')
           .setDescription(
-            'Target stealth to switch reminder from upgrade to raid'
-          )
+            'Target stealth to switch reminder from upgrade to raid',
+          ),
       )
       .addStringOption((option) =>
         option
           .setName('upgrade-message')
           .setDescription(
-            'Message to send when stealth is below target stealth'
-          )
+            'Message to send when stealth is below target stealth',
+          ),
       )
       .addStringOption((option) =>
         option
           .setName('raid-message')
           .setDescription(
-            'Message to send when stealth is above target stealth'
-          )
+            'Message to send when stealth is above target stealth',
+          ),
       ),
   execute: async (client, interaction) => {
     const role = interaction.options.getRole('role', true);
@@ -63,7 +63,7 @@ export default <SlashCommand>{
       server: interaction.guild!,
       roleId: role.id,
       author: interaction.user,
-      client
+      client,
     });
     await djsInteractionHelper.replyInteraction({
       client,
@@ -73,8 +73,8 @@ export default <SlashCommand>{
         roleId: role.id,
         targetStealth,
         upgradeMessage,
-        raidMessage
-      })
+        raidMessage,
+      }),
     });
-  }
+  },
 };

@@ -1,6 +1,6 @@
 import type {
   IMessageContentChecker,
-  IMessageEmbedChecker
+  IMessageEmbedChecker,
 } from '../../../../types/utils';
 import type {Client, Embed, Message, User} from 'discord.js';
 import {userPetServices} from '../../../../services/database/user-pet.service';
@@ -17,13 +17,13 @@ export const rpgPetClaim = async ({
   author,
   message,
   client,
-  isSlashCommand
+  isSlashCommand,
 }: IRpgPetClaim) => {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     channelId: message.channel.id,
     client,
-    author: message.author
+    author: message.author,
   });
   if (!event) return;
   event.on('content', (_, collected) => {
@@ -37,7 +37,7 @@ export const rpgPetClaim = async ({
       await rpgPetClaimSuccess({
         client,
         embed,
-        author
+        author,
       });
     }
   });
@@ -55,13 +55,13 @@ interface IRpgPetClaimSuccess {
 
 const rpgPetClaimSuccess = async ({author}: IRpgPetClaimSuccess) => {
   await userPetServices.claimAllPets({
-    userId: author.id
+    userId: author.id,
   });
 };
 
 const isSuccessfullyClaimedPet = ({embed, author}: IMessageEmbedChecker) =>
   ['Reward summary', 'Pet adventure rewards'].some((str) =>
-    embed.title?.includes(str)
+    embed.title?.includes(str),
   ) && embed.author?.name === `${author.username} — pets`;
 
 const isNoPetsToClaim = ({message, author}: IMessageContentChecker) =>

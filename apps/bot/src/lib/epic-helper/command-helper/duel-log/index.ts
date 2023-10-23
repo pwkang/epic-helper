@@ -13,5 +13,5 @@ export const _duelLogHelper = {
   manualAdd: manualAddDuelRecord,
   sendDuelLog: sendDuelLog,
   modifyLog: modifyDuelRecord,
-  reset: _resetDuelRecord
+  reset: _resetDuelRecord,
 };

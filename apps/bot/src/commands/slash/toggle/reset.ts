@@ -3,7 +3,7 @@ import djsInteractionHelper from '../../../lib/discordjs/interaction';
 import {userService} from '../../../services/database/user.service';
 import {
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS
+  USER_NOT_REGISTERED_ACTIONS,
 } from '@epic-helper/constants';
 import {SLASH_COMMAND} from '../constant';
 
@@ -14,16 +14,16 @@ export default <SlashCommand>{
   type: 'subcommand',
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
-    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister
+    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
   },
   execute: async (client, interaction) => {
     const userAccount = await userService.resetUserToggle({
-      userId: interaction.user.id
+      userId: interaction.user.id,
     });
     if (!userAccount) return;
 
     const userToggle = await commandHelper.toggle.user({
-      author: interaction.user
+      author: interaction.user,
     });
     if (!userToggle) return;
 
@@ -31,7 +31,7 @@ export default <SlashCommand>{
     await djsInteractionHelper.replyInteraction({
       client,
       interaction,
-      options: messageOptions
+      options: messageOptions,
     });
-  }
+  },
 };

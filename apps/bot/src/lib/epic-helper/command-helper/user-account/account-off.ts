@@ -10,13 +10,13 @@ interface ITurnOnAccount {
 }
 
 export const _turnOffAccount = async ({
-  author
+  author,
 }: ITurnOnAccount): Promise<BaseMessageOptions> => {
   await userService.userAccountOff(author.id);
   await userReminderServices.clearUserCooldowns(author.id);
   await userPetServices.resetUserPetsAdvStatus(author.id);
   return {
-    embeds: [embed]
+    embeds: [embed],
   };
 };
 
@@ -31,13 +31,13 @@ const embed = new EmbedBuilder()
         '- Pets tracking\n' +
         '- Training helper\n' +
         '- Update account commands\n' +
-        '- Enchant mute helper\n'
+        '- Enchant mute helper\n',
     },
     {
       name: 'You can still use the following commands',
       value:
         '- Material calculator\n' +
         '- Guild reminder\n' +
-        '- Guild duel logger\n'
-    }
+        '- Guild duel logger\n',
+    },
   );

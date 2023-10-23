@@ -19,20 +19,20 @@ export function rpgInventory({
   message,
   author,
   isSlashCommand,
-  args
+  args,
 }: IRpg) {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     client,
     channelId: message.channel.id,
-    author
+    author,
   });
   if (!event) return;
   event.on('embed', (embed) => {
     if (isUserInventory({embed, author})) {
       rpgInventorySuccess({
         author,
-        embed
+        embed,
       });
       event?.stop();
       if (!isSlashCommand && args) {
@@ -46,19 +46,19 @@ export function rpgInventory({
             ? materialCalculator.getCalcMaterialMessage({
               embed,
               area: calcInfo.area ?? 0,
-              author
+              author,
             })
             : sttScoreCalculator.getCalcSTTMessage({
               embed,
               area: calcInfo.area ?? 0,
               author,
-              level: calcInfo?.level ?? 0
+              level: calcInfo?.level ?? 0,
             });
 
           djsMessageHelper.send({
             client,
             channelId: message.channel.id,
-            options
+            options,
           });
         }
       }
@@ -80,7 +80,7 @@ const rpgInventorySuccess = async ({author, embed}: IRpgInventorySuccess) => {
   await userService.updateUserRubyAmount({
     userId: author.id,
     type: 'set',
-    ruby: inventory.ruby ?? 0
+    ruby: inventory.ruby ?? 0,
   });
 };
 
@@ -93,5 +93,5 @@ const isUserInventory = ({embed, author}: IIsUserInventory) =>
   embed.author?.name === `${author.username} — inventory`;
 
 export const rpgInventoryChecker = {
-  isUserInventory
+  isUserInventory,
 };

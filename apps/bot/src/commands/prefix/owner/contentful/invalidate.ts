@@ -15,8 +15,8 @@ export default <PrefixCommand>{
       client,
       channelId: message.channel.id,
       options: {
-        content: 'Done'
-      }
+        content: 'Done',
+      },
     });
-  }
+  },
 };

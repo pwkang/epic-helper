@@ -30,6 +30,7 @@ export const convertPetIdToNum = (petId: string) => {
       num = str.charCodeAt(0) - 96;
     }
     petIdNum += num * Math.pow(base, i);
+
     // here is to remove the 27^i if it is looped more than once
     // because the first letter will not have lmao
     if (i >= 2) {

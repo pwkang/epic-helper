@@ -2,7 +2,7 @@ import commandHelper from '../../../../lib/epic-helper/command-helper';
 import djsInteractionHelper from '../../../../lib/discordjs/interaction';
 import {
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS
+  USER_NOT_REGISTERED_ACTIONS,
 } from '@epic-helper/constants';
 import {SLASH_COMMAND} from '../../constant';
 
@@ -15,7 +15,7 @@ export default <SlashCommand>{
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,
-    isServerAdmin: true
+    isServerAdmin: true,
   },
   builder: (subcommand) =>
     subcommand
@@ -23,7 +23,7 @@ export default <SlashCommand>{
         option
           .setName('role')
           .setDescription('Role to assign to verified users')
-          .setRequired(true)
+          .setRequired(true),
       )
       .addNumberOption((option) =>
         option
@@ -31,19 +31,19 @@ export default <SlashCommand>{
           .setDescription('Minimum time travels amount to assign role')
           .setRequired(true)
           .setMinValue(0)
-          .setMaxValue(999)
+          .setMaxValue(999),
       )
       .addNumberOption((option) =>
         option
           .setName('max-tt')
           .setDescription('Maximum time travels amount to assign role')
           .setMinValue(0)
-          .setMaxValue(999)
+          .setMaxValue(999),
       )
       .addStringOption((option) =>
         option
           .setName('message')
-          .setDescription('Custom message to be attached in the embed')
+          .setDescription('Custom message to be attached in the embed'),
       ),
   execute: async (client, interaction) => {
     if (!interaction.inGuild() || !interaction.guild) return;
@@ -52,19 +52,19 @@ export default <SlashCommand>{
     const maxTT = interaction.options.getNumber('max-tt') ?? undefined;
     const message = interaction.options.getString('message') ?? undefined;
     const ttVerification = await commandHelper.serverSettings.ttVerification({
-      server: interaction.guild
+      server: interaction.guild,
     });
     if (!ttVerification) return;
     const messageOptions = await ttVerification.setRule({
       maxTT,
       minTT,
       roleId: role.id,
-      message
+      message,
     });
     await djsInteractionHelper.replyInteraction({
       client,
       interaction,
-      options: messageOptions
+      options: messageOptions,
     });
-  }
+  },
 };
