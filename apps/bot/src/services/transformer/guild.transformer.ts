@@ -9,18 +9,18 @@ export const toGuild = (guild: IGuild): IGuild => {
       name: guild?.info?.name,
       stealth: guild?.info?.stealth ?? 0,
       level: guild?.info?.level ?? 0,
-      energy: guild?.info?.energy ?? 0
+      energy: guild?.info?.energy ?? 0,
     },
     upgraid: {
       channelId: guild?.upgraid?.channelId,
       targetStealth: guild?.upgraid?.targetStealth,
       message: {
         upgrade: guild?.upgraid?.message?.upgrade,
-        raid: guild?.upgraid?.message?.raid
+        raid: guild?.upgraid?.message?.raid,
       },
       readyAt: guild?.upgraid?.readyAt
         ? new Date(guild?.upgraid?.readyAt)
-        : undefined
+        : undefined,
     },
     toggle: {
       onOff: guild?.toggle?.onOff ?? true,
@@ -30,20 +30,20 @@ export const toGuild = (guild: IGuild): IGuild => {
           duelAdd: guild?.toggle?.duel?.log?.duelAdd ?? true,
           duelModify: guild?.toggle?.duel?.log?.duelModify ?? true,
           duelReset: guild?.toggle?.duel?.log?.duelReset ?? true,
-          duelUndo: guild?.toggle?.duel?.log?.duelUndo ?? true
+          duelUndo: guild?.toggle?.duel?.log?.duelUndo ?? true,
         },
-        refRequired: guild?.toggle?.duel?.refRequired ?? true
+        refRequired: guild?.toggle?.duel?.refRequired ?? true,
       },
       upgraid: {
         allowReserved: guild?.toggle?.upgraid?.allowReserved ?? true,
         reminder: guild?.toggle?.upgraid?.reminder ?? true,
-        sendUpgraidList: guild?.toggle?.upgraid?.sendUpgraidList ?? true
-      }
+        sendUpgraidList: guild?.toggle?.upgraid?.sendUpgraidList ?? true,
+      },
     },
     duel: {
-      channelId: guild?.duel?.channelId
+      channelId: guild?.duel?.channelId,
     },
-    membersId: guild?.membersId
+    membersId: guild?.membersId,
   };
 };
 

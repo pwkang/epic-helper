@@ -1,4 +1,4 @@
-import {IDonor} from './donor.type';
+import type {IDonor} from './donor.type';
 import {Schema} from 'mongoose';
 import {DONOR_TIER} from '@epic-helper/constants';
 

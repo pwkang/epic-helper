@@ -42,7 +42,7 @@ const profileReader = ({embed}: IProfileReader) => {
     coin: Number(coins.replaceAll(',', '')),
     epicCoin: Number(epicCoins.replaceAll(',', '')),
     partnerName,
-    rank: Number(rank)
+    rank: Number(rank),
   };
 };
 

@@ -31,10 +31,10 @@ export default <PrefixCommand>{
             '`` `js',
             'console.log("Hello world")',
             '`` `',
-            '```'
-          ].join('\n')
+            '```',
+          ].join('\n'),
         },
-        channelId: message.channel.id
+        channelId: message.channel.id,
       });
 
     if (!evalStr) return message.reply('No eval string found');
@@ -42,7 +42,7 @@ export default <PrefixCommand>{
     const results = await broadcastEval({
       client,
       fn: evalStr,
-      target: allShards ? 'all' : shards.length ? shards : undefined
+      target: allShards ? 'all' : shards.length ? shards : undefined,
     });
 
     const embed = new EmbedBuilder().setColor(BOT_COLOR.devEmbed);
@@ -50,15 +50,15 @@ export default <PrefixCommand>{
       embed.addFields({
         name: `Cluster ${result.clusterId}`,
         value: `\`\`\`js\n${JSON.stringify(result.data).slice(0, 1000)}\`\`\``,
-        inline: true
+        inline: true,
       });
     }
     await djsMessageHelper.send({
       channelId: message.channel.id,
       options: {
-        embeds: [embed]
+        embeds: [embed],
       },
-      client
+      client,
     });
-  }
+  },
 };

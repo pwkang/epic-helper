@@ -3,7 +3,7 @@ import type {BaseInteraction, BaseMessageOptions} from 'discord.js';
 import {
   ActionRowBuilder,
   EmbedBuilder,
-  StringSelectMenuBuilder
+  StringSelectMenuBuilder,
 } from 'discord.js';
 import {generateNavigationRow} from '../../../../utils/pagination-row';
 import {BOT_COLOR} from '@epic-helper/constants';
@@ -16,7 +16,7 @@ interface IRemoveEpicTokens {
 
 export const _removeEpicTokens = async ({userId}: IRemoveEpicTokens) => {
   const boostedServers = await serverService.getUserBoostedServers({
-    userId
+    userId,
   });
   let page = 0;
 
@@ -25,26 +25,26 @@ export const _removeEpicTokens = async ({userId}: IRemoveEpicTokens) => {
       embeds: [getSelectServerEmbed({boostedServers})],
       components: getInteraction({
         boostedServers,
-        page
-      })
+        page,
+      }),
     };
   };
 
   const responseInteraction = async (
-    interaction: BaseInteraction
+    interaction: BaseInteraction,
   ): Promise<BaseMessageOptions | null> => {
     if (interaction.isStringSelectMenu() && interaction.customId === 'server') {
       const serverId = interaction.values[0];
       const removedServer = boostedServers.find(
-        (server) => server.serverId === serverId
+        (server) => server.serverId === serverId,
       );
       await removeTokens({
         serverId,
-        userId
+        userId,
       });
       return {
         embeds: [getSuccessEmbed({serverName: removedServer?.name})],
-        components: []
+        components: [],
       };
     }
     if (interaction.isButton()) {
@@ -56,7 +56,7 @@ export const _removeEpicTokens = async ({userId}: IRemoveEpicTokens) => {
 
   return {
     render,
-    responseInteraction
+    responseInteraction,
   };
 };
 
@@ -68,7 +68,7 @@ interface IRemoveTokens {
 const removeTokens = async ({serverId, userId}: IRemoveTokens) => {
   await serverService.removeTokens({
     serverId,
-    userId
+    userId,
   });
 };
 
@@ -87,8 +87,8 @@ const getInteraction = ({boostedServers, page}: IGetInteraction) => {
   actionRows.push(
     getServerSelector({
       page,
-      servers: boostedServers
-    })
+      servers: boostedServers,
+    }),
   );
   if (boostedServers.length > SERVERS_PER_PAGE) {
     actionRows.push(
@@ -96,8 +96,8 @@ const getInteraction = ({boostedServers, page}: IGetInteraction) => {
         page,
         total: boostedServers.length,
         all: false,
-        itemsPerPage: SERVERS_PER_PAGE
-      })
+        itemsPerPage: SERVERS_PER_PAGE,
+      }),
     );
   }
   return actionRows;
@@ -111,7 +111,7 @@ interface IGetServerSelector {
 const getServerSelector = ({servers, page}: IGetServerSelector) => {
   const serversToShow = servers.slice(
     page * SERVERS_PER_PAGE,
-    (page + 1) * SERVERS_PER_PAGE
+    (page + 1) * SERVERS_PER_PAGE,
   );
   return new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
     new StringSelectMenuBuilder()
@@ -121,9 +121,9 @@ const getServerSelector = ({servers, page}: IGetServerSelector) => {
         serversToShow.map((server) => ({
           value: server.serverId,
           label: server.name,
-          description: `Token: ${server.token}`
-        }))
-      )
+          description: `Token: ${server.token}`,
+        })),
+      ),
   );
 };
 
@@ -143,7 +143,7 @@ const getSelectServerEmbed = ({boostedServers}: IGetSelectServerEmbed) => {
     .setTitle('Select a server to remove tokens from.')
     .setColor(BOT_COLOR.embed)
     .setDescription(
-      'This will remove all tokens from the selected server immediately.'
+      'This will remove all tokens from the selected server immediately.',
     );
 };
 
@@ -156,7 +156,7 @@ const getSuccessEmbed = ({serverName}: IGetSuccessEmbed) => {
     .setDescription(
       `Successfully removed tokens${
         serverName ? ` from **${serverName}**` : ''
-      }.`
+      }.`,
     )
     .setColor(BOT_COLOR.embed);
 };

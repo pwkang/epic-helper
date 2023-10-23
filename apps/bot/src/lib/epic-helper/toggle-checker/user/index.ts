@@ -11,7 +11,7 @@ import {
   _toggleQuest,
   _toggleReminder,
   _toggleSlash,
-  _toggleTraining
+  _toggleTraining,
 } from './toggle-user-checker-list';
 import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 
@@ -26,7 +26,7 @@ export type IToggleUserCheckerReturnType = Awaited<
 const toggleUserChecker = async ({userId}: IToggleUserChecker) => {
   const userToggle = await userService.getUserToggle(userId);
   const isDonor = await donorChecker.isDonor({
-    userId
+    userId,
   });
   if (!userToggle) return null;
 
@@ -35,264 +35,264 @@ const toggleUserChecker = async ({userId}: IToggleUserChecker) => {
       daily: _toggleDmReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.daily
+        type: RPG_COMMAND_TYPE.daily,
       }),
       weekly: _toggleDmReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.weekly
+        type: RPG_COMMAND_TYPE.weekly,
       }),
       lootbox: _toggleDmReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.lootbox
+        type: RPG_COMMAND_TYPE.lootbox,
       }),
       vote: _toggleDmReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.vote
+        type: RPG_COMMAND_TYPE.vote,
       }),
       hunt: _toggleDmReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.hunt
+        type: RPG_COMMAND_TYPE.hunt,
       }),
       adventure: _toggleDmReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.adventure
+        type: RPG_COMMAND_TYPE.adventure,
       }),
       training: _toggleDmReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.training
+        type: RPG_COMMAND_TYPE.training,
       }),
       duel: _toggleDmReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.duel
+        type: RPG_COMMAND_TYPE.duel,
       }),
       quest: _toggleDmReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.quest
+        type: RPG_COMMAND_TYPE.quest,
       }),
       working: _toggleDmReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.working
+        type: RPG_COMMAND_TYPE.working,
       }),
       farm: _toggleDmReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.farm
+        type: RPG_COMMAND_TYPE.farm,
       }),
       horse: _toggleDmReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.horse
+        type: RPG_COMMAND_TYPE.horse,
       }),
       arena: _toggleDmReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.arena
+        type: RPG_COMMAND_TYPE.arena,
       }),
       dungeon: _toggleDmReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.dungeon
+        type: RPG_COMMAND_TYPE.dungeon,
       }),
       epicItem: _toggleDmReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.epicItem
+        type: RPG_COMMAND_TYPE.epicItem,
       }),
       pet: _toggleDmReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.pet
-      })
+        type: RPG_COMMAND_TYPE.pet,
+      }),
     },
     reminder: {
       daily: _toggleReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.daily
+        type: RPG_COMMAND_TYPE.daily,
       }),
       weekly: _toggleReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.weekly
+        type: RPG_COMMAND_TYPE.weekly,
       }),
       lootbox: _toggleReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.lootbox
+        type: RPG_COMMAND_TYPE.lootbox,
       }),
       vote: _toggleReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.vote
+        type: RPG_COMMAND_TYPE.vote,
       }),
       hunt: _toggleReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.hunt
+        type: RPG_COMMAND_TYPE.hunt,
       }),
       adventure: _toggleReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.adventure
+        type: RPG_COMMAND_TYPE.adventure,
       }),
       training: _toggleReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.training
+        type: RPG_COMMAND_TYPE.training,
       }),
       duel: _toggleReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.duel
+        type: RPG_COMMAND_TYPE.duel,
       }),
       quest: _toggleReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.quest
+        type: RPG_COMMAND_TYPE.quest,
       }),
       working: _toggleReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.working
+        type: RPG_COMMAND_TYPE.working,
       }),
       farm: _toggleReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.farm
+        type: RPG_COMMAND_TYPE.farm,
       }),
       horse: _toggleReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.horse
+        type: RPG_COMMAND_TYPE.horse,
       }),
       arena: _toggleReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.arena
+        type: RPG_COMMAND_TYPE.arena,
       }),
       dungeon: _toggleReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.dungeon
+        type: RPG_COMMAND_TYPE.dungeon,
       }),
       epicItem: _toggleReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.epicItem
+        type: RPG_COMMAND_TYPE.epicItem,
       }),
       pet: _toggleReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.pet
-      })
+        type: RPG_COMMAND_TYPE.pet,
+      }),
     },
     mentions: {
       daily: _toggleMentions({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.daily
+        type: RPG_COMMAND_TYPE.daily,
       }),
       weekly: _toggleMentions({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.weekly
+        type: RPG_COMMAND_TYPE.weekly,
       }),
       lootbox: _toggleMentions({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.lootbox
+        type: RPG_COMMAND_TYPE.lootbox,
       }),
       vote: _toggleMentions({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.vote
+        type: RPG_COMMAND_TYPE.vote,
       }),
       hunt: _toggleMentions({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.hunt
+        type: RPG_COMMAND_TYPE.hunt,
       }),
       adventure: _toggleMentions({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.adventure
+        type: RPG_COMMAND_TYPE.adventure,
       }),
       training: _toggleMentions({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.training
+        type: RPG_COMMAND_TYPE.training,
       }),
       duel: _toggleMentions({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.duel
+        type: RPG_COMMAND_TYPE.duel,
       }),
       quest: _toggleMentions({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.quest
+        type: RPG_COMMAND_TYPE.quest,
       }),
       working: _toggleMentions({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.working
+        type: RPG_COMMAND_TYPE.working,
       }),
       farm: _toggleMentions({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.farm
+        type: RPG_COMMAND_TYPE.farm,
       }),
       horse: _toggleMentions({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.horse
+        type: RPG_COMMAND_TYPE.horse,
       }),
       arena: _toggleMentions({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.arena
+        type: RPG_COMMAND_TYPE.arena,
       }),
       dungeon: _toggleMentions({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.dungeon
+        type: RPG_COMMAND_TYPE.dungeon,
       }),
       epicItem: _toggleMentions({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.epicItem
+        type: RPG_COMMAND_TYPE.epicItem,
       }),
       pet: _toggleMentions({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.pet
+        type: RPG_COMMAND_TYPE.pet,
       }),
       trainingAnswer: _toggleMentions({
         toggle: userToggle,
         isDonor,
-        type: 'trainingAnswer'
+        type: 'trainingAnswer',
       }),
       petCatch: _toggleMentions({
         toggle: userToggle,
         isDonor,
-        type: 'petCatch'
-      })
+        type: 'petCatch',
+      }),
     },
 
     trainingRuby: _toggleTraining({toggle: userToggle, isDonor, type: 'ruby'}),
     trainingBasic: _toggleTraining({
       toggle: userToggle,
       isDonor,
-      type: 'basic'
+      type: 'basic',
     }),
 
     huntSwitch: _toggleHuntSwitch({toggle: userToggle, isDonor}),
@@ -303,13 +303,13 @@ const toggleUserChecker = async ({userId}: IToggleUserChecker) => {
     questMiniboss: _toggleQuest({
       toggle: userToggle,
       isDonor,
-      type: 'miniboss'
+      type: 'miniboss',
     }),
 
     heal: _toggleHeal({toggle: userToggle, isDonor}),
     slash: _toggleSlash({toggle: userToggle, isDonor}),
 
-    countdown: _toggleCountdown({toggle: userToggle, isDonor})
+    countdown: _toggleCountdown({toggle: userToggle, isDonor}),
   };
 };
 

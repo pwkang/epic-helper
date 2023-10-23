@@ -8,7 +8,7 @@ const messageFormatter = {
   channel: _formatChannel,
   role: _formatRole,
   messageUrl: _messageUrl,
-  getInfoFromMessageUrl: _getInfoFromMessageUrl
+  getInfoFromMessageUrl: _getInfoFromMessageUrl,
 };
 
 export default messageFormatter;

@@ -7,6 +7,7 @@ export * from './epic-helper/custom-message';
 export * from './epic-helper/timezone';
 export * from './epic-helper/donor';
 export * from './epic-helper/clickable-slash';
+export * from './epic-helper/bot-help';
 
 export * from './epic-rpg/clickable-slash';
 export * from './epic-rpg/enchant';

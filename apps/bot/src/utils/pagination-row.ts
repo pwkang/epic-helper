@@ -1,7 +1,7 @@
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle} from 'discord.js';
 
 export const NAVIGATION_ROW_BUTTONS = {
-  all: 'all'
+  all: 'all',
 } as const;
 
 interface IGenerateNavigationRow {
@@ -15,7 +15,7 @@ export const generateNavigationRow = ({
   page,
   total,
   itemsPerPage,
-  all
+  all,
 }: IGenerateNavigationRow) => {
   const row = new ActionRowBuilder<ButtonBuilder>();
   const prevPage = Math.max(page - 1, 0);
@@ -27,21 +27,21 @@ export const generateNavigationRow = ({
         .setCustomId('+0')
         .setStyle(ButtonStyle.Primary)
         .setEmoji('⏪')
-        .setDisabled(page === 0)
+        .setDisabled(page === 0),
     );
   row.addComponents(
     new ButtonBuilder()
       .setCustomId(`+0${prevPage}`)
       .setStyle(ButtonStyle.Primary)
       .setEmoji('⬅️')
-      .setDisabled(page === 0)
+      .setDisabled(page === 0),
   );
   row.addComponents(
     new ButtonBuilder()
       .setCustomId(`+00${nextPage}`)
       .setStyle(ButtonStyle.Primary)
       .setEmoji('➡️')
-      .setDisabled(page === lastPage)
+      .setDisabled(page === lastPage),
   );
   if (total > 2)
     row.addComponents(
@@ -49,14 +49,14 @@ export const generateNavigationRow = ({
         .setCustomId(`+000${lastPage}`)
         .setStyle(ButtonStyle.Primary)
         .setEmoji('⏩')
-        .setDisabled(page === lastPage)
+        .setDisabled(page === lastPage),
     );
   if (all)
     row.addComponents(
       new ButtonBuilder()
         .setCustomId(NAVIGATION_ROW_BUTTONS.all)
         .setStyle(ButtonStyle.Primary)
-        .setLabel('All')
+        .setLabel('All'),
     );
   return row;
 };

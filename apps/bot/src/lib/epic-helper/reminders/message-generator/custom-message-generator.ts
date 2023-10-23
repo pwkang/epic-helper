@@ -30,7 +30,7 @@ export const generateUserReminderMessage = ({
   type,
   nextReminder,
   readyPetsId,
-  toggleChecker
+  toggleChecker,
 }: IGenerateCustomMessage) => {
 
   /**
@@ -38,7 +38,7 @@ export const generateUserReminderMessage = ({
    */
   const commandString = _parseCommandString({
     toggleChecker,
-    ...userReminder
+    ...userReminder,
   });
 
   /**
@@ -47,13 +47,13 @@ export const generateUserReminderMessage = ({
   const hasCountdown = toggleChecker?.countdown;
   const nextReminderTime = nextReminder?.readyAt
     ? timestampHelper.relative({
-      time: nextReminder?.readyAt?.getTime()
+      time: nextReminder?.readyAt?.getTime(),
     })
     : '';
   const nextReminderType = nextReminder
     ? _parseCommandString({
       toggleChecker,
-      ...nextReminder
+      ...nextReminder,
     })
     : '';
   const nextReminderString =
@@ -86,7 +86,7 @@ export const generateUserReminderMessage = ({
   const userString = _parseUser({
     client,
     type: toMentions ? 'mentions' : 'username',
-    userId
+    userId,
   });
 
   const variables: Partial<
@@ -98,16 +98,16 @@ export const generateUserReminderMessage = ({
     slash: slashCommandString,
     emoji: emojiString,
     next_reminder: nextReminderString,
-    pet_id: readyPetIdsString
+    pet_id: readyPetIdsString,
   };
 
   const messageTemplate = getReminderMessageTemplate({
     userAccount,
     userId,
-    type
+    type,
   });
   return interpolateMessage({
     message: messageTemplate,
-    variables
+    variables,
   });
 };

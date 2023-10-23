@@ -2,7 +2,7 @@ import type {
   ApplicationCommand,
   Client,
   Guild,
-  SlashCommandBuilder
+  SlashCommandBuilder,
 } from 'discord.js';
 import {Routes} from 'discord.js';
 import {logger} from '@epic-helper/utils';
@@ -17,15 +17,15 @@ export interface ICreateGuildSlashCommand {
 export const _createGuildSlashCommand = async ({
   commands,
   client,
-  guild
+  guild,
 }: ICreateGuildSlashCommand) => {
   if (!client.user) return [];
   try {
     const data = await djsRestClient.post(
       Routes.applicationGuildCommands(client.user.id!, guild.id),
       {
-        body: commands
-      }
+        body: commands,
+      },
     );
     return data as ApplicationCommand;
   } catch (e: any) {
@@ -33,7 +33,7 @@ export const _createGuildSlashCommand = async ({
       message: e.rawError,
       variant: 'create-guild-slash-command',
       logLevel: 'error',
-      clusterId: client.cluster?.id
+      clusterId: client.cluster?.id,
     });
     return null;
   }

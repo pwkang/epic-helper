@@ -11,12 +11,12 @@ interface IGetEnchantChannelsEmbed {
 
 const _getEnchantChannelsEmbed = ({
   guild,
-  enchantSettings
+  enchantSettings,
 }: IGetEnchantChannelsEmbed) => {
   const embed = new EmbedBuilder()
     .setAuthor({
       name: `${guild.name}'s enchant channels`,
-      iconURL: guild.iconURL() ?? undefined
+      iconURL: guild.iconURL() ?? undefined,
     })
     .setColor(BOT_COLOR.embed);
 
@@ -24,7 +24,7 @@ const _getEnchantChannelsEmbed = ({
     {
       name: 'MUTE DURATION',
       value: convertMsToHumanReadableString(enchantSettings.muteDuration),
-      inline: true
+      inline: true,
     },
     {
       name: 'CHANNELS',
@@ -35,13 +35,13 @@ const _getEnchantChannelsEmbed = ({
           })
           .join(', ')
         : '-',
-      inline: true
+      inline: true,
     },
     {
       name: 'COMMANDS',
       value: settings.join('\n'),
-      inline: false
-    }
+      inline: false,
+    },
   ];
 
   embed.addFields(fields);
@@ -53,5 +53,5 @@ export default _getEnchantChannelsEmbed;
 
 const settings: string[] = [
   '`/config server enchant-channels` - Configure enchant channels',
-  '`/config server enchant-mute-duration` - Configure enchant mute duration'
+  '`/config server enchant-mute-duration` - Configure enchant mute duration',
 ];

@@ -1,5 +1,5 @@
 import {Schema} from 'mongoose';
-import {IUserReminder} from './user-reminder.type';
+import type {IUserReminder} from './user-reminder.type';
 import {
   RPG_EPIC_ITEM_TYPES,
   RPG_FARM_SEED,
@@ -43,5 +43,5 @@ export const userReminderSchema = new Schema<IUserReminder>(
           .limit(1);
       },
     },
-  }
+  },
 );

@@ -1,7 +1,7 @@
 import {SLASH_COMMAND} from '../constant';
 import {
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS
+  USER_NOT_REGISTERED_ACTIONS,
 } from '@epic-helper/constants';
 import commandHelper from '../../../lib/epic-helper/command-helper';
 import djsInteractionHelper from '../../../lib/discordjs/interaction';
@@ -23,11 +23,11 @@ export default <SlashCommand>{
             {name: '0', value: 0},
             {name: '1', value: 1},
             {name: '2', value: 2},
-            {name: '3', value: 3}
-          )
+            {name: '3', value: 3},
+          ),
       )
       .addStringOption((option) =>
-        option.setName('link').setDescription('Message link to the duel result')
+        option.setName('link').setDescription('Message link to the duel result'),
       )
       .addStringOption((option) =>
         option
@@ -35,12 +35,12 @@ export default <SlashCommand>{
           .setDescription('Duel result')
           .addChoices(
             {name: 'win', value: 'win'},
-            {name: 'lose', value: 'lose'}
-          )
+            {name: 'lose', value: 'lose'},
+          ),
       ),
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
-    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip
+    userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,
   },
   execute: async (client, interaction) => {
     const exp = interaction.options.getNumber('exp', true);
@@ -55,14 +55,14 @@ export default <SlashCommand>{
       hasWon: result === 'win',
       user: interaction.user,
       source: messageSource ?? undefined,
-      commandChannelId: interaction.channelId
+      commandChannelId: interaction.channelId,
     });
     await djsInteractionHelper.replyInteraction({
       client,
       interaction,
       options: {
-        embeds: [embed]
-      }
+        embeds: [embed],
+      },
     });
-  }
+  },
 };

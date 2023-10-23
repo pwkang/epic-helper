@@ -1,6 +1,6 @@
 import type {
   IInventoryItem,
-  TRpgItemName
+  TRpgItemName,
 } from '../embed-readers/inventory.reader';
 import type {RpgArea} from '../../../types/rpg.types';
 import dismantleHelper from './dismantle-helper';
@@ -17,7 +17,7 @@ export const startTrading = ({
   startArea,
   endArea,
   inventory,
-  tradeTo
+  tradeTo,
 }: IStartTrading) => {
   const _tradeTo = endArea === 'top' ? 15 : endArea;
   const newInventory = new InitTrade(inventory);
@@ -60,7 +60,7 @@ class InitTrade {
 
   constructor(inventory: IInventoryItem) {
     this.inventory = {
-      ...inventory
+      ...inventory,
     };
   }
 
@@ -148,7 +148,7 @@ class InitTrade {
 // };
 //
 const tradeHelper = {
-  startTrading
+  startTrading,
 };
 
 export default tradeHelper;

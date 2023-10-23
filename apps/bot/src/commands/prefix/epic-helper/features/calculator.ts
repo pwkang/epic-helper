@@ -6,7 +6,7 @@ import {djsMessageHelper} from '../../../../lib/discordjs/message';
 import {
   PREFIX_COMMAND_TYPE,
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS
+  USER_NOT_REGISTERED_ACTIONS,
 } from '@epic-helper/constants';
 
 export default <PrefixCommand>{
@@ -15,7 +15,7 @@ export default <PrefixCommand>{
   type: PREFIX_COMMAND_TYPE.bot,
   preCheck: {
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,
-    userAccOff: USER_ACC_OFF_ACTIONS.skip
+    userAccOff: USER_ACC_OFF_ACTIONS.skip,
   },
   execute: (client, message, args) => {
     if (
@@ -25,13 +25,13 @@ export default <PrefixCommand>{
       return djsMessageHelper.reply({
         client,
         message,
-        options: materialCalculator.getInvalidCalcArgsMessage()
+        options: materialCalculator.getInvalidCalcArgsMessage(),
       });
 
     djsMessageHelper.reply({
       client,
       message,
-      options: materialCalculator.getCalcInstructionMessage()
+      options: materialCalculator.getCalcInstructionMessage(),
     });
 
     const calcInfo = sttScoreCalculator.getCalcInfo(args);
@@ -39,7 +39,7 @@ export default <PrefixCommand>{
     let event = createRpgCommandListener({
       channelId: message.channel.id,
       client,
-      author: message.author
+      author: message.author,
     });
     if (!event) return;
     event.on('embed', async (embed) => {
@@ -52,25 +52,25 @@ export default <PrefixCommand>{
           messageOptions = materialCalculator.getCalcMaterialMessage({
             embed,
             area: calcInfo.area ?? 0,
-            author: message.author
+            author: message.author,
           });
         } else {
           messageOptions = sttScoreCalculator.getCalcSTTMessage({
             embed,
             area: calcInfo.area ?? 0,
             author: message.author,
-            level: calcInfo.level ?? 0
+            level: calcInfo.level ?? 0,
           });
         }
         await djsMessageHelper.send({
           client,
           channelId: message.channel.id,
-          options: messageOptions
+          options: messageOptions,
         });
       }
     });
     event.on('end', () => {
       event = undefined;
     });
-  }
+  },
 };

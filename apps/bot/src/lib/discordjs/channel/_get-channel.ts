@@ -16,7 +16,7 @@ const _getChannel = async ({channelId, client}: IGetChannel) => {
       logger({
         clusterId: client.cluster?.id,
         logLevel: 'warn',
-        message: err.message
+        message: err.message,
       });
     }
   }

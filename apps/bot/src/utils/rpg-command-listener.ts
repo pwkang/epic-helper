@@ -39,7 +39,7 @@ export const createRpgCommandListener = ({
   channelId,
   client,
   author,
-  commandType
+  commandType,
 }: IRpgCommandListener) => {
   const channel = client.channels.cache.get(channelId);
   if (!channel) return;
@@ -192,7 +192,7 @@ const commandKeyword: Record<
   dungeon: 'You have been in a fight with a boss recently',
   epicItem: 'You have used an EPIC item already',
   guild: 'Your guild has already raided or been upgraded',
-  halboo: 'You have scared someone recently'
+  halboo: 'You have scared someone recently',
 };
 
 function getCooldownType(embed: Embed) {

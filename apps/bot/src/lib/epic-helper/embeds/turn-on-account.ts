@@ -7,13 +7,13 @@ const _turnOnAccount = () => {
     .setTitle('Opps! you have turned off the helper.')
     .setDescription(
       'You need to turn on the helper to use this command.\n' +
-        `Use ${BOT_CLICKABLE_SLASH_COMMANDS.accountOn} to turn on your account.`
+        `Use ${BOT_CLICKABLE_SLASH_COMMANDS.accountOn} to turn on your account.`,
     )
     .addFields({
       name: 'Notes',
       value:
         'Bot will not track any of your commands currently\n' +
-        `You can use ${BOT_CLICKABLE_SLASH_COMMANDS.toggleShow} to disable *reminder* or any features`
+        `You can use ${BOT_CLICKABLE_SLASH_COMMANDS.toggleShow} to disable *reminder* or any features`,
     });
 };
 

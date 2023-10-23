@@ -2,7 +2,7 @@ import type {
   Client,
   Message,
   MessageCreateOptions,
-  MessagePayload
+  MessagePayload,
 } from 'discord.js';
 import {PermissionsBitField, TextChannel} from 'discord.js';
 import {logger} from '@epic-helper/utils';
@@ -18,7 +18,7 @@ export interface ReplyMessageProps {
 export default async function _replyMessage({
   message,
   options,
-  client
+  client,
 }: ReplyMessageProps) {
   const channel = client.channels.cache.get(message.channelId);
   if (!channel) return;
@@ -34,7 +34,7 @@ export default async function _replyMessage({
         message: error.rawError.message,
         logLevel: 'warn',
         variant: 'replyMessage',
-        clusterId: client.cluster?.id
+        clusterId: client.cluster?.id,
       });
       return;
     }

@@ -1,7 +1,7 @@
 import type {
   BaseMessageOptions,
   Guild,
-  StringSelectMenuInteraction
+  StringSelectMenuInteraction,
 } from 'discord.js';
 import {ActionRowBuilder, StringSelectMenuBuilder} from 'discord.js';
 import {serverService} from '../../../../services/database/server.service';
@@ -23,7 +23,7 @@ interface IRender {
 
 export const _serverSettings = async ({server}: IServerSettings) => {
   const serverAccount = await serverService.getServer({
-    serverId: server.id
+    serverId: server.id,
   });
   if (!serverAccount) return null;
 
@@ -33,31 +33,31 @@ export const _serverSettings = async ({server}: IServerSettings) => {
       case SERVER_SETTINGS_PAGE_TYPE.randomEvent:
         embed = _getRandomEventSettingsEmbed({
           serverAccount,
-          guild: server
+          guild: server,
         });
         break;
       case SERVER_SETTINGS_PAGE_TYPE.enchantMute:
         embed = _getEnchantChannelsEmbed({
           enchantSettings: serverAccount.settings.enchant,
-          guild: server
+          guild: server,
         });
         break;
       case SERVER_SETTINGS_PAGE_TYPE.ttVerification:
         embed = _getTTVerificationSettingsEmbed({
           serverAccount,
-          guild: server
+          guild: server,
         });
         break;
       case SERVER_SETTINGS_PAGE_TYPE.admins:
         embed = _getServerAdminEmbed({
           serverAccount,
-          guild: server
+          guild: server,
         });
         break;
       case SERVER_SETTINGS_PAGE_TYPE.adminRoles:
         embed = _getServerAdminRoleEmbed({
           serverAccount,
-          guild: server
+          guild: server,
         });
         break;
     }
@@ -69,12 +69,12 @@ export const _serverSettings = async ({server}: IServerSettings) => {
 
     return {
       embeds: [embed],
-      components
+      components,
     };
   };
 
   const responseInteraction = (
-    interaction: StringSelectMenuInteraction
+    interaction: StringSelectMenuInteraction,
   ): BaseMessageOptions => {
     const pageType = interaction.values[0] as ValuesOf<
       typeof SERVER_SETTINGS_PAGE_TYPE
@@ -84,7 +84,7 @@ export const _serverSettings = async ({server}: IServerSettings) => {
 
   return {
     render,
-    responseInteraction
+    responseInteraction,
   };
 };
 
@@ -100,28 +100,28 @@ interface IPage {
 const SERVER_SETTINGS_PAGES: IPage[] = [
   {
     id: SERVER_SETTINGS_PAGE_TYPE.randomEvent,
-    label: 'Random event'
+    label: 'Random event',
   },
   {
     id: SERVER_SETTINGS_PAGE_TYPE.enchantMute,
-    label: 'Enchant mute'
+    label: 'Enchant mute',
   },
   {
     id: SERVER_SETTINGS_PAGE_TYPE.ttVerification,
-    label: 'TT verification'
+    label: 'TT verification',
   },
   {
     id: SERVER_SETTINGS_PAGE_TYPE.admins,
-    label: 'Admins'
+    label: 'Admins',
   },
   {
     id: SERVER_SETTINGS_PAGE_TYPE.adminRoles,
-    label: 'Admin roles'
-  }
+    label: 'Admin roles',
+  },
 ];
 
 const _getServerSettingsPageSelector = ({
-  pageType = SERVER_SETTINGS_PAGE_TYPE.randomEvent
+  pageType = SERVER_SETTINGS_PAGE_TYPE.randomEvent,
 }: IGetServerSettingsPageSelector) =>
   new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
     new StringSelectMenuBuilder()
@@ -131,7 +131,7 @@ const _getServerSettingsPageSelector = ({
         SERVER_SETTINGS_PAGES.map(({id, label}) => ({
           label,
           value: id,
-          default: id === pageType
-        }))
-      )
+          default: id === pageType,
+        })),
+      ),
   );

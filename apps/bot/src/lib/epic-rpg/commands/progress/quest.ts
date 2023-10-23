@@ -6,7 +6,7 @@ import {
   BOT_COLOR,
   BOT_REMINDER_BASE_COOLDOWN,
   RPG_COMMAND_TYPE,
-  RPG_COOLDOWN_EMBED_TYPE
+  RPG_COOLDOWN_EMBED_TYPE,
 } from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
@@ -30,7 +30,7 @@ export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
     channelId: message.channel.id,
     client,
     author,
-    commandType: RPG_COOLDOWN_EMBED_TYPE.quest
+    commandType: RPG_COOLDOWN_EMBED_TYPE.quest,
   });
   if (!event) return;
   event.on('content', async (content, collected) => {
@@ -39,7 +39,7 @@ export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
         author,
         channelId: message.channel.id,
         client,
-        questAccepted: true
+        questAccepted: true,
       });
       event?.stop();
     }
@@ -48,7 +48,7 @@ export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
         author,
         channelId: message.channel.id,
         client,
-        questAccepted: false
+        questAccepted: false,
       });
     }
   });
@@ -56,7 +56,7 @@ export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
     await userReminderServices.updateUserCooldown({
       userId: author.id,
       type: RPG_COMMAND_TYPE.quest,
-      readyAt: new Date(Date.now() + cooldown)
+      readyAt: new Date(Date.now() + cooldown),
     });
   });
   event.on('embed', async (embed) => {
@@ -70,7 +70,7 @@ export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
       await showArenaCooldown({
         author,
         channelId: message.channel.id,
-        client
+        client,
       });
       event?.stop();
     }
@@ -78,7 +78,7 @@ export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
       await showMinibossCooldown({
         author,
         channelId: message.channel.id,
-        client
+        client,
       });
       event?.stop();
     }
@@ -102,7 +102,7 @@ const DECLINED_QUEST_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.quest.declined;
 const rpgQuestSuccess = async ({
   author,
   questAccepted,
-  channelId
+  channelId,
 }: IRpgQuestSuccess) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker) return;
@@ -111,23 +111,23 @@ const rpgQuestSuccess = async ({
     const cooldown = await calcCdReduction({
       userId: author.id,
       commandType: RPG_COMMAND_TYPE.quest,
-      cooldown: questAccepted ? QUEST_COOLDOWN : DECLINED_QUEST_COOLDOWN
+      cooldown: questAccepted ? QUEST_COOLDOWN : DECLINED_QUEST_COOLDOWN,
     });
     await userReminderServices.saveUserQuestCooldown({
       epicQuest: false,
       userId: author.id,
-      readyAt: new Date(Date.now() + cooldown)
+      readyAt: new Date(Date.now() + cooldown),
     });
   }
 
   await updateReminderChannel({
     userId: author.id,
-    channelId
+    channelId,
   });
 
   await userStatsService.countUserStats({
     userId: author.id,
-    type: USER_STATS_RPG_COMMAND_TYPE.quest
+    type: USER_STATS_RPG_COMMAND_TYPE.quest,
   });
 };
 
@@ -140,21 +140,21 @@ interface IShowArenaCooldown {
 export const showArenaCooldown = async ({
   client,
   author,
-  channelId
+  channelId,
 }: IShowArenaCooldown) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker) return;
   if (!toggleChecker.questArena) return;
   const cooldown = await userReminderServices.findUserCooldown({
     userId: author.id,
-    type: RPG_COMMAND_TYPE.arena
+    type: RPG_COMMAND_TYPE.arena,
   });
   const embed = new EmbedBuilder().setColor(BOT_COLOR.embed);
   if (cooldown?.readyAt && cooldown.readyAt.getTime() > Date.now()) {
     embed.setDescription(
       `Your **Arena** command is on cooldown! ${timestampHelper.relative({
-        time: cooldown.readyAt.getTime()
-      })}`
+        time: cooldown.readyAt.getTime(),
+      })}`,
     );
   } else {
     embed.setDescription('Your **Arena** command is ready!');
@@ -162,10 +162,10 @@ export const showArenaCooldown = async ({
   await djsMessageHelper.send({
     options: {
       content: messageFormatter.user(author.id),
-      embeds: [embed]
+      embeds: [embed],
     },
     client,
-    channelId
+    channelId,
   });
 };
 
@@ -178,21 +178,21 @@ interface IShowMinibossCooldown {
 export const showMinibossCooldown = async ({
   client,
   author,
-  channelId
+  channelId,
 }: IShowMinibossCooldown) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker) return;
   if (!toggleChecker.questMiniboss) return;
   const cooldown = await userReminderServices.findUserCooldown({
     userId: author.id,
-    type: RPG_COMMAND_TYPE.dungeon
+    type: RPG_COMMAND_TYPE.dungeon,
   });
   const embed = new EmbedBuilder().setColor(BOT_COLOR.embed);
   if (cooldown?.readyAt && cooldown.readyAt.getTime() > Date.now()) {
     embed.setDescription(
       `Your **Miniboss** command is on cooldown! ${timestampHelper.relative({
-        time: cooldown.readyAt.getTime()
-      })}`
+        time: cooldown.readyAt.getTime(),
+      })}`,
     );
   } else {
     embed.setDescription('Your **Miniboss** command is ready!');
@@ -200,10 +200,10 @@ export const showMinibossCooldown = async ({
   await djsMessageHelper.send({
     options: {
       content: messageFormatter.user(author.id),
-      embeds: [embed]
+      embeds: [embed],
     },
     client,
-    channelId
+    channelId,
   });
 };
 

@@ -1,7 +1,7 @@
 import patreonUrlGenerator from './patreon-url-generator';
 import type {
   IFetchPatreonCampaignMembersResponse,
-  IFetchPatreonCampaignResponse
+  IFetchPatreonCampaignResponse,
 } from '../type';
 import {logger, sleep} from '@epic-helper/utils';
 import {patreonAxiosClient} from '@epic-helper/services';
@@ -10,7 +10,7 @@ import type {Client} from 'discord.js';
 const PATREON_CAMPAIGN_ID = process.env.PATREON_CAMPAIGN_ID!;
 
 export const getPatrons = async (
-  client: Client
+  client: Client,
 ): Promise<
   Pick<Awaited<IFetchPatreonCampaignMembersResponse>, 'data' | 'included'>
 > => {
@@ -33,18 +33,18 @@ export const getPatrons = async (
             'patron_status',
             'pledge_relationship_start',
             'next_charge_date',
-            'email'
+            'email',
           ],
-          user: ['email', 'full_name', 'social_connections']
+          user: ['email', 'full_name', 'social_connections'],
         },
-        nextCursor
+        nextCursor,
       });
 
       const response = await patreonAxiosClient.get(url);
       const {
         data: responseData,
         included: responseIncluded,
-        meta
+        meta,
       } = response.data as IFetchPatreonCampaignMembersResponse;
 
       data.push(...responseData);
@@ -61,14 +61,14 @@ export const getPatrons = async (
         logLevel: 'error',
         message: e,
         variant: 'PATREON_SERVICE',
-        clusterId: client.cluster?.id
+        clusterId: client.cluster?.id,
       });
     }
   }
 
   return {
     data,
-    included
+    included,
   };
 };
 
@@ -81,10 +81,10 @@ const getCampaignInfo = async (client: Client) => {
         'is_monthly',
         'is_charged_immediately',
         'discord_server_id',
-        'creation_name'
+        'creation_name',
       ],
-      user: ['email', 'full_name', 'social_connections']
-    }
+      user: ['email', 'full_name', 'social_connections'],
+    },
   });
   try {
     const response = await patreonAxiosClient.get(url);
@@ -94,7 +94,7 @@ const getCampaignInfo = async (client: Client) => {
       logLevel: 'error',
       message: e,
       variant: 'PATREON_SERVICE',
-      clusterId: client.cluster?.id
+      clusterId: client.cluster?.id,
     });
     return null;
   }
@@ -102,7 +102,7 @@ const getCampaignInfo = async (client: Client) => {
 
 const patreonApi = {
   getPatrons,
-  getCampaignInfo
+  getCampaignInfo,
 };
 
 export default patreonApi;

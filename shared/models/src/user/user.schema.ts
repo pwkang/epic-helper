@@ -1,5 +1,5 @@
 import {Schema} from 'mongoose';
-import {IUser} from './user.type';
+import type {IUser} from './user.type';
 import {
   BOT_TIME_FORMAT,
   BOT_TIMEZONE_LIST,
@@ -136,6 +136,7 @@ export const userSchema = new Schema<IUser>({
   config: {
     timezone: {
       type: String,
+
       // default: BOT_TIMEZONE_LIST.UTC,
       enum: Object.values(BOT_TIMEZONE_LIST),
     },

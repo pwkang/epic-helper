@@ -11,11 +11,11 @@ interface IAddDuelRecord {
 export const autoAddDuelRecord = async ({
   users,
   duelMessage,
-  client
+  client,
 }: IAddDuelRecord) => {
   const duelResult = embedReaders.duelResult({
     embed: duelMessage.embeds[0],
-    users
+    users,
   });
 
   for (const user of duelResult.usersExp) {
@@ -27,11 +27,11 @@ export const autoAddDuelRecord = async ({
       source: {
         serverId: duelMessage.guild.id,
         channelId: duelMessage.channel.id,
-        messageId: duelMessage.id
+        messageId: duelMessage.id,
       },
       author,
       isWinner: user.isWinner,
-      commandChannelId: duelMessage.channel.id
+      commandChannelId: duelMessage.channel.id,
     });
   }
 };

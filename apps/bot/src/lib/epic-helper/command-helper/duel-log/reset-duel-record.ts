@@ -3,13 +3,13 @@ import type {
   BaseMessageOptions,
   Client,
   Guild,
-  User
+  User,
 } from 'discord.js';
 import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  EmbedBuilder
+  EmbedBuilder,
 } from 'discord.js';
 import {guildService} from '../../../../services/database/guild.service';
 import {BOT_COLOR} from '@epic-helper/constants';
@@ -28,44 +28,44 @@ export const _resetDuelRecord = async ({
   roleId,
   server,
   author,
-  client
+  client,
 }: IResetDuelRecord) => {
   const guildAccount = await guildService.findGuild({
     roleId,
-    serverId: server.id
+    serverId: server.id,
   });
   const isServerAdmin = await userChecker.isServerAdmin({
     client,
     serverId: server.id,
-    userId: author.id
+    userId: author.id,
   });
   const isGuildLeader = await userChecker.isGuildLeader({
     userId: author.id,
     serverId: server.id,
-    guildRoleId: roleId
+    guildRoleId: roleId,
   });
 
   const render = () => {
     if (!guildAccount) {
       return {
-        content: 'There is no guild with this role'
+        content: 'There is no guild with this role',
       };
     }
     if (!isServerAdmin) {
       return {
-        content: 'You do not have permission to modify duel record.'
+        content: 'You do not have permission to modify duel record.',
       };
     }
     if (!isServerAdmin && !isGuildLeader) {
       return {
-        content: 'Nice try... You are not the guild leader'
+        content: 'Nice try... You are not the guild leader',
       };
     }
     return generateConfirmationOptions({roleId});
   };
 
   const replyInteraction = async ({
-    interaction
+    interaction,
   }: {
     interaction: BaseInteraction;
   }): Promise<BaseMessageOptions | null> => {
@@ -75,18 +75,18 @@ export const _resetDuelRecord = async ({
       case 'yes':
         await guildDuelService.resetGuildDuel({
           serverId: server.id,
-          roleId
+          roleId,
         });
         return generateResultOptions({
           deleted: true,
           roleId,
-          author
+          author,
         });
       case 'no':
         return generateResultOptions({
           deleted: false,
           roleId,
-          author
+          author,
         });
     }
     return null;
@@ -94,7 +94,7 @@ export const _resetDuelRecord = async ({
 
   return {
     render,
-    replyInteraction
+    replyInteraction,
   };
 };
 
@@ -103,14 +103,14 @@ interface IGenerateConfirmationEmbed {
 }
 
 const generateConfirmationOptions = ({
-  roleId
+  roleId,
 }: IGenerateConfirmationEmbed): BaseMessageOptions => {
   const embed = new EmbedBuilder()
     .setColor(BOT_COLOR.embed)
     .setDescription(
       `Are you sure want to reset duel record for ${messageFormatter.role(
-        roleId
-      )}?`
+        roleId,
+      )}?`,
     );
 
   const rows = new ActionRowBuilder<ButtonBuilder>().addComponents(
@@ -121,12 +121,12 @@ const generateConfirmationOptions = ({
     new ButtonBuilder()
       .setCustomId('no')
       .setLabel('No')
-      .setStyle(ButtonStyle.Danger)
+      .setStyle(ButtonStyle.Danger),
   );
 
   return {
     embeds: [embed],
-    components: [rows]
+    components: [rows],
   };
 };
 
@@ -139,12 +139,12 @@ interface IGenerateResultOptions {
 const generateResultOptions = ({
   roleId,
   deleted,
-  author
+  author,
 }: IGenerateResultOptions): BaseMessageOptions => {
   const embed = new EmbedBuilder().setColor(BOT_COLOR.embed);
   if (deleted) {
     embed.setDescription(
-      `Successfully reset duel record for ${messageFormatter.role(roleId)}`
+      `Successfully reset duel record for ${messageFormatter.role(roleId)}`,
     );
     embed.setFooter({text: `Reset by ${author.username}`});
   } else {
@@ -152,6 +152,6 @@ const generateResultOptions = ({
   }
   return {
     embeds: [embed],
-    components: []
+    components: [],
   };
 };

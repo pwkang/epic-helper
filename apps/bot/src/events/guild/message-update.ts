@@ -19,7 +19,7 @@ export default <BotEvent>{
           client,
           author: newMessage.interaction!.user,
           server: newMessage.guild,
-          preCheck: cmd.preCheck
+          preCheck: cmd.preCheck,
         });
         if (!toExecute) return;
         await cmd.execute(client, newMessage, newMessage.interaction!.user);
@@ -27,7 +27,7 @@ export default <BotEvent>{
     }
 
     await emitMessageEdited(newMessage);
-  }
+  },
 };
 
 const isBotSlashCommand = (message: Message) =>
@@ -40,6 +40,6 @@ const searchSlashMessages = (client: Client, message: Message) =>
   client.slashMessages.filter((cmd) =>
     cmd.commandName.some(
       (name) =>
-        name.toLowerCase() === message.interaction?.commandName?.toLowerCase()
-    )
+        name.toLowerCase() === message.interaction?.commandName?.toLowerCase(),
+    ),
   );

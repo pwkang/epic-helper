@@ -17,23 +17,23 @@ export default <PrefixCommand>{
     const isGlobal = checkIsGlobal(message);
 
     const commandsToDelete = slashCommands.filter((sc) =>
-      args.includes(sc.name)
+      args.includes(sc.name),
     );
     if (!commandsToDelete.length)
       return djsMessageHelper.send({
         client,
         channelId: message.channel.id,
         options: {
-          content: 'No commands to delete'
-        }
+          content: 'No commands to delete',
+        },
       });
     if (!isGuild && !isGlobal) {
       return djsMessageHelper.send({
         client,
         channelId: message.channel.id,
         options: {
-          content: 'Please specify `--guild` or `--global`'
-        }
+          content: 'Please specify `--guild` or `--global`',
+        },
       });
     }
     let deleted = 0;
@@ -41,8 +41,8 @@ export default <PrefixCommand>{
       client,
       channelId: message.channel.id,
       options: {
-        content: getStatusMessage()
-      }
+        content: getStatusMessage(),
+      },
     });
 
     if (!sentMessage) return;
@@ -54,25 +54,25 @@ export default <PrefixCommand>{
       registeredGuildSlashCommands =
         await djsRestHelper.slashCommand.guild.getAll({
           guild: message.guild!,
-          client
+          client,
         });
       for (const command of commandsToDelete) {
         const guildCommand = registeredGuildSlashCommands.find(
-          (gsc) => gsc.name === command.builder.name
+          (gsc) => gsc.name === command.builder.name,
         );
         if (guildCommand)
           await djsRestHelper.slashCommand.guild.deleteOne({
             client,
             commandId: guildCommand.id,
-            guild: message.guild!
+            guild: message.guild!,
           });
         deleted++;
         await djsMessageHelper.edit({
           client,
           message: sentMessage,
           options: {
-            content: getStatusMessage()
-          }
+            content: getStatusMessage(),
+          },
         });
         await sleep(1000);
       }
@@ -81,20 +81,20 @@ export default <PrefixCommand>{
         await djsRestHelper.slashCommand.global.getAll({client});
       for (const command of commandsToDelete) {
         const globalCommand = registeredGlobalSlashCommands.find(
-          (gsc) => gsc.name === command.builder.name
+          (gsc) => gsc.name === command.builder.name,
         );
         if (globalCommand)
           await djsRestHelper.slashCommand.global.deleteOne({
             client,
-            commandId: globalCommand.id
+            commandId: globalCommand.id,
           });
         deleted++;
         await djsMessageHelper.edit({
           client,
           message: sentMessage,
           options: {
-            content: getStatusMessage()
-          }
+            content: getStatusMessage(),
+          },
         });
         await sleep(1000);
       }
@@ -103,7 +103,7 @@ export default <PrefixCommand>{
     function getStatusMessage() {
       return `Deleting ${commandsToDelete.length} slash commands..., (${deleted}/${commandsToDelete.length})`;
     }
-  }
+  },
 };
 
 const checkIsGuild = (message: Message) => message.content.includes('--guild');

@@ -19,19 +19,19 @@ const DONOR_DISPLAY = {
   nonDonor: '0%',
   donor10: '10%',
   donor20: '20%',
-  donor35: '35%'
+  donor35: '35%',
 } as const;
 
 export const _getUserSettingsEmbed = ({
   userProfile,
   author,
   guildServerName,
-  guildName
+  guildName,
 }: IGetUserSettingsEmbed) => {
   const embed = new EmbedBuilder()
     .setAuthor({
       name: `${author.username}'s settings`,
-      iconURL: author.avatarURL() ?? undefined
+      iconURL: author.avatarURL() ?? undefined,
     })
     .setColor(BOT_COLOR.embed)
     .setThumbnail(author.avatarURL());
@@ -41,14 +41,14 @@ export const _getUserSettingsEmbed = ({
       icon: userProfile?.config.onOff ? ':bell:' : ':no_bell:',
       value: `Helper **${
         userProfile.config.onOff ? 'ON' : 'OFF'
-      }** (use \`toggle\` to customize helper)`
+      }** (use \`toggle\` to customize helper)`,
     },
     {
       icon: ':alarm_clock:',
       value: `**${
         DONOR_DISPLAY[userProfile.config.donor]
-      }** cooldown on all commands`
-    }
+      }** cooldown on all commands`,
+    },
   ];
 
   if (userProfile.config.donorP) {
@@ -56,51 +56,51 @@ export const _getUserSettingsEmbed = ({
       icon: '👥',
       value: `\`hunt t\` with **${
         DONOR_DISPLAY[userProfile.config.donorP]
-      }** cooldown`
+      }** cooldown`,
     });
   }
 
   if (userProfile.config.enchant)
     helperSettings.push({
       icon: '✨',
-      value: `Mute on getting **${userProfile.config.enchant.toUpperCase()}** or higher tier`
+      value: `Mute on getting **${userProfile.config.enchant.toUpperCase()}** or higher tier`,
     });
 
   if (userProfile.config.timezone)
     helperSettings.push({
       icon: '🌎',
-      value: `Timezone: **${userProfile.config.timezone}**`
+      value: `Timezone: **${userProfile.config.timezone}**`,
     });
 
   if (userProfile.config.timeFormat)
     helperSettings.push({
       icon: '🕒',
-      value: `Time format: **${userProfile.config.timeFormat}**`
+      value: `Time format: **${userProfile.config.timeFormat}**`,
     });
 
   if (userProfile.config.heal)
     helperSettings.push({
       icon: '🩸',
-      value: `Heal below **${userProfile.config.heal}** HP`
+      value: `Heal below **${userProfile.config.heal}** HP`,
     });
 
   if (userProfile.channel.all)
     helperSettings.push({
       icon: '💈',
-      value: `Reminder send to <#${userProfile.channel.all}>`
+      value: `Reminder send to <#${userProfile.channel.all}>`,
     });
 
   if (guildName && guildServerName)
     helperSettings.push({
       icon: '🏰',
-      value: `Guild: **${guildName}** @ ${guildServerName}`
+      value: `Guild: **${guildName}** @ ${guildServerName}`,
     });
 
   embed.addFields({
     name: 'EPIC HELPER Settings',
     value: helperSettings
       .map((setting) => `${setting.icon} - ${setting.value}`)
-      .join('\n')
+      .join('\n'),
   });
 
   return embed;

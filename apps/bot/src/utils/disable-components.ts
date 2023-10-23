@@ -1,7 +1,7 @@
 import type {
   ActionRow,
   MessageActionRowComponent,
-  MessageActionRowComponentBuilder
+  MessageActionRowComponentBuilder,
 } from 'discord.js';
 import {
   ActionRowBuilder,
@@ -16,18 +16,18 @@ import {
   StringSelectMenuBuilder,
   StringSelectMenuComponent,
   UserSelectMenuBuilder,
-  UserSelectMenuComponent
+  UserSelectMenuComponent,
 } from 'discord.js';
 
 const disableAllComponents = (
-  components: ActionRow<MessageActionRowComponent>[]
+  components: ActionRow<MessageActionRowComponent>[],
 ) => {
   const row: ActionRowBuilder<MessageActionRowComponentBuilder>[] = [];
   for (const component of components) {
     const _components = component.components.map((component) => {
       if (component instanceof ButtonComponent) {
         return ButtonBuilder.from(component).setDisabled(
-          component.style !== ButtonStyle.Link
+          component.style !== ButtonStyle.Link,
         );
       } else if (component instanceof StringSelectMenuComponent) {
         return StringSelectMenuBuilder.from(component).setDisabled(true);
@@ -43,8 +43,8 @@ const disableAllComponents = (
     });
     row.push(
       new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(
-        _components
-      )
+        _components,
+      ),
     );
   }
 

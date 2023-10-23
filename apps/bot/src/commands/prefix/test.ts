@@ -5,5 +5,5 @@ export default <PrefixCommand>{
   commands: ['test'],
   type: PREFIX_COMMAND_TYPE.dev,
   preCheck: {},
-  execute: async () => {}
+  execute: async () => {},
 };

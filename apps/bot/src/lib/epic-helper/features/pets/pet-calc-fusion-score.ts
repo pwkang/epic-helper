@@ -8,7 +8,7 @@ import {
   BOT_COLOR,
   BOT_EMOJI,
   RPG_PET_SKILL,
-  RPG_PET_SKILL_TIER_REVERSE
+  RPG_PET_SKILL_TIER_REVERSE,
 } from '@epic-helper/constants';
 import {userPetServices} from '../../../../services/database/user-pet.service';
 
@@ -19,18 +19,18 @@ interface IGenerateFusionScoreEmbed {
 
 export default async function generateFusionScoreEmbed({
   author,
-  petIds
+  petIds,
 }: IGenerateFusionScoreEmbed) {
   const pets = await userPetServices.getUserPets({
     petsId: petIds.map(convertPetIdToNum),
     userId: author.id,
-    orderBy: 'petId'
+    orderBy: 'petId',
   });
   const result = calcSelectedPetsFusionScore(pets);
   return generateEmbed({
     pets,
     author,
-    result
+    result,
   });
 }
 
@@ -46,7 +46,7 @@ const skillsToFuse: TFusionSkills[] = [
   'digger',
   'lucky',
   'timeTraveler',
-  'epic'
+  'epic',
 ];
 
 interface ICalcSelectedPetsFusionScoreReturn {
@@ -58,7 +58,7 @@ interface ICalcSelectedPetsFusionScoreReturn {
 }
 
 const calcSelectedPetsFusionScore = (
-  pets: IUserPet[]
+  pets: IUserPet[],
 ): ICalcSelectedPetsFusionScoreReturn[] => {
   const result: ICalcSelectedPetsFusionScoreReturn[] = [];
   for (const skill of skillsToFuse) {
@@ -66,7 +66,7 @@ const calcSelectedPetsFusionScore = (
     if (!petsWithSkill.length) continue;
     const totalScore = petsWithSkill.reduce(
       (acc, pet) => acc + pet.skills[skill]!,
-      0
+      0,
     );
     const petsBySkillTier = petsWithSkill.reduce((acc, pet) => {
       if (!pet.skills[skill]) return acc;
@@ -80,7 +80,7 @@ const calcSelectedPetsFusionScore = (
     result.push({
       type: skill,
       total: totalScore * petsWithSkill.length,
-      pets: petsBySkillTier
+      pets: petsBySkillTier,
     });
   }
   return result;
@@ -106,7 +106,7 @@ interface IGenerateEmbed {
 const generateEmbed = ({
   result,
   pets,
-  author
+  author,
 }: IGenerateEmbed): EmbedBuilder[] => {
   const embeds: EmbedBuilder[] = [];
   for (let i = 0; i < pets.length; i += 21) {
@@ -117,7 +117,7 @@ const generateEmbed = ({
     if (i === 0) {
       embed.setAuthor({
         iconURL: author.displayAvatarURL(),
-        name: `${author.username}'s pets`
+        name: `${author.username}'s pets`,
       });
     }
     embeds.push(embed);
@@ -138,7 +138,7 @@ interface IGetScoreSummaryDescription {
 
 const getScoreSummaryDescription = ({
   result,
-  pets
+  pets,
 }: IGetScoreSummaryDescription): string => {
   const recommendedFusionScore = calcRecommendedFusionScore(pets);
   let description =
@@ -150,7 +150,7 @@ const getScoreSummaryDescription = ({
     const totalScore = total;
     const isEnough = totalScore >= recommendedScore;
     description += `${skillName.padEnd(14, ' ')} | ${String(
-      recommendedScore
+      recommendedScore,
     ).padEnd(6, ' ')} | ${totalScore.toString().padEnd(8, ' ')} | ${
       isEnough ? '✓' : '✗'
     }\n`;
@@ -164,7 +164,7 @@ interface IGetScoreSummaryFields {
 }
 
 const getScoreSummaryFields = ({
-  result
+  result,
 }: IGetScoreSummaryFields): EmbedField[] => {
   const fields: EmbedField[] = [];
   for (let i = 0; i < result.length; i++) {
@@ -186,7 +186,7 @@ const getScoreSummaryFields = ({
     fields.push({
       name: `${skillEmoji} ${skillName} - ${totalScore}`,
       value: fieldValue,
-      inline: true
+      inline: true,
     });
   }
   return fields;
@@ -205,5 +205,5 @@ const recommendedFusionScore: RecommendedFusionScore = {
   12: {1: 4, 2: 4, 3: 6, 4: 8, 5: 9, 6: 12, 7: 24},
   13: {1: 4, 2: 4, 3: 6, 4: 8, 5: 9, 6: 9, 7: 24},
   14: {1: 4, 2: 4, 3: 4, 4: 6, 5: 8, 6: 9, 7: 22},
-  15: {1: 4, 2: 4, 3: 4, 4: 6, 5: 8, 6: 9, 7: 20}
+  15: {1: 4, 2: 4, 3: 4, 4: 6, 5: 8, 6: 9, 7: 20},
 };

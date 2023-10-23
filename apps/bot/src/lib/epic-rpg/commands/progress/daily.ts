@@ -1,7 +1,7 @@
 import {
   BOT_REMINDER_BASE_COOLDOWN,
   RPG_COMMAND_TYPE,
-  RPG_COOLDOWN_EMBED_TYPE
+  RPG_COOLDOWN_EMBED_TYPE,
 } from '@epic-helper/constants';
 import type {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
@@ -25,7 +25,7 @@ export function rpgDaily({client, message, author, isSlashCommand}: IRpgDaily) {
     author,
     channelId: message.channel.id,
     client,
-    commandType: RPG_COOLDOWN_EMBED_TYPE.daily
+    commandType: RPG_COOLDOWN_EMBED_TYPE.daily,
   });
   if (!event) return;
   event.on('embed', async (embed) => {
@@ -34,11 +34,11 @@ export function rpgDaily({client, message, author, isSlashCommand}: IRpgDaily) {
         embed,
         author,
         channelId: message.channel.id,
-        client
+        client,
       });
       await updateReminderChannel({
         userId: author.id,
-        channelId: message.channel.id
+        channelId: message.channel.id,
       });
       event?.stop();
     }
@@ -47,7 +47,7 @@ export function rpgDaily({client, message, author, isSlashCommand}: IRpgDaily) {
     await userReminderServices.updateUserCooldown({
       userId: author.id,
       readyAt: new Date(Date.now() + cooldown),
-      type: RPG_COMMAND_TYPE.daily
+      type: RPG_COMMAND_TYPE.daily,
     });
   });
   event.on('end', () => {
@@ -71,17 +71,17 @@ const rpgDailySuccess = async ({author, channelId}: IRpgDailySuccess) => {
     const cooldown = await calcCdReduction({
       userId: author.id,
       commandType: RPG_COMMAND_TYPE.daily,
-      cooldown: DAILY_COOLDOWN
+      cooldown: DAILY_COOLDOWN,
     });
     await userReminderServices.saveUserDailyCooldown({
       userId: author.id,
-      readyAt: new Date(Date.now() + cooldown)
+      readyAt: new Date(Date.now() + cooldown),
     });
   }
 
   await updateReminderChannel({
     userId: author.id,
-    channelId
+    channelId,
   });
 };
 

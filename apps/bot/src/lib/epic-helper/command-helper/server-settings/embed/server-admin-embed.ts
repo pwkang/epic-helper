@@ -5,7 +5,7 @@ import messageFormatter from '../../../../discordjs/message-formatter';
 
 export const _getServerAdminEmbed = ({
   serverAccount,
-  guild
+  guild,
 }: IServerSettings) => {
   const admins = serverAccount?.settings.admin.usersId ?? [];
 
@@ -13,10 +13,10 @@ export const _getServerAdminEmbed = ({
     .setColor(BOT_COLOR.embed)
     .setAuthor({
       name: `${guild.name}'s admins`,
-      iconURL: guild.iconURL() ?? undefined
+      iconURL: guild.iconURL() ?? undefined,
     })
     .addFields({
       name: 'Admins',
-      value: admins.length ? admins.map(messageFormatter.user).join('\n') : '-'
+      value: admins.length ? admins.map(messageFormatter.user).join('\n') : '-',
     });
 };

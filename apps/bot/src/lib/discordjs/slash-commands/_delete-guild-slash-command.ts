@@ -12,19 +12,19 @@ export interface IDeleteGuildSlashCommand {
 export const _deleteGuildSlashCommand = async ({
   client,
   guild,
-  commandId
+  commandId,
 }: IDeleteGuildSlashCommand) => {
   if (!client.user) return [];
   try {
     await djsRestClient.delete(
-      Routes.applicationGuildCommand(client.user.id!, guild.id, commandId)
+      Routes.applicationGuildCommand(client.user.id!, guild.id, commandId),
     );
   } catch (e: any) {
     logger({
       message: e.rawError.message,
       variant: 'delete-guild-slash-command',
       logLevel: 'error',
-      clusterId: client.cluster?.id
+      clusterId: client.cluster?.id,
     });
   }
 };

@@ -2,7 +2,7 @@ import {
   BOT_REMINDER_BASE_COOLDOWN,
   RPG_COMMAND_TYPE,
   RPG_COOLDOWN_EMBED_TYPE,
-  RPG_LOOTBOX_TYPE
+  RPG_LOOTBOX_TYPE,
 } from '@epic-helper/constants';
 import type {Client, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
@@ -26,14 +26,14 @@ export function rpgBuyLootbox({
   client,
   message,
   author,
-  isSlashCommand
+  isSlashCommand,
 }: IRpgLootbox) {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     author,
     channelId: message.channel.id,
     client,
-    commandType: RPG_COOLDOWN_EMBED_TYPE.lootbox
+    commandType: RPG_COOLDOWN_EMBED_TYPE.lootbox,
   });
   if (!event) return;
   event.on('content', async (content, collected) => {
@@ -42,7 +42,7 @@ export function rpgBuyLootbox({
         author,
         client,
         channelId: message.channel.id,
-        content
+        content,
       });
       event?.stop();
     }
@@ -57,7 +57,7 @@ export function rpgBuyLootbox({
     await userReminderServices.updateUserCooldown({
       type: RPG_COMMAND_TYPE.lootbox,
       readyAt: new Date(Date.now() + cooldown),
-      userId: author.id
+      userId: author.id,
     });
   });
   event.on('end', () => {
@@ -76,35 +76,35 @@ interface IRpgBuyLootboxSuccess {
 const rpgBuyLootboxSuccess = async ({
   author,
   content,
-  channelId
+  channelId,
 }: IRpgBuyLootboxSuccess) => {
   const toggleChecker = await toggleUserChecker({userId: author.id});
   if (!toggleChecker) return;
   const lootboxType = Object.values(RPG_LOOTBOX_TYPE).find((type) =>
-    content.toLowerCase().includes(type)
+    content.toLowerCase().includes(type),
   );
 
   if (toggleChecker.reminder.lootbox) {
     const cooldown = await calcCdReduction({
       userId: author.id,
       commandType: RPG_COMMAND_TYPE.lootbox,
-      cooldown: LOOTBOX_COOLDOWN
+      cooldown: LOOTBOX_COOLDOWN,
     });
     await userReminderServices.saveUserLootboxCooldown({
       userId: author.id,
       readyAt: new Date(Date.now() + cooldown),
-      lootboxType
+      lootboxType,
     });
   }
 
   await updateReminderChannel({
     userId: author.id,
-    channelId
+    channelId,
   });
 
   await userStatsService.countUserStats({
     userId: author.id,
-    type: USER_STATS_RPG_COMMAND_TYPE.lootbox
+    type: USER_STATS_RPG_COMMAND_TYPE.lootbox,
   });
 };
 
@@ -114,7 +114,7 @@ interface IIsLootboxSuccessfullyBought {
 
 const isLootboxSuccessfullyBought = ({content}: IIsLootboxSuccessfullyBought) =>
   Object.values(RPG_LOOTBOX_TYPE).some((lb) =>
-    content.toLowerCase().includes(lb)
+    content.toLowerCase().includes(lb),
   ) && content.includes('successfully bought for');
 
 interface IIsNotEligibleToBuyLootbox {
@@ -124,7 +124,7 @@ interface IIsNotEligibleToBuyLootbox {
 
 const isNotEligibleToBuyLootbox = ({
   message,
-  author
+  author,
 }: IIsNotEligibleToBuyLootbox) =>
   message.mentions.has(author.id) &&
   message.content.includes('to buy this lootbox');
@@ -135,6 +135,6 @@ interface IIsNotEnoughMoneyToBuyLootbox {
 }
 
 const isNotEnoughMoneyToBuyLootbox = ({
-  content
+  content,
 }: IIsNotEnoughMoneyToBuyLootbox) =>
   content.includes('You don\'t have enough money');

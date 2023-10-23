@@ -2,7 +2,7 @@ import commandHelper from '../../../../lib/epic-helper/command-helper';
 import djsInteractionHelper from '../../../../lib/discordjs/interaction';
 import {
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS
+  USER_NOT_REGISTERED_ACTIONS,
 } from '@epic-helper/constants';
 import {SLASH_COMMAND} from '../../constant';
 
@@ -15,29 +15,29 @@ export default <SlashCommand>{
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.skip,
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,
-    isServerAdmin: true
+    isServerAdmin: true,
   },
   builder: (subcommand) =>
     subcommand.addChannelOption((option) =>
       option
         .setName('channel')
         .setDescription('Channel to set as TT verification channel')
-        .setRequired(true)
+        .setRequired(true),
     ),
   execute: async (client, interaction) => {
     if (!interaction.inGuild() || !interaction.guild) return;
     const channel = interaction.options.getChannel('channel', true);
     const ttVerification = await commandHelper.serverSettings.ttVerification({
-      server: interaction.guild
+      server: interaction.guild,
     });
     if (!ttVerification) return;
     const messageOptions = await ttVerification.setChannel({
-      channelId: channel.id
+      channelId: channel.id,
     });
     await djsInteractionHelper.replyInteraction({
       client,
       interaction,
-      options: messageOptions
+      options: messageOptions,
     });
-  }
+  },
 };

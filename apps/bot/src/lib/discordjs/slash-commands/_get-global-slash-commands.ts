@@ -8,12 +8,12 @@ export interface IGetGlobalSlashCommands {
 }
 
 export const _getGlobalSlashCommands = async ({
-  client
+  client,
 }: IGetGlobalSlashCommands) => {
   if (!client.user) return [];
   try {
     const data = await djsRestClient.get(
-      Routes.applicationCommands(client.user.id)
+      Routes.applicationCommands(client.user.id),
     );
 
     return data as ApplicationCommand[];
@@ -22,7 +22,7 @@ export const _getGlobalSlashCommands = async ({
       message: e.rawError.message,
       variant: 'get-global-slash-commands',
       logLevel: 'error',
-      clusterId: client.cluster?.id
+      clusterId: client.cluster?.id,
     });
     return [];
   }

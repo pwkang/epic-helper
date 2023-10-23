@@ -14,12 +14,12 @@ export default <BotMessage>{
   execute: async (client, message) => {
     if (!message.guild) return;
     const serverProfile = await serverService.getServer({
-      serverId: message.guild.id
+      serverId: message.guild.id,
     });
     if (!serverProfile) return;
 
     const toggleServer = await toggleServerChecker({
-      serverId: message.guild.id
+      serverId: message.guild.id,
     });
     if (!toggleServer?.randomEvent) return;
 
@@ -28,9 +28,9 @@ export default <BotMessage>{
     await djsMessageHelper.send({
       client,
       options: {
-        content: randomEvent.miniboss
+        content: randomEvent.miniboss,
       },
-      channelId: message.channel.id
+      channelId: message.channel.id,
     });
-  }
+  },
 };

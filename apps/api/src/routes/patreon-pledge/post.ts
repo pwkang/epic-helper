@@ -1,4 +1,4 @@
-import {Handler} from 'express';
+import type {Handler} from 'express';
 import {validatePatreonWebhook} from '../../utils/patreon/webhook';
 
 const validatePatreonSignature: Handler = (req, res, next) => {

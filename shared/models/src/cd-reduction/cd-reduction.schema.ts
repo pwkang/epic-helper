@@ -1,5 +1,5 @@
 import {Schema} from 'mongoose';
-import {IEventCdReduction} from './cd-reduction.type';
+import type {IEventCdReduction} from './cd-reduction.type';
 import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 
 export const eventCdReductionSchema = new Schema<IEventCdReduction>({

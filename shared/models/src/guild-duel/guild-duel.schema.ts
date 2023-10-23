@@ -1,4 +1,4 @@
-import {IGuildDuel, IGuildDuelUser} from './guild-duel.type';
+import type {IGuildDuel, IGuildDuelUser} from './guild-duel.type';
 import {Schema} from 'mongoose';
 
 export const guildDuelSchema = new Schema<IGuildDuel>({

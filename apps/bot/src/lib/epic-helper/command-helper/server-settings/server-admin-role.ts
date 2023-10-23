@@ -18,14 +18,14 @@ interface IRemoveAdminRole {
 export const _serverAdminRole = async ({server}: IServerAdminRole) => {
   const render = (serverAccount: IServer): BaseMessageOptions => {
     return {
-      embeds: [_getServerAdminRoleEmbed({serverAccount, guild: server})]
+      embeds: [_getServerAdminRoleEmbed({serverAccount, guild: server})],
     };
   };
 
   const addRole = async ({roleId}: IAddAdminRole) => {
     const serverAccount = await serverService.addServerAdminRoles({
       serverId: server.id,
-      rolesId: [roleId]
+      rolesId: [roleId],
     });
     if (!serverAccount) return;
     return render(serverAccount);
@@ -34,7 +34,7 @@ export const _serverAdminRole = async ({server}: IServerAdminRole) => {
   const removeRole = async ({roleId}: IRemoveAdminRole) => {
     const serverAccount = await serverService.removeServerAdminRoles({
       serverId: server.id,
-      rolesId: [roleId]
+      rolesId: [roleId],
     });
     if (!serverAccount) return;
     return render(serverAccount);
@@ -42,7 +42,7 @@ export const _serverAdminRole = async ({server}: IServerAdminRole) => {
 
   const reset = async () => {
     const serverAccount = await serverService.clearServerAdminRoles({
-      serverId: server.id
+      serverId: server.id,
     });
     if (!serverAccount) return;
     return render(serverAccount);
@@ -51,6 +51,6 @@ export const _serverAdminRole = async ({server}: IServerAdminRole) => {
   return {
     addRole,
     removeRole,
-    reset
+    reset,
   };
 };

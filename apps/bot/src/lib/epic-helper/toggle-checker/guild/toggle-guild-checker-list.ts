@@ -11,11 +11,11 @@ export const _toggleUpgraidReminder = ({toggle}: IToggleGuildCheckerItem) =>
   toggle.onOff && toggle.upgraid.reminder;
 
 export const _toggleUpgraidSendUpgraidList = ({
-  toggle
+  toggle,
 }: IToggleGuildCheckerItem) => toggle.onOff && toggle.upgraid.sendUpgraidList;
 
 export const _toggleUpgraidAllowReserved = ({
-  toggle
+  toggle,
 }: IToggleGuildCheckerItem) => toggle.onOff && toggle.upgraid.allowReserved;
 
 export const _toggleDuelLogDuelAdd = ({toggle}: IToggleGuildCheckerItem) =>

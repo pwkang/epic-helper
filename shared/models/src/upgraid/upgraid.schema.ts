@@ -1,4 +1,4 @@
-import {IUpgraid} from './upgraid.type';
+import type {IUpgraid} from './upgraid.type';
 import {Schema} from 'mongoose';
 
 const recordSchema = new Schema<IUpgraid['users'][0]['records'][0]>({

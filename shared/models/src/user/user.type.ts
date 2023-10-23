@@ -1,11 +1,11 @@
-import {
+import type {
   BOT_TIME_FORMAT,
   BOT_TIMEZONE_LIST,
   RPG_COMMAND_TYPE,
   RPG_DONOR_TIER,
   RPG_ENCHANT_LEVEL,
 } from '@epic-helper/constants';
-import {ValuesOf} from '../type';
+import type {ValuesOf} from '../type';
 
 type ToggleDmOptions = keyof typeof RPG_COMMAND_TYPE | 'all';
 type ToggleReminderOptions = keyof typeof RPG_COMMAND_TYPE | 'all';

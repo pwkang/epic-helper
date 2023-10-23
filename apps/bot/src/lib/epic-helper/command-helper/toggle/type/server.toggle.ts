@@ -12,17 +12,17 @@ interface IGetServerToggle {
 
 export const getServerToggle = async ({server}: IGetServerToggle) => {
   const serverAccount = await serverService.getServer({
-    serverId: server.id
+    serverId: server.id,
   });
   if (!serverAccount) return null;
 
   const render = (serverAccount: IServer) => {
     const embed = getServerToggleEmbed({
       server,
-      serverAccount
+      serverAccount,
     });
     return {
-      embeds: [embed]
+      embeds: [embed],
     };
   };
 
@@ -30,11 +30,11 @@ export const getServerToggle = async ({server}: IGetServerToggle) => {
     const updateQuery = getUpdateQuery<IServer>({
       on,
       off,
-      toggleInfo: toggleDisplayList.server(serverAccount.toggle)
+      toggleInfo: toggleDisplayList.server(serverAccount.toggle),
     });
     const updatedServer = await serverService.updateServerToggle({
       serverId: server.id,
-      query: updateQuery
+      query: updateQuery,
     });
     if (!updatedServer) return null;
     return render(updatedServer);
@@ -42,7 +42,7 @@ export const getServerToggle = async ({server}: IGetServerToggle) => {
 
   const reset = async () => {
     const updatedServer = await serverService.resetServerToggle({
-      serverId: server.id
+      serverId: server.id,
     });
     if (!updatedServer) return null;
     return render(updatedServer);
@@ -51,7 +51,7 @@ export const getServerToggle = async ({server}: IGetServerToggle) => {
   return {
     render: () => render(serverAccount),
     update,
-    reset
+    reset,
   };
 };
 
@@ -62,11 +62,11 @@ interface IGetServerToggleEmbed {
 
 const getServerToggleEmbed = ({
   serverAccount,
-  server
+  server,
 }: IGetServerToggleEmbed) => {
   return renderEmbed({
-    embedsInfo: toggleDisplayList.server(serverAccount.toggle)
+    embedsInfo: toggleDisplayList.server(serverAccount.toggle),
   }).setAuthor({
-    name: `${server.name} Toggle Settings`
+    name: `${server.name} Toggle Settings`,
   });
 };

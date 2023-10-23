@@ -7,7 +7,7 @@ import timestampHelper from '../../../discordjs/timestamp';
 import {
   EPIC_RPG_ID,
   RPG_ENCHANT_LEVEL,
-  RPG_ENCHANT_LEVEL_RANK
+  RPG_ENCHANT_LEVEL_RANK,
 } from '@epic-helper/constants';
 import {userService} from '../../../../services/database/user.service';
 import toggleServerChecker from '../../../epic-helper/toggle-checker/server';
@@ -16,12 +16,12 @@ const ENCHANT_CMD_TYPE = {
   enchant: 'enchant',
   refine: 'refine',
   transmute: 'transmute',
-  transcend: 'transcend'
+  transcend: 'transcend',
 } as const;
 
 const EQUIPMENT_TYPE = {
   sword: 'sword',
-  armor: 'armor'
+  armor: 'armor',
 } as const;
 
 interface IRpgEnchant {
@@ -35,13 +35,13 @@ export function rpgEnchant({
   client,
   message,
   author,
-  isSlashCommand
+  isSlashCommand,
 }: IRpgEnchant) {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     channelId: message.channel.id,
     client,
-    author
+    author,
   });
   if (!event) return;
   event.on('embed', async (embed) => {
@@ -52,7 +52,7 @@ export function rpgEnchant({
         channelId: message.channel.id,
         author,
         embed,
-        server: message.guild!
+        server: message.guild!,
       });
     }
     if (isEnchantEquipmentBroken({embed})) {
@@ -78,18 +78,18 @@ const rpgEnchantSuccess = async ({
   author,
   client,
   channelId,
-  server
+  server,
 }: IRpgEnchantSuccess) => {
   const toggleServer = await toggleServerChecker({
-    serverId: server.id
+    serverId: server.id,
   });
   if (toggleServer?.enchantMute) {
     const enchantTier = getEnchantType({embed});
     const equipmentType = Object.values(EQUIPMENT_TYPE).find((type) =>
-      embed.description?.toLowerCase().includes(type)
+      embed.description?.toLowerCase().includes(type),
     );
     const targetTier = await userService.getUserEnchantTier({
-      userId: author.id
+      userId: author.id,
     });
     if (!targetTier || !enchantTier || !equipmentType) return;
     if (
@@ -98,14 +98,14 @@ const rpgEnchantSuccess = async ({
       return;
 
     const unmuteIn = timestampHelper.relative({
-      time: new Date(Date.now() + ms('5s'))
+      time: new Date(Date.now() + ms('5s')),
     });
     await djsMessageHelper.send({
       channelId,
       options: {
-        content: `You have successfully enchanted your **${equipmentType.toUpperCase()}** to **${enchantTier.toUpperCase()}**!, unmute ${unmuteIn}`
+        content: `You have successfully enchanted your **${equipmentType.toUpperCase()}** to **${enchantTier.toUpperCase()}**!, unmute ${unmuteIn}`,
       },
-      client
+      client,
     });
 
     [author.id, EPIC_RPG_ID].map((userId) =>
@@ -113,8 +113,8 @@ const rpgEnchantSuccess = async ({
         userId,
         client,
         channelId,
-        unMuteIn: ms('5s')
-      })
+        unMuteIn: ms('5s'),
+      }),
     );
   }
 };
@@ -125,7 +125,7 @@ interface IEnchantGet {
 
 export const getEnchantType = ({embed}: IEnchantGet) =>
   Object.values(RPG_ENCHANT_LEVEL).find((level) =>
-    embed.fields[0].name.toLowerCase().includes(`**${level}**`)
+    embed.fields[0].name.toLowerCase().includes(`**${level}**`),
   );
 
 interface IIsSuccessfullyEnchanted {
@@ -135,7 +135,7 @@ interface IIsSuccessfullyEnchanted {
 
 const isSuccessfullyEnchanted = ({author, embed}: IIsSuccessfullyEnchanted) =>
   Object.values(ENCHANT_CMD_TYPE).some(
-    (type) => embed.author?.name === `${author.username} — ${type}`
+    (type) => embed.author?.name === `${author.username} — ${type}`,
   );
 
 interface IIsEnchantEquipmentBroken {

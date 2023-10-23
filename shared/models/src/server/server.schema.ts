@@ -1,5 +1,5 @@
 import {Schema} from 'mongoose';
-import {
+import type {
   IEnchantChannel,
   IServer,
   IToken,

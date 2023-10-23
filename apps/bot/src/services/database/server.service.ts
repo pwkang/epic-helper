@@ -23,14 +23,14 @@ interface IRegisterServerProps {
 
 const registerServer = async ({
   serverId,
-  name
+  name,
 }: IRegisterServerProps): Promise<IServer> => {
   const server = await getServer({serverId});
 
   if (!server) {
     const newServer = new dbServer({
       serverId,
-      name
+      name,
     });
 
     await newServer.save();
@@ -44,7 +44,7 @@ interface IGetServerProps {
 }
 
 const getServer = async ({
-  serverId
+  serverId,
 }: IGetServerProps): Promise<IServer | null> => {
   const cachedServer = await redisServerAccount.getServer(serverId);
   if (cachedServer) return cachedServer;
@@ -59,8 +59,8 @@ const listRegisteredServersId = async (): Promise<string[]> => {
     .find(
       {},
       {
-        serverId: 1
-      }
+        serverId: 1,
+      },
     )
     .lean();
   return servers?.map((server) => server.serverId) ?? [];
@@ -71,7 +71,7 @@ interface IGetEnchantChannels {
 }
 
 const getEnchantChannels = async ({
-  serverId
+  serverId,
 }: IGetEnchantChannels): Promise<IEnchantChannel[]> => {
   const server = await getServer({serverId});
 
@@ -85,18 +85,18 @@ interface IAddEnchantChannels {
 
 const addEnchantChannels = async ({
   serverId,
-  channels
+  channels,
 }: IAddEnchantChannels) => {
   await dbServer.findOneAndUpdate(
     {serverId},
     {
       $addToSet: {
         'settings.enchant.channels': {
-          $each: channels
-        }
-      }
+          $each: channels,
+        },
+      },
     },
-    {new: true}
+    {new: true},
   );
 };
 
@@ -107,7 +107,7 @@ interface IRemoveEnchantChannels {
 
 const removeEnchantChannels = async ({
   serverId,
-  channelIds
+  channelIds,
 }: IRemoveEnchantChannels) => {
   await dbServer.findOneAndUpdate(
     {serverId},
@@ -115,12 +115,12 @@ const removeEnchantChannels = async ({
       $pull: {
         'settings.enchant.channels': {
           channelId: {
-            $in: channelIds
-          }
-        }
-      }
+            $in: channelIds,
+          },
+        },
+      },
     },
-    {new: true}
+    {new: true},
   );
 };
 
@@ -133,16 +133,16 @@ interface IUpdateEnchantChannel {
 const updateEnchantChannel = async ({
   serverId,
   channelId,
-  settings
+  settings,
 }: IUpdateEnchantChannel) => {
   await dbServer.findOneAndUpdate(
     {serverId, 'settings.enchant.channels.channelId': channelId},
     {
       $set: {
-        'settings.enchant.channels.$': settings
-      }
+        'settings.enchant.channels.$': settings,
+      },
     },
-    {new: true}
+    {new: true},
   );
 };
 
@@ -155,12 +155,12 @@ const resetEnchantChannels = async ({serverId}: IResetEnchantChannels) => {
     {serverId},
     {
       $set: {
-        'settings.enchant.channels': []
-      }
+        'settings.enchant.channels': [],
+      },
     },
     {
-      new: true
-    }
+      new: true,
+    },
   );
 };
 
@@ -171,16 +171,16 @@ interface IUpdateEnchantMuteDuration {
 
 const updateEnchantMuteDuration = async ({
   serverId,
-  duration
+  duration,
 }: IUpdateEnchantMuteDuration) => {
   await dbServer.findOneAndUpdate(
     {serverId},
     {
       $set: {
-        'settings.enchant.muteDuration': duration
-      }
+        'settings.enchant.muteDuration': duration,
+      },
     },
-    {new: true}
+    {new: true},
   );
 };
 
@@ -193,11 +193,11 @@ interface IUpdateRandomEvents {
 
 const updateRandomEvents = async ({
   serverId,
-  randomEvents
+  randomEvents,
 }: IUpdateRandomEvents): Promise<IServer | null> => {
   const query: UpdateQuery<IServer> = {
     $set: {},
-    $unset: {}
+    $unset: {},
   };
   for (const [key, value] of typedObjectEntries(randomEvents)) {
     if (value === null) {
@@ -217,14 +217,14 @@ interface ISetTTVerificationChannel {
 
 const setTTVerificationChannel = async ({
   serverId,
-  channelId
+  channelId,
 }: ISetTTVerificationChannel) => {
   await dbServer.findOneAndUpdate(
     {serverId},
     {
-      $set: {'settings.ttVerification.channelId': channelId}
+      $set: {'settings.ttVerification.channelId': channelId},
     },
-    {new: true}
+    {new: true},
   );
 
   return await getServer({serverId});
@@ -237,13 +237,13 @@ interface IIsTTVerificationRuleExists {
 
 const isTTVerificationRuleExists = async ({
   serverId,
-  roleId
+  roleId,
 }: IIsTTVerificationRuleExists) => {
   const server = await getServer({serverId});
 
   return (
     server?.settings.ttVerification.rules.some(
-      (rule) => rule.roleId === roleId
+      (rule) => rule.roleId === roleId,
     ) ?? false
   );
 };
@@ -261,7 +261,7 @@ const setTTVerificationRule = async ({
   roleId,
   minTT,
   maxTT,
-  message
+  message,
 }: ISetTTVerificationRule) => {
   const isExists = await isTTVerificationRuleExists({serverId, roleId});
   if (!isExists) {
@@ -273,11 +273,11 @@ const setTTVerificationRule = async ({
             roleId,
             minTT,
             maxTT,
-            message
-          }
-        }
+            message,
+          },
+        },
       },
-      {new: true}
+      {new: true},
     );
   } else {
     await dbServer.findOneAndUpdate(
@@ -288,11 +288,11 @@ const setTTVerificationRule = async ({
             roleId,
             minTT,
             maxTT,
-            message
-          }
-        }
+            message,
+          },
+        },
       },
-      {new: true}
+      {new: true},
     );
   }
   return await getServer({serverId});
@@ -305,18 +305,18 @@ interface IRemoveTTVerificationRule {
 
 const removeTTVerificationRule = async ({
   serverId,
-  roleId
+  roleId,
 }: IRemoveTTVerificationRule) => {
   await dbServer.findOneAndUpdate(
     {serverId},
     {
       $pull: {
         'settings.ttVerification.rules': {
-          roleId
-        }
-      }
+          roleId,
+        },
+      },
     },
-    {new: true}
+    {new: true},
   );
   return await getServer({serverId});
 };
@@ -337,10 +337,10 @@ const getUserBoostedServers = async ({userId}: IGetUserBoostedServers) => {
       $match: {
         tokens: {
           $elemMatch: {
-            userId
-          }
-        }
-      }
+            userId,
+          },
+        },
+      },
     },
     {
       $project: {
@@ -353,22 +353,22 @@ const getUserBoostedServers = async ({userId}: IGetUserBoostedServers) => {
                 input: '$tokens',
                 as: 'token',
                 cond: {
-                  $eq: ['$$token.userId', userId]
-                }
-              }
+                  $eq: ['$$token.userId', userId],
+                },
+              },
             },
-            0
-          ]
-        }
-      }
+            0,
+          ],
+        },
+      },
     },
     {
       $project: {
         serverId: 1,
         name: 1,
-        token: '$token.amount'
-      }
-    }
+        token: '$token.amount',
+      },
+    },
   ]);
   return servers ?? [];
 };
@@ -386,29 +386,29 @@ const addTokens = async ({serverId, userId, amount}: IAddTokens) => {
     await dbServer.findOneAndUpdate(
       {
         serverId,
-        'tokens.userId': userId
+        'tokens.userId': userId,
       },
       {
         $inc: {
-          'tokens.$.amount': amount
-        }
+          'tokens.$.amount': amount,
+        },
       },
-      {new: true}
+      {new: true},
     );
   } else {
     await dbServer.findOneAndUpdate(
       {
-        serverId
+        serverId,
       },
       {
         $push: {
           tokens: {
             userId,
-            amount: amount
-          }
-        }
+            amount: amount,
+          },
+        },
       },
-      {new: true}
+      {new: true},
     );
   }
 };
@@ -425,36 +425,36 @@ const removeTokens = async ({serverId, userId, tokens}: IRemoveTokens) => {
 
   if (!isUserExists || !server) return;
   const tokenBoosted = server.tokens.find(
-    (token) => token.userId === userId
+    (token) => token.userId === userId,
   )?.amount;
   if (!tokenBoosted) return;
   const toRemove = tokens === undefined || tokens >= tokenBoosted;
   if (toRemove) {
     await dbServer.findOneAndUpdate(
       {
-        serverId
+        serverId,
       },
       {
         $pull: {
           tokens: {
-            userId
-          }
-        }
+            userId,
+          },
+        },
       },
-      {new: true}
+      {new: true},
     );
   } else {
     await dbServer.findOneAndUpdate(
       {
         serverId,
-        'tokens.userId': userId
+        'tokens.userId': userId,
       },
       {
         $inc: {
-          'tokens.$.amount': -tokens
-        }
+          'tokens.$.amount': -tokens,
+        },
       },
-      {new: true}
+      {new: true},
     );
   }
 };
@@ -470,11 +470,11 @@ const addServerAdmins = async ({serverId, usersId}: IAddServerAdmins) => {
     {
       $addToSet: {
         'settings.admin.usersId': {
-          $each: usersId
-        }
-      }
+          $each: usersId,
+        },
+      },
     },
-    {new: true}
+    {new: true},
   );
   return await getServer({serverId});
 };
@@ -490,11 +490,11 @@ const removeServerAdmins = async ({serverId, usersId}: IRemoveServerAdmins) => {
     {
       $pull: {
         'settings.admin.usersId': {
-          $in: usersId
-        }
-      }
+          $in: usersId,
+        },
+      },
     },
-    {new: true}
+    {new: true},
   );
   return await getServer({serverId});
 };
@@ -508,10 +508,10 @@ const clearServerAdmins = async ({serverId}: IClearServerAdmins) => {
     {serverId},
     {
       $set: {
-        'settings.admin.usersId': []
-      }
+        'settings.admin.usersId': [],
+      },
     },
-    {new: true}
+    {new: true},
   );
   return await getServer({serverId});
 };
@@ -523,18 +523,18 @@ interface IAddServerAdminRoles {
 
 const addServerAdminRoles = async ({
   serverId,
-  rolesId
+  rolesId,
 }: IAddServerAdminRoles) => {
   await dbServer.findOneAndUpdate(
     {serverId},
     {
       $addToSet: {
         'settings.admin.rolesId': {
-          $each: rolesId
-        }
-      }
+          $each: rolesId,
+        },
+      },
     },
-    {new: true}
+    {new: true},
   );
   return await getServer({serverId});
 };
@@ -546,18 +546,18 @@ interface IRemoveServerAdminRoles {
 
 const removeServerAdminRoles = async ({
   serverId,
-  rolesId
+  rolesId,
 }: IRemoveServerAdminRoles) => {
   await dbServer.findOneAndUpdate(
     {serverId},
     {
       $pull: {
         'settings.admin.rolesId': {
-          $in: rolesId
-        }
-      }
+          $in: rolesId,
+        },
+      },
     },
-    {new: true}
+    {new: true},
   );
   return await getServer({serverId});
 };
@@ -570,7 +570,7 @@ const clearServerAdminRoles = async ({serverId}: IClearServerAdminRoles) => {
   await dbServer.findOneAndUpdate(
     {serverId},
     {$set: {'settings.admin.rolesId': []}},
-    {new: true}
+    {new: true},
   );
   return await getServer({serverId});
 };
@@ -593,7 +593,7 @@ const resetServerToggle = async ({serverId}: IResetToggle) => {
   await dbServer.findOneAndUpdate(
     {serverId},
     {$unset: {toggle: ''}},
-    {new: true}
+    {new: true},
   );
   return await getServer({serverId});
 };
@@ -623,5 +623,5 @@ export const serverService = {
   removeServerAdminRoles,
   clearServerAdminRoles,
   updateServerToggle,
-  resetServerToggle
+  resetServerToggle,
 };

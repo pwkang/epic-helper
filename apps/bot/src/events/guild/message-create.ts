@@ -4,7 +4,7 @@ import {
   DEVS_ID,
   EPIC_RPG_ID,
   PREFIX,
-  PREFIX_COMMAND_TYPE
+  PREFIX_COMMAND_TYPE,
 } from '@epic-helper/constants';
 import {preCheckCommand} from '../../utils/command-precheck';
 
@@ -27,7 +27,7 @@ export default <BotEvent>{
           author: message.interaction!.user,
           message,
           preCheck: cmd.preCheck,
-          server: message.guild
+          server: message.guild,
         });
         if (!toExecute) return;
         cmd.execute(client, message, message.interaction!.user);
@@ -42,10 +42,9 @@ export default <BotEvent>{
         preCheck: result.command.preCheck,
         author: message.author,
         server: message.guild,
-        message
+        message,
       });
       if (!toExecute) return;
-      console.log(result.command.name);
       await result.command.execute(client, message, result.args);
     }
 
@@ -54,15 +53,15 @@ export default <BotEvent>{
       if (!commands.size) return;
       commands.forEach((cmd) => cmd.execute(client, message));
     }
-  }
+  },
 };
 
 const searchSlashMessages = (client: Client, message: Message) =>
   client.slashMessages.filter((cmd) =>
     cmd.commandName.some(
       (name) =>
-        name.toLowerCase() === message.interaction?.commandName?.toLowerCase()
-    )
+        name.toLowerCase() === message.interaction?.commandName?.toLowerCase(),
+    ),
   );
 
 const isRpgCommand = (message: Message) =>
@@ -80,7 +79,7 @@ const validateCommand = (commands: string[], args: string[]) => {
   return commands.some((cmd) =>
     cmd
       .split(' ')
-      .every((name, i) => name?.toLowerCase() === args[i]?.toLowerCase())
+      .every((name, i) => name?.toLowerCase() === args[i]?.toLowerCase()),
   );
 };
 
@@ -88,14 +87,14 @@ const getMatchedCommandLength = (commands: string[], args: string[]) => {
   const matched = commands.find((cmd) =>
     cmd
       .split(' ')
-      .every((name, i) => name?.toLowerCase() === args[i]?.toLowerCase())
+      .every((name, i) => name?.toLowerCase() === args[i]?.toLowerCase()),
   );
   return matched?.split(' ').length ?? 0;
 };
 
 function searchCommand(
   client: Client,
-  message: Message
+  message: Message,
 ): {command: PrefixCommand; args: string[]} | null {
   const messageContent = message.content.toLowerCase().trim();
   if (messageContent === '') return null;
@@ -138,7 +137,7 @@ function searchCommand(
   }
 
   const matchedCommands = client.prefixCommands.filter(
-    (cmd) => cmd.type === commandType && validateCommand(cmd.commands, args)
+    (cmd) => cmd.type === commandType && validateCommand(cmd.commands, args),
   );
   if (matchedCommands.size === 1) {
     command = matchedCommands.first();
@@ -147,7 +146,7 @@ function searchCommand(
       .sort(
         (a, b) =>
           getMatchedCommandLength(b.commands, args) -
-          getMatchedCommandLength(a.commands, args)
+          getMatchedCommandLength(a.commands, args),
       )
       .first();
   }
@@ -166,5 +165,5 @@ const isNotDeferred = (message: Message) =>
 
 const searchBotMatchedCommands = (client: Client, message: Message) =>
   client.botMessages.filter(
-    (cmd) => message.author.id === cmd.bot && cmd.match(message)
+    (cmd) => message.author.id === cmd.bot && cmd.match(message),
   );

@@ -1,5 +1,5 @@
 import {Schema} from 'mongoose';
-import {IUserDuel, IUserDuelUser} from './user-duel.type';
+import type {IUserDuel, IUserDuelUser} from './user-duel.type';
 
 export const userDuelSchema = new Schema<IUserDuel>({
   duelAt: Date,

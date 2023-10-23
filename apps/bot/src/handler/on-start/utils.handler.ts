@@ -5,7 +5,7 @@ import {djsMessageHelper} from '../../lib/discordjs/message';
 export const registerUtilsFn = (client: Client) => {
   client.utils = {
     getUptime,
-    djsMessageHelper
+    djsMessageHelper,
   };
   return Promise.resolve(client);
 };

@@ -12,12 +12,12 @@ export const _ownerInfo = async ({client}: IOwnerInfo) => {
 
   const clusters = await broadcastEval({
     client,
-    fn: getClusterInfo
+    fn: getClusterInfo,
   });
   if (!clusters) {
     return embed.addFields({
       name: '**Error**',
-      value: 'Failed to fetch data from clusters'
+      value: 'Failed to fetch data from clusters',
     });
   }
   const summary = clusters.reduce(
@@ -30,36 +30,36 @@ export const _ownerInfo = async ({client}: IOwnerInfo) => {
     },
     {
       totalGuilds: 0,
-      totalRam: 0
-    }
+      totalRam: 0,
+    },
   );
   const summaryValue = [
     `**Guilds**: ${summary.totalGuilds.toLocaleString()}`,
-    `**RAM**: ${summary.totalRam.toLocaleString()} MB`
+    `**RAM**: ${summary.totalRam.toLocaleString()} MB`,
   ].join('\n');
   embed.addFields({
     name: '**Summary**',
     value: summaryValue,
-    inline: true
+    inline: true,
   });
   for (const cluster of clusters) {
     if (cluster.data && typeof cluster.data !== 'string') {
       const value = [
         `**Guilds**: ${cluster.data.totalGuilds.toLocaleString()}`,
         `**Uptime**: ${cluster.data.uptime}`,
-        `**RAM**: ${cluster.data.ramUsage} MB`
+        `**RAM**: ${cluster.data.ramUsage} MB`,
       ].join('\n');
 
       embed.addFields({
         name: `**Cluster ${cluster.clusterId}**`,
         value,
-        inline: true
+        inline: true,
       });
     } else {
       embed.addFields({
         name: `**Cluster ${cluster.clusterId}**`,
         value: '**Error**',
-        inline: true
+        inline: true,
       });
     }
   }
@@ -74,6 +74,6 @@ const getClusterInfo = (client: Client) => {
   return {
     totalGuilds,
     uptime,
-    ramUsage
+    ramUsage,
   };
 };

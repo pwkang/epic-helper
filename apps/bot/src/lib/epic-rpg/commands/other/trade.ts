@@ -14,13 +14,13 @@ export const rpgTrade = ({
   client,
   message,
   author,
-  isSlashCommand
+  isSlashCommand,
 }: IRpgSuccess) => {
   if (!message.inGuild()) return;
   let event = createRpgCommandListener({
     author,
     channelId: message.channelId,
-    client
+    client,
   });
   if (!event) return;
   event.on('embed', (embed) => {
@@ -51,7 +51,7 @@ const rpgTradeSuccess = async ({embed, author}: IRpgTradeSuccess) => {
   await userService.updateUserRubyAmount({
     userId: author.id,
     ruby: Math.abs(traded.ruby),
-    type: traded.ruby > 0 ? 'inc' : 'dec'
+    type: traded.ruby > 0 ? 'inc' : 'dec',
   });
 };
 
@@ -67,13 +67,13 @@ const extractTradedItems = ({embed}: IExtractTradedItems): ITradedItem => {
   const items = embed.fields[0].value.split('\n');
 
   const tradedItemName = Object.entries(RPG_ITEMS).find(([, item]) =>
-    items[0].includes(item.replaceAll(' ', ''))
+    items[0].includes(item.replaceAll(' ', '')),
   )?.[0] as keyof typeof RPG_ITEMS;
   const tradeItemAmount = (items[0].match(/x[\d,]+/)?.[0] ?? 'x0')
     .replaceAll('x', '')
     .replaceAll(',', '');
   const itemGetName = Object.entries(RPG_ITEMS).find(([, item]) =>
-    items[1].includes(item.replaceAll(' ', ''))
+    items[1].includes(item.replaceAll(' ', '')),
   )?.[0] as keyof typeof RPG_ITEMS;
   const itemGetAmount = (items[1].match(/x[\d,]+/)?.[0] ?? 'x0')
     .replaceAll('x', '')
@@ -81,7 +81,7 @@ const extractTradedItems = ({embed}: IExtractTradedItems): ITradedItem => {
 
   return {
     [tradedItemName]: -tradeItemAmount,
-    [itemGetName]: +itemGetAmount
+    [itemGetName]: +itemGetAmount,
   };
 };
 

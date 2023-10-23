@@ -1,4 +1,4 @@
-import {IFreeDonor} from './free-donor.type';
+import type {IFreeDonor} from './free-donor.type';
 import {Schema} from 'mongoose';
 
 export const freeDonorSchema = new Schema<IFreeDonor>({

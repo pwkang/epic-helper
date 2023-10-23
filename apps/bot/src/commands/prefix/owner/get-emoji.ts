@@ -15,7 +15,7 @@ export default <PrefixCommand>{
     const emojiList =
       emojis?.map((emoji) => ({
         name: emoji.name,
-        emoji: `<${emoji.animated ? 'a' : ''}:${emoji.name}:${emoji.id}>`
+        emoji: `<${emoji.animated ? 'a' : ''}:${emoji.name}:${emoji.id}>`,
       })) ?? [];
 
     const emojiMap: Type = {};
@@ -27,7 +27,7 @@ export default <PrefixCommand>{
     logger({
       message: `${JSON.stringify(emojiMap)}`,
       variant: 'listEmoji',
-      clusterId: client.cluster?.id
+      clusterId: client.cluster?.id,
     });
-  }
+  },
 };

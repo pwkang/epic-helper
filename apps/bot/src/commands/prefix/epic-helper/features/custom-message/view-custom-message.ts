@@ -1,7 +1,7 @@
 import {
   PREFIX_COMMAND_TYPE,
   USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS
+  USER_NOT_REGISTERED_ACTIONS,
 } from '@epic-helper/constants';
 import {userService} from '../../../../../services/database/user.service';
 import {djsMessageHelper} from '../../../../../lib/discordjs/message';
@@ -15,7 +15,7 @@ export default <PrefixCommand>{
   type: PREFIX_COMMAND_TYPE.bot,
   preCheck: {
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
-    userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn
+    userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
   },
   execute: async (client, message) => {
     const userAccount = await userService.getUserAccount(message.author.id);
@@ -29,11 +29,11 @@ export default <PrefixCommand>{
         author: message.author,
         client,
         userAccount,
-        toggleChecker
+        toggleChecker,
       }),
       onStop: () => {
         event = undefined;
-      }
+      },
     });
     if (!event) return;
     for (const pageType of Object.values(CUSTOM_MESSAGE_PAGE_TYPE)) {
@@ -46,9 +46,9 @@ export default <PrefixCommand>{
           pageType: customId as ValuesOf<typeof CUSTOM_MESSAGE_PAGE_TYPE>,
           userAccount,
           client,
-          toggleChecker
+          toggleChecker,
         });
       });
     }
-  }
+  },
 };

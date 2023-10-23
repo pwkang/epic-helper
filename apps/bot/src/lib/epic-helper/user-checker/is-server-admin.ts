@@ -11,18 +11,18 @@ interface IIsServerAdmin {
 
 const PERMISSIONS = [
   PermissionsBitField.Flags.ManageGuild,
-  PermissionsBitField.Flags.Administrator
+  PermissionsBitField.Flags.Administrator,
 ];
 
 export const _isServerAdmin = async ({
   serverId,
   client,
-  userId
+  userId,
 }: IIsServerAdmin) => {
   const member = await djsMemberHelper.getMember({
     client,
     serverId,
-    userId
+    userId,
   });
   if (!member) return false;
   const hasPermission = member.permissions.any(PERMISSIONS);
@@ -32,7 +32,7 @@ export const _isServerAdmin = async ({
   const memberRoles = member.roles.cache.map((role) => role.id);
   return (
     serverAccount.settings.admin.rolesId.some((roleId) =>
-      memberRoles.includes(roleId)
+      memberRoles.includes(roleId),
     ) || serverAccount.settings.admin.usersId.includes(userId)
   );
 };

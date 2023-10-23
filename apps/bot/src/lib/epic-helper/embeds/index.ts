@@ -9,7 +9,7 @@ const embedProvider = {
   howToRegister: _howToRegisterEmbed,
   turnOnAccount: _turnOnAccount,
   profileBackgroundNotSupported: _profileBackgroundNotSupported,
-  notInGuild: _notInGuild
+  notInGuild: _notInGuild,
 };
 
 export default embedProvider;

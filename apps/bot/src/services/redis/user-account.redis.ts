@@ -12,7 +12,7 @@ const findUser = async (userId: string) => {
 const setUser = async (userId: string, user: IUser) => {
   await redisService.set(
     `${userAccPrefix}:${userId}`,
-    JSON.stringify(toUser(user))
+    JSON.stringify(toUser(user)),
   );
 };
 
@@ -23,7 +23,7 @@ const delUser = async (userId: string) => {
 const redisUserAccount = {
   findUser,
   setUser,
-  delUser
+  delUser,
 };
 
 export default redisUserAccount;
