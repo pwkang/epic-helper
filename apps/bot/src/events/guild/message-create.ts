@@ -45,7 +45,6 @@ export default <BotEvent>{
         message
       });
       if (!toExecute) return;
-      console.log(result.command.name);
       await result.command.execute(client, message, result.args);
     }
 
