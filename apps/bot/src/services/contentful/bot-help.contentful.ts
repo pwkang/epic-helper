@@ -18,9 +18,7 @@ export interface BotHelpSkeleton {
 
 export const getAllCommands = async () => {
   const cachedData = await redisHelpCommands.get();
-
   if (cachedData) return toHelpCommands(cachedData);
-  console.log('get from contentful');
 
   const data =
     await contentfulService.withoutUnresolvableLinks.getEntries<BotHelpSkeleton>(
@@ -48,7 +46,6 @@ export interface BotHelpGroupSkeleton {
 export const getAllCommandsGroup = async () => {
   const cachedData = await redisHelpCommandsGroup.get();
   if (cachedData) return toHelpCommandsGroup(cachedData);
-  console.log('get from contentful');
 
   const data =
     await contentfulService.withoutUnresolvableLinks.getEntries<BotHelpGroupSkeleton>(
