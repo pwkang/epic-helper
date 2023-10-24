@@ -3,6 +3,7 @@ import type {IDonor} from '@epic-helper/models';
 import {donorSchema} from '@epic-helper/models';
 import type {DONOR_TIER} from '@epic-helper/constants';
 import type {FilterQuery, QueryOptions} from 'mongoose';
+import type {Promise} from 'mongoose';
 import {redisDonor} from '../redis/donor.redis';
 
 const dbDonor = mongoClient.model<IDonor>('donors', donorSchema);
@@ -46,6 +47,10 @@ const registerDonors = async (donors: IRegisterDonor[]): Promise<void> => {
       });
   }
   await bulk.execute();
+  const donorsDiscordId = donors
+    .map((donor) => donor.discord.userId)
+    .filter(Boolean) as string[];
+  await redisDonor.delDonors(donorsDiscordId);
 };
 
 interface IGetDonors {

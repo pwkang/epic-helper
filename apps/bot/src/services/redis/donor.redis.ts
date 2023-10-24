@@ -21,8 +21,13 @@ const delDonor = async (userId: string) => {
   await redisService.del(`${donorPrefix}:${userId}`);
 };
 
+const delDonors = async (usersId: string[]) => {
+  await redisService.del(usersId.map((userId) => `${donorPrefix}:${userId}`));
+};
+
 export const redisDonor = {
   findDonor,
   setDonor,
   delDonor,
+  delDonors,
 };
