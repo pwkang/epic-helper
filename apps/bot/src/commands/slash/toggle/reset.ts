@@ -17,6 +17,7 @@ export default <SlashCommand>{
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
   },
   execute: async (client, interaction) => {
+    if (!interaction.inGuild()) return;
     const userAccount = await userService.resetUserToggle({
       userId: interaction.user.id,
     });
@@ -24,6 +25,8 @@ export default <SlashCommand>{
 
     const userToggle = await commandHelper.toggle.user({
       author: interaction.user,
+      client,
+      serverId: interaction.guildId,
     });
     if (!userToggle) return;
 

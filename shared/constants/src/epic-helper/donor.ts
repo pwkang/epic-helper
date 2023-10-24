@@ -30,3 +30,5 @@ export const DONOR_TIER_ID = {
   ultimate: '8364342',
   insane: '8364343',
 } as const;
+
+export const USERS_PER_TOKEN = 100;

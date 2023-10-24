@@ -21,7 +21,11 @@ export default <PrefixCommand>{
     const userAccount = await userService.resetUserCustomMessage({
       userId: message.author.id,
     });
-    const toggleChecker = await toggleUserChecker({userId: message.author.id});
+    const toggleChecker = await toggleUserChecker({
+      userId: message.author.id,
+      client,
+      serverId: message.guild.id,
+    });
     if (!userAccount || !toggleChecker) return;
     let event = await djsMessageHelper.interactiveSend({
       channelId: message.channel.id,

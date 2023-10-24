@@ -20,9 +20,12 @@ export default <SlashCommand>{
   commandName: SLASH_COMMAND.account.name,
   builder: (subcommand) => subcommand,
   execute: async (client, interaction) => {
+    if (!interaction.inGuild()) return;
     const userAccount = await userService.getUserAccount(interaction.user.id);
     const toggleChecker = await toggleUserChecker({
       userId: interaction.user.id,
+      client,
+      serverId: interaction.guildId,
     });
     if (!userAccount || !toggleChecker) return;
     let event = await djsInteractionHelper.replyInteraction({

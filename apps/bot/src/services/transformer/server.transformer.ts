@@ -33,6 +33,9 @@ export const toServer = (server: any): IServer => {
       enchantMute: server?.toggle?.enchantMute,
     },
     tokens: server?.tokens ?? [],
+    donor: {
+      roles: server?.donor?.roles ? server?.donor?.roles?.map(String) : [],
+    },
   };
 };
 

@@ -49,10 +49,9 @@ export function rpgDuel({
       if (targetUser) users.push(targetUser);
       users.map((user) => {
         rpgDuelSuccess({
-          embed,
           author: user,
-          channelId: message.channel.id,
           client,
+          message,
         });
       });
       commandHelper.duel.autoAdd({
@@ -78,17 +77,20 @@ export function rpgDuel({
 
 interface IRpgDuelSuccess {
   client: Client;
-  channelId: string;
   author: User;
-  embed: Embed;
+  message: Message<true>;
 }
 
-const rpgDuelSuccess = async ({author, channelId}: IRpgDuelSuccess) => {
+const rpgDuelSuccess = async ({author, message, client}: IRpgDuelSuccess) => {
   const isUserAccountOn = await userService.isUserAccountOn({
     userId: author.id,
   });
   if (!isUserAccountOn) return;
-  const toggleChecker = await toggleUserChecker({userId: author.id});
+  const toggleChecker = await toggleUserChecker({
+    userId: author.id,
+    client,
+    serverId: message.guild.id,
+  });
   if (!toggleChecker) return;
 
   if (toggleChecker.reminder.duel) {
@@ -105,7 +107,7 @@ const rpgDuelSuccess = async ({author, channelId}: IRpgDuelSuccess) => {
 
   await updateReminderChannel({
     userId: author.id,
-    channelId,
+    channelId: message.channel.id,
   });
 };
 

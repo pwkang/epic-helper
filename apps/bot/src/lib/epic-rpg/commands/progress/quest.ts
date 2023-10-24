@@ -37,18 +37,18 @@ export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
     if (isQuestAccepted({author, content})) {
       await rpgQuestSuccess({
         author,
-        channelId: message.channel.id,
         client,
         questAccepted: true,
+        message,
       });
       event?.stop();
     }
     if (isQuestDeclined({message: collected, author})) {
       await rpgQuestSuccess({
         author,
-        channelId: message.channel.id,
         client,
         questAccepted: false,
+        message,
       });
     }
   });
@@ -69,16 +69,16 @@ export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
     if (isArenaQuest({author, embed})) {
       await showArenaCooldown({
         author,
-        channelId: message.channel.id,
         client,
+        message,
       });
       event?.stop();
     }
     if (isMinibossQuest({author, embed})) {
       await showMinibossCooldown({
         author,
-        channelId: message.channel.id,
         client,
+        message,
       });
       event?.stop();
     }
@@ -91,9 +91,9 @@ export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
 
 interface IRpgQuestSuccess {
   client: Client;
-  channelId: string;
   author: User;
   questAccepted?: boolean;
+  message: Message<true>;
 }
 
 const QUEST_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.quest.accepted;
@@ -102,9 +102,14 @@ const DECLINED_QUEST_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.quest.declined;
 const rpgQuestSuccess = async ({
   author,
   questAccepted,
-  channelId,
+  message,
+  client,
 }: IRpgQuestSuccess) => {
-  const toggleChecker = await toggleUserChecker({userId: author.id});
+  const toggleChecker = await toggleUserChecker({
+    userId: author.id,
+    client,
+    serverId: message.guild.id,
+  });
   if (!toggleChecker) return;
 
   if (toggleChecker.reminder.quest) {
@@ -122,7 +127,7 @@ const rpgQuestSuccess = async ({
 
   await updateReminderChannel({
     userId: author.id,
-    channelId,
+    channelId: message.channel.id,
   });
 
   await userStatsService.countUserStats({
@@ -134,15 +139,19 @@ const rpgQuestSuccess = async ({
 interface IShowArenaCooldown {
   client: Client;
   author: User;
-  channelId: string;
+  message: Message<true>;
 }
 
 export const showArenaCooldown = async ({
   client,
   author,
-  channelId,
+  message,
 }: IShowArenaCooldown) => {
-  const toggleChecker = await toggleUserChecker({userId: author.id});
+  const toggleChecker = await toggleUserChecker({
+    userId: author.id,
+    client,
+    serverId: message.guild.id,
+  });
   if (!toggleChecker) return;
   if (!toggleChecker.questArena) return;
   const cooldown = await userReminderServices.findUserCooldown({
@@ -165,22 +174,26 @@ export const showArenaCooldown = async ({
       embeds: [embed],
     },
     client,
-    channelId,
+    channelId: message.channel.id,
   });
 };
 
 interface IShowMinibossCooldown {
   client: Client;
   author: User;
-  channelId: string;
+  message: Message<true>;
 }
 
 export const showMinibossCooldown = async ({
   client,
   author,
-  channelId,
+  message,
 }: IShowMinibossCooldown) => {
-  const toggleChecker = await toggleUserChecker({userId: author.id});
+  const toggleChecker = await toggleUserChecker({
+    userId: author.id,
+    client,
+    serverId: message.guild.id,
+  });
   if (!toggleChecker) return;
   if (!toggleChecker.questMiniboss) return;
   const cooldown = await userReminderServices.findUserCooldown({
@@ -203,7 +216,7 @@ export const showMinibossCooldown = async ({
       embeds: [embed],
     },
     client,
-    channelId,
+    channelId: message.guild.id,
   });
 };
 

@@ -1,22 +1,30 @@
-import type {BaseMessageOptions, User} from 'discord.js';
+import type {BaseMessageOptions, Client, User} from 'discord.js';
 import {userService} from '../../../../../services/database/user.service';
-import donorChecker from '../../../donor-checker';
 import type {IUser, IUserToggle} from '@epic-helper/models';
 import {toggleDisplayList} from '../toggle.list';
 import {renderEmbed} from '../toggle.embed';
 import {PREFIX} from '@epic-helper/constants';
 import type {IUpdateToggle} from '../toggle.helper';
 import {getUpdateQuery} from '../toggle.helper';
+import {userChecker} from '../../../user-checker';
 
 interface IGetUserToggle {
   author: User;
+  client: Client;
+  serverId: string;
 }
 
-export const getUserToggle = async ({author}: IGetUserToggle) => {
+export const getUserToggle = async ({
+  author,
+  client,
+  serverId,
+}: IGetUserToggle) => {
   let userToggle = await userService.getUserToggle(author.id);
   if (!userToggle) return null;
-  const isDonor = await donorChecker.isDonor({
+  const isDonor = await userChecker.isDonor({
     userId: author.id,
+    client,
+    serverId,
   });
 
   function render(userToggle: IUserToggle): BaseMessageOptions {

@@ -10,6 +10,7 @@ declare module 'discord.js' {
     slashCommands: Collection<string, SlashCommand>;
     slashMessages: Collection<string, SlashMessage>;
     botMessages: Collection<string, BotMessage>;
+    fetchedMemberGuilds: Collection<string, boolean>;
     utils: {
       getUptime: typeof getUptime;
       djsMessageHelper: typeof djsMessageHelper;

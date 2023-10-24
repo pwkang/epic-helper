@@ -57,7 +57,11 @@ export default <PrefixCommand>{
       message: messageContent,
       type: updateKey,
     });
-    const toggleChecker = await toggleUserChecker({userId: message.author.id});
+    const toggleChecker = await toggleUserChecker({
+      userId: message.author.id,
+      client,
+      serverId: message.guild.id,
+    });
     if (!userAccount || !toggleChecker) return;
     let event = await djsMessageHelper.interactiveSend({
       client,

@@ -39,9 +39,9 @@ export function rpgHunt({author, message, client, isSlashCommand}: IRpgHunt) {
     ) {
       await rpgHuntSuccess({
         client,
-        channelId: message.channel.id,
         author,
         content,
+        message,
       });
       event?.stop();
     }
@@ -51,7 +51,7 @@ export function rpgHunt({author, message, client, isSlashCommand}: IRpgHunt) {
         client,
         author,
         content,
-        channelId: message.channel.id,
+        message,
       });
     }
 
@@ -92,9 +92,9 @@ export function rpgHunt({author, message, client, isSlashCommand}: IRpgHunt) {
 
 interface IRpgHuntSuccess {
   client: Client;
-  channelId: string;
   author: User;
-  content: Message['content'];
+  content: string;
+  message: Message<true>;
 }
 
 const HUNT_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.hunt;
@@ -102,9 +102,14 @@ const HUNT_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.hunt;
 const rpgHuntSuccess = async ({
   author,
   content,
-  channelId,
+  message,
+  client,
 }: IRpgHuntSuccess) => {
-  const toggleChecker = await toggleUserChecker({userId: author.id});
+  const toggleChecker = await toggleUserChecker({
+    userId: author.id,
+    client,
+    serverId: message.guild.id,
+  });
   if (!toggleChecker) return;
   const hardMode = content.includes('(but stronger)');
   const together = content.includes('hunting together');
@@ -125,7 +130,7 @@ const rpgHuntSuccess = async ({
 
   updateReminderChannel({
     userId: author.id,
-    channelId,
+    channelId: message.channel.id,
   });
 
   await userStatsService.countUserStats({
@@ -138,18 +143,22 @@ const rpgHuntSuccess = async ({
 
 interface IHealReminder {
   client: Client;
-  channelId: string;
   author: User;
   content: Message['content'];
+  message: Message<true>;
 }
 
 const healReminder = async ({
   client,
-  channelId,
   author,
   content,
+  message,
 }: IHealReminder) => {
-  const toggleChecker = await toggleUserChecker({userId: author.id});
+  const toggleChecker = await toggleUserChecker({
+    userId: author.id,
+    serverId: message.guild.id,
+    client,
+  });
   if (!toggleChecker?.heal) return;
 
   const together = content.includes('hunting together');
@@ -157,7 +166,7 @@ const healReminder = async ({
     userId: author.id,
   });
   if (!healReminder) return;
-  const healReminderMsg = await getHealReminderMsg({
+  const healReminderMsg = getHealReminderMsg({
     content,
     author,
     together,
@@ -165,7 +174,7 @@ const healReminder = async ({
   });
   if (!healReminderMsg) return;
   await djsMessageHelper.send({
-    channelId,
+    channelId: message.channel.id,
     options: {
       content: author + healReminderMsg,
     },

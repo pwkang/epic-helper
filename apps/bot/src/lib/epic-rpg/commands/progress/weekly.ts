@@ -38,8 +38,8 @@ export function rpgWeekly({
       await rpgWeeklySuccess({
         embed,
         author,
-        channelId: message.channel.id,
         client,
+        message,
       });
       event?.stop();
     }
@@ -59,13 +59,21 @@ export function rpgWeekly({
 
 interface IRpgWeeklySuccess {
   client: Client;
-  channelId: string;
   author: User;
   embed: Embed;
+  message: Message<true>;
 }
 
-const rpgWeeklySuccess = async ({author, channelId}: IRpgWeeklySuccess) => {
-  const toggleChecker = await toggleUserChecker({userId: author.id});
+const rpgWeeklySuccess = async ({
+  author,
+  message,
+  client,
+}: IRpgWeeklySuccess) => {
+  const toggleChecker = await toggleUserChecker({
+    userId: author.id,
+    client,
+    serverId: message.guild.id,
+  });
   if (!toggleChecker) return;
 
   if (toggleChecker.reminder.weekly) {
@@ -82,7 +90,7 @@ const rpgWeeklySuccess = async ({author, channelId}: IRpgWeeklySuccess) => {
 
   await updateReminderChannel({
     userId: author.id,
-    channelId,
+    channelId: message.guild.id,
   });
 };
 

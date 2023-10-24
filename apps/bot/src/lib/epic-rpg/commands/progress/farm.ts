@@ -39,8 +39,8 @@ export function rpgFarm({client, message, author, isSlashCommand}: IRpgFarm) {
       await rpgFarmSuccess({
         author,
         client,
-        channelId: message.channel.id,
         content,
+        message,
       });
       event?.stop();
     }
@@ -72,17 +72,22 @@ export function rpgFarm({client, message, author, isSlashCommand}: IRpgFarm) {
 
 interface IRpgFarmSuccess {
   client: Client;
-  channelId: string;
   author: User;
-  content: Message['content'];
+  content: string;
+  message: Message<true>;
 }
 
 const rpgFarmSuccess = async ({
   content,
   author,
-  channelId,
+  message,
+  client,
 }: IRpgFarmSuccess) => {
-  const toggleChecker = await toggleUserChecker({userId: author.id});
+  const toggleChecker = await toggleUserChecker({
+    userId: author.id,
+    client,
+    serverId: message.guild.id,
+  });
   if (!toggleChecker) return;
   const seedType = whatIsTheSeed(content);
 
@@ -101,7 +106,7 @@ const rpgFarmSuccess = async ({
 
   await updateReminderChannel({
     userId: author.id,
-    channelId,
+    channelId: message.channel.id,
   });
 
   await userStatsService.countUserStats({

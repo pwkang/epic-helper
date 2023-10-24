@@ -3,6 +3,7 @@ import {freeDonorSchema} from '@epic-helper/models';
 import type {QueryOptions} from 'mongoose';
 import {redisFreeDonor} from '../redis/free-donor.redis';
 import type {Promise} from 'mongoose';
+import {redisUserBoostedServers} from '../redis/user-boosted-servers.redis';
 
 const dbFreeDonor = mongoClient.model('freeDonors', freeDonorSchema);
 
@@ -86,6 +87,7 @@ const deleteFreeDonors = async ({usersId}: IDeleteFreeDonors) => {
     })),
   );
   await redisFreeDonor.delFreeDonors(usersId);
+  await redisUserBoostedServers.delMany(usersId);
 };
 
 const freeDonorService = {

@@ -5,6 +5,7 @@ import type {DONOR_TIER} from '@epic-helper/constants';
 import type {FilterQuery, QueryOptions} from 'mongoose';
 import type {Promise} from 'mongoose';
 import {redisDonor} from '../redis/donor.redis';
+import {redisUserBoostedServers} from '../redis/user-boosted-servers.redis';
 
 const dbDonor = mongoClient.model<IDonor>('donors', donorSchema);
 
@@ -51,6 +52,7 @@ const registerDonors = async (donors: IRegisterDonor[]): Promise<void> => {
     .map((donor) => donor.discord.userId)
     .filter(Boolean) as string[];
   await redisDonor.delDonors(donorsDiscordId);
+  await redisUserBoostedServers.delMany(donorsDiscordId);
 };
 
 interface IGetDonors {

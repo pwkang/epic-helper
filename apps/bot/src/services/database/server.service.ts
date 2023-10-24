@@ -6,6 +6,7 @@ import type {UpdateQuery} from 'mongoose';
 import {typedObjectEntries} from '@epic-helper/utils';
 import {redisServerAccount} from '../redis/server-account.redis';
 import mongooseLeanDefaults from 'mongoose-lean-defaults';
+import {redisUserBoostedServers} from '../redis/user-boosted-servers.redis';
 
 serverSchema.post('findOneAndUpdate', async function (doc) {
   if (!doc) return;
@@ -325,13 +326,15 @@ interface IGetUserBoostedServers {
   userId: string;
 }
 
-interface IGetUserBoostedServersResponse {
+export interface IGetUserBoostedServersResponse {
   serverId: string;
   token: number;
   name: string;
 }
 
 const getUserBoostedServers = async ({userId}: IGetUserBoostedServers) => {
+  const cachedData = await redisUserBoostedServers.get(userId);
+  if (cachedData) return cachedData;
   const servers = await dbServer.aggregate<IGetUserBoostedServersResponse>([
     {
       $match: {
@@ -370,6 +373,7 @@ const getUserBoostedServers = async ({userId}: IGetUserBoostedServers) => {
       },
     },
   ]);
+  await redisUserBoostedServers.set(userId, servers);
   return servers ?? [];
 };
 
@@ -411,6 +415,7 @@ const addTokens = async ({serverId, userId, amount}: IAddTokens) => {
       {new: true},
     );
   }
+  await redisUserBoostedServers.del(userId);
 };
 
 interface IRemoveTokens {
@@ -457,6 +462,7 @@ const removeTokens = async ({serverId, userId, tokens}: IRemoveTokens) => {
       {new: true},
     );
   }
+  await redisUserBoostedServers.del(userId);
 };
 
 interface IAddServerAdmins {

@@ -5,5 +5,11 @@ export default <PrefixCommand>{
   commands: ['test'],
   type: PREFIX_COMMAND_TYPE.dev,
   preCheck: {},
-  execute: async () => {},
+  execute: async (client, message, args) => {
+    await message.guild.members.fetch();
+    const role = await message.guild.roles.fetch('766703369506914324', {
+      force: false,
+      cache: true,
+    });
+  },
 };

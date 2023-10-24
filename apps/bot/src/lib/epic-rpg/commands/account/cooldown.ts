@@ -62,6 +62,8 @@ export const rpgCooldown = ({
       await rpgCooldownSuccess({
         author,
         embed,
+        message,
+        client,
       });
       event?.stop();
     }
@@ -75,16 +77,27 @@ export const rpgCooldown = ({
 interface IRpgCooldownSuccess {
   embed: Embed;
   author: User;
+  client: Client;
+  message: Message<true>;
 }
 
-const rpgCooldownSuccess = async ({author, embed}: IRpgCooldownSuccess) => {
+const rpgCooldownSuccess = async ({
+  author,
+  embed,
+  message,
+  client,
+}: IRpgCooldownSuccess) => {
   const currentCooldowns = await userReminderServices.getUserAllCooldowns(
     author.id,
   );
   const userAccount = await userService.getUserAccount(author.id);
   if (!userAccount) return;
 
-  const toggleChecker = await toggleUserChecker({userId: author.id});
+  const toggleChecker = await toggleUserChecker({
+    userId: author.id,
+    client,
+    serverId: message.guild.id,
+  });
   if (!toggleChecker) return;
 
   const fields = embed.fields.flatMap((field) => field.value.split('\n'));

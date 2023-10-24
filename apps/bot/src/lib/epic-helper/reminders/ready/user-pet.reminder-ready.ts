@@ -6,27 +6,33 @@ import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import {userPetServices} from '../../../../services/database/user-pet.service';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {generateUserReminderMessage} from '../message-generator/custom-message-generator';
-import type toggleUserChecker from '../../toggle-checker/user';
+import toggleUserChecker from '../../toggle-checker/user';
 
 interface IUserPetReminderTimesUp {
   client: Client;
   userAccount: IUser;
   userReminder: IUserReminder;
-  toggleChecker: Awaited<ReturnType<typeof toggleUserChecker>>;
 }
 
 export const userPetReminderTimesUp = async ({
   client,
   userAccount,
   userReminder,
-  toggleChecker,
 }: IUserPetReminderTimesUp) => {
   const channelId = await getReminderChannel({
     commandType: RPG_COMMAND_TYPE.pet,
     userId: userAccount.userId,
     client,
   });
-  if (!channelId || !client.channels.cache.has(channelId)) return;
+
+  const channel = channelId ? client.channels.cache.get(channelId) : undefined;
+  if (!channelId || !channel?.isTextBased() || !channel?.isThread()) return;
+
+  const toggleChecker = await toggleUserChecker({
+    userId: userAccount.userId,
+    client,
+    serverId: channel.guild.id,
+  });
 
   const userId = userAccount.userId;
   const pets = await userPetServices.getUserReadyPets({userId});
