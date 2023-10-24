@@ -3,6 +3,7 @@ import type {IDonor} from '@epic-helper/models';
 import {donorSchema} from '@epic-helper/models';
 import type {DONOR_TIER} from '@epic-helper/constants';
 import type {FilterQuery, QueryOptions} from 'mongoose';
+import {redisDonor} from '../redis/donor.redis';
 
 const dbDonor = mongoClient.model<IDonor>('donors', donorSchema);
 
@@ -74,13 +75,21 @@ const getDonors = async ({tier, page, limit}: IGetDonors) => {
 };
 
 interface IFindDonor {
-  discordUserId?: string;
+  discordUserId: string;
 }
 
 const findDonor = async ({discordUserId}: IFindDonor) => {
+  const cachedDonor = await redisDonor.findDonor(discordUserId);
+  if (cachedDonor) return cachedDonor;
+
   const query: FilterQuery<IDonor> = {};
   if (discordUserId) query['discord.userId'] = discordUserId;
   const donor = await dbDonor.findOne(query);
+
+  if (donor) {
+    await redisDonor.setDonor(discordUserId, donor);
+  }
+
   return donor ?? null;
 };
 
