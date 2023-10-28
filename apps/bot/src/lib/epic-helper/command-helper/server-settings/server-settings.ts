@@ -1,5 +1,6 @@
 import type {
   BaseMessageOptions,
+  Client,
   Guild,
   StringSelectMenuInteraction,
 } from 'discord.js';
@@ -11,9 +12,12 @@ import {SERVER_SETTINGS_PAGE_TYPE} from './constant';
 import {_getTTVerificationSettingsEmbed} from './embed/tt-verification.embed';
 import {_getServerAdminEmbed} from './embed/server-admin-embed';
 import {_getServerAdminRoleEmbed} from './embed/server-admin-role-embed';
+import {_getTokenBoostsEmbed} from './embed/token-boost.embed';
+import {serverChecker} from '../../server-checker';
 
 interface IServerSettings {
   server: Guild;
+  client: Client;
 }
 
 interface IRender {
@@ -21,11 +25,15 @@ interface IRender {
   displayOnly?: boolean;
 }
 
-export const _serverSettings = async ({server}: IServerSettings) => {
+export const _serverSettings = async ({server, client}: IServerSettings) => {
   const serverAccount = await serverService.getServer({
     serverId: server.id,
   });
   if (!serverAccount) return null;
+  const tokenStatus = await serverChecker.getTokenStatus({
+    serverId: server.id,
+    client,
+  });
 
   const render = ({type, displayOnly}: IRender): BaseMessageOptions => {
     let embed;
@@ -58,6 +66,13 @@ export const _serverSettings = async ({server}: IServerSettings) => {
         embed = _getServerAdminRoleEmbed({
           serverAccount,
           guild: server,
+        });
+        break;
+      case SERVER_SETTINGS_PAGE_TYPE.tokenBoosts:
+        embed = _getTokenBoostsEmbed({
+          serverAccount,
+          guild: server,
+          tokenStatus,
         });
         break;
     }
@@ -117,6 +132,10 @@ const SERVER_SETTINGS_PAGES: IPage[] = [
   {
     id: SERVER_SETTINGS_PAGE_TYPE.adminRoles,
     label: 'Admin roles',
+  },
+  {
+    id: SERVER_SETTINGS_PAGE_TYPE.tokenBoosts,
+    label: 'EPIC Token booster',
   },
 ];
 

@@ -4,4 +4,5 @@ export const SERVER_SETTINGS_PAGE_TYPE = {
   ttVerification: 'ttVerification',
   admins: 'admins',
   adminRoles: 'adminRoles',
+  tokenBoosts: 'tokenBoosts',
 } as const;

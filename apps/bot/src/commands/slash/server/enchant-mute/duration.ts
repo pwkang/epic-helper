@@ -30,6 +30,7 @@ export default <SlashCommand>{
 
     const serverSettings = await commandHelper.serverSettings.settings({
       server: interaction.guild!,
+      client,
     });
     if (!serverSettings) return;
     await djsInteractionHelper.replyInteraction({

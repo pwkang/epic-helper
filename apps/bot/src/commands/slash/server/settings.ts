@@ -21,6 +21,7 @@ export default <SlashCommand>{
     if (!interaction.inGuild() || !interaction.guild) return;
     const serverSettings = await commandHelper.serverSettings.settings({
       server: interaction.guild,
+      client,
     });
     if (!serverSettings) return;
     const messageOptions = serverSettings.render({

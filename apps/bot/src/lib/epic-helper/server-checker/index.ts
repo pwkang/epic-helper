@@ -1,4 +1,4 @@
-import {_getTokenStatus} from './has-enough-tokens';
+import {_getTokenStatus} from './token-status';
 
 export const serverChecker = {
   getTokenStatus: _getTokenStatus,

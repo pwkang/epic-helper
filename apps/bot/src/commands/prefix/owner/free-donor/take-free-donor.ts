@@ -1,7 +1,6 @@
 import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
 import freeDonorService from '../../../../services/database/free-donor.service';
 import {djsMessageHelper} from '../../../../lib/discordjs/message';
-import commandHelper from '../../../../lib/epic-helper/command-helper';
 
 export default <PrefixCommand>{
   name: 'takeFreeDonor',
@@ -25,10 +24,11 @@ export default <PrefixCommand>{
       channelId: message.channel.id,
       client,
     });
-    for (const userId of usersId) {
+
+    /*for (const userId of usersId) {
       await commandHelper.epicToken.syncBoostedServers({
         userId,
       });
-    }
+    }*/
   },
 };
