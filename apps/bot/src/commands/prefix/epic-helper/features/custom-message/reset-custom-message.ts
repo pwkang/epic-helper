@@ -16,6 +16,7 @@ export default <PrefixCommand>{
   preCheck: {
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
     userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
+    donorOnly: true,
   },
   execute: async (client, message) => {
     const userAccount = await userService.resetUserCustomMessage({
