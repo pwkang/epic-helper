@@ -47,13 +47,13 @@ export const _getTokenStatus = async ({client, serverId}: IHasEnoughTokens) => {
   const validBoosters: IBooster[] = [];
   for (const user of boostedUsers) {
     const isValid = await userChecker.hasValidBoost(user.userId);
-    if (!isValid)
-      invalidBoosters.push({
+    if (isValid)
+      validBoosters.push({
         userId: user.userId,
         tokens: user.amount,
       });
     else
-      validBoosters.push({
+      invalidBoosters.push({
         userId: user.userId,
         tokens: user.amount,
       });

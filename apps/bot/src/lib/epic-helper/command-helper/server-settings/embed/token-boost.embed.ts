@@ -43,16 +43,23 @@ export const _getTokenBoostsEmbed = ({
   });
 
   const totalUsers = tokenStatus.validBoosters.length;
-  for (let i = 0; i < totalUsers; i += usersPerField) {
-    const users = tokenStatus.validBoosters.slice(i, i + usersPerField);
-    embed.addFields({
-      name: 'Boosters',
-      value:
-        users
+  if (totalUsers) {
+    for (let i = 0; i < totalUsers; i += usersPerField) {
+      const users = tokenStatus.validBoosters.slice(i, i + usersPerField);
+      embed.addFields({
+        name: 'Boosters',
+        value: users
           .map(
             (user) => `${messageFormatter.user(user.userId)} - ${user.tokens}`,
           )
-          .join('\n') || '-',
+          .join('\n'),
+        inline: true,
+      });
+    }
+  } else {
+    embed.addFields({
+      name: 'Boosters',
+      value: '-',
       inline: true,
     });
   }
