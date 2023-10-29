@@ -3,6 +3,7 @@ import {_ttVerificationSettings} from './server-tt-verification';
 import {_serverAdmin} from './server-admin';
 import {_serverAdminRole} from './server-admin-role';
 import {_enchantMuteSettings} from './enchant-mute';
+import {_serverDonorRoleSettings} from './server-donor-role';
 
 export const _serverSettingsHelper = {
   settings: _serverSettings,
@@ -10,4 +11,5 @@ export const _serverSettingsHelper = {
   admin: _serverAdmin,
   adminRole: _serverAdminRole,
   enchantMute: _enchantMuteSettings,
+  donorRole: _serverDonorRoleSettings,
 };

@@ -604,6 +604,59 @@ const resetServerToggle = async ({serverId}: IResetToggle) => {
   return await getServer({serverId});
 };
 
+interface IAddDonorRoles {
+  serverId: string;
+  rolesId: string[];
+}
+
+const addDonorRoles = async ({serverId, rolesId}: IAddDonorRoles) => {
+  await dbServer.findOneAndUpdate(
+    {serverId},
+    {
+      $addToSet: {
+        'donor.roles': {
+          $each: rolesId,
+        },
+      },
+    },
+    {new: true},
+  );
+  return getServer({serverId});
+};
+
+interface IRemoveDonorRoles {
+  serverId: string;
+  rolesId: string[];
+}
+
+const removeDonorRoles = async ({serverId, rolesId}: IRemoveDonorRoles) => {
+  await dbServer.findOneAndUpdate(
+    {serverId},
+    {
+      $pull: {
+        'donor.roles': {
+          $in: rolesId,
+        },
+      },
+    },
+    {new: true},
+  );
+  return getServer({serverId});
+};
+
+interface IClearDonorRoles {
+  serverId: string;
+}
+
+const clearDonorRoles = async ({serverId}: IClearDonorRoles) => {
+  await dbServer.findOneAndUpdate(
+    {serverId},
+    {$set: {'donor.roles': []}},
+    {new: true},
+  );
+  return getServer({serverId});
+};
+
 export const serverService = {
   registerServer,
   getServer,
@@ -630,4 +683,7 @@ export const serverService = {
   clearServerAdminRoles,
   updateServerToggle,
   resetServerToggle,
+  addDonorRoles,
+  removeDonorRoles,
+  clearDonorRoles,
 };
