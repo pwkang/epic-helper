@@ -37,8 +37,8 @@ export function rpgEpicQuest({
     if (isEpicQuestSuccess({embed, author})) {
       await rpgEpicQuestSuccess({
         author,
-        channelId: message.channel.id,
         client,
+        message,
       });
       event?.stop();
     }
@@ -66,17 +66,22 @@ export function rpgEpicQuest({
 
 interface IRpgEpicQuestSuccess {
   client: Client;
-  channelId: string;
   author: User;
+  message: Message<true>;
 }
 
 const QUEST_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.epicQuest;
 
 const rpgEpicQuestSuccess = async ({
   author,
-  channelId,
+  message,
+  client,
 }: IRpgEpicQuestSuccess) => {
-  const toggleChecker = await toggleUserChecker({userId: author.id});
+  const toggleChecker = await toggleUserChecker({
+    userId: author.id,
+    client,
+    serverId: message.guild.id,
+  });
   if (!toggleChecker) return;
 
   if (toggleChecker.reminder.quest) {
@@ -94,7 +99,7 @@ const rpgEpicQuestSuccess = async ({
 
   await updateReminderChannel({
     userId: author.id,
-    channelId,
+    channelId: message.channel.id,
   });
 
   await userStatsService.countUserStats({

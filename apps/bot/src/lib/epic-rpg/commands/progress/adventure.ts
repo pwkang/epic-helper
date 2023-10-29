@@ -42,14 +42,14 @@ export function rpgAdventure({
       await rpgAdventureSuccess({
         author,
         client,
-        channelId: message.channel.id,
         content,
+        message,
       });
       await healReminder({
         client,
         author,
-        content,
         channelId: message.channel.id,
+        message,
       });
       event?.stop();
     }
@@ -69,9 +69,9 @@ export function rpgAdventure({
 
 interface IRpgAdventureSuccess {
   client: Client;
-  channelId: string;
   author: User;
   content: Message['content'];
+  message: Message<true>;
 }
 
 const ADVENTURE_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.adventure;
@@ -79,9 +79,14 @@ const ADVENTURE_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.adventure;
 const rpgAdventureSuccess = async ({
   author,
   content,
-  channelId,
+  client,
+  message,
 }: IRpgAdventureSuccess) => {
-  const toggleChecker = await toggleUserChecker({userId: author.id});
+  const toggleChecker = await toggleUserChecker({
+    userId: author.id,
+    client,
+    serverId: message.guild.id,
+  });
   if (!toggleChecker) return;
   const hardMode = content.includes('(but stronger)');
 
@@ -100,7 +105,7 @@ const rpgAdventureSuccess = async ({
 
   updateReminderChannel({
     userId: author.id,
-    channelId,
+    channelId: message.channel.id,
   });
 
   userStatsService.countUserStats({
@@ -113,24 +118,28 @@ interface IHealReminder {
   client: Client;
   channelId: string;
   author: User;
-  content: Message['content'];
+  message: Message<true>;
 }
 
 async function healReminder({
   client,
   channelId,
   author,
-  content,
+  message,
 }: IHealReminder) {
-  const toggleChecker = await toggleUserChecker({userId: author.id});
+  const toggleChecker = await toggleUserChecker({
+    userId: author.id,
+    client,
+    serverId: message.guild.id,
+  });
   if (!toggleChecker?.heal) return;
 
   const healReminder = await userService.getUserHealReminder({
     userId: author.id,
   });
   if (!healReminder) return;
-  const healReminderMsg = await getHealReminderMsg({
-    content,
+  const healReminderMsg = getHealReminderMsg({
+    content: message.content,
     target: healReminder,
   });
   if (!healReminderMsg) return;

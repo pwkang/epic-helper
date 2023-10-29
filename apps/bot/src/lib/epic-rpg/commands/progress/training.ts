@@ -41,7 +41,12 @@ export function rpgTraining({
   event.on('content', async (content) => {
     if (isRpgTrainingQuestion({author, content})) {
       event?.pendingAnswer();
-      const answer = await getTrainingAnswer({author, content});
+      const answer = await getTrainingAnswer({
+        author,
+        content,
+        serverId: message.guild.id,
+        client,
+      });
       if (!answer) return;
       await djsMessageHelper.send({
         channelId: message.channel.id,
@@ -55,8 +60,8 @@ export function rpgTraining({
     if (isRpgTrainingSuccess({author, content})) {
       await rpgTrainingSuccess({
         author,
-        channelId: message.channel.id,
         client,
+        message,
       });
     }
   });
@@ -72,9 +77,8 @@ export function rpgTraining({
       await encounteringPet({
         client,
         author,
-        embed,
-        channelId: message.channel.id,
         wildPetMessage: collected,
+        message,
       });
       event?.stop();
     }
@@ -87,14 +91,22 @@ export function rpgTraining({
 
 interface IRpgTrainingSuccess {
   client: Client;
-  channelId: string;
   author: User;
+  message: Message<true>;
 }
 
 const TRAINING_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.training;
 
-const rpgTrainingSuccess = async ({author, channelId}: IRpgTrainingSuccess) => {
-  const toggleChecker = await toggleUserChecker({userId: author.id});
+const rpgTrainingSuccess = async ({
+  author,
+  message,
+  client,
+}: IRpgTrainingSuccess) => {
+  const toggleChecker = await toggleUserChecker({
+    userId: author.id,
+    client,
+    serverId: message.guild.id,
+  });
   if (!toggleChecker) return;
 
   if (toggleChecker.reminder.training) {
@@ -112,7 +124,7 @@ const rpgTrainingSuccess = async ({author, channelId}: IRpgTrainingSuccess) => {
 
   await updateReminderChannel({
     userId: author.id,
-    channelId,
+    channelId: message.guild.id,
   });
 
   await userStatsService.countUserStats({
@@ -123,23 +135,26 @@ const rpgTrainingSuccess = async ({author, channelId}: IRpgTrainingSuccess) => {
 
 interface IEncounteringPet {
   client: Client;
-  embed: Embed;
   author: User;
-  channelId: string;
   wildPetMessage: Message;
+  message: Message<true>;
 }
 
 const encounteringPet = async ({
-  embed,
   author,
   client,
-  channelId,
+  message,
+  wildPetMessage,
 }: IEncounteringPet) => {
-  const toggleChecker = await toggleUserChecker({userId: author.id});
+  const toggleChecker = await toggleUserChecker({
+    userId: author.id,
+    client,
+    serverId: message.guild.id,
+  });
   if (!toggleChecker?.petCatch) return;
 
   const info = embedReaders.wildPet({
-    embed,
+    embed: wildPetMessage.embeds[0],
   });
   const messageOptions = generatePetCatchMessageOptions({info});
   await djsMessageHelper.send({
@@ -149,7 +164,7 @@ const encounteringPet = async ({
         ? messageFormatter.user(author.id)
         : undefined,
     },
-    channelId,
+    channelId: message.channel.id,
     client,
   });
 };

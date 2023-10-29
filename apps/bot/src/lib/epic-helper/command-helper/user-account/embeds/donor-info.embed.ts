@@ -2,7 +2,7 @@ import type {User} from 'discord.js';
 import {EmbedBuilder} from 'discord.js';
 import type {IDonor, IFreeDonor} from '@epic-helper/models';
 import type {serverService} from '../../../../../services/database/server.service';
-import {BOT_COLOR, DONOR_TOKEN_AMOUNT} from '@epic-helper/constants';
+import {BOT_COLOR, DONOR_TOKEN_AMOUNT, PREFIX} from '@epic-helper/constants';
 import {capitalizeFirstLetters} from '@epic-helper/utils';
 
 interface IGetDonorInfoEmbed {
@@ -36,16 +36,18 @@ export const _getDonorInfoEmbed = ({
   );
   const remainingToken = totalToken - usedToken;
 
-  if (donor?.tier) {
-    embed.addFields({
-      name: 'Donor',
-      value: [
-        `⚙️ - **Tier:** ${capitalizeFirstLetters(donor.tier)}`,
-        `🚀 - **EPIC Tokens:** ${DONOR_TOKEN_AMOUNT[donor.tier]}`,
-      ].join('\n'),
-      inline: true,
-    });
-  }
+  embed.addFields({
+    name: 'Donor',
+    value: [
+      `⚙️ - **Tier:** ${
+        donor?.tier ? capitalizeFirstLetters(donor.tier) : '-'
+      }`,
+      `🚀 - **EPIC Tokens:** ${
+        donor?.tier ? DONOR_TOKEN_AMOUNT[donor.tier] : '0'
+      }`,
+    ].join('\n'),
+    inline: true,
+  });
 
   if (freeDonor?.token) {
     embed.addFields({
@@ -76,6 +78,12 @@ export const _getDonorInfoEmbed = ({
 
   if (!donor?.tier && !freeDonor?.token && !boostedServers.length) {
     embed.setDescription('You are not a donor yet!');
+  }
+
+  if (!donor?.tier || !freeDonor?.token) {
+    embed.setFooter({
+      text: `Type \`${PREFIX.bot}donate\` to learn more`,
+    });
   }
 
   return embed;

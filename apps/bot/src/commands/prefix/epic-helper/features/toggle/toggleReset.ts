@@ -23,6 +23,8 @@ export default <PrefixCommand>{
 
     const userToggle = await commandHelper.toggle.user({
       author: message.author,
+      client,
+      serverId: message.guild.id,
     });
     if (!userToggle) return;
 

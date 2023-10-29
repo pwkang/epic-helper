@@ -41,6 +41,9 @@ export interface IServer {
       rules: ITTVerificationRules[];
     };
   };
+  donor: {
+    roles: string[];
+  };
   toggle: IServerToggle;
   tokens: IToken[];
 }

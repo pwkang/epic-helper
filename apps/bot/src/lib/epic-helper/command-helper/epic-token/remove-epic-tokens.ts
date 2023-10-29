@@ -136,7 +136,7 @@ interface IGetSelectServerEmbed {
 const getSelectServerEmbed = ({boostedServers}: IGetSelectServerEmbed) => {
   if (!boostedServers.length) {
     return new EmbedBuilder()
-      .setDescription('You have not boost any server yet')
+      .setDescription('You have not boosted any server yet')
       .setColor(BOT_COLOR.embed);
   }
   return new EmbedBuilder()

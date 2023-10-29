@@ -115,6 +115,7 @@ export default <SlashCommand>{
     if (!serverAccount) return null;
     const serverSettings = await commandHelper.serverSettings.settings({
       server: interaction.guild!,
+      client,
     });
     if (!serverSettings) return null;
     await djsInteractionHelper.replyInteraction({

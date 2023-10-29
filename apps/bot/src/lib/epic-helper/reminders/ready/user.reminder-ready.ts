@@ -14,9 +14,6 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
   const userAccount = await userService.getUserAccount(userId);
   if (!userAccount?.config?.onOff) return;
 
-  const toggleChecker = await toggleUserChecker({userId});
-  if (!toggleChecker) return;
-
   const readyCommands = await userReminderServices.findUserReadyCommands(
     userId,
   );
@@ -33,7 +30,6 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
       return userPetReminderTimesUp({
         userReminder: command,
         userAccount,
-        toggleChecker,
         client,
       });
     }
@@ -43,7 +39,16 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
       userId: userAccount.userId,
       client,
     });
-    if (!channelId || !client.channels.cache.has(channelId)) continue;
+    const channel = channelId
+      ? client.channels.cache.get(channelId)
+      : undefined;
+    if (!channelId || !channel?.isTextBased() || !channel?.isThread()) continue;
+    const toggleChecker = await toggleUserChecker({
+      userId,
+      client,
+      serverId: channel.guild.id,
+    });
+    if (!toggleChecker) return;
     if (!toggleChecker.reminder[command.type]) continue;
 
     const nextReminder = await userReminderServices.getNextReadyCommand({

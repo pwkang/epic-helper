@@ -18,6 +18,7 @@ import type {ICommandPreCheck} from '../types/utils';
 import {djsMemberHelper} from '../lib/discordjs/member';
 import {serverService} from '../services/database/server.service';
 import djsInteractionHelper from '../lib/discordjs/interaction';
+import {userChecker} from '../lib/epic-helper/user-checker';
 
 type IPreCheckCommand = {
   client: Client;
@@ -40,6 +41,7 @@ export const preCheckCommand = async ({
     userNotRegistered: true,
     userAccOff: true,
     isServerAdmin: true,
+    donorOnly: true,
   };
 
   if (preCheck.isServerAdmin) {
@@ -120,6 +122,30 @@ export const preCheckCommand = async ({
             interaction,
           });
         break;
+    }
+  }
+
+  if (preCheck.donorOnly) {
+    const isDonor = await userChecker.isDonor({
+      userId: author.id,
+      client,
+      serverId: server.id,
+    });
+
+    if (!isDonor) {
+      await response({
+        client,
+        message,
+        interaction,
+        messageOptions: {
+          embeds: [
+            embedProvider.donorOnly({
+              author,
+            }),
+          ],
+        },
+      });
+      status.donorOnly = false;
     }
   }
 

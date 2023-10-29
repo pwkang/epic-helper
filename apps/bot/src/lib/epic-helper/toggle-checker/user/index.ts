@@ -1,5 +1,4 @@
 import {userService} from '../../../../services/database/user.service';
-import donorChecker from '../../donor-checker';
 import {
   _toggleCountdown,
   _toggleDmReminder,
@@ -14,19 +13,29 @@ import {
   _toggleTraining,
 } from './toggle-user-checker-list';
 import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
+import {userChecker} from '../../user-checker';
+import type {Client} from 'discord.js';
 
 interface IToggleUserChecker {
   userId: string;
+  client: Client;
+  serverId: string;
 }
 
 export type IToggleUserCheckerReturnType = Awaited<
   ReturnType<typeof toggleUserChecker>
 >;
 
-const toggleUserChecker = async ({userId}: IToggleUserChecker) => {
+const toggleUserChecker = async ({
+  userId,
+  serverId,
+  client,
+}: IToggleUserChecker) => {
   const userToggle = await userService.getUserToggle(userId);
-  const isDonor = await donorChecker.isDonor({
+  const isDonor = await userChecker.isDonor({
     userId,
+    client,
+    serverId,
   });
   if (!userToggle) return null;
 

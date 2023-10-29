@@ -9,6 +9,7 @@ const messageFormatter = {
   role: _formatRole,
   messageUrl: _messageUrl,
   getInfoFromMessageUrl: _getInfoFromMessageUrl,
+  hyperlink: (text: string, url: string) => `[${text}](${url})`,
 };
 
 export default messageFormatter;

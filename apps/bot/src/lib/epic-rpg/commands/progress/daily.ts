@@ -33,8 +33,8 @@ export function rpgDaily({client, message, author, isSlashCommand}: IRpgDaily) {
       await rpgDailySuccess({
         embed,
         author,
-        channelId: message.channel.id,
         client,
+        message,
       });
       await updateReminderChannel({
         userId: author.id,
@@ -58,13 +58,17 @@ export function rpgDaily({client, message, author, isSlashCommand}: IRpgDaily) {
 
 interface IRpgDailySuccess {
   client: Client;
-  channelId: string;
   author: User;
   embed: Embed;
+  message: Message<true>;
 }
 
-const rpgDailySuccess = async ({author, channelId}: IRpgDailySuccess) => {
-  const toggleChecker = await toggleUserChecker({userId: author.id});
+const rpgDailySuccess = async ({author, client, message}: IRpgDailySuccess) => {
+  const toggleChecker = await toggleUserChecker({
+    userId: author.id,
+    client,
+    serverId: message.guild.id,
+  });
   if (!toggleChecker) return;
 
   if (toggleChecker.reminder.daily) {
@@ -81,7 +85,7 @@ const rpgDailySuccess = async ({author, channelId}: IRpgDailySuccess) => {
 
   await updateReminderChannel({
     userId: author.id,
-    channelId,
+    channelId: message.channel.id,
   });
 };
 

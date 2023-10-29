@@ -18,4 +18,5 @@ export interface ICommandPreCheck {
   userNotRegistered?: ValuesOf<typeof USER_NOT_REGISTERED_ACTIONS>;
   userAccOff?: ValuesOf<typeof USER_ACC_OFF_ACTIONS>;
   isServerAdmin?: boolean;
+  donorOnly?: boolean;
 }

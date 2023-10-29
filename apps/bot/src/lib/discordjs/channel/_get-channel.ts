@@ -3,7 +3,6 @@ import {logger} from '@epic-helper/utils';
 
 interface IGetChannel {
   client: Client;
-  serverId: string;
   channelId: string;
 }
 

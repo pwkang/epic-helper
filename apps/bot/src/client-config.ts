@@ -16,6 +16,7 @@ export const DiscordClientConfig: ClientOptions = {
     IntentsBitField.Flags.Guilds,
     IntentsBitField.Flags.GuildMessages,
     IntentsBitField.Flags.MessageContent,
+    IntentsBitField.Flags.GuildMembers,
   ]),
   sweepers: {
     messages: {

@@ -41,8 +41,8 @@ export function rpgBuyLootbox({
       await rpgBuyLootboxSuccess({
         author,
         client,
-        channelId: message.channel.id,
         content,
+        message,
       });
       event?.stop();
     }
@@ -68,17 +68,22 @@ export function rpgBuyLootbox({
 
 interface IRpgBuyLootboxSuccess {
   client: Client;
-  channelId: string;
   author: User;
   content: Message['content'];
+  message: Message<true>;
 }
 
 const rpgBuyLootboxSuccess = async ({
   author,
   content,
-  channelId,
+  message,
+  client,
 }: IRpgBuyLootboxSuccess) => {
-  const toggleChecker = await toggleUserChecker({userId: author.id});
+  const toggleChecker = await toggleUserChecker({
+    userId: author.id,
+    serverId: message.guild.id,
+    client,
+  });
   if (!toggleChecker) return;
   const lootboxType = Object.values(RPG_LOOTBOX_TYPE).find((type) =>
     content.toLowerCase().includes(type),
@@ -99,7 +104,7 @@ const rpgBuyLootboxSuccess = async ({
 
   await updateReminderChannel({
     userId: author.id,
-    channelId,
+    channelId: message.channel.id,
   });
 
   await userStatsService.countUserStats({

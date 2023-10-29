@@ -62,9 +62,9 @@ export function rpgWorking({
     if (isRpgWorkingSuccess({author, content})) {
       await rpgWorkingSuccess({
         client,
-        channelId: message.channel.id,
         author,
         workingType,
+        message,
       });
       event?.stop();
     }
@@ -118,17 +118,22 @@ export function rpgWorking({
 
 interface IRpgWorkingSuccess {
   client: Client;
-  channelId: string;
   author: User;
   workingType?: ValuesOf<typeof RPG_WORKING_TYPE>;
+  message: Message<true>;
 }
 
 const rpgWorkingSuccess = async ({
   author,
   workingType,
-  channelId,
+  client,
+  message,
 }: IRpgWorkingSuccess) => {
-  const toggleChecker = await toggleUserChecker({userId: author.id});
+  const toggleChecker = await toggleUserChecker({
+    userId: author.id,
+    client,
+    serverId: message.guild.id,
+  });
   if (!toggleChecker) return;
 
   if (toggleChecker.reminder.working) {
@@ -146,7 +151,7 @@ const rpgWorkingSuccess = async ({
 
   await updateReminderChannel({
     userId: author.id,
-    channelId,
+    channelId: message.channel.id,
   });
 
   await userStatsService.countUserStats({

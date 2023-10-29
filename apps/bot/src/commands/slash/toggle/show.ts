@@ -16,8 +16,11 @@ export default <SlashCommand>{
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
   },
   execute: async (client, interaction) => {
+    if (!interaction.inGuild()) return;
     const userToggle = await commandHelper.toggle.user({
       author: interaction.user,
+      client,
+      serverId: interaction.guildId,
     });
     if (!userToggle) return;
     const messageOptions = userToggle.render();

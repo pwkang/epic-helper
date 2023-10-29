@@ -19,6 +19,7 @@ export default <PrefixCommand>{
   preCheck: {
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
     userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
+    donorOnly: true,
   },
   execute: async (client, message, args) => {
     const type = args[2];
@@ -57,7 +58,11 @@ export default <PrefixCommand>{
       message: messageContent,
       type: updateKey,
     });
-    const toggleChecker = await toggleUserChecker({userId: message.author.id});
+    const toggleChecker = await toggleUserChecker({
+      userId: message.author.id,
+      client,
+      serverId: message.guild.id,
+    });
     if (!userAccount || !toggleChecker) return;
     let event = await djsMessageHelper.interactiveSend({
       client,

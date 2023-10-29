@@ -1,4 +1,4 @@
-import type {User} from 'discord.js';
+import type {Client, User} from 'discord.js';
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle} from 'discord.js';
 import {userService} from '../../../services/database/user.service';
 import toggleUserChecker from '../toggle-checker/user';
@@ -42,6 +42,8 @@ const TRUE_FALSE: ITrainingAnswer[] = [
 interface IGetTrainingAnswer {
   content: string;
   author: User;
+  client: Client;
+  serverId: string;
 }
 
 const CASINO_ANSWER_LIST = {
@@ -55,9 +57,15 @@ const CASINO_ANSWER_LIST = {
 export default async function getTrainingAnswer({
   content,
   author,
+  serverId,
+  client,
 }: IGetTrainingAnswer): Promise<ActionRowBuilder<ButtonBuilder>[] | null> {
   let components: ActionRowBuilder<ButtonBuilder>[] = [];
-  const toggleChecker = await toggleUserChecker({userId: author.id});
+  const toggleChecker = await toggleUserChecker({
+    userId: author.id,
+    client,
+    serverId,
+  });
   if (!toggleChecker) return null;
 
   if (content.includes('is training in the river')) {

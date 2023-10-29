@@ -220,6 +220,22 @@ export const SLASH_COMMAND = {
         description: 'Reset server toggle',
       },
     },
+    donorRoles: {
+      name: 'donor-role',
+      description: 'Roles which players can enjoy donor perks',
+      add: {
+        name: 'add',
+        description: 'Add donor role',
+      },
+      remove: {
+        name: 'remove',
+        description: 'Remove donor role',
+      },
+      reset: {
+        name: 'reset',
+        description: 'Clear all donor roles',
+      },
+    },
   },
   toggle: {
     name: 'toggle',

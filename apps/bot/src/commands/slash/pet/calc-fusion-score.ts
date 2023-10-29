@@ -14,6 +14,7 @@ export default <SlashCommand>{
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
+    donorOnly: true,
   },
   builder: (subcommand) =>
     subcommand.addStringOption((option) =>

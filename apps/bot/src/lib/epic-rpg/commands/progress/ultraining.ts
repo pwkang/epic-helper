@@ -37,8 +37,8 @@ export function rpgUltraining({
     if (isRpgUltrainingSuccess({embed, author})) {
       await rpgUlTrainingSuccess({
         author,
-        channelId: message.channel.id,
         client,
+        message,
       });
       event?.stop();
     }
@@ -63,17 +63,22 @@ interface IIsRpgUltrainingSuccess {
 
 interface IRpgTrainingSuccess {
   client: Client;
-  channelId: string;
   author: User;
+  message: Message<true>;
 }
 
 const TRAINING_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.training;
 
 const rpgUlTrainingSuccess = async ({
   author,
-  channelId,
+  message,
+  client,
 }: IRpgTrainingSuccess) => {
-  const toggleChecker = await toggleUserChecker({userId: author.id});
+  const toggleChecker = await toggleUserChecker({
+    userId: author.id,
+    client,
+    serverId: message.guild.id,
+  });
   if (!toggleChecker) return;
 
   if (toggleChecker.reminder.training) {
@@ -91,7 +96,7 @@ const rpgUlTrainingSuccess = async ({
 
   await updateReminderChannel({
     userId: author.id,
-    channelId,
+    channelId: message.guild.id,
   });
 
   await userStatsService.countUserStats({

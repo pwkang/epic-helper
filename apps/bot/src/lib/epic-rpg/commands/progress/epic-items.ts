@@ -49,8 +49,8 @@ export function rpgUseEpicItem({
       await rpgUseEpicItemSuccess({
         author,
         client,
-        channelId: message.channel.id,
         type,
+        message,
       });
     }
   });
@@ -69,17 +69,22 @@ export function rpgUseEpicItem({
 
 interface IRpgUseEpicItemSuccess {
   client: Client;
-  channelId: string;
   author: User;
   type: ValuesOf<typeof RPG_EPIC_ITEM_TYPES>;
+  message: Message<true>;
 }
 
 const rpgUseEpicItemSuccess = async ({
   author,
   type,
-  channelId,
+  client,
+  message,
 }: IRpgUseEpicItemSuccess) => {
-  const toggleChecker = await toggleUserChecker({userId: author.id});
+  const toggleChecker = await toggleUserChecker({
+    userId: author.id,
+    client,
+    serverId: message.guild.id,
+  });
   if (!toggleChecker) return;
 
   if (toggleChecker.reminder.epicItem) {
@@ -97,7 +102,7 @@ const rpgUseEpicItemSuccess = async ({
 
   await updateReminderChannel({
     userId: author.id,
-    channelId,
+    channelId: message.channel.id,
   });
 };
 

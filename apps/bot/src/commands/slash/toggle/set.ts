@@ -28,10 +28,13 @@ export default <SlashCommand>{
           .setDescription('Type the ID of the settings. e.g. a1 b2a'),
       ),
   execute: async (client, interaction) => {
+    if (!interaction.inGuild()) return;
     const onStr = interaction.options.getString('on');
     const offStr = interaction.options.getString('off');
     const userToggle = await commandHelper.toggle.user({
       author: interaction.user,
+      serverId: interaction.guildId,
+      client,
     });
     if (!userToggle) return;
     const messageOptions = await userToggle.update({

@@ -49,6 +49,9 @@ export const serverSchema = new Schema<IServer>({
       channelId: String,
     },
   },
+  donor: {
+    roles: {type: [String]},
+  },
   tokens: [
     new Schema<IToken>({
       amount: {type: Number, required: true},

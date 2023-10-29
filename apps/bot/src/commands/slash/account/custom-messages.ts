@@ -16,13 +16,17 @@ export default <SlashCommand>{
   preCheck: {
     userAccOff: USER_ACC_OFF_ACTIONS.askToTurnOn,
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.askToRegister,
+    donorOnly: true,
   },
   commandName: SLASH_COMMAND.account.name,
   builder: (subcommand) => subcommand,
   execute: async (client, interaction) => {
+    if (!interaction.inGuild()) return;
     const userAccount = await userService.getUserAccount(interaction.user.id);
     const toggleChecker = await toggleUserChecker({
       userId: interaction.user.id,
+      client,
+      serverId: interaction.guildId,
     });
     if (!userAccount || !toggleChecker) return;
     let event = await djsInteractionHelper.replyInteraction({
