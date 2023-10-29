@@ -19,13 +19,20 @@ export default <SlashCommand>{
     userNotRegistered: USER_NOT_REGISTERED_ACTIONS.skip,
     isServerAdmin: true,
   },
+  builder: (subcommand) =>
+    subcommand.addNumberOption((option) =>
+      option
+        .setName('duration')
+        .setDescription('Duration in seconds')
+        .setRequired(true),
+    ),
   execute: async (client, interaction) => {
     if (!interaction.inGuild()) return;
-    const duration = interaction.options.getNumber('duration')!;
+    const duration = interaction.options.getNumber('duration', true);
 
     await serverService.updateEnchantMuteDuration({
       duration: duration * 1000,
-      serverId: interaction.guildId!,
+      serverId: interaction.guildId,
     });
 
     const serverSettings = await commandHelper.serverSettings.settings({

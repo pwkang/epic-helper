@@ -3,10 +3,11 @@ import {EmbedBuilder} from 'discord.js';
 import {serverService} from '../../../../services/database/server.service';
 import {djsMemberHelper} from '../../../discordjs/member';
 import {djsMessageHelper} from '../../../discordjs/message';
-import {BOT_COLOR} from '@epic-helper/constants';
+import {BOT_COLOR, PREFIX, TOKENS_REQUIRED} from '@epic-helper/constants';
 import type {ITTVerificationRules} from '@epic-helper/models';
 import messageFormatter from '../../../discordjs/message-formatter';
 import toggleServerChecker from '../../toggle-checker/server';
+import {serverChecker} from '../../server-checker';
 
 interface ICheckAndAssignTTRole {
   client: Client;
@@ -36,6 +37,13 @@ export const _verifyTT = async ({
   const ttVerificationSettings = serverAccount.settings.ttVerification;
   if (!ttVerificationSettings) return;
   if (ttVerificationSettings.channelId !== channelId) return;
+
+  const isAllow = await checkTokenStatus({
+    serverId: server.id,
+    client,
+    channelId,
+  });
+  if (!isAllow) return;
 
   const member = await djsMemberHelper.getMember({
     client,
@@ -135,4 +143,45 @@ const getEmbed = ({author, addedRole, removedRole}: IGetEmbed) => {
   }
 
   return embed;
+};
+
+interface ICheckTokenStatus {
+  serverId: string;
+  client: Client;
+  channelId: string;
+}
+
+const checkTokenStatus = async ({
+  serverId,
+  client,
+  channelId,
+}: ICheckTokenStatus) => {
+  const tokenStatus = await serverChecker.getTokenStatus({
+    serverId,
+    client,
+  });
+
+  const isAllow =
+    tokenStatus.isValid &&
+    tokenStatus.totalValidTokens >= TOKENS_REQUIRED.ttVerification;
+
+  if (!isAllow) {
+    const embed = new EmbedBuilder()
+      .setColor(BOT_COLOR.embed)
+      .setDescription(
+        [
+          'TT Verification has been disabled due to insufficient EPIC Tokens',
+          `You can check the status in server settings \`${PREFIX.bot}ss\``,
+        ].join('\n'),
+      );
+    await djsMessageHelper.send({
+      client,
+      channelId,
+      options: {
+        embeds: [embed],
+      },
+    });
+  }
+
+  return isAllow;
 };

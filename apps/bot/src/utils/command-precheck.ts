@@ -19,7 +19,6 @@ import {djsMemberHelper} from '../lib/discordjs/member';
 import {serverService} from '../services/database/server.service';
 import djsInteractionHelper from '../lib/discordjs/interaction';
 import {userChecker} from '../lib/epic-helper/user-checker';
-import {serverChecker} from '../lib/epic-helper/server-checker';
 
 type IPreCheckCommand = {
   client: Client;

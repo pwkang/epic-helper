@@ -32,3 +32,10 @@ export const DONOR_TIER_ID = {
 } as const;
 
 export const USERS_PER_TOKEN = 100;
+
+export const TOKENS_REQUIRED = {
+  ttVerification: 12,
+  enchantMute: 5,
+} as const;
+
+export const MAX_ENCHANT_MUTE_CHANNELS = 3;

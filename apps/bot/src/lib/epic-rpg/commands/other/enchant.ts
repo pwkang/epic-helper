@@ -6,11 +6,15 @@ import {djsMessageHelper} from '../../../discordjs/message';
 import timestampHelper from '../../../discordjs/timestamp';
 import {
   EPIC_RPG_ID,
+  MAX_ENCHANT_MUTE_CHANNELS,
   RPG_ENCHANT_LEVEL,
   RPG_ENCHANT_LEVEL_RANK,
+  TOKENS_REQUIRED,
 } from '@epic-helper/constants';
 import {userService} from '../../../../services/database/user.service';
 import toggleServerChecker from '../../../epic-helper/toggle-checker/server';
+import {serverChecker} from '../../../epic-helper/server-checker';
+import {serverService} from '../../../../services/database/server.service';
 
 const ENCHANT_CMD_TYPE = {
   enchant: 'enchant',
@@ -83,40 +87,52 @@ const rpgEnchantSuccess = async ({
   const toggleServer = await toggleServerChecker({
     serverId: server.id,
   });
-  if (toggleServer?.enchantMute) {
-    const enchantTier = getEnchantType({embed});
-    const equipmentType = Object.values(EQUIPMENT_TYPE).find((type) =>
-      embed.description?.toLowerCase().includes(type),
-    );
-    const targetTier = await userService.getUserEnchantTier({
-      userId: author.id,
-    });
-    if (!targetTier || !enchantTier || !equipmentType) return;
-    if (
-      RPG_ENCHANT_LEVEL_RANK[enchantTier] < RPG_ENCHANT_LEVEL_RANK[targetTier]
-    )
-      return;
+  if (!toggleServer?.enchantMute) return;
+  const enchantChannels = await serverService.getEnchantChannels({
+    serverId: server.id,
+  });
+  const tokenStatus = await serverChecker.getTokenStatus({
+    serverId: server.id,
+    client,
+  });
+  const availableChannels =
+    tokenStatus.totalValidTokens >= TOKENS_REQUIRED.enchantMute
+      ? enchantChannels
+      : enchantChannels.slice(0, MAX_ENCHANT_MUTE_CHANNELS);
 
-    const unmuteIn = timestampHelper.relative({
-      time: new Date(Date.now() + ms('5s')),
-    });
-    await djsMessageHelper.send({
-      channelId,
-      options: {
-        content: `You have successfully enchanted your **${equipmentType.toUpperCase()}** to **${enchantTier.toUpperCase()}**!, unmute ${unmuteIn}`,
-      },
+  if (!availableChannels.some((channel) => channel.channelId === channelId))
+    return;
+
+  const enchantTier = getEnchantType({embed});
+  const equipmentType = Object.values(EQUIPMENT_TYPE).find((type) =>
+    embed.description?.toLowerCase().includes(type),
+  );
+  const targetTier = await userService.getUserEnchantTier({
+    userId: author.id,
+  });
+  if (!targetTier || !enchantTier || !equipmentType) return;
+  if (RPG_ENCHANT_LEVEL_RANK[enchantTier] < RPG_ENCHANT_LEVEL_RANK[targetTier])
+    return;
+
+  const unmuteIn = timestampHelper.relative({
+    time: new Date(Date.now() + ms('5s')),
+  });
+  await djsMessageHelper.send({
+    channelId,
+    options: {
+      content: `You have successfully enchanted your **${equipmentType.toUpperCase()}** to **${enchantTier.toUpperCase()}**!, unmute ${unmuteIn}`,
+    },
+    client,
+  });
+
+  [author.id, EPIC_RPG_ID].map((userId) =>
+    djsChannelHelper.muteUser({
+      userId,
       client,
-    });
-
-    [author.id, EPIC_RPG_ID].map((userId) =>
-      djsChannelHelper.muteUser({
-        userId,
-        client,
-        channelId,
-        unMuteIn: ms('5s'),
-      }),
-    );
-  }
+      channelId,
+      unMuteIn: ms('5s'),
+    }),
+  );
 };
 
 interface IEnchantGet {
