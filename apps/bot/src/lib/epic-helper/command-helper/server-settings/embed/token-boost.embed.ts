@@ -24,22 +24,34 @@ export const _getTokenBoostsEmbed = ({
   embed.setDescription(
     [
       'Donors can boost the server with their EPIC Tokens.',
-      'EPIC tokens allows server members to access all donor perks in the server.',
+      'Server with EPIC tokens allows server members to access all donor perks in the server.',
       'Every 100 members will require 1 token',
       'You can set donor roles to restrict the boost to only users with the role.',
-      '',
-      `**Members:** ${tokenStatus.activeUsersCount}`,
-      `**Tokens:** ${tokenStatus.totalValidTokens}`,
-      `**Status:** ${validIcons}`,
     ].join('\n'),
   );
 
   embed.addFields({
-    name: 'Donor roles',
-    value:
-      tokenStatus.donorRoles
-        .map((role) => messageFormatter.role(role))
-        .join(', ') || '-',
+    name: 'Server Status',
+    value: [
+      `Total Members: ${tokenStatus.totalMembers}`,
+      `Valid Tokens: ${tokenStatus.totalValidTokens}`,
+    ].join('\n'),
+    inline: true,
+  });
+
+  const donorRolesStr =
+    tokenStatus.donorRoles
+      .map((role) => messageFormatter.role(role))
+      .join(', ') || '-';
+
+  embed.addFields({
+    name: 'Donor status',
+    value: [
+      `Status: ${validIcons}`,
+      `Beneficiary Users: ${tokenStatus.beneficiaryUsersCount}/${tokenStatus.maxAvailableUsers}`,
+      `Roles: ${donorRolesStr}`,
+    ].join('\n'),
+    inline: true,
   });
 
   const totalUsers = tokenStatus.validBoosters.length;

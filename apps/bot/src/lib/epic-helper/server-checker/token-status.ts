@@ -30,6 +30,8 @@ export const _getTokenStatus = async ({client, serverId}: IHasEnoughTokens) => {
 
   await djsMemberHelper.fetchAll({serverId, client});
 
+  const totalMembers =
+    server?.members?.cache.filter((user) => !user.user.bot).size ?? 0;
   const roles = serverAccount?.donor?.roles ?? [];
 
   const usersWithRole = new Set<string>();
@@ -39,7 +41,7 @@ export const _getTokenStatus = async ({client, serverId}: IHasEnoughTokens) => {
     for (const user of roleUsers) usersWithRole.add(user);
   }
 
-  const activeUsersCount = serverAccount?.donor.roles?.length
+  const beneficiaryUsersCount = serverAccount?.donor.roles?.length
     ? usersWithRole.size
     : server?.members.cache.filter((member) => !member.user.bot).size ?? 0;
 
@@ -72,12 +74,11 @@ export const _getTokenStatus = async ({client, serverId}: IHasEnoughTokens) => {
   return {
     isValid:
       !!server &&
-      activeUsersCount <= maxAvailableUsers &&
+      beneficiaryUsersCount <= maxAvailableUsers &&
       invalidBoosters.length === 0,
-    usersWithRoleCount: usersWithRole.size,
-    activeUsersCount,
+    totalMembers,
+    beneficiaryUsersCount,
     maxAvailableUsers,
-    totalTokens,
     totalValidTokens,
     invalidBoosters,
     validBoosters,
