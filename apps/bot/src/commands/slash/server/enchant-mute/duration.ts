@@ -24,7 +24,8 @@ export default <SlashCommand>{
       option
         .setName('duration')
         .setDescription('Duration in seconds')
-        .setRequired(true),
+        .setRequired(true)
+        .setMinValue(1),
     ),
   execute: async (client, interaction) => {
     if (!interaction.inGuild()) return;

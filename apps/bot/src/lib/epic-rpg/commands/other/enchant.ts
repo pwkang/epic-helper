@@ -88,9 +88,12 @@ const rpgEnchantSuccess = async ({
     serverId: server.id,
   });
   if (!toggleServer?.enchantMute) return;
-  const enchantChannels = await serverService.getEnchantChannels({
+  const serverAccount = await serverService.getServer({
     serverId: server.id,
   });
+  const enchantChannels = serverAccount?.settings.enchant.channels ?? [];
+  const muteDuration =
+    (serverAccount?.settings.enchant.muteDuration ?? 5000) + 'ms';
   const tokenStatus = await serverChecker.getTokenStatus({
     serverId: server.id,
     client,
@@ -115,7 +118,7 @@ const rpgEnchantSuccess = async ({
     return;
 
   const unmuteIn = timestampHelper.relative({
-    time: new Date(Date.now() + ms('5s')),
+    time: new Date(Date.now() + ms(muteDuration)),
   });
   await djsMessageHelper.send({
     channelId,
@@ -130,7 +133,7 @@ const rpgEnchantSuccess = async ({
       userId,
       client,
       channelId,
-      unMuteIn: ms('5s'),
+      unMuteIn: ms(muteDuration),
     }),
   );
 };
