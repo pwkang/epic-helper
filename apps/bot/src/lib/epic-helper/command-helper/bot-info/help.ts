@@ -68,7 +68,7 @@ const searchCommand = ({search, commands}: ISearchCommand) => {
     commands.filter((cmd) => cmd.type === 'command'),
     {
       keys: ['prefixCommands'],
-      threshold: 0.4,
+      threshold: 0.2,
     },
   );
   const fuseFeatures = new Fuse(

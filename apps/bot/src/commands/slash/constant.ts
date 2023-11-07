@@ -254,7 +254,7 @@ export const SLASH_COMMAND = {
     },
   },
   duel: {
-    name: 'rrduel',
+    name: 'duel',
     description: 'Duel reports commands',
     add: {
       name: 'add',
@@ -293,5 +293,9 @@ export const SLASH_COMMAND = {
   help: {
     name: 'help',
     description: 'Show all commands or information of EPIC Helper',
+  },
+  donate: {
+    name: 'donate',
+    description: 'Support the bot',
   },
 } as const;

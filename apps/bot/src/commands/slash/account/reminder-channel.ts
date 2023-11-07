@@ -1,5 +1,6 @@
 import djsInteractionHelper from '../../../lib/discordjs/interaction';
 import {
+  PREFIX,
   RPG_COMMAND_TYPE,
   RPG_WORKING_TYPE,
   USER_ACC_OFF_ACTIONS,
@@ -76,7 +77,9 @@ export default <SlashCommand>{
         });
         message = `Successfully set reminder channel for ${reminderType
           .map((i) => `\`${i}\``)
-          .join(', ')} to this channel`;
+          .join(', ')} to this channel, Type \`${
+          PREFIX.bot
+        }s\` to view your settings`;
         break;
       case 'remove':
         await userService.removeUserReminderChannel({
@@ -85,7 +88,7 @@ export default <SlashCommand>{
         });
         message = `Successfully removed reminder channel for ${reminderType
           .map((i) => `\`${i}\``)
-          .join(', ')}`;
+          .join(', ')} Type \`${PREFIX.bot}s\` to view your settings`;
         break;
     }
 
