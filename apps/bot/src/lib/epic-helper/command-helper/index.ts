@@ -11,6 +11,7 @@ import {_epicTokenHelper} from './epic-token';
 import {_botInfoHelper} from './bot-info';
 import {_duelLogHelper} from './duel-log';
 import {_petHelper} from './pet';
+import {_userStatsHelper} from './user-stats';
 
 const commandHelper = {
   toggle: _toggleHelper,
@@ -26,6 +27,7 @@ const commandHelper = {
   information: _botInfoHelper,
   duel: _duelLogHelper,
   pet: _petHelper,
+  userStats: _userStatsHelper,
 };
 
 export default commandHelper;

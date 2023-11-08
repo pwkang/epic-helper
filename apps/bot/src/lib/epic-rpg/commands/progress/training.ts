@@ -11,11 +11,11 @@ import {
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
-import {userStatsService} from '../../../../services/database/user-stats.service';
 import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
 import embedReaders from '../../embed-readers';
 import {generatePetCatchMessageOptions} from '../../utils/pet-catch-cmd';
 import messageFormatter from '../../../discordjs/message-formatter';
+import commandHelper from '../../../epic-helper/command-helper';
 
 interface IRpgTraining {
   client: Client;
@@ -127,7 +127,7 @@ const rpgTrainingSuccess = async ({
     channelId: message.guild.id,
   });
 
-  await userStatsService.countUserStats({
+  commandHelper.userStats.countCommand({
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.training,
   });

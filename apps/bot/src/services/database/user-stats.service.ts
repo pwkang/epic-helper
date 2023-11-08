@@ -6,6 +6,9 @@ import type {
   USER_STATS_RPG_COMMAND_TYPE,
 } from '@epic-helper/models';
 import {userStatsSchema} from '@epic-helper/models';
+import mongooseLeanDefaults from 'mongoose-lean-defaults';
+
+userStatsSchema.plugin(mongooseLeanDefaults);
 
 const dbUserStats = mongoClient.model<IUserStats>(
   'user-stats',
@@ -18,7 +21,7 @@ interface ICountUserStats {
 }
 
 const countUserStats = async ({userId, type}: ICountUserStats) => {
-  await dbUserStats.findOneAndUpdate(
+  const updatedStats = await dbUserStats.findOneAndUpdate(
     {
       userId,
       statsAt: getStartOfToday(),
@@ -30,8 +33,12 @@ const countUserStats = async ({userId, type}: ICountUserStats) => {
     },
     {
       upsert: true,
+      new: true,
+      lean: true,
     },
   );
+
+  return updatedStats ?? null;
 };
 
 interface IGetUserStats {
@@ -40,7 +47,7 @@ interface IGetUserStats {
   page: number;
 }
 
-const getUserStats = ({userId, limit, page}: IGetUserStats) => {
+const getUserStats = async ({userId, limit, page}: IGetUserStats) => {
   const query: FilterQuery<IUserStats> = {
     userId,
   };
@@ -52,60 +59,31 @@ const getUserStats = ({userId, limit, page}: IGetUserStats) => {
     options.skip = limit * (page - 1);
   }
 
-  return dbUserStats.find(query, null, options).sort({statsAt: -1});
+  const userStats = await dbUserStats
+    .find(query, null, options)
+    .sort({statsAt: -1})
+    .lean({defaults: true});
+
+  return userStats ?? null;
 };
 
 interface IGetUserStatsOfLast2Weeks {
   userId: string;
 }
 
-const getUserStatsOfLast2Weeks = ({userId}: IGetUserStatsOfLast2Weeks) => {
-  return dbUserStats.find({
-    userId,
-    statsAt: {
-      $gte: getStartOfLastWeek(),
-    },
-  });
-};
-
-interface IGetUserBestStats {
-  userId: string;
-}
-
-const getUserBestStats = async ({
+const getUserStatsOfLast2Weeks = async ({
   userId,
-}: IGetUserBestStats): Promise<IUserStats['rpg'] | undefined> => {
-  const stats = await dbUserStats.aggregate([
-    {
-      $match: {
-        userId,
+}: IGetUserStatsOfLast2Weeks) => {
+  const userStats = await dbUserStats
+    .find({
+      userId,
+      statsAt: {
+        $gte: getStartOfLastWeek(),
       },
-    },
-    {
-      $project: {
-        uID: 1,
-        'rpg.hunt': {$max: '$rpg.hunt'},
-        'rpg.huntTogether': {$max: '$rpg.huntTogether'},
-        'rpg.adventure': {$max: '$rpg.adventure'},
-        'rpg.training': {$max: '$rpg.training'},
-        'rpg.ultraining': {$max: '$rpg.ultraining'},
-        'rpg.working': {$max: '$rpg.working'},
-        'rpg.farm': {$max: '$rpg.farm'},
-      },
-    },
-    {
-      $group: {
-        _id: '$userId',
-        hunt: {$max: '$rpg.hunt'},
-        huntTogether: {$max: '$rpg.huntTogether'},
-        adventure: {$max: '$rpg.adventure'},
-        ultraining: {$max: '$rpg.ultraining'},
-        working: {$max: '$rpg.working'},
-        farm: {$max: '$rpg.farm'},
-      },
-    },
-  ]);
-  return stats[0];
+    })
+    .lean({defaults: true});
+
+  return userStats ?? null;
 };
 
 interface IClearUserStats {
@@ -122,6 +100,5 @@ export const userStatsService = {
   countUserStats,
   getUserStats,
   getUserStatsOfLast2Weeks,
-  getUserBestStats,
   clearUserStats,
 };

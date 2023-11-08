@@ -10,11 +10,11 @@ import {
 } from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
-import {userStatsService} from '../../../../services/database/user-stats.service';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {userService} from '../../../../services/database/user.service';
 import {djsMessageHelper} from '../../../discordjs/message';
 import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
+import commandHelper from '../../../epic-helper/command-helper';
 
 interface IRpgAdventure {
   client: Client;
@@ -108,7 +108,7 @@ const rpgAdventureSuccess = async ({
     channelId: message.channel.id,
   });
 
-  userStatsService.countUserStats({
+  commandHelper.userStats.countCommand({
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.adventure,
   });

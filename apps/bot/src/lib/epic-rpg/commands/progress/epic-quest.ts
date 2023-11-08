@@ -8,9 +8,9 @@ import {
 } from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
-import {userStatsService} from '../../../../services/database/user-stats.service';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
+import commandHelper from '../../../epic-helper/command-helper';
 
 interface IRpgEpicQuest {
   client: Client;
@@ -102,7 +102,7 @@ const rpgEpicQuestSuccess = async ({
     channelId: message.channel.id,
   });
 
-  await userStatsService.countUserStats({
+  commandHelper.userStats.countCommand({
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.epicQuest,
   });
