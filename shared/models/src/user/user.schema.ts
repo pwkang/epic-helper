@@ -154,4 +154,18 @@ export const userSchema = new Schema<IUser>({
   items: {
     ruby: {type: Number, default: 0},
   },
+  stats: {
+    best: {
+      lootbox: {type: Number, default: 0},
+      hunt: {type: Number, default: 0},
+      huntTogether: {type: Number, default: 0},
+      adventure: {type: Number, default: 0},
+      training: {type: Number, default: 0},
+      ultraining: {type: Number, default: 0},
+      quest: {type: Number, default: 0},
+      epicQuest: {type: Number, default: 0},
+      working: {type: Number, default: 0},
+      farm: {type: Number, default: 0},
+    },
+  },
 });

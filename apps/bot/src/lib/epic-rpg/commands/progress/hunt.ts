@@ -12,9 +12,9 @@ import {
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
-import {userStatsService} from '../../../../services/database/user-stats.service';
 import {userService} from '../../../../services/database/user.service';
 import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
+import commandHelper from '../../../epic-helper/command-helper';
 
 interface IRpgHunt {
   client: Client;
@@ -133,7 +133,7 @@ const rpgHuntSuccess = async ({
     channelId: message.channel.id,
   });
 
-  await userStatsService.countUserStats({
+  commandHelper.userStats.countCommand({
     userId: author.id,
     type: together
       ? USER_STATS_RPG_COMMAND_TYPE.huntTogether

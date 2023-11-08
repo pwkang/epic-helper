@@ -62,4 +62,18 @@ export interface IUser {
   items: {
     ruby: number;
   };
+  stats: {
+    best: {
+      lootbox: number;
+      hunt: number;
+      huntTogether: number;
+      adventure: number;
+      training: number;
+      ultraining: number;
+      quest: number;
+      epicQuest: number;
+      working: number;
+      farm: number;
+    };
+  };
 }

@@ -10,8 +10,8 @@ import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
-import {userStatsService} from '../../../../services/database/user-stats.service';
 import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
+import commandHelper from '../../../epic-helper/command-helper';
 
 const FARM_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.farm;
 
@@ -109,7 +109,7 @@ const rpgFarmSuccess = async ({
     channelId: message.channel.id,
   });
 
-  await userStatsService.countUserStats({
+  commandHelper.userStats.countCommand({
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.farm,
   });

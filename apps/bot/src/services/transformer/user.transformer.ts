@@ -1,6 +1,7 @@
 import type {IUser} from '@epic-helper/models';
 import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import {typedObjectEntries} from '@epic-helper/utils';
+import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 
 export const toUser = (user: any): IUser => {
   return {
@@ -76,6 +77,15 @@ export const toUser = (user: any): IUser => {
         ruby: user?.toggle?.training?.ruby,
         basic: user?.toggle?.training?.basic,
       },
+    },
+    stats: {
+      best: typedObjectEntries(USER_STATS_RPG_COMMAND_TYPE).reduce(
+        (acc, [key]) => {
+          acc[key] = user?.stats?.best?.[key] ?? 0;
+          return acc;
+        },
+        {} as Record<keyof typeof USER_STATS_RPG_COMMAND_TYPE, number>,
+      ),
     },
   };
 };

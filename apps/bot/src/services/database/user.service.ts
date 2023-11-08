@@ -2,7 +2,11 @@ import type {UpdateQuery} from 'mongoose';
 import {mongoClient} from '@epic-helper/services';
 import type {RPG_DONOR_TIER, RPG_ENCHANT_LEVEL} from '@epic-helper/constants';
 import userAccountRedis from '../redis/user-account.redis';
-import type {IUser, IUserToggle} from '@epic-helper/models';
+import type {
+  IUser,
+  IUserToggle,
+  USER_STATS_RPG_COMMAND_TYPE,
+} from '@epic-helper/models';
 import {userSchema} from '@epic-helper/models';
 import mongooseLeanDefaults from 'mongoose-lean-defaults';
 import redisUserAccount from '../redis/user-account.redis';
@@ -486,6 +490,35 @@ const isUserAccountOn = async ({
   return user?.config.onOff ?? false;
 };
 
+interface IGetBestStats {
+  userId: string;
+}
+
+const getBestStats = async ({userId}: IGetBestStats) => {
+  const user = await getUserAccount(userId);
+  return user?.stats?.best ?? null;
+};
+
+interface IUpdateBestStats {
+  userId: string;
+  type: keyof typeof USER_STATS_RPG_COMMAND_TYPE;
+  value: number;
+}
+
+const updateBestStats = async ({userId, type, value}: IUpdateBestStats) => {
+  await dbUser.findOneAndUpdate(
+    {userId},
+    {
+      $set: {
+        [`stats.best.${type}`]: value,
+      },
+    },
+    {
+      new: true,
+    },
+  );
+};
+
 export const userService = {
   registerUserAccount,
   userAccountOn,
@@ -514,4 +547,6 @@ export const userService = {
   resetUserCustomMessage,
   updateUserCustomMessage,
   isUserAccountOn,
+  getBestStats,
+  updateBestStats,
 };

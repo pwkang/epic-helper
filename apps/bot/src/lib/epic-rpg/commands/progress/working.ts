@@ -12,8 +12,8 @@ import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown'
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {userService} from '../../../../services/database/user.service';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
-import {userStatsService} from '../../../../services/database/user-stats.service';
 import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
+import commandHelper from '../../../epic-helper/command-helper';
 
 const WORKING_ITEMS = [
   'normie fish',
@@ -154,7 +154,7 @@ const rpgWorkingSuccess = async ({
     channelId: message.channel.id,
   });
 
-  await userStatsService.countUserStats({
+  commandHelper.userStats.countCommand({
     userId: author.id,
     type: USER_STATS_RPG_COMMAND_TYPE.working,
   });

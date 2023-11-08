@@ -14,9 +14,10 @@ import {
   typedObjectEntries,
 } from '@epic-helper/utils';
 import {BOT_COLOR} from '@epic-helper/constants';
-import type {IUserStats} from '@epic-helper/models';
+import type {IUser, IUserStats} from '@epic-helper/models';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {userStatsService} from '../../../services/database/user-stats.service';
+import {userService} from '../../../services/database/user.service';
 
 interface IGetDonorStatsEmbed {
   author: User;
@@ -26,13 +27,21 @@ export const getStatsEmbeds = async ({author}: IGetDonorStatsEmbed) => {
   const stats = await userStatsService.getUserStatsOfLast2Weeks({
     userId: author.id,
   });
-  const bestStats = await userStatsService.getUserBestStats({
+  const bestStats = await userService.getBestStats({
     userId: author.id,
   });
 
   return {
-    nonDonor: getNonDonorStatsEmbed({stats, author}),
-    donor: getDonorDefaultEmbed({stats, author, bestStats}),
+    nonDonor: getNonDonorStatsEmbed({
+      stats,
+      author,
+      bestStats: bestStats ?? undefined,
+    }),
+    donor: getDonorDefaultEmbed({
+      stats,
+      author,
+      bestStats: bestStats ?? undefined,
+    }),
     thisWeek: getThisWeekStats({stats, author}),
     lastWeek: getLastWeekStats({stats, author}),
   };
@@ -99,7 +108,7 @@ const getLastWeekStats = ({stats, author}: IGetLastWeekStats) => {
 interface getDonorDefaultEmbed {
   stats: IUserStats[];
   author: User;
-  bestStats?: IUserStats['rpg'];
+  bestStats?: IUser['stats']['best'];
 }
 
 const getDonorDefaultEmbed = ({
