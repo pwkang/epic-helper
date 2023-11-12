@@ -2,8 +2,8 @@ interface IRecord {
   commandType: 'upgraid' | 'raid';
   upgraidAt: Date;
   serverId: string;
-  channelID: string;
-  messageID: string;
+  channelId: string;
+  messageId: string;
 }
 
 interface IUpgraidUser {
