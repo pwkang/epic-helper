@@ -12,7 +12,7 @@ userStatsSchema.plugin(mongooseLeanDefaults);
 
 const dbUserStats = mongoClient.model<IUserStats>(
   'user-stats',
-  userStatsSchema,
+  userStatsSchema
 );
 
 interface ICountUserStats {
@@ -35,7 +35,7 @@ const countUserStats = async ({userId, type}: ICountUserStats) => {
       upsert: true,
       new: true,
       lean: true,
-    },
+    }
   );
 
   return updatedStats ?? null;
@@ -96,9 +96,28 @@ const clearUserStats = async ({userId}: IClearUserStats) => {
   });
 };
 
+interface IGetBestStats {
+  type: ValuesOf<typeof USER_STATS_RPG_COMMAND_TYPE>;
+  limit: number;
+  day: Date;
+}
+
+const getBestStats = async ({type, limit, day}: IGetBestStats) => {
+  const userStats = await dbUserStats
+    .find({
+      statsAt: day,
+    })
+    .sort({[`rpg.${type}`]: -1})
+    .limit(limit)
+    .lean({defaults: true});
+
+  return userStats ?? null;
+};
+
 export const userStatsService = {
   countUserStats,
   getUserStats,
   getUserStatsOfLast2Weeks,
   clearUserStats,
+  getBestStats,
 };
