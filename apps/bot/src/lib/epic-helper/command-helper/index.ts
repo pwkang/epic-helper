@@ -12,6 +12,7 @@ import {_botInfoHelper} from './bot-info';
 import {_duelLogHelper} from './duel-log';
 import {_petHelper} from './pet';
 import {_userStatsHelper} from './user-stats';
+import {_leaderboardHelper} from './leaderboard';
 
 const commandHelper = {
   toggle: _toggleHelper,
@@ -28,6 +29,7 @@ const commandHelper = {
   duel: _duelLogHelper,
   pet: _petHelper,
   userStats: _userStatsHelper,
+  leaderboard: _leaderboardHelper,
 };
 
 export default commandHelper;

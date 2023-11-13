@@ -18,6 +18,7 @@ declare global {
       API_PORT: string;
       CONTENTFUL_SPACE_ID: string;
       CONTENTFUL_ACCESS_TOKEN: string;
+      STATS_LEADERBOARD_CHANNEL: string;
     }
   }
 }
