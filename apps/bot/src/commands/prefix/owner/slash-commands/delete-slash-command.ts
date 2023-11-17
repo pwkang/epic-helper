@@ -1,4 +1,3 @@
-import {listSlashCommands} from '../../../../utils/slash-commands-listing';
 import type {ApplicationCommand, Message} from 'discord.js';
 import {sleep} from '@epic-helper/utils';
 import {djsMessageHelper} from '../../../../lib/discordjs/message';
@@ -11,22 +10,9 @@ export default <PrefixCommand>{
   type: PREFIX_COMMAND_TYPE.dev,
   preCheck: {},
   execute: async (client, message, args) => {
-    const slashCommands = await listSlashCommands();
-
     const isGuild = checkIsGuild(message);
     const isGlobal = checkIsGlobal(message);
 
-    const commandsToDelete = slashCommands.filter((sc) =>
-      args.includes(sc.name),
-    );
-    if (!commandsToDelete.length)
-      return djsMessageHelper.send({
-        client,
-        channelId: message.channel.id,
-        options: {
-          content: 'No commands to delete',
-        },
-      });
     if (!isGuild && !isGlobal) {
       return djsMessageHelper.send({
         client,
@@ -56,9 +42,9 @@ export default <PrefixCommand>{
           guild: message.guild!,
           client,
         });
-      for (const command of commandsToDelete) {
+      for (const command of args) {
         const guildCommand = registeredGuildSlashCommands.find(
-          (gsc) => gsc.name === command.builder.name,
+          (gsc) => gsc.name === command
         );
         if (guildCommand)
           await djsRestHelper.slashCommand.guild.deleteOne({
@@ -79,9 +65,9 @@ export default <PrefixCommand>{
     } else {
       registeredGlobalSlashCommands =
         await djsRestHelper.slashCommand.global.getAll({client});
-      for (const command of commandsToDelete) {
+      for (const command of args) {
         const globalCommand = registeredGlobalSlashCommands.find(
-          (gsc) => gsc.name === command.builder.name,
+          (gsc) => gsc.name === command
         );
         if (globalCommand)
           await djsRestHelper.slashCommand.global.deleteOne({
@@ -101,7 +87,7 @@ export default <PrefixCommand>{
     }
 
     function getStatusMessage() {
-      return `Deleting ${commandsToDelete.length} slash commands..., (${deleted}/${commandsToDelete.length})`;
+      return `Deleting slash commands... (${deleted} deleted)`;
     }
   },
 };
