@@ -1,9 +1,6 @@
 name: Deploy Production
 
 on:
-  push:
-    branches:
-      - feat/actions
   workflow_dispatch:
 
 jobs:
