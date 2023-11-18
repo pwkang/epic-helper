@@ -1,3 +1,4 @@
+import type {Document} from 'mongoose';
 import {Schema} from 'mongoose';
 import type {IUser} from './user.type';
 import {
@@ -5,8 +6,10 @@ import {
   BOT_TIMEZONE_LIST,
   RPG_DONOR_TIER,
 } from '@epic-helper/constants';
+import {ObjectId} from 'mongodb';
 
-export const userSchema = new Schema<IUser>({
+export const userSchema = new Schema<IUser & Document>({
+  _id: ObjectId,
   userId: {
     type: String,
     required: true,
