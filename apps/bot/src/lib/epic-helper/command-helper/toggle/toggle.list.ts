@@ -431,6 +431,11 @@ export const nonDonor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
           path: 'toggle.countdown.all',
           label: 'Show countdown to upcoming reminder',
         },
+        {
+          value: userToggle.huntSwitch,
+          path: 'toggle.huntSwitch',
+          label: 'Switch hunt reminder between `hunt` & `hunt t`',
+        },
       ],
     },
   ];
