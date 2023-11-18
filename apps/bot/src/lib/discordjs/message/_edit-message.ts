@@ -17,7 +17,7 @@ export default async function _editMessage({
   message,
   options,
 }: EditMessageProps) {
-  if (message.author.id !== client.user?.id) return;
+  if (message?.author?.id !== client.user?.id) return;
   if (!message.editable) return;
   try {
     await message.edit(options);

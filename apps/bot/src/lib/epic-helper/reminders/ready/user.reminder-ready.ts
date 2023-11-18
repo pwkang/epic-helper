@@ -43,8 +43,8 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
       ? client.channels.cache.get(channelId)
       : undefined;
     if (!channelId) continue;
-    if (!channel?.isTextBased() && !channel?.isThread()) return;
-    if (!('guild' in channel)) return;
+    if (!channel?.isTextBased() && !channel?.isThread()) continue;
+    if (!('guild' in channel)) continue;
     const toggleChecker = await toggleUserChecker({
       userId,
       client,

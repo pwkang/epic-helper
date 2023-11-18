@@ -15,7 +15,7 @@ const profileReader = ({embed}: IProfileReader) => {
   const timeTravels =
     embed.fields[0].value
       .split('\n')[3]
-      .match(/\*\*Time travels\*\*: (\d+)/)?.[1] ?? 0;
+      ?.match(/\*\*Time travels\*\*: (\d+)/)?.[1] ?? 0;
   const atk = embed.fields[1].value.match(/AT\*\*: (\d+)/)?.[1] ?? 0;
   const dek = embed.fields[1].value.match(/DEF\*\*: (\d+)/)?.[1] ?? 0;
   const life = embed.fields[1].value.match(/LIFE\*\*: (\d+)/)?.[1] ?? 0;

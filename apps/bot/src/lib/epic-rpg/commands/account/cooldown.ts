@@ -172,7 +172,7 @@ const searchCommandType = (fieldRow: string) => {
 };
 
 const extractAndCalculateReadyAt = (fieldRow: string) => {
-  const timeLeftList = fieldRow.split('(**')[1].split('**)')[0].split(' ');
+  const timeLeftList = fieldRow.match(/\*\*([\w\s]+)\*\*/)?.[1]?.split(' ') ?? [];
   return timeLeftList.reduce((acc, cur) => {
     return acc + ms(cur);
   }, 0);
