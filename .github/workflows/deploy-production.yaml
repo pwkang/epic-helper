@@ -70,4 +70,5 @@ jobs:
             cp ${{ vars.ENV_FILE_PATH }} ${{ vars.BOT_DEPLOY_DIR }}/.env
             pnpm install --frozen-lockfile
             pnpm run build:shared
+            pnpm run build:bot
             pm2 start ecosystem.config.js
