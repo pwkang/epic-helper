@@ -32,6 +32,7 @@ export default async function _sendMessage({
   } else {
     await broadcastEval({
       client,
+      target: 'all',
       fn: async (client, context) => {
         await client.utils.djsMessageHelper.send({
           client,
