@@ -15,7 +15,7 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
   if (!userAccount?.config?.onOff) return;
 
   const readyCommands = await userReminderServices.findUserReadyCommands(
-    userId,
+    userId
   );
   for (const command of readyCommands) {
     if (command.readyAt && Date.now() - command.readyAt.getTime() > ms('5s')) {
@@ -42,13 +42,15 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
     const channel = channelId
       ? client.channels.cache.get(channelId)
       : undefined;
-    if (!channelId || !channel?.isTextBased() || !channel?.isThread()) continue;
+    if (!channelId) continue;
+    if (!channel?.isTextBased() && !channel?.isThread()) return;
+    if (!('guild' in channel)) return;
     const toggleChecker = await toggleUserChecker({
       userId,
       client,
       serverId: channel.guild.id,
     });
-    if (!toggleChecker) return;
+    if (!toggleChecker) continue;
     if (!toggleChecker.reminder[command.type]) continue;
 
     const nextReminder = await userReminderServices.getNextReadyCommand({
