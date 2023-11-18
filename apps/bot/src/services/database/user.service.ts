@@ -18,7 +18,7 @@ userSchema.post('findOneAndUpdate', async function (doc) {
 
 userSchema.plugin(mongooseLeanDefaults);
 
-const dbUser = mongoClient.model<IUser>('user', userSchema);
+const dbUser = mongoClient.model<IUser>('users', userSchema);
 
 interface RegisterUserProps {
   userId: string;
@@ -58,7 +58,7 @@ const userAccountOn = async (userId: string): Promise<void> => {
         'config.onOff': true,
       },
     },
-    {new: true},
+    {new: true}
   );
 };
 
@@ -72,7 +72,7 @@ const userAccountOff = async (userId: string): Promise<void> => {
         'config.onOff': false,
       },
     },
-    {new: true},
+    {new: true}
   );
 };
 
@@ -108,7 +108,7 @@ const updateRpgDonorTier = async ({
         'config.donor': tier,
       },
     },
-    {new: true},
+    {new: true}
   );
 };
 
@@ -130,7 +130,7 @@ const updateRpgDonorPTier = async ({
         'config.donorP': tier,
       },
     },
-    {new: true},
+    {new: true}
   );
 };
 
@@ -144,7 +144,7 @@ const removeRpgDonorPTier = async (userId: string): Promise<void> => {
         'config.donorP': '',
       },
     },
-    {new: true},
+    {new: true}
   );
 };
 
@@ -191,7 +191,7 @@ const updateUserRubyAmount = async ({
     query,
     {
       new: true,
-    },
+    }
   );
 };
 
@@ -218,7 +218,7 @@ const setUserEnchantTier = async ({
         'config.enchant': tier,
       },
     },
-    {new: true},
+    {new: true}
   );
 };
 
@@ -238,7 +238,7 @@ const removeUserEnchantTier = async ({
         'config.enchant': '',
       },
     },
-    {new: true},
+    {new: true}
   );
 };
 
@@ -269,7 +269,7 @@ const removeUserHealReminder = async ({
         'config.heal': '',
       },
     },
-    {new: true},
+    {new: true}
   );
 };
 
@@ -302,7 +302,7 @@ const setUserHealReminder = async ({
         'config.heal': hp,
       },
     },
-    {new: true},
+    {new: true}
   );
 };
 
@@ -328,7 +328,7 @@ const setUserReminderChannel = async ({
     {
       $set: updateQuery,
     },
-    {new: true},
+    {new: true}
   );
 };
 
@@ -353,7 +353,7 @@ const removeUserReminderChannel = async ({
     {
       $unset: updateQuery,
     },
-    {new: true},
+    {new: true}
   );
 };
 
@@ -389,7 +389,7 @@ const updateUserToggle = async ({
     query,
     {
       new: true,
-    },
+    }
   );
   return await getUserAccount(userId);
 };
@@ -412,7 +412,7 @@ const resetUserToggle = async ({
     },
     {
       new: true,
-    },
+    }
   );
 
   return await getUserAccount(userId);
@@ -451,7 +451,7 @@ const updateUserCustomMessage = async ({
     },
     {
       new: true,
-    },
+    }
   );
   return await getUserAccount(userId);
 };
@@ -474,7 +474,7 @@ const resetUserCustomMessage = async ({
     },
     {
       new: true,
-    },
+    }
   );
   return await getUserAccount(userId);
 };
@@ -515,7 +515,7 @@ const updateBestStats = async ({userId, type, value}: IUpdateBestStats) => {
     },
     {
       new: true,
-    },
+    }
   );
 };
 

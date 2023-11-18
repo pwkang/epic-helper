@@ -1,7 +1,10 @@
 import type {IGuild} from './guild.type';
+import type {Document} from 'mongoose';
 import {Schema} from 'mongoose';
+import {ObjectId} from 'mongodb';
 
-export const guildSchema = new Schema<IGuild>({
+export const guildSchema = new Schema<IGuild & Document>({
+  _id: ObjectId,
   serverId: {
     type: String,
     required: true,

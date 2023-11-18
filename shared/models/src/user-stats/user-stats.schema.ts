@@ -1,7 +1,10 @@
+import type {Document} from 'mongoose';
 import {Schema} from 'mongoose';
 import type {IUserStats} from './user-stats.type';
+import {ObjectId} from 'mongodb';
 
-export const userStatsSchema = new Schema<IUserStats>({
+export const userStatsSchema = new Schema<IUserStats & Document>({
+  _id: ObjectId,
   userId: {type: String, required: true, index: true},
   statsAt: {type: Date, required: true},
   rpg: {
