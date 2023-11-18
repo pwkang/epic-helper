@@ -41,7 +41,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          source: "apps/*,shared/*,package.json,ecosystem.config.js,pnpm-lock.yaml,pnpm-workspace.yaml"
+          source: "apps/*,shared/*,package.json,ecosystem.config.js,pnpm-lock.yaml,pnpm-workspace.yaml,!**/node_modules"
           target: ${{ vars.BOT_DEPLOY_DIR }}
           rm: true
 
