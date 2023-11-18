@@ -41,7 +41,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          source: "apps/*,shared/*,package.json,ecosystem.config.js,pnpm-lock.yaml,pnpm-workspace.yaml,node_modules"
+          source: "apps/*,shared/*,package.json,ecosystem.config.js,pnpm-lock.yaml,pnpm-workspace.yaml"
           target: ${{ vars.BOT_DEPLOY_DIR }}
           rm: true
 
@@ -55,4 +55,5 @@ jobs:
           script: |
             cd ${{ vars.BOT_DEPLOY_DIR }}
             cp ${{ vars.ENV_FILE_PATH }} ${{ vars.BOT_DEPLOY_DIR }}/.env
+            pnpm install --frozen-lockfile
             pm2 start ecosystem.config.js
