@@ -46,7 +46,7 @@ async function updateNextReminderTime(
 }
 
 const dbUserReminder = mongoClient.model<IUserReminder>(
-  'user-reminder',
+  'user-reminders',
   userReminderSchema,
 );
 

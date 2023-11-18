@@ -26,7 +26,6 @@ const getReminderTime: () => Promise<string[]> = async () => {
       if (!data) return '';
       const {readyAt, userId} = JSON.parse(data) as IRedisUserReminder;
       if (new Date(readyAt) > new Date()) return '';
-      await redisService.del(key);
       return userId;
     }),
   );
