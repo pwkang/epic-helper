@@ -13,18 +13,18 @@ import toggleUserChecker from '../../toggle-checker/user';
 export const userReminderTimesUp = async (client: Client, userId: string) => {
   const userAccount = await userService.getUserAccount(userId);
   if (!userAccount?.config?.onOff) return;
+  const defaultChannel = userAccount.channel.all;
+  if (!client.channels.cache.has(defaultChannel)) return;
 
   const readyCommands = await userReminderServices.findUserReadyCommands(
     userId,
   );
+  await userReminderServices.updateRemindedCooldowns({
+    userId: userAccount.userId,
+    types: readyCommands.map((cmd) => cmd.type),
+  });
   for (const command of readyCommands) {
-    if (command.readyAt && Date.now() - command.readyAt.getTime() > ms('5s')) {
-      await userReminderServices.updateRemindedCooldowns({
-        userId: userAccount.userId,
-        types: [command.type],
-      });
-      continue;
-    }
+    if (command.readyAt && Date.now() - command.readyAt.getTime() > ms('5s')) continue;
 
     if (command.type === RPG_COMMAND_TYPE.pet) {
       return userPetReminderTimesUp({
@@ -84,8 +84,4 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
       });
     }
   }
-  await userReminderServices.updateRemindedCooldowns({
-    userId: userAccount.userId,
-    types: readyCommands.map((cmd) => cmd.type),
-  });
 };
