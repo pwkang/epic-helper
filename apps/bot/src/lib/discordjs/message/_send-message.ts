@@ -5,7 +5,7 @@ import type {
   MessageCreateOptions,
   MessagePayload,
 } from 'discord.js';
-import {PermissionsBitField, TextChannel} from 'discord.js';
+import {PermissionsBitField, TextChannel, ThreadChannel} from 'discord.js';
 import {logger} from '@epic-helper/utils';
 import {broadcastEval} from '../../../utils/broadcast-eval';
 
@@ -32,6 +32,7 @@ export default async function _sendMessage({
   } else {
     await broadcastEval({
       client,
+      target: 'all',
       fn: async (client, context) => {
         await client.utils.djsMessageHelper.send({
           client,
@@ -61,11 +62,25 @@ async function checkTypeAndSend({
 }: CheckTypeAndSendProps): Promise<Message | undefined> {
   let sentMessage;
   if (channel instanceof TextChannel) {
-    const textChannel = channel as TextChannel;
-    if (!textChannel.permissionsFor(client.user!)?.has(requiredPermissions))
+    if (!channel.permissionsFor(client.user!)?.has(requiredPermissions))
       return;
     try {
-      sentMessage = await textChannel.send(options);
+      sentMessage = await channel.send(options);
+    } catch (error: any) {
+      logger({
+        message: error.message,
+        logLevel: 'warn',
+        variant: 'sendMessage',
+        clusterId: client.cluster?.id,
+      });
+      return;
+    }
+  }
+  if(channel instanceof ThreadChannel) {
+    if (!channel.permissionsFor(client.user!)?.has(requiredPermissions))
+      return;
+    try {
+      sentMessage = await channel.send(options);
     } catch (error: any) {
       logger({
         message: error.message,

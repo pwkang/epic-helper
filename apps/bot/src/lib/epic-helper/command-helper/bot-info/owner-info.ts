@@ -13,6 +13,7 @@ export const _ownerInfo = async ({client}: IOwnerInfo) => {
   const clusters = await broadcastEval({
     client,
     fn: getClusterInfo,
+    target: 'all',
   });
   if (!clusters) {
     return embed.addFields({
