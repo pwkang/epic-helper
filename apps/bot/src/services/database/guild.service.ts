@@ -55,7 +55,9 @@ interface IFindGuild {
 const findGuild = async ({serverId, roleId}: IFindGuild) => {
   const cachedGuild = await redisGuild.getGuild(serverId, roleId);
   if (cachedGuild) return cachedGuild;
-  const guild = await dbGuild.findOne({serverId, roleId}).lean();
+  const guild = await dbGuild
+    .findOne({serverId, roleId})
+    .lean({defaults: true});
 
   if (!guild) return null;
   return await redisGuild.setGuild(serverId, roleId, guild);
@@ -88,7 +90,7 @@ interface IGetAllGuilds {
 }
 
 const getAllGuilds = async ({serverId}: IGetAllGuilds) => {
-  const guilds = await dbGuild.find({serverId}).lean();
+  const guilds = await dbGuild.find({serverId}).lean({defaults: true});
   return toGuilds(guilds);
 };
 
@@ -163,7 +165,10 @@ interface IGetAllGuildRoles {
 }
 
 const getAllGuildRoles = async ({serverId}: IGetAllGuildRoles) => {
-  const guild = await dbGuild.find({serverId}).select('roleId').lean();
+  const guild = await dbGuild
+    .find({serverId})
+    .select('roleId')
+    .lean({defaults: true});
   return guild.map((guild) => guild.roleId);
 };
 
@@ -365,7 +370,9 @@ const findUserGuild = async ({userId}: IFindUserGuild) => {
     userId,
   });
   if (!cachedGuild) {
-    const guild = await dbGuild.findOne({membersId: userId}).lean();
+    const guild = await dbGuild
+      .findOne({membersId: userId})
+      .lean({defaults: true});
     if (!guild) return null;
 
     await redisGuildMembers.setGuildMember({

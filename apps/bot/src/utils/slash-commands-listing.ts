@@ -1,4 +1,4 @@
-import {handlerRoot} from '../handler/on-start/constant';
+import {handlerFileFilter, handlerRoot} from '../handler/on-start/constant';
 import {
   Collection,
   SlashCommandBuilder,
@@ -14,7 +14,7 @@ interface ISlashCommand {
 
 export const listSlashCommands = async (): Promise<ISlashCommand[]> => {
   const commands = await importFiles<SlashCommand>({
-    options: {fileFilter: '*.ts'},
+    options: {fileFilter: [handlerFileFilter]},
     path: `./${handlerRoot}/commands/slash`,
   });
   const generated = generateSlashCommands(commands.map(({data}) => data));
