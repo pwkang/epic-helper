@@ -44,7 +44,7 @@ export const preCheckCommand = async ({
     donorOnly: true,
   };
 
-  if (preCheck.isServerAdmin) {
+  if (preCheck?.isServerAdmin) {
     const member = await djsMemberHelper.getMember({
       client,
       serverId: server.id,
@@ -75,8 +75,8 @@ export const preCheckCommand = async ({
   }
 
   const userAccount = await userService.getUserAccount(author.id);
-  if (preCheck.userNotRegistered !== undefined) {
-    switch (preCheck.userNotRegistered) {
+  if (preCheck?.userNotRegistered !== undefined) {
+    switch (preCheck?.userNotRegistered) {
       case USER_NOT_REGISTERED_ACTIONS.skip:
         status.userNotRegistered = true;
         break;
@@ -102,7 +102,7 @@ export const preCheckCommand = async ({
     }
   }
 
-  if (preCheck.userAccOff !== undefined) {
+  if (preCheck?.userAccOff !== undefined) {
     switch (preCheck.userAccOff) {
       case USER_ACC_OFF_ACTIONS.skip:
         status.userAccOff = true;
@@ -125,7 +125,7 @@ export const preCheckCommand = async ({
     }
   }
 
-  if (preCheck.donorOnly) {
+  if (preCheck?.donorOnly) {
     const isDonor = await userChecker.isDonor({
       userId: author.id,
       client,
