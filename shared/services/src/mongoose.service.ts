@@ -5,7 +5,7 @@ import {logger} from '@epic-helper/utils';
 dotenv.config();
 
 const uri = process.env.MONGO_URI || 'mongodb://localhost:27017';
-const dbName = process.env.MONGO_DB_NAME || 'epic-helper';
+const dbName = process.env.MONGO_DB_NAME || 'epic_helper';
 
 const client = mongoose.createConnection(uri, {
   connectTimeoutMS: 10000,
