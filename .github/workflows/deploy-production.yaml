@@ -11,7 +11,7 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 1
+      - name: Checkout
         uses: actions/checkout@v2
 
       - name: Setup Node.js
