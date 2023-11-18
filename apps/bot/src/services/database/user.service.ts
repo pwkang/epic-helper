@@ -2,16 +2,12 @@ import type {UpdateQuery} from 'mongoose';
 import {mongoClient} from '@epic-helper/services';
 import type {RPG_DONOR_TIER, RPG_ENCHANT_LEVEL} from '@epic-helper/constants';
 import userAccountRedis from '../redis/user-account.redis';
-import type {
-  IUser,
-  IUserToggle,
-  USER_STATS_RPG_COMMAND_TYPE,
-} from '@epic-helper/models';
+import redisUserAccount from '../redis/user-account.redis';
+import type {IUser, IUserToggle, USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {userSchema} from '@epic-helper/models';
 import mongooseLeanDefaults from 'mongoose-lean-defaults';
-import redisUserAccount from '../redis/user-account.redis';
 
-userSchema.post('findOneAndUpdate', async function (doc) {
+userSchema.post('findOneAndUpdate', async function(doc) {
   if (!doc) return;
   await userAccountRedis.setUser(doc.userId, doc);
 });
@@ -58,7 +54,7 @@ const userAccountOn = async (userId: string): Promise<void> => {
         'config.onOff': true,
       },
     },
-    {new: true}
+    {new: true},
   );
 };
 
@@ -72,7 +68,7 @@ const userAccountOff = async (userId: string): Promise<void> => {
         'config.onOff': false,
       },
     },
-    {new: true}
+    {new: true},
   );
 };
 
@@ -108,7 +104,7 @@ const updateRpgDonorTier = async ({
         'config.donor': tier,
       },
     },
-    {new: true}
+    {new: true},
   );
 };
 
@@ -130,7 +126,7 @@ const updateRpgDonorPTier = async ({
         'config.donorP': tier,
       },
     },
-    {new: true}
+    {new: true},
   );
 };
 
@@ -144,7 +140,7 @@ const removeRpgDonorPTier = async (userId: string): Promise<void> => {
         'config.donorP': '',
       },
     },
-    {new: true}
+    {new: true},
   );
 };
 
@@ -191,7 +187,7 @@ const updateUserRubyAmount = async ({
     query,
     {
       new: true,
-    }
+    },
   );
 };
 
@@ -218,7 +214,7 @@ const setUserEnchantTier = async ({
         'config.enchant': tier,
       },
     },
-    {new: true}
+    {new: true},
   );
 };
 
@@ -238,7 +234,7 @@ const removeUserEnchantTier = async ({
         'config.enchant': '',
       },
     },
-    {new: true}
+    {new: true},
   );
 };
 
@@ -269,7 +265,7 @@ const removeUserHealReminder = async ({
         'config.heal': '',
       },
     },
-    {new: true}
+    {new: true},
   );
 };
 
@@ -302,7 +298,7 @@ const setUserHealReminder = async ({
         'config.heal': hp,
       },
     },
-    {new: true}
+    {new: true},
   );
 };
 
@@ -321,6 +317,7 @@ const setUserReminderChannel = async ({
   commandType.forEach((type) => {
     updateQuery[`channel.${type}`] = channelId;
   });
+
   await dbUser.findOneAndUpdate(
     {
       userId,
@@ -328,7 +325,7 @@ const setUserReminderChannel = async ({
     {
       $set: updateQuery,
     },
-    {new: true}
+    {new: true},
   );
 };
 
@@ -353,7 +350,7 @@ const removeUserReminderChannel = async ({
     {
       $unset: updateQuery,
     },
-    {new: true}
+    {new: true},
   );
 };
 
@@ -389,7 +386,7 @@ const updateUserToggle = async ({
     query,
     {
       new: true,
-    }
+    },
   );
   return await getUserAccount(userId);
 };
@@ -412,7 +409,7 @@ const resetUserToggle = async ({
     },
     {
       new: true,
-    }
+    },
   );
 
   return await getUserAccount(userId);
@@ -451,7 +448,7 @@ const updateUserCustomMessage = async ({
     },
     {
       new: true,
-    }
+    },
   );
   return await getUserAccount(userId);
 };
@@ -474,7 +471,7 @@ const resetUserCustomMessage = async ({
     },
     {
       new: true,
-    }
+    },
   );
   return await getUserAccount(userId);
 };
@@ -515,7 +512,7 @@ const updateBestStats = async ({userId, type, value}: IUpdateBestStats) => {
     },
     {
       new: true,
-    }
+    },
   );
 };
 

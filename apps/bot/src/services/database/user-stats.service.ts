@@ -1,10 +1,7 @@
 import type {FilterQuery, QueryOptions} from 'mongoose';
 import {mongoClient} from '@epic-helper/services';
 import {getStartOfLastWeek, getStartOfToday} from '@epic-helper/utils';
-import type {
-  IUserStats,
-  USER_STATS_RPG_COMMAND_TYPE,
-} from '@epic-helper/models';
+import type {IUserStats, USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {userStatsSchema} from '@epic-helper/models';
 import mongooseLeanDefaults from 'mongoose-lean-defaults';
 
@@ -12,7 +9,7 @@ userStatsSchema.plugin(mongooseLeanDefaults);
 
 const dbUserStats = mongoClient.model<IUserStats>(
   'user-stats',
-  userStatsSchema
+  userStatsSchema,
 );
 
 interface ICountUserStats {
@@ -35,7 +32,7 @@ const countUserStats = async ({userId, type}: ICountUserStats) => {
       upsert: true,
       new: true,
       lean: true,
-    }
+    },
   );
 
   return updatedStats ?? null;

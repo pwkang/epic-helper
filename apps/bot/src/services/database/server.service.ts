@@ -8,7 +8,7 @@ import {redisServerAccount} from '../redis/server-account.redis';
 import mongooseLeanDefaults from 'mongoose-lean-defaults';
 import {redisUserBoostedServers} from '../redis/user-boosted-servers.redis';
 
-serverSchema.post('findOneAndUpdate', async function (doc) {
+serverSchema.post('findOneAndUpdate', async function(doc) {
   if (!doc) return;
   await redisServerAccount.setServer(doc.serverId, doc);
 });
@@ -63,7 +63,7 @@ const listRegisteredServersId = async (): Promise<string[]> => {
         serverId: 1,
       },
     )
-    .lean();
+    .lean({defaults: true});
   return servers?.map((server) => server.serverId) ?? [];
 };
 

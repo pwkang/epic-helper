@@ -1,22 +1,14 @@
-import type {Document} from 'mongoose';
 import {Schema} from 'mongoose';
-import type {
-  IEnchantChannel,
-  IServer,
-  IToken,
-  ITTVerificationRules,
-} from './server.type';
-import {ObjectId} from 'mongodb';
+import type {IEnchantChannel, IServer, IToken, ITTVerificationRules} from './server.type';
 
 const enchantChannelSchema = new Schema<IEnchantChannel>({
   channelId: {type: String, required: true},
   muteDuration: Number,
 });
 
-export const serverSchema = new Schema<IServer & Document>({
-  _id: ObjectId,
-  serverId: {type: String, required: true},
-  name: {type: String, required: true},
+export const serverSchema = new Schema<IServer>({
+  serverId: {type: String},
+  name: {type: String},
   toggle: {
     enchantMute: {type: Boolean, default: true},
     randomEvent: {type: Boolean, default: true},
