@@ -59,7 +59,7 @@ export const _statsLeaderboard = async ({
     for (const stat of stats) {
       const user = await userService.getUserAccount(stat.userId);
       value.push(
-        `\`[${value.length + 1}]\` **${user?.username}** | ${stat.rpg[type]}`
+        `\`[${value.length + 1}]\` **${user?.username}** | ${stat.rpg[type]}`,
       );
     }
     if (!value.length) value.push('No data');
