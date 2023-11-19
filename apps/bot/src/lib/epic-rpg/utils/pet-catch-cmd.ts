@@ -1,12 +1,7 @@
 import type wildPetReader from '../embed-readers/wild-pet.reader';
 import type {BaseMessageOptions} from 'discord.js';
-import {
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  EmbedBuilder,
-} from 'discord.js';
-import {BOT_COLOR, BOT_EMOJI, RPG_PET_THUMBNAIL} from '@epic-helper/constants';
+import {EmbedBuilder} from 'discord.js';
+import {BOT_COLOR, RPG_PET_THUMBNAIL} from '@epic-helper/constants';
 
 interface IGeneratePetCatchCommand {
   info: ReturnType<typeof wildPetReader>;
@@ -31,7 +26,6 @@ export const generatePetCatchMessageOptions = ({
 
   return {
     embeds: [getEmbed(commands, owner ?? undefined, petName)],
-    components: getComponents(commands),
   };
 };
 
@@ -65,7 +59,7 @@ const getEmbed = (
   return embed;
 };
 
-const getComponents = (commands: ICmd[]) => {
+/*const getComponents = (commands: ICmd[]) => {
   const cmd = commands.pop();
   const pat1 = cmd?.pat ? cmd.pat % 2 : 0;
   const pat2 = cmd?.pat ? Math.floor(cmd.pat / 2) : 0;
@@ -108,7 +102,7 @@ const getComponents = (commands: ICmd[]) => {
   );
 
   return [actionRow, actionRow2];
-};
+};*/
 
 const MAX_CLICKS = 6;
 

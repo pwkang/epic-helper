@@ -124,7 +124,7 @@ const rpgTrainingSuccess = async ({
 
   await updateReminderChannel({
     userId: author.id,
-    channelId: message.guild.id,
+    channelId: message.channelId,
   });
 
   commandHelper.userStats.countCommand({

@@ -85,7 +85,7 @@ export const userSchema = new Schema<IUser>({
       miniboss: {type: Boolean, default: true},
     },
     heal: {type: Boolean, default: true},
-    slash: {type: Boolean, default: true},
+    slash: {type: Boolean, default: false},
     countdown: {
       all: {type: Boolean, default: true},
       reminder: {type: Boolean, default: true},
