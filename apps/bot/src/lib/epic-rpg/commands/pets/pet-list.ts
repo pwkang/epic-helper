@@ -1,15 +1,11 @@
 import type {Client, Embed, Message, User} from 'discord.js';
-import {EmbedBuilder} from 'discord.js';
 import ms from 'ms';
 import embedReaders from '../../embed-readers';
 import {userPetServices} from '../../../../services/database/user-pet.service';
-import {BOT_COLOR, RPG_PET_SKILL_ASCEND, RPG_PET_SKILL_SPECIAL} from '@epic-helper/constants';
+import {RPG_PET_SKILL_ASCEND, RPG_PET_SKILL_SPECIAL} from '@epic-helper/constants';
 import type {IUserPet} from '@epic-helper/models';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {createMessageEditedListener} from '../../../../utils/message-edited-listener';
-import {djsMessageHelper} from '../../../discordjs/message';
-import {convertNumToPetId} from '@epic-helper/utils';
-import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
 
 interface IRpgPet {
   client: Client;
@@ -187,6 +183,7 @@ const getMaxPetId = ({embed}: IGetMaxPetId) => {
   return num ? parseInt(num) : 0;
 };
 
+/*
 interface IRenderResultEmbed {
   updatedPets: IUpdatedPets;
   author: User;
@@ -218,4 +215,4 @@ const renderResultEmbed = ({updatedPets, author}: IRenderResultEmbed) => {
     });
   }
   return embed;
-};
+};*/

@@ -1,6 +1,6 @@
 import type wildPetReader from '../embed-readers/wild-pet.reader';
 import type {BaseMessageOptions} from 'discord.js';
-import {ButtonStyle, EmbedBuilder} from 'discord.js';
+import {EmbedBuilder} from 'discord.js';
 import {BOT_COLOR, RPG_PET_THUMBNAIL} from '@epic-helper/constants';
 
 interface IGeneratePetCatchCommand {
