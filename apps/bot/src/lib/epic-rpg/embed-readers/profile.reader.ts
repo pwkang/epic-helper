@@ -1,4 +1,6 @@
 import type {Embed} from 'discord.js';
+import {typedObjectEntries} from '@epic-helper/utils';
+import {RPG_AREA} from '@epic-helper/constants';
 
 interface IProfileReader {
   embed: Embed;
@@ -9,9 +11,9 @@ const profileReader = ({embed}: IProfileReader) => {
     embed.fields[0].value.split('\n')[0].match(/\*\*Level\*\*: (\d+)/)?.[1] ??
     0;
   const currentArea =
-    embed.fields[0].value.split('\n')[2].match(/\*\*Area\*\*: (\d+)/)?.[1] ?? 0;
+    embed.fields[0].value.split('\n')[2]?.match(/\*\*Area\*\*: ([\dTOP]+)/)?.[1] ?? 0;
   const maxArea =
-    embed.fields[0].value.split('\n')[2].match(/\(Max: (\d+)\)/)?.[1] ?? 0;
+    embed.fields[0].value.split('\n')[2]?.match(/\(Max: ([\dTOP]+)\)/)?.[1] ?? 0;
   const timeTravels =
     embed.fields[0].value
       .split('\n')[3]
@@ -30,8 +32,8 @@ const profileReader = ({embed}: IProfileReader) => {
 
   return {
     level: Number(level),
-    currentArea: Number(currentArea),
-    maxArea: Number(maxArea),
+    currentArea: typedObjectEntries(RPG_AREA).find(([, value]) => String(value).toLowerCase() === String(currentArea).toLowerCase())?.[0] ?? 0,
+    maxArea: typedObjectEntries(RPG_AREA).find(([, value]) => String(value).toLowerCase() === String(maxArea).toLowerCase())?.[0] ?? 0,
     timeTravels: Number(timeTravels),
     atk: Number(atk),
     dek: Number(dek),
