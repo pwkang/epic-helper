@@ -40,8 +40,8 @@ export const getReminderChannel = async ({
     channelId: settings[commandType],
     client,
   });
-  if (!channel || !channel.isTextBased() || !channel.isThread())
-    return settings.all;
+  if (!channel?.isTextBased() && !channel?.isThread()) return null;
+  if (!('guild' in channel)) return null;
   const isDonor = await userChecker.isDonor({
     client,
     userId,
