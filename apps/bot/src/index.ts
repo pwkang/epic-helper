@@ -1,4 +1,4 @@
-import {ClusterManager} from 'discord-hybrid-sharding';
+import {ClusterManager, HeartbeatManager} from 'discord-hybrid-sharding';
 import * as dotenv from 'dotenv';
 import {logger} from '@epic-helper/utils';
 
@@ -6,7 +6,7 @@ dotenv.config();
 
 const totalClusters = process.env.TOTAL_CLUSTERS
   ? Number(process.env.TOTAL_CLUSTERS)
-  : 'auto';
+  : 1;
 const totalShards = process.env.TOTAL_SHARDS
   ? Number(process.env.TOTAL_SHARDS)
   : 'auto';
@@ -27,3 +27,7 @@ manager.spawn({timeout: -1}).catch((error) => {
     message: error.message,
   });
 });
+
+manager.extend(
+  new HeartbeatManager(),
+);

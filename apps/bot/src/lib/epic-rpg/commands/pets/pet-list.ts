@@ -259,7 +259,7 @@ const renderResultEmbed = ({updatedPets, author}: IRenderResultEmbed) => {
       value: updatedPets.newPets
         .map((pet) => convertNumToPetId(pet.petId))
         .map((id) => `\`${id}\``)
-        .join(' ') ?? '-',
+        .join(' ') || '-',
       inline: true,
     });
   }
@@ -269,7 +269,7 @@ const renderResultEmbed = ({updatedPets, author}: IRenderResultEmbed) => {
       value: updatedPets.updatedPets
         .map((pet) => convertNumToPetId(pet.petId))
         .map((id) => `\`${id}\``)
-        .join(' ') ?? '-',
+        .join(' ') || '-',
       inline: true,
     });
   }

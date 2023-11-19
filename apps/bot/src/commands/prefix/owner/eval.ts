@@ -49,7 +49,7 @@ export default <PrefixCommand>{
     for (const result of results) {
       embed.addFields({
         name: `Cluster ${result.clusterId}`,
-        value: `\`\`\`js\n${JSON.stringify(result.data).slice(0, 1000)}\`\`\``,
+        value: `\`\`\`js\n${JSON.stringify(result.data)?.slice(0, 1000)}\`\`\``,
         inline: true,
       });
     }
