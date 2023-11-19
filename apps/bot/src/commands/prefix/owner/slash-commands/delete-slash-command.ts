@@ -44,7 +44,7 @@ export default <PrefixCommand>{
         });
       for (const command of args) {
         const guildCommand = registeredGuildSlashCommands.find(
-          (gsc) => gsc.name === command
+          (gsc) => gsc.name === command,
         );
         if (guildCommand)
           await djsRestHelper.slashCommand.guild.deleteOne({
@@ -67,7 +67,7 @@ export default <PrefixCommand>{
         await djsRestHelper.slashCommand.global.getAll({client});
       for (const command of args) {
         const globalCommand = registeredGlobalSlashCommands.find(
-          (gsc) => gsc.name === command
+          (gsc) => gsc.name === command,
         );
         if (globalCommand)
           await djsRestHelper.slashCommand.global.deleteOne({

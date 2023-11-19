@@ -26,7 +26,9 @@ export const userPetReminderTimesUp = async ({
   });
 
   const channel = channelId ? client.channels.cache.get(channelId) : undefined;
-  if (!channelId || !channel?.isTextBased() || !channel?.isThread()) return;
+  if (!channelId) return;
+  if (!channel?.isTextBased() && !channel?.isThread()) return;
+  if (!('guild' in channel)) return;
 
   const toggleChecker = await toggleUserChecker({
     userId: userAccount.userId,
