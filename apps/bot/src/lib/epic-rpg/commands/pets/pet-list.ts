@@ -3,16 +3,13 @@ import {EmbedBuilder} from 'discord.js';
 import ms from 'ms';
 import embedReaders from '../../embed-readers';
 import {userPetServices} from '../../../../services/database/user-pet.service';
-import {
-  BOT_COLOR,
-  RPG_PET_SKILL_ASCEND,
-  RPG_PET_SKILL_SPECIAL,
-} from '@epic-helper/constants';
+import {BOT_COLOR, RPG_PET_SKILL_ASCEND, RPG_PET_SKILL_SPECIAL} from '@epic-helper/constants';
 import type {IUserPet} from '@epic-helper/models';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {createMessageEditedListener} from '../../../../utils/message-edited-listener';
 import {djsMessageHelper} from '../../../discordjs/message';
 import {convertNumToPetId} from '@epic-helper/utils';
+import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
 
 interface IRpgPet {
   client: Client;
@@ -50,7 +47,7 @@ interface IRpgPetSuccess {
   client: Client;
   embed: Embed;
   author: User;
-  message: Message;
+  message: Message<true>;
 }
 
 interface IUpdatedPets {
@@ -62,19 +59,12 @@ const rpgPetSuccess = async ({
   author,
   embed,
   message,
-  client,
 }: IRpgPetSuccess) => {
   const updatedPets: IUpdatedPets = {
     newPets: [],
     updatedPets: [],
   };
   await updatePetsFromEmbed({embed, author, updatedPets});
-  let sentMessage = await sendResultEmbed({
-    author,
-    client,
-    channelId: message.channel.id,
-    updatedPets,
-  });
   const event = await createMessageEditedListener({
     messageId: message.id,
     timeout: ms('3m'),
@@ -87,56 +77,10 @@ const rpgPetSuccess = async ({
         author,
         updatedPets,
       });
-
-      sentMessage = await sendResultEmbed({
-        author,
-        message: sentMessage,
-        client,
-        channelId: message.channel.id,
-        updatedPets,
-      });
     }
   });
 };
 
-interface ISendResultEmbed {
-  client: Client;
-  message?: Message;
-  channelId: string;
-  updatedPets: IUpdatedPets;
-  author: User;
-}
-
-const sendResultEmbed = async ({
-  message,
-  client,
-  channelId,
-  updatedPets,
-  author,
-}: ISendResultEmbed) => {
-  if (!updatedPets.newPets.length && !updatedPets.updatedPets.length) return;
-  const embed = renderResultEmbed({
-    updatedPets,
-    author,
-  });
-  if (message) {
-    await djsMessageHelper.edit({
-      client,
-      message,
-      options: {
-        embeds: [embed],
-      },
-    });
-    return message;
-  }
-  return await djsMessageHelper.send({
-    client,
-    channelId,
-    options: {
-      embeds: [embed],
-    },
-  });
-};
 
 interface IUpdatePetsFromEmbed {
   embed: Embed;
@@ -215,7 +159,7 @@ const isPetUpdated = ({newPet, oldPet}: IIsPetUpdated) => {
   }) as (
     | keyof typeof RPG_PET_SKILL_ASCEND
     | keyof typeof RPG_PET_SKILL_SPECIAL
-  )[];
+    )[];
   const isSkillUpdated = skillNameList.some(
     (skillName) => newPet.skills[skillName] !== oldPet.skills[skillName],
   );

@@ -1,7 +1,7 @@
 import type {IUser} from '@epic-helper/models';
+import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import {typedObjectEntries} from '@epic-helper/utils';
-import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 
 export const toUser = (user: any): IUser => {
   return {

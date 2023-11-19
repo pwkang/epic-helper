@@ -10,6 +10,7 @@ import type {IUserPet} from '@epic-helper/models';
 import convertMsToHumanReadableString from '../../../../utils/convert-ms-to-human-readable-string';
 import {collectSelectedPets} from './_shared';
 import {rpgPetAdvCancelSuccess} from './pet-cancel';
+import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
 
 interface IRpgPetAdventure {
   client: Client;
@@ -76,6 +77,12 @@ const rpgPetAdventureSuccess = async ({
   author,
   client,
 }: IRpgPetAdventureSuccess) => {
+  const toggleUser = await toggleUserChecker({
+    userId: author.id,
+    client,
+    serverId: message.guild.id,
+  });
+  if (!toggleUser?.reminder.pet) return;
   const amountOfPetSent = extractSentPets({message, author: message.author});
 
   if (!selectedPets) {

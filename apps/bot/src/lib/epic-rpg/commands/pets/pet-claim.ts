@@ -1,10 +1,8 @@
-import type {
-  IMessageContentChecker,
-  IMessageEmbedChecker,
-} from '../../../../types/utils';
+import type {IMessageContentChecker, IMessageEmbedChecker} from '../../../../types/utils';
 import type {Client, Embed, Message, User} from 'discord.js';
 import {userPetServices} from '../../../../services/database/user-pet.service';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
+import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
 
 interface IRpgPetClaim {
   client: Client;
@@ -38,6 +36,7 @@ export const rpgPetClaim = async ({
         client,
         embed,
         author,
+        message,
       });
     }
   });
@@ -51,9 +50,17 @@ interface IRpgPetClaimSuccess {
   embed: Embed;
   author: User;
   client: Client;
+  message: Message<true>;
 }
 
-const rpgPetClaimSuccess = async ({author}: IRpgPetClaimSuccess) => {
+const rpgPetClaimSuccess = async ({author, client, message}: IRpgPetClaimSuccess) => {
+  const toggleUser = await toggleUserChecker({
+    userId: author.id,
+    client,
+    serverId: message.guild.id,
+  });
+  if (!toggleUser?.reminder.pet) return;
+
   await userPetServices.claimAllPets({
     userId: author.id,
   });
