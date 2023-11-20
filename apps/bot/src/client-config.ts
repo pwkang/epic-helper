@@ -42,6 +42,6 @@ export const DiscordClientConfig: ClientOptions = {
     ThreadManager: 0,
     ThreadMemberManager: 0,
     VoiceStateManager: 0,
-    MessageManager: 25,
+    MessageManager: 10,
   }),
 };
