@@ -170,7 +170,7 @@ const getNonDonorStatsEmbed = ({
     })
     .setThumbnail(author.avatarURL())
     .setFooter({
-      text: 'If you want to view real time stats, you can donate to the bot and get access some extra benefits',
+      text: 'Donate to bot and view real time stats',
     });
 
   const yesterdayStats = stats.find(
