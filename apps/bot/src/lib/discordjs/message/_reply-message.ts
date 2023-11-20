@@ -1,10 +1,5 @@
-import type {
-  Client,
-  Message,
-  MessageCreateOptions,
-  MessagePayload,
-} from 'discord.js';
-import {PermissionsBitField, TextChannel} from 'discord.js';
+import type {Client, Message, MessageCreateOptions, MessagePayload} from 'discord.js';
+import {PermissionsBitField, TextChannel, ThreadChannel} from 'discord.js';
 import {logger} from '@epic-helper/utils';
 
 const requiredPermissions = [PermissionsBitField.Flags.SendMessages];
@@ -24,8 +19,22 @@ export default async function _replyMessage({
   if (!channel) return;
 
   if (channel instanceof TextChannel) {
-    const textChannel = channel as TextChannel;
-    if (!textChannel.permissionsFor(client.user!)?.has(requiredPermissions))
+    if (!channel.permissionsFor(client.user!)?.has(requiredPermissions))
+      return;
+    try {
+      return await message.reply(options);
+    } catch (error: any) {
+      logger({
+        message: error.rawError.message,
+        logLevel: 'warn',
+        variant: 'replyMessage',
+        clusterId: client.cluster?.id,
+      });
+      return;
+    }
+  }
+  if (channel instanceof ThreadChannel) {
+    if (!channel.permissionsFor(client.user!)?.has(requiredPermissions))
       return;
     try {
       return await message.reply(options);
