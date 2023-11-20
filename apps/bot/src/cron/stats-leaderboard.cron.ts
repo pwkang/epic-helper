@@ -4,7 +4,7 @@ const channelId = process.env.STATS_LEADERBOARD_CHANNEL;
 
 export default <CronJob>{
   name: 'stats-leaderboard',
-  expression: '0 0 0 * * *',
+  expression: '5 0 8 * * *',
   cronOptions: {
     runOnInit: true,
   },
