@@ -3,18 +3,11 @@ import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import getTrainingAnswer from '../../../epic-helper/features/training-helper';
 import {djsMessageHelper} from '../../../discordjs/message';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
-import {
-  BOT_REMINDER_BASE_COOLDOWN,
-  RPG_COMMAND_TYPE,
-  RPG_COOLDOWN_EMBED_TYPE,
-} from '@epic-helper/constants';
+import {BOT_REMINDER_BASE_COOLDOWN, RPG_COMMAND_TYPE, RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
-import embedReaders from '../../embed-readers';
-import {generatePetCatchMessageOptions} from '../../utils/pet-catch-cmd';
-import messageFormatter from '../../../discordjs/message-formatter';
 import commandHelper from '../../../epic-helper/command-helper';
 
 interface IRpgTraining {
@@ -140,7 +133,7 @@ interface IEncounteringPet {
   message: Message<true>;
 }
 
-const encounteringPet = async ({
+export const encounteringPet = async ({
   author,
   client,
   message,
@@ -153,20 +146,18 @@ const encounteringPet = async ({
   });
   if (!toggleChecker?.petCatch) return;
 
-  const info = embedReaders.wildPet({
+  const petCatch = commandHelper.pet.petCatch({
     embed: wildPetMessage.embeds[0],
+    author,
+    client,
+    toggleUserChecker: toggleChecker,
   });
-  const messageOptions = generatePetCatchMessageOptions({info});
   await djsMessageHelper.send({
-    options: {
-      ...messageOptions,
-      content: toggleChecker?.mentions.petCatch
-        ? messageFormatter.user(author.id)
-        : undefined,
-    },
+    options: petCatch.render(),
     channelId: message.channel.id,
     client,
   });
+  await petCatch.sendCopyCommands(message.channel.id);
 };
 
 interface IIsRpgTrainingSuccess {

@@ -1,11 +1,72 @@
-import type wildPetReader from '../embed-readers/wild-pet.reader';
-import type {BaseMessageOptions} from 'discord.js';
+import type {BaseMessageOptions, Client, Embed, User} from 'discord.js';
 import {EmbedBuilder} from 'discord.js';
 import {BOT_COLOR, RPG_PET_THUMBNAIL} from '@epic-helper/constants';
+import type wildPetReader from '../../../epic-rpg/embed-readers/wild-pet.reader';
+import embedReaders from '../../../epic-rpg/embed-readers';
+import type toggleUserChecker from '../../toggle-checker/user';
+import messageFormatter from '../../../discordjs/message-formatter';
+import {djsMessageHelper} from '../../../discordjs/message';
+
+interface IPetCatchHelper {
+  client: Client;
+  embed: Embed;
+  author: User;
+  toggleUserChecker: Awaited<ReturnType<typeof toggleUserChecker>>;
+}
+
+export const _petCatchHelper = ({
+  embed,
+  author,
+  toggleUserChecker,
+  client,
+}: IPetCatchHelper) => {
+  const info = embedReaders.wildPet({
+    embed,
+  });
+  const {hunger, petName, owner, happiness} = info;
+  const commands = getCommands(hunger, happiness);
+
+  const render = () => {
+    const embed = getEmbed(commands, owner ?? undefined, petName);
+    const content = toggleUserChecker?.mentions.petCatch
+      ? messageFormatter.user(author.id)
+      : undefined;
+
+    return {
+      embeds: [embed],
+      content,
+    };
+  };
+
+  const sendCopyCommands = async (channelId: string) => {
+    for (const command of commands) {
+      const {feed, pat} = command;
+      if (!feed && !pat) continue;
+
+      const feedString = new Array(feed).fill('feed').join(' ');
+      const patString = new Array(pat).fill('pat').join(' ');
+
+      const content = `${patString} ${feedString}`;
+      await djsMessageHelper.send({
+        options: {
+          content,
+        },
+        channelId,
+        client,
+      });
+    }
+  };
+
+  return {
+    render,
+    sendCopyCommands,
+  };
+
+
+};
 
 interface IGeneratePetCatchCommand {
   info: ReturnType<typeof wildPetReader>;
-  clicked?: number;
 }
 
 interface ICmd {
@@ -19,10 +80,9 @@ interface ICmd {
 
 export const generatePetCatchMessageOptions = ({
   info,
-  clicked = 0,
 }: IGeneratePetCatchCommand): BaseMessageOptions => {
   const {hunger, petName, owner, happiness} = info;
-  const commands = getCommands(hunger, happiness, clicked);
+  const commands = getCommands(hunger, happiness);
 
   return {
     embeds: [getEmbed(commands, owner ?? undefined, petName)],
@@ -48,7 +108,7 @@ const getEmbed = (
     const feedString = new Array(feed).fill('feed').join(' ');
     const patString = new Array(pat).fill('pat').join(' ');
     const isEmpty = !feed && !pat;
-    const name = isEmpty ? '-' : `${feedString} ${patString}`;
+    const name = isEmpty ? '-' : `${patString} ${feedString}`;
     const value = isMax ? '100%' : `Min: ${min}% | Avg: ${avg}% | Max: ${max}%`;
 
     embed.addFields({
@@ -106,7 +166,7 @@ const getEmbed = (
 
 const MAX_CLICKS = 6;
 
-const getCommands = (hunger: number, happiness: number, clicked: number) => {
+const getCommands = (hunger: number, happiness: number, clicked: number = 0) => {
   const feedAmount = getFeedTimes(hunger);
   let patAmount = getPatTimes(happiness, MAX_CLICKS - clicked - feedAmount);
   const list: ICmd[] = [];
