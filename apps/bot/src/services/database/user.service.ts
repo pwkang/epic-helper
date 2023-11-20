@@ -506,7 +506,7 @@ const updateBestStats = async ({userId, type, value}: IUpdateBestStats) => {
   await dbUser.findOneAndUpdate(
     {userId},
     {
-      $set: {
+      $max: {
         [`stats.best.${type}`]: value,
       },
     },
