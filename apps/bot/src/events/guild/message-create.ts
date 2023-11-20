@@ -1,18 +1,20 @@
 import type {Client, Message} from 'discord.js';
 import {Events} from 'discord.js';
-import {
-  DEVS_ID,
-  EPIC_RPG_ID,
-  PREFIX,
-  PREFIX_COMMAND_TYPE,
-} from '@epic-helper/constants';
+import {DEVS_ID, EPIC_RPG_ID, PREFIX, PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
 import {preCheckCommand} from '../../utils/command-precheck';
+import commandHelper from '../../lib/epic-helper/command-helper';
 
 export default <BotEvent>{
   eventName: Events.MessageCreate,
   once: false,
   execute: async (client, message: Message) => {
     if (!message.inGuild()) return;
+    if (!client.readyAt) return;
+    if (client.readyAt > message.createdAt) return;
+
+    const isClusterActive = await commandHelper.cluster.isClusterActive(client);
+    if (!isClusterActive) return;
+
     if (
       isBotSlashCommand(message) &&
       isNotDeferred(message) &&

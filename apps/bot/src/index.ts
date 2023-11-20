@@ -1,4 +1,4 @@
-import {ClusterManager, HeartbeatManager} from 'discord-hybrid-sharding';
+import {ClusterManager, HeartbeatManager, ReClusterManager} from 'discord-hybrid-sharding';
 import * as dotenv from 'dotenv';
 import {logger} from '@epic-helper/utils';
 
@@ -21,6 +21,26 @@ manager.on('clusterCreate', (cluster) => {
   logger({
     message: `Launched Cluster ${cluster.id}`,
   });
+
+  cluster.on('message', (message) => {
+    if (typeof message !== 'object') return;
+    if (!('raw' in message)) return;
+    if (!('action' in message.raw)) return;
+
+    switch (message.raw.action) {
+      case 'restartAll':
+        manager.recluster?.start({
+          restartMode: 'rolling',
+          totalShards,
+          totalClusters,
+        });
+        break;
+      case 'restart':
+        cluster.respawn({});
+        break;
+    }
+
+  });
 });
 manager.spawn({timeout: -1}).catch((error) => {
   logger({
@@ -28,6 +48,6 @@ manager.spawn({timeout: -1}).catch((error) => {
   });
 });
 
-manager.extend(
-  new HeartbeatManager(),
-);
+manager.extend(new HeartbeatManager());
+
+manager.extend(new ReClusterManager());

@@ -1,12 +1,18 @@
 import type {BaseInteraction, Client} from 'discord.js';
 import {Events} from 'discord.js';
 import {preCheckCommand} from '../../utils/command-precheck';
+import commandHelper from '../../lib/epic-helper/command-helper';
 
 export default <BotEvent>{
   eventName: Events.InteractionCreate,
   once: false,
   execute: async (client, interaction: BaseInteraction) => {
     if (!interaction.inGuild() || !interaction.guild) return;
+    if (!client.readyAt) return;
+    if (client.readyAt > interaction.createdAt) return;
+
+    const isClusterActive = await commandHelper.cluster.isClusterActive(client);
+    if (!isClusterActive) return;
 
     if (interaction.isChatInputCommand()) {
       const command = searchSlashCommand(client, interaction);
