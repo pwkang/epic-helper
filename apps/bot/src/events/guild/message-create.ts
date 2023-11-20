@@ -9,8 +9,12 @@ export default <BotEvent>{
   once: false,
   execute: async (client, message: Message) => {
     if (!message.inGuild()) return;
+    if (!client.readyAt) return;
+    if (client.readyAt > message.createdAt) return;
+
     const isClusterActive = await commandHelper.cluster.isClusterActive(client);
     if (!isClusterActive) return;
+
     if (
       isBotSlashCommand(message) &&
       isNotDeferred(message) &&

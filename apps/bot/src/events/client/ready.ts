@@ -1,7 +1,6 @@
 import {Events} from 'discord.js';
 import loadServerOnReady from '../../handler/on-ready/server-startup.handler';
 import {logger} from '@epic-helper/utils';
-import {redisCluster} from '../../services/redis/cluster.redis';
 import commandHelper from '../../lib/epic-helper/command-helper';
 
 export default <BotEvent>{

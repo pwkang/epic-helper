@@ -8,6 +8,9 @@ export default <BotEvent>{
   once: false,
   execute: async (client, interaction: BaseInteraction) => {
     if (!interaction.inGuild() || !interaction.guild) return;
+    if (!client.readyAt) return;
+    if (client.readyAt > interaction.createdAt) return;
+
     const isClusterActive = await commandHelper.cluster.isClusterActive(client);
     if (!isClusterActive) return;
 
