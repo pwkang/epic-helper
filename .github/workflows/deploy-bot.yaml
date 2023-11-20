@@ -1,6 +1,9 @@
-name: Deploy Production
+name: Deploy Bot
 
 on:
+  push:
+    branches:
+      - chore/deployment-actions
   workflow_dispatch:
 
 jobs:
@@ -44,6 +47,18 @@ jobs:
         with:
           node-version: 18
 
+      - name: Delete src files
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd ${{ vars.BOT_DEPLOY_DIR }}
+            rm -rf apps/bot/src
+            rm -rf shared/**/src
+
       - name: Copy built files to server
         uses: appleboy/scp-action@v0.1.4
         with:
@@ -53,7 +68,6 @@ jobs:
           port: ${{ secrets.PORT }}
           source: "apps/*,shared/*,package.json,ecosystem.config.js,pnpm-lock.yaml,pnpm-workspace.yaml,turbo.json"
           target: ${{ vars.BOT_DEPLOY_DIR }}
-          rm: true
 
       - name: Start server
         uses: appleboy/ssh-action@v0.1.10
@@ -68,4 +82,3 @@ jobs:
             pnpm install --frozen-lockfile
             pnpm run build:shared
             pnpm run build:bot
-            pm2 start ecosystem.config.js
