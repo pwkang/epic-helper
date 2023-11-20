@@ -11,6 +11,7 @@ declare module 'discord.js' {
     slashMessages: Collection<string, SlashMessage>;
     botMessages: Collection<string, BotMessage>;
     fetchedMemberGuilds: Collection<string, boolean>;
+    clusterSession?: string;
     utils: {
       getUptime: typeof getUptime;
       djsMessageHelper: typeof djsMessageHelper;

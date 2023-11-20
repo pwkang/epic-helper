@@ -2,12 +2,16 @@ import {redisService} from '../services/redis/redis.service';
 import {redisGuildReminder} from '../services/redis/guild-reminder.redis';
 import {guildReminderTimesUp} from '../lib/epic-helper/reminders/ready/guild.reminder-ready';
 import {guildService} from '../services/database/guild.service';
+import commandHelper from '../lib/epic-helper/command-helper';
 
 export default <CronJob>{
   name: 'guildWeeklyReset',
   expression: '0 6 * * 7',
   execute: async (client) => {
     if (!redisService?.isReady) return;
+
+    const isClusterActive = await commandHelper.cluster.isClusterActive(client);
+    if (!isClusterActive) return;
 
     const guildReminders = await redisGuildReminder.getAllGuildReminder();
     if (!guildReminders.length) return;

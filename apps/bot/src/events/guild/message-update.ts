@@ -2,11 +2,15 @@ import type {Client, Message} from 'discord.js';
 import {Events} from 'discord.js';
 import {emitMessageEdited} from '../../utils/message-edited-listener';
 import {preCheckCommand} from '../../utils/command-precheck';
+import commandHelper from '../../lib/epic-helper/command-helper';
 
 export default <BotEvent>{
   eventName: Events.MessageUpdate,
   execute: async (client, oldMessage: Message, newMessage: Message) => {
     if (!newMessage.inGuild()) return;
+    const isClusterActive = await commandHelper.cluster.isClusterActive(client);
+    if (!isClusterActive) return;
+
     if (
       isBotSlashCommand(newMessage) &&
       isFirstUpdateAfterDeferred(oldMessage) &&
