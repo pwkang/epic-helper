@@ -1,9 +1,6 @@
 name: Deploy Bot
 
 on:
-  push:
-    branches:
-      - chore/deployment-actions
   workflow_dispatch:
 
 jobs:
@@ -66,7 +63,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          source: "apps/*,shared/*,package.json,ecosystem.config.js,pnpm-lock.yaml,pnpm-workspace.yaml,turbo.json"
+          source: "apps/bot/*,shared/*,package.json,ecosystem.config.js,pnpm-lock.yaml,pnpm-workspace.yaml,turbo.json"
           target: ${{ vars.BOT_DEPLOY_DIR }}
 
       - name: Start server
