@@ -117,17 +117,6 @@ const rpgEnchantSuccess = async ({
   if (RPG_ENCHANT_LEVEL_RANK[enchantTier] < RPG_ENCHANT_LEVEL_RANK[targetTier])
     return;
 
-  const unmuteIn = timestampHelper.relative({
-    time: new Date(Date.now() + ms(muteDuration)),
-  });
-  await djsMessageHelper.send({
-    channelId,
-    options: {
-      content: `You have successfully enchanted your **${equipmentType.toUpperCase()}** to **${enchantTier.toUpperCase()}**!, unmute ${unmuteIn}`,
-    },
-    client,
-  });
-
   [author.id, EPIC_RPG_ID].map((userId) =>
     djsChannelHelper.muteUser({
       userId,
@@ -136,6 +125,18 @@ const rpgEnchantSuccess = async ({
       unMuteIn: ms(muteDuration),
     }),
   );
+
+  const unmuteIn = timestampHelper.relative({
+    time: new Date(Date.now() + ms(muteDuration)),
+  });
+
+  await djsMessageHelper.send({
+    channelId,
+    options: {
+      content: `You have successfully enchanted your **${equipmentType.toUpperCase()}** to **${enchantTier.toUpperCase()}**!, unmute ${unmuteIn}`,
+    },
+    client,
+  });
 };
 
 interface IEnchantGet {
