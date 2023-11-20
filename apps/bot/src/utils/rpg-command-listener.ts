@@ -1,5 +1,5 @@
-import type {Client, Embed, Message, MessageCollector, User} from 'discord.js';
-import {TextChannel} from 'discord.js';
+import type {AnyThreadChannel, Channel, Client, Embed, Message, MessageCollector, User} from 'discord.js';
+import {TextChannel, ThreadChannel} from 'discord.js';
 import {TypedEventEmitter} from './typed-event-emitter';
 import ms from 'ms';
 import {sleep, typedObjectEntries} from '@epic-helper/utils';
@@ -35,6 +35,10 @@ type TExtraProps = {
 
 const filter = (m: Message) => m.author.id === EPIC_RPG_ID;
 
+const isChannelSupported = (channel: Channel): channel is TextChannel | AnyThreadChannel => {
+  return channel instanceof TextChannel || channel instanceof ThreadChannel;
+};
+
 export const createRpgCommandListener = ({
   channelId,
   client,
@@ -44,12 +48,12 @@ export const createRpgCommandListener = ({
   const channel = client.channels.cache.get(channelId);
   if (!channel) return;
   let collector: MessageCollector | undefined;
-  if (channel instanceof TextChannel && !!channel.guild) {
+  if (isChannelSupported(channel) && !!channel.guild) {
 
     // const textChannel
     collector = channel.createMessageCollector({time: 15000, filter});
   }
-  if (!collector || !(channel instanceof TextChannel)) return;
+  if (!collector || !(isChannelSupported(channel))) return;
   let event = new TypedEventEmitter<TEventTypes>() as CustomEventType;
   let police = false;
   let waitingAnswer = false;
