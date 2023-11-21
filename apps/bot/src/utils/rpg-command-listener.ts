@@ -269,14 +269,6 @@ function isPolicePass({author, collected}: IChecker) {
   );
 }
 
-function isSlashCommand({collected}: IChecker) {
-  return (
-    collected.content === '' &&
-    collected.embeds.length === 0 &&
-    collected.interaction?.id
-  );
-}
-
 
 const isLoadingContent = ({collected}: IChecker) =>
   (collected.content === '' && collected.embeds.length === 0) ||
