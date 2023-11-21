@@ -2,7 +2,7 @@ import type {AnyThreadChannel, Channel, Client, Embed, Message, MessageCollector
 import {TextChannel, ThreadChannel} from 'discord.js';
 import {TypedEventEmitter} from './typed-event-emitter';
 import ms from 'ms';
-import {sleep, typedObjectEntries} from '@epic-helper/utils';
+import {typedObjectEntries} from '@epic-helper/utils';
 import type {RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants';
 import {EPIC_RPG_ID} from '@epic-helper/constants';
 import {createMessageEditedListener} from './message-edited-listener';

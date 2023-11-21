@@ -14,7 +14,7 @@ export default <BotEvent>{
 
     const isClusterActive = await commandHelper.cluster.isClusterActive(client);
     if (!isClusterActive) return;
-
+    console.log(message.content, message.embeds);
     if (
       isBotSlashCommand(message) &&
       isNotDeferred(message) &&
