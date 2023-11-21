@@ -25,18 +25,28 @@ manager.on('clusterCreate', (cluster) => {
   cluster.on('message', (message) => {
     if (typeof message !== 'object') return;
     if (!('raw' in message)) return;
-    if (!('action' in message.raw)) return;
+    const data = message.raw as any;
 
-    switch (message.raw.action) {
+    switch (data.action) {
       case 'restartAll':
         manager.recluster?.start({
-          restartMode: 'rolling',
+          restartMode: 'gracefulSwitch',
           totalShards,
           totalClusters,
         });
         break;
       case 'restart':
-        cluster.respawn({});
+        if (!data.clustersId) return;
+        for(const cluster of data.clustersId) {
+          const c = manager.clusters.get(cluster);
+          if (!c) continue;
+          c.respawn().catch((error) => {
+            logger({
+              clusterId: c.id,
+              message: error.message,
+            });
+          });
+        }
         break;
     }
 
