@@ -5,6 +5,7 @@ import ms from 'ms';
 import {sleep, typedObjectEntries} from '@epic-helper/utils';
 import type {RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants';
 import {EPIC_RPG_ID} from '@epic-helper/constants';
+import {createMessageEditedListener} from './message-edited-listener';
 
 interface IRpgCommandListener {
   client: Client;
@@ -86,13 +87,8 @@ export const createRpgCommandListener = ({
   }
 
   const messageCollected = async (collected: Message<true>) => {
-    if (
-      isSlashCommand({collected, author}) &&
-      collected.content === '' &&
-      collected.embeds.length === 0
-    ) {
-      await sleep(1000);
-      collected = channel.messages.cache.get(collected.id)!;
+    if (isLoadingContent({collected, author})) {
+      return awaitEdit(collected.id);
     }
 
     if (collected.embeds.length) {
@@ -164,6 +160,15 @@ export const createRpgCommandListener = ({
     if (!collected?.inGuild()) return;
     messageCollected(collected);
   });
+
+  const awaitEdit = async (messageId: string) => {
+    const event = await createMessageEditedListener({
+      messageId,
+    });
+    event.on(messageId, (message) => {
+      messageCollected(message);
+    });
+  };
 
   return event;
 };
@@ -271,3 +276,8 @@ function isSlashCommand({collected}: IChecker) {
     collected.interaction?.id
   );
 }
+
+
+const isLoadingContent = ({collected}: IChecker) =>
+  (collected.content === '' && collected.embeds.length === 0) ||
+  collected.content === 'loading the EPIC guild member list...';
