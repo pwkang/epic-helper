@@ -323,6 +323,41 @@ const registerUserToGuild = async ({
     userId,
   });
 };
+interface IRegisterUsersToGuild {
+  serverId: string;
+  roleId: string;
+  usersId: string[];
+}
+
+const registerUsersToGuild = async ({
+  serverId,
+  roleId,
+  usersId,
+}: IRegisterUsersToGuild) => {
+  await dbGuild.findOneAndUpdate(
+    {serverId, roleId},
+    {$addToSet: {membersId: {$each: usersId}}},
+    {new: true},
+  );
+  await dbGuild.findOneAndUpdate(
+    {
+      $or: [{serverId: {$ne: serverId}}, {roleId: {$ne: roleId}}],
+      membersId: {$in: usersId},
+    },
+    {$pull: {membersId: {$in: usersId}}},
+    {new: true},
+  );
+
+  await Promise.all(
+    usersId.map((userId) =>
+      redisGuildMembers.setGuildMember({
+        guildRoleId: roleId,
+        serverId,
+        userId,
+      }),
+    ),
+  );
+};
 
 interface IRemoveFromGuild {
   serverId: string;
@@ -404,6 +439,7 @@ export const guildService = {
   updateToggle,
   resetToggle,
   registerUserToGuild,
+  registerUsersToGuild,
   removeUserFromGuild,
   updateDuelLog,
   findUserGuild,

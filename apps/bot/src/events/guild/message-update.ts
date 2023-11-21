@@ -8,8 +8,8 @@ export default <BotEvent>{
   eventName: Events.MessageUpdate,
   execute: async (client, oldMessage: Message, newMessage: Message) => {
     if (!newMessage.inGuild()) return;
-    if (!client.readyAt || !newMessage.editedAt) return;
-    if (client.readyAt > newMessage.editedAt) return;
+    if (!client.readyAt || !oldMessage.createdAt) return;
+    if (client.readyAt > oldMessage.createdAt) return;
 
     const isClusterActive = await commandHelper.cluster.isClusterActive(client);
     if (!isClusterActive) return;
