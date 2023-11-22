@@ -4,8 +4,8 @@ import type {IMessageEmbedChecker} from '../../../../types/utils';
 import embedReaders from '../../embed-readers';
 import {guildService} from '../../../../services/database/guild.service';
 import {toggleGuildChecker} from '../../../epic-helper/toggle-checker/guild';
-import {verifyGuild} from './_shared';
 import {djsMessageHelper} from '../../../discordjs/message';
+import commandHelper from '../../../epic-helper/command-helper';
 
 export interface IRpgGuild {
   client: Client;
@@ -30,7 +30,7 @@ export const rpgGuild = ({
   event.on('embed', async (embed) => {
     if (isGuildSuccess({author, embed})) {
       event?.stop();
-      const result = await verifyGuild({
+      const result = await commandHelper.guild.verifyGuild({
         client,
         server: message.guild,
         userId: author.id,

@@ -4,8 +4,8 @@ import {djsMessageHelper} from '../../../discordjs/message';
 import {djsMemberHelper} from '../../../discordjs/member';
 import {djsServerHelper} from '../../../discordjs/server';
 import {guildService} from '../../../../services/database/guild.service';
-import {verifyGuild} from './_shared';
 import embedReaders from '../../embed-readers';
+import commandHelper from '../../../epic-helper/command-helper';
 
 interface IIdleGuild {
   client: Client;
@@ -30,7 +30,7 @@ export const rpgGuildList = async ({
   event.on('embed', async (embed) => {
     if (isRpgGuildList({embed})) {
       event?.stop();
-      const result = await verifyGuild({
+      const result = await commandHelper.guild.verifyGuild({
         client,
         server: message.guild,
         userId: author.id,

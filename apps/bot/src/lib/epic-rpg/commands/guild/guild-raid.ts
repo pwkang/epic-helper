@@ -1,16 +1,14 @@
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import type {Client, Message, User} from 'discord.js';
-import type {
-  IMessageContentChecker,
-  IMessageEmbedChecker,
-} from '../../../../types/utils';
+import type {IMessageContentChecker, IMessageEmbedChecker} from '../../../../types/utils';
 import {guildService} from '../../../../services/database/guild.service';
 import ms from 'ms';
 import {upgraidService} from '../../../../services/database/upgraid.service';
-import {_sendUpgraidResultToGuildChannel, verifyGuild} from './_shared';
+import {_sendUpgraidResultToGuildChannel} from './_shared';
 import {RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants';
 import {toggleGuildChecker} from '../../../epic-helper/toggle-checker/guild';
 import {djsMessageHelper} from '../../../discordjs/message';
+import commandHelper from '../../../epic-helper/command-helper';
 
 interface IRpgGuildRaid {
   client: Client;
@@ -36,7 +34,7 @@ export const rpgGuildRaid = async ({
   event.on('embed', async (embed, collected) => {
     if (isGuildRaidSuccess({author, embed})) {
       event?.stop();
-      const result = await verifyGuild({
+      const result = await commandHelper.guild.verifyGuild({
         client,
         server: message.guild,
         userId: author.id,

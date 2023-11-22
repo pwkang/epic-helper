@@ -8,7 +8,7 @@ import {toggleGuildChecker} from '../../toggle-checker/guild';
 import {sendDuelLog} from './send-duel-log';
 import type {IGuild} from '@epic-helper/models';
 import {guildService} from '../../../../services/database/guild.service';
-import {verifyGuild} from '../../../epic-rpg/commands/guild/_shared';
+import commandHelper from '../index';
 
 interface IModifyDuelRecord {
   client: Client;
@@ -29,7 +29,7 @@ export const modifyDuelRecord = async ({
   author,
   commandChannelId,
 }: IModifyDuelRecord): Promise<BaseMessageOptions> => {
-  const result = await verifyGuild({
+  const result = await commandHelper.guild.verifyGuild({
     client,
     userId: user.id,
     server,
