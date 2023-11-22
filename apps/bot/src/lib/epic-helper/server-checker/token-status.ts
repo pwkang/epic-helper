@@ -28,7 +28,8 @@ export const _getTokenStatus = async ({client, serverId}: IHasEnoughTokens) => {
   const totalTokens =
     serverAccount?.tokens?.reduce((acc, curr) => acc + curr.amount, 0) ?? 0;
 
-  await djsMemberHelper.fetchAll({serverId, client});
+  if(totalTokens)
+    await djsMemberHelper.fetchAll({serverId, client});
 
   const totalMembers =
     server?.members?.cache.filter((user) => !user.user.bot).size ?? 0;

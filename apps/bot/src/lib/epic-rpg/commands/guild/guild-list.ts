@@ -96,6 +96,10 @@ const idleGuildListSuccess = async ({
     roleId: guildRoleId,
     usersId: guildInfo.ids,
   });
+  await djsMemberHelper.clearCached({
+    client,
+    serverId,
+  });
 };
 
 interface IChecker {
