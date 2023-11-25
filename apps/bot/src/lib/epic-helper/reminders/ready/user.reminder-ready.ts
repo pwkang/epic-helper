@@ -9,6 +9,7 @@ import {userReminderServices} from '../../../../services/database/user-reminder.
 import {generateUserReminderMessage} from '../message-generator/custom-message-generator';
 import {djsUserHelper} from '../../../discordjs/user';
 import toggleUserChecker from '../../toggle-checker/user';
+import djsChannelHelper from '../../../discordjs/channel';
 
 export const userReminderTimesUp = async (client: Client, userId: string) => {
   const userAccount = await userService.getUserAccount(userId);
@@ -39,11 +40,13 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
       userId: userAccount.userId,
       client,
     });
-    const channel = channelId
-      ? client.channels.cache.get(channelId)
-      : undefined;
-    if (!channelId) continue;
-    if (!channel?.isTextBased() && !channel?.isThread()) continue;
+    if(!channelId) continue;
+    const channel = await djsChannelHelper.getChannel({
+      channelId,
+      client,
+    });
+    if (!channel) continue;
+    if (!djsChannelHelper.isGuildChannel(channel)) continue;
     if (!('guild' in channel)) continue;
 
     const toggleChecker = await toggleUserChecker({

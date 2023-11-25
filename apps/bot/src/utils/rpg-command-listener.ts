@@ -6,6 +6,7 @@ import {typedObjectEntries} from '@epic-helper/utils';
 import type {RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants';
 import {EPIC_RPG_ID} from '@epic-helper/constants';
 import {createMessageEditedListener} from './message-edited-listener';
+import djsChannelHelper from '../lib/discordjs/channel';
 
 interface IRpgCommandListener {
   client: Client;
@@ -54,7 +55,7 @@ export const createRpgCommandListener = ({
     // const textChannel
     collector = channel.createMessageCollector({time: 15000, filter});
   }
-  if (!collector || !(isChannelSupported(channel))) return;
+  if (!collector || !(djsChannelHelper.isGuildChannel(channel))) return;
   let event = new TypedEventEmitter<TEventTypes>() as CustomEventType;
   let police = false;
   let waitingAnswer = false;

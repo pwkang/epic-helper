@@ -7,6 +7,7 @@ import {userPetServices} from '../../../../services/database/user-pet.service';
 import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {generateUserReminderMessage} from '../message-generator/custom-message-generator';
 import toggleUserChecker from '../../toggle-checker/user';
+import djsChannelHelper from '../../../discordjs/channel';
 
 interface IUserPetReminderTimesUp {
   client: Client;
@@ -26,9 +27,8 @@ export const userPetReminderTimesUp = async ({
   });
 
   const channel = channelId ? client.channels.cache.get(channelId) : undefined;
-  if (!channelId) return;
-  if (!channel?.isTextBased() && !channel?.isThread()) return;
-  if (!('guild' in channel)) return;
+  if (!channelId || !channel) return;
+  if (!djsChannelHelper.isGuildChannel(channel)) return;
 
   const toggleChecker = await toggleUserChecker({
     userId: userAccount.userId,
