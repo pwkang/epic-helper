@@ -16,8 +16,9 @@ export const toServer = (server: any): IServer => {
         muteDuration: server?.settings?.enchant?.muteDuration,
       },
       randomEvent: typedObjectEntries(RPG_RANDOM_EVENTS).reduce(
-        (acc, [key, value]) => {
-          acc[key] = server?.settings?.randomEvent?.[key] ?? value;
+        (acc, [key]) => {
+          if (server?.settings?.randomEvent?.[key])
+            acc[key] = server?.settings?.randomEvent?.[key];
           return acc;
         },
         {} as Record<ValuesOf<typeof RPG_RANDOM_EVENTS>, string>,
