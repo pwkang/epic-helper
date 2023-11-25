@@ -107,7 +107,7 @@ export const userSchema = new Schema<IUser>({
     horse: String,
     arena: String,
     dungeon: String,
-    use: String,
+    epicItem: String,
     pet: String,
   },
   channel: {
@@ -126,7 +126,7 @@ export const userSchema = new Schema<IUser>({
     horse: String,
     arena: String,
     dungeon: String,
-    use: String,
+    epicItem: String,
     pet: String,
   },
   config: {

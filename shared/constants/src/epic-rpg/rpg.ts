@@ -32,6 +32,10 @@ export const RPG_WORKING_TYPE = {
   pickaxe: 'pickaxe',
   drill: 'drill',
   dynamite: 'dynamite',
+  pickup: 'pickup',
+  ladder: 'ladder',
+  tractor: 'tractor',
+  greenhouse: 'greenhouse',
 } as const;
 
 export const RPG_COOLDOWN_EMBED_TYPE = {

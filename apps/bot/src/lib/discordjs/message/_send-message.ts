@@ -1,13 +1,8 @@
-import type {
-  Channel,
-  Client,
-  Message,
-  MessageCreateOptions,
-  MessagePayload,
-} from 'discord.js';
-import {PermissionsBitField, TextChannel, ThreadChannel} from 'discord.js';
+import type {Channel, Client, Message, MessageCreateOptions, MessagePayload} from 'discord.js';
+import {PermissionsBitField} from 'discord.js';
 import {logger} from '@epic-helper/utils';
 import {broadcastEval} from '../../../utils/broadcast-eval';
+import djsChannelHelper from '../channel';
 
 const requiredPermissions = [PermissionsBitField.Flags.SendMessages];
 
@@ -61,35 +56,21 @@ async function checkTypeAndSend({
   client,
 }: CheckTypeAndSendProps): Promise<Message | undefined> {
   let sentMessage;
-  if (channel instanceof TextChannel) {
-    if (!channel.permissionsFor(client.user!)?.has(requiredPermissions))
-      return;
-    try {
-      sentMessage = await channel.send(options);
-    } catch (error: any) {
-      logger({
-        message: error.message,
-        logLevel: 'warn',
-        variant: 'sendMessage',
-        clusterId: client.cluster?.id,
-      });
-      return;
-    }
+  if (!djsChannelHelper.isGuildChannel(channel)) return;
+  if (!channel.permissionsFor(client.user!)?.has(requiredPermissions))
+    return;
+
+  try {
+    sentMessage = await channel.send(options);
+  } catch (error: any) {
+    logger({
+      message: error.message,
+      logLevel: 'warn',
+      variant: 'sendMessage',
+      clusterId: client.cluster?.id,
+    });
+    return;
   }
-  if(channel instanceof ThreadChannel) {
-    if (!channel.permissionsFor(client.user!)?.has(requiredPermissions))
-      return;
-    try {
-      sentMessage = await channel.send(options);
-    } catch (error: any) {
-      logger({
-        message: error.message,
-        logLevel: 'warn',
-        variant: 'sendMessage',
-        clusterId: client.cluster?.id,
-      });
-      return;
-    }
-  }
+
   return sentMessage;
 }
