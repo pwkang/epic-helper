@@ -1,5 +1,5 @@
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import type {Client, Embed, Guild, Message, User} from 'discord.js';
+import type {Client, Embed, Message, User} from 'discord.js';
 import embedReaders from '../../embed-readers';
 import {userService} from '../../../../services/database/user.service';
 import messageChecker from '../../message-checker';

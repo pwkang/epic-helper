@@ -2,7 +2,6 @@ import type {User} from 'discord.js';
 import type {RPG_DONOR_TIER} from '@epic-helper/constants';
 import {BOT_REMINDER_BASE_COOLDOWN, RPG_COMMAND_TYPE, RPG_DONOR_CD_REDUCTION} from '@epic-helper/constants';
 import {userService} from '../../../services/database/user.service';
-import convertMsToHumanReadableString from '../../../utils/convert-ms-to-human-readable-string';
 
 interface IGetCdReduction {
   commandType: ValuesOf<Omit<typeof RPG_COMMAND_TYPE, 'pet'>>;
@@ -102,7 +101,7 @@ export const calcCdReduction = async ({
   if (userAccount.rpgInfo.currentArea === 'a0' && isReducedInArea0[commandType])
     cooldown *= AREA_0_CD_REDUCTION;
 
-  if(userAccount.rpgInfo.artifacts.pocketWatch.owned && isReducedByPocketWatch[commandType])
+  if (userAccount.rpgInfo.artifacts.pocketWatch.owned && isReducedByPocketWatch[commandType])
     cooldown *= (100 - userAccount.rpgInfo.artifacts.pocketWatch.percent) / 100;
 
   return cooldown;
