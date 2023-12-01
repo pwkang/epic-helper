@@ -19,3 +19,4 @@ export * from './epic-rpg/pet';
 export * from './epic-rpg/random-events';
 export * from './epic-rpg/rpg';
 export * from './epic-rpg/info';
+export * from './epic-rpg/artifacts';

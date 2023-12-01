@@ -30,6 +30,9 @@ export const BOT_EMOJI = {
   halloween: {
     pumpkin: '<:pumpkin:1108800482169851904>',
   },
+  artifacts: {
+    pocketWatch: '<:pocketwatch:1180162420719763486>',
+  },
   items: {
     orangeJuice: '<:orangejuice:1108797576641265726>',
     appleJuice: '<:applejuice:1108797581724758107>',

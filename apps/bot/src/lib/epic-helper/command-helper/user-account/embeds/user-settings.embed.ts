@@ -1,6 +1,6 @@
 import type {User} from 'discord.js';
 import {EmbedBuilder} from 'discord.js';
-import {BOT_COLOR} from '@epic-helper/constants';
+import {BOT_COLOR, BOT_EMOJI} from '@epic-helper/constants';
 import type {IUser} from '@epic-helper/models';
 
 export interface IGetUserSettingsEmbed {
@@ -66,18 +66,6 @@ export const _getUserSettingsEmbed = ({
       value: `Mute on getting **${userProfile.config.enchant.toUpperCase()}** or higher tier`,
     });
 
-  if (userProfile.config.timezone)
-    helperSettings.push({
-      icon: '🌎',
-      value: `Timezone: **${userProfile.config.timezone}**`,
-    });
-
-  if (userProfile.config.timeFormat)
-    helperSettings.push({
-      icon: '🕒',
-      value: `Time format: **${userProfile.config.timeFormat}**`,
-    });
-
   if (userProfile.config.heal)
     helperSettings.push({
       icon: '🩸',
@@ -94,6 +82,12 @@ export const _getUserSettingsEmbed = ({
     helperSettings.push({
       icon: '🏰',
       value: `Guild: **${guildName}** @ ${guildServerName}`,
+    });
+
+  if(userProfile.rpgInfo.artifacts.pocketWatch.owned)
+    helperSettings.push({
+      icon: BOT_EMOJI.artifacts.pocketWatch,
+      value: `Pocket Watch: **${userProfile.rpgInfo.artifacts.pocketWatch.percent}%**`,
     });
 
   embed.addFields({

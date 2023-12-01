@@ -7,6 +7,7 @@ import progressReader from './progress.reader';
 import wildPetReader from './wild-pet.reader';
 import duelResultReader from './duel-result.reader';
 import {_guildListReader} from './guild-list.reader';
+import _artifactsReader from './artifacts.reader';
 
 const embedReaders = {
   lootbox: lootboxReader,
@@ -18,6 +19,7 @@ const embedReaders = {
   wildPet: wildPetReader,
   duelResult: duelResultReader,
   guildList: _guildListReader,
+  artifacts: _artifactsReader,
 };
 
 export default embedReaders;

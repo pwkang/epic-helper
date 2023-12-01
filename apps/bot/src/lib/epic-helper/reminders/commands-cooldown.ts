@@ -58,6 +58,27 @@ const isReducedInArea0: Record<ValuesOf<typeof RPG_COMMAND_TYPE>, boolean> = {
 
 const AREA_0_CD_REDUCTION = 0.9;
 
+
+const isReducedByPocketWatch: Record<ValuesOf<typeof RPG_COMMAND_TYPE>, boolean> = {
+  daily: false,
+  weekly: false,
+  lootbox: true,
+  vote: false,
+  hunt: true,
+  adventure: true,
+  training: true,
+  duel: true,
+  quest: true,
+  working: true,
+  farm: true,
+  horse: true,
+  arena: true,
+  dungeon: true,
+  epicItem: false,
+  pet: false,
+  xmasChimney: false,
+};
+
 export const calcCdReduction = async ({
   commandType,
   userId,
@@ -79,6 +100,9 @@ export const calcCdReduction = async ({
 
   if (userAccount.rpgInfo.currentArea === 'a0' && isReducedInArea0[commandType])
     cooldown *= AREA_0_CD_REDUCTION;
+
+  if (userAccount.rpgInfo.artifacts.pocketWatch.owned && isReducedByPocketWatch[commandType])
+    cooldown *= (100 - userAccount.rpgInfo.artifacts.pocketWatch.percent) / 100;
 
   return cooldown;
 };

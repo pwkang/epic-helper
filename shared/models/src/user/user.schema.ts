@@ -172,5 +172,11 @@ export const userSchema = new Schema<IUser>({
   rpgInfo: {
     currentArea: {type: String},
     maxArea: {type: String},
+    artifacts: {
+      pocketWatch: {
+        owned: {type: Boolean, default: false},
+        percent: {type: Number, default: 0},
+      },
+    },
   },
 });

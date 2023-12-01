@@ -554,6 +554,29 @@ const updateUserCurrentArea = async ({userId, area}: IUpdateUserCurrentArea) => 
   );
 };
 
+interface IUpdateUserPocketWatch {
+  userId: string;
+  owned: boolean;
+  percent: number;
+}
+
+const updateUserPocketWatch = async ({userId, percent, owned}: IUpdateUserPocketWatch) => {
+  await dbUser.findOneAndUpdate(
+    {userId},
+    {
+      $set: {
+        'rpgInfo.artifacts.pocketWatch': {
+          owned,
+          percent,
+        },
+      },
+    },
+    {
+      new: true,
+    },
+  );
+};
+
 export const userService = {
   registerUserAccount,
   userAccountOn,
@@ -586,4 +609,5 @@ export const userService = {
   updateBestStats,
   updateUserMaxArea,
   updateUserCurrentArea,
+  updateUserPocketWatch,
 };

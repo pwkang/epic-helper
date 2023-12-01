@@ -90,6 +90,12 @@ export const toUser = (user: any): IUser => {
     rpgInfo: {
       maxArea: user?.rpgInfo?.maxArea,
       currentArea: user?.rpgInfo?.currentArea,
+      artifacts: {
+        pocketWatch: {
+          owned: user?.rpgInfo?.artifacts?.pocketWatch?.owned,
+          percent: user?.rpgInfo?.artifacts?.pocketWatch?.percent ?? 0,
+        },
+      },
     },
   };
 };
