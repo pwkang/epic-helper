@@ -7,6 +7,7 @@ import {
 export const CUSTOM_MESSAGE_PAGE_TYPE = {
   general: 'general',
   other: 'other',
+  event: 'event',
   guide: 'guide',
 } as const;
 
@@ -46,6 +47,13 @@ export const CUSTOM_MESSAGE_PAGES: IPage[] = [
     rows: [
       {label: 'Pet', type: 'pet'},
       {label: 'Epic Items', type: 'epicItem'},
+    ],
+  },
+  {
+    id: CUSTOM_MESSAGE_PAGE_TYPE.event,
+    label: 'Event',
+    rows: [
+      {label: 'Xmas Chimney', type: 'xmasChimney'},
     ],
   },
 ];

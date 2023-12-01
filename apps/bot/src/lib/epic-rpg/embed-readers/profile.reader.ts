@@ -32,8 +32,8 @@ const profileReader = ({embed}: IProfileReader) => {
 
   return {
     level: Number(level),
-    currentArea: typedObjectEntries(RPG_AREA).find(([, value]) => String(value).toLowerCase() === String(currentArea).toLowerCase())?.[0] ?? 0,
-    maxArea: typedObjectEntries(RPG_AREA).find(([, value]) => String(value).toLowerCase() === String(maxArea).toLowerCase())?.[0] ?? 0,
+    currentArea: typedObjectEntries(RPG_AREA).find(([, value]) => String(value).toLowerCase() === String(currentArea).toLowerCase())?.[0] ?? null,
+    maxArea: typedObjectEntries(RPG_AREA).find(([, value]) => String(value).toLowerCase() === String(maxArea).toLowerCase())?.[0] ?? null,
     timeTravels: Number(timeTravels),
     atk: Number(atk),
     dek: Number(dek),

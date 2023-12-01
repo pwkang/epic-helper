@@ -121,6 +121,7 @@ const keyWords: IKeyword = {
   vote: ['vote'],
   weekly: ['weekly'],
   working: ['working', ...Object.keys(RPG_WORKING_TYPE)],
+  xmasChimney: ['xmasChimney', 'xmas chimney', 'chimney'],
 };
 
 const matchReminderType = (reminderType: string) => {

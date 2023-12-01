@@ -7,6 +7,7 @@ import {serverService} from '../../../../services/database/server.service';
 import {djsMessageHelper} from '../../../discordjs/message';
 import embedProvider from '../../../epic-helper/embeds';
 import toggleServerChecker from '../../../epic-helper/toggle-checker/server';
+import {userService} from '../../../../services/database/user.service';
 
 interface IRpgProfile {
   server: Guild;
@@ -75,6 +76,7 @@ const rpgProfileSuccess = async ({
   const profile = embedReaders.profile({
     embed,
   });
+  const userAccount = await userService.getUserAccount(author.id);
   await commandHelper.server.verifyTT({
     client,
     author,
@@ -82,6 +84,18 @@ const rpgProfileSuccess = async ({
     channelId: channel.id,
     timeTravels: profile.timeTravels,
   });
+  if(profile.currentArea && userAccount?.rpgInfo.currentArea !== profile.currentArea) {
+    await userService.updateUserCurrentArea({
+      userId: author.id,
+      area: profile.currentArea,
+    });
+  }
+  if(profile.maxArea && userAccount?.rpgInfo.maxArea !== profile.maxArea) {
+    await userService.updateUserMaxArea({
+      userId: author.id,
+      area: profile.maxArea,
+    });
+  }
 };
 
 const isUserProfile = ({author, embed}: IMessageEmbedChecker) =>

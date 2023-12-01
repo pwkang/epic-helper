@@ -393,6 +393,32 @@ const saveUserPetCooldown = async ({
   );
 };
 
+interface ISaveUserXmasChimneyCooldown {
+  userId: string;
+  readyAt: Date;
+}
+
+const saveUserXmasChimneyCooldown = async ({
+  userId,
+  readyAt,
+}: ISaveUserXmasChimneyCooldown): Promise<void> => {
+  await dbUserReminder.findOneAndUpdate(
+    {
+      userId,
+      type: RPG_COMMAND_TYPE.xmasChimney,
+    },
+    {
+      $set: {
+        readyAt,
+      },
+    },
+    {
+      upsert: true,
+    },
+  );
+};
+
+
 interface IUpdateUserCooldown {
   userId: string;
   type: ValuesOf<typeof RPG_COMMAND_TYPE>;
@@ -546,4 +572,5 @@ export const userReminderServices = {
   getNextReadyCommand,
   updateRemindedCooldowns,
   findUserCooldown,
+  saveUserXmasChimneyCooldown,
 };

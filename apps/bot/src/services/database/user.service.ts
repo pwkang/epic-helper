@@ -1,6 +1,6 @@
 import type {UpdateQuery} from 'mongoose';
 import {mongoClient} from '@epic-helper/services';
-import type {RPG_DONOR_TIER, RPG_ENCHANT_LEVEL} from '@epic-helper/constants';
+import type {RPG_AREA, RPG_DONOR_TIER, RPG_ENCHANT_LEVEL} from '@epic-helper/constants';
 import userAccountRedis from '../redis/user-account.redis';
 import redisUserAccount from '../redis/user-account.redis';
 import type {IUser, IUserToggle, USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
@@ -516,6 +516,44 @@ const updateBestStats = async ({userId, type, value}: IUpdateBestStats) => {
   );
 };
 
+interface IUpdateUserMaxArea {
+  userId: string;
+  area: keyof typeof RPG_AREA;
+}
+
+const updateUserMaxArea = async ({userId, area}: IUpdateUserMaxArea) => {
+  await dbUser.findOneAndUpdate(
+    {userId},
+    {
+      $set: {
+        'rpgInfo.maxArea': area,
+      },
+    },
+    {
+      new: true,
+    },
+  );
+};
+
+interface IUpdateUserCurrentArea {
+  userId: string;
+  area: keyof typeof RPG_AREA;
+}
+
+const updateUserCurrentArea = async ({userId, area}: IUpdateUserCurrentArea) => {
+  await dbUser.findOneAndUpdate(
+    {userId},
+    {
+      $set: {
+        'rpgInfo.currentArea': area,
+      },
+    },
+    {
+      new: true,
+    },
+  );
+};
+
 export const userService = {
   registerUserAccount,
   userAccountOn,
@@ -546,4 +584,6 @@ export const userService = {
   isUserAccountOn,
   getBestStats,
   updateBestStats,
+  updateUserMaxArea,
+  updateUserCurrentArea,
 };

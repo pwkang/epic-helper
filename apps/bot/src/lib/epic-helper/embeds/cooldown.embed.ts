@@ -91,9 +91,14 @@ const cmd: ICooldown[] = [
     ],
   },
   {
-    name: '🧩 Other',
+    name: '🧩 Event',
     skipIfNone: true,
-    value: [],
+    value: [
+      {
+        type: RPG_COMMAND_TYPE.xmasChimney,
+        name: 'Xmas Chimney',
+      },
+    ],
   },
 ];
 
@@ -133,10 +138,13 @@ const getUserCooldownEmbed = ({
         timestampHelper.relative({
           time: cooldown.readyAt,
         });
+      const isCmdReady = !cooldown?.readyAt || cooldown?.readyAt.getTime() < Date.now();
+      if(field.skipIfNone && isCmdReady) continue;
+
       const icon =
-        cooldown?.readyAt && cooldown?.readyAt.getTime() > Date.now()
-          ? BOT_EMOJI.utils.notReady
-          : BOT_EMOJI.utils.ready;
+        isCmdReady
+          ? BOT_EMOJI.utils.ready
+          : BOT_EMOJI.utils.notReady;
       const formattedCommandName = capitalizeFirstLetters(commandName);
       const readyString = readyIn ? ` (${readyIn})` : '';
       value.push(`${icon} ~-~ \`${formattedCommandName}\`${readyString}`);

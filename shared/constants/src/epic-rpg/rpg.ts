@@ -17,6 +17,7 @@ export const RPG_COMMAND_TYPE = {
   dungeon: 'dungeon',
   epicItem: 'epicItem',
   pet: 'pet',
+  xmasChimney: 'xmasChimney',
 } as const;
 
 export const RPG_WORKING_TYPE = {
@@ -55,6 +56,7 @@ export const RPG_COOLDOWN_EMBED_TYPE = {
   epicItem: 'epicItem',
   guild: 'guild',
   halboo: 'halboo',
+  xmasChimney: 'xmasChimney',
 } as const;
 
 export const RPG_FARM_SEED = {

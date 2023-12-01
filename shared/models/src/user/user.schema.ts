@@ -30,6 +30,7 @@ export const userSchema = new Schema<IUser>({
       dungeon: {type: Boolean, default: false},
       pet: {type: Boolean, default: false},
       epicItem: {type: Boolean, default: false},
+      xmasChimney: {type: Boolean, default: false},
     },
     reminder: {
       all: {type: Boolean, default: true},
@@ -49,6 +50,7 @@ export const userSchema = new Schema<IUser>({
       dungeon: {type: Boolean, default: true},
       pet: {type: Boolean, default: true},
       epicItem: {type: Boolean, default: true},
+      xmasChimney: {type: Boolean, default: true},
     },
     mentions: {
       all: {type: Boolean, default: true},
@@ -70,6 +72,7 @@ export const userSchema = new Schema<IUser>({
       trainingAnswer: {type: Boolean, default: true},
       petCatch: {type: Boolean, default: true},
       epicItem: {type: Boolean, default: true},
+      xmasChimney: {type: Boolean, default: true},
     },
     training: {
       all: {type: Boolean, default: true},
@@ -109,6 +112,7 @@ export const userSchema = new Schema<IUser>({
     dungeon: String,
     epicItem: String,
     pet: String,
+    xmasChimney: String,
   },
   channel: {
     all: String,
@@ -128,6 +132,7 @@ export const userSchema = new Schema<IUser>({
     dungeon: String,
     epicItem: String,
     pet: String,
+    xmasChimney: String,
   },
   config: {
     timezone: {
@@ -163,5 +168,9 @@ export const userSchema = new Schema<IUser>({
       working: {type: Number, default: 0},
       farm: {type: Number, default: 0},
     },
+  },
+  rpgInfo: {
+    currentArea: {type: String},
+    maxArea: {type: String},
   },
 });

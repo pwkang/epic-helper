@@ -34,7 +34,6 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
         client,
       });
     }
-
     const channelId = await getReminderChannel({
       commandType: command.type,
       userId: userAccount.userId,
@@ -47,7 +46,6 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
     });
     if (!channel) continue;
     if (!djsChannelHelper.isGuildChannel(channel)) continue;
-    if (!('guild' in channel)) continue;
 
     const toggleChecker = await toggleUserChecker({
       userId,
