@@ -13,7 +13,7 @@ export const _isClusterActive = async (client: Client) => {
   if(!isActive) {
     try{
       if(mongoClient.readyState === 1)
-        await mongoClient.close(true);
+        await mongoClient.close();
     }catch(e){
       logger({
         clusterId: client.cluster?.id,
