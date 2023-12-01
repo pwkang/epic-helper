@@ -72,7 +72,17 @@ export default <SlashCommand>{
               .toLowerCase(),
           )
           .setDescription(RPG_RANDOM_EVENTS_NAME.miniboss),
-      ),
+      )
+      .addStringOption((option) =>
+        option
+          .setName(
+            RPG_RANDOM_EVENTS_COMMAND.santevil
+              .replaceAll(' ', '-')
+              .toLowerCase(),
+          )
+          .setDescription(RPG_RANDOM_EVENTS_NAME.santevil),
+      )
+  ,
   execute: async (client, interaction) => {
     const log = interaction.options.getString(
       RPG_RANDOM_EVENTS_COMMAND.log.replaceAll(' ', '-').toLowerCase(),
@@ -95,6 +105,9 @@ export default <SlashCommand>{
     const miniboss = interaction.options.getString(
       RPG_RANDOM_EVENTS_COMMAND.miniboss.replaceAll(' ', '-').toLowerCase(),
     );
+    const santevil = interaction.options.getString(
+      RPG_RANDOM_EVENTS_COMMAND.santevil.replaceAll(' ', '-').toLowerCase(),
+    );
 
     const serverAccount = await serverService.updateRandomEvents({
       serverId: interaction.guildId!,
@@ -109,6 +122,11 @@ export default <SlashCommand>{
           ? miniboss === 'clear'
             ? null
             : miniboss
+          : undefined,
+        santevil: santevil
+          ? santevil === 'clear'
+            ? null
+            : santevil
           : undefined,
       },
     });

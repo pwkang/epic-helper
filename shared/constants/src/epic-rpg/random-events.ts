@@ -6,6 +6,7 @@ export const RPG_RANDOM_EVENTS = {
   boss: 'boss',
   arena: 'arena',
   miniboss: 'miniboss',
+  santevil: 'santevil',
 } as const;
 
 export const RPG_RANDOM_EVENTS_NAME: Record<
@@ -19,6 +20,7 @@ export const RPG_RANDOM_EVENTS_NAME: Record<
   boss: 'Legendary Boss',
   arena: 'Arena',
   miniboss: 'Miniboss',
+  santevil: 'SANTEVIL',
 } as const;
 
 export const RPG_RANDOM_EVENTS_COMMAND: Record<
@@ -32,4 +34,5 @@ export const RPG_RANDOM_EVENTS_COMMAND: Record<
   boss: 'Time To Fight',
   arena: 'Join',
   miniboss: 'Fight',
+  santevil: 'HO HO HO',
 } as const;
