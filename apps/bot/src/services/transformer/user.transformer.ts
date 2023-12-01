@@ -87,6 +87,10 @@ export const toUser = (user: any): IUser => {
         {} as Record<keyof typeof USER_STATS_RPG_COMMAND_TYPE, number>,
       ),
     },
+    rpgInfo: {
+      maxArea: user?.rpgInfo?.maxArea,
+      currentArea: user?.rpgInfo?.currentArea,
+    },
   };
 };
 

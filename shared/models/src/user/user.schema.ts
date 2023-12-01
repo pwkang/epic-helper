@@ -169,4 +169,8 @@ export const userSchema = new Schema<IUser>({
       farm: {type: Number, default: 0},
     },
   },
+  rpgInfo: {
+    currentArea: {type: String},
+    maxArea: {type: String},
+  },
 });

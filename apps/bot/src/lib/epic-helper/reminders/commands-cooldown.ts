@@ -1,10 +1,6 @@
 import type {User} from 'discord.js';
 import type {RPG_DONOR_TIER} from '@epic-helper/constants';
-import {
-  BOT_REMINDER_BASE_COOLDOWN,
-  RPG_COMMAND_TYPE,
-  RPG_DONOR_CD_REDUCTION,
-} from '@epic-helper/constants';
+import {BOT_REMINDER_BASE_COOLDOWN, RPG_COMMAND_TYPE, RPG_DONOR_CD_REDUCTION} from '@epic-helper/constants';
 import {userService} from '../../../services/database/user.service';
 
 interface IGetCdReduction {
@@ -40,6 +36,28 @@ const canReducedByDonor: Record<ValuesOf<typeof RPG_COMMAND_TYPE>, boolean> = {
   xmasChimney: false,
 };
 
+const isReducedInArea0: Record<ValuesOf<typeof RPG_COMMAND_TYPE>, boolean> = {
+  daily: false,
+  weekly: false,
+  lootbox: true,
+  vote: false,
+  hunt: true,
+  adventure: true,
+  training: true,
+  duel: true,
+  quest: true,
+  working: true,
+  farm: true,
+  horse: true,
+  arena: true,
+  dungeon: true,
+  epicItem: false,
+  pet: false,
+  xmasChimney: true,
+};
+
+const AREA_0_CD_REDUCTION = 0.9;
+
 export const calcCdReduction = async ({
   commandType,
   userId,
@@ -59,6 +77,8 @@ export const calcCdReduction = async ({
       break;
   }
 
+  if (userAccount.rpgInfo.currentArea === 'a0' && isReducedInArea0[commandType])
+    cooldown *= AREA_0_CD_REDUCTION;
 
   return cooldown;
 };

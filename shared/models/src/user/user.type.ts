@@ -6,6 +6,7 @@ import type {
   RPG_ENCHANT_LEVEL,
 } from '@epic-helper/constants';
 import type {ValuesOf} from '../type';
+import type {RPG_AREA} from '@epic-helper/constants';
 
 type ToggleDmOptions = keyof typeof RPG_COMMAND_TYPE | 'all';
 type ToggleReminderOptions = keyof typeof RPG_COMMAND_TYPE | 'all';
@@ -58,6 +59,10 @@ export interface IUser {
     donorP: ValuesOf<typeof RPG_DONOR_TIER> | null;
     onOff: boolean;
     timeFormat: ValuesOf<typeof BOT_TIME_FORMAT>;
+  };
+  rpgInfo: {
+    currentArea: keyof typeof RPG_AREA;
+    maxArea: keyof typeof RPG_AREA;
   };
   items: {
     ruby: number;
