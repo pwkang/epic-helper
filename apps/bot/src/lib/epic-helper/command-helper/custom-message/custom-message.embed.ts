@@ -41,6 +41,7 @@ export const _getCustomMessageEmbed = ({
   switch (pageType) {
     case 'general':
     case 'other':
+    case 'event':
       for (const row of pageToRender.rows) {
         const {label, type} = row;
         const embedValue: string[] = [];
