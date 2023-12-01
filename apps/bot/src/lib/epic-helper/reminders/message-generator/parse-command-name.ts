@@ -112,6 +112,10 @@ const getPetCommandStr = () => {
   return 'RPG PET CLAIM';
 };
 
+const getXmasChimneyCommandStr = () => {
+  return 'RPG XMAS CHIMNEY';
+};
+
 type IGetPetTrainCommandStr = IUserReminder & {
   toggleChecker: IToggleUserCheckerReturnType;
 };
@@ -172,6 +176,8 @@ export const _parseCommandString = ({
       });
     case RPG_COMMAND_TYPE.pet:
       return getPetCommandStr();
+    case RPG_COMMAND_TYPE.xmasChimney:
+      return getXmasChimneyCommandStr();
     default:
       return '';
   }

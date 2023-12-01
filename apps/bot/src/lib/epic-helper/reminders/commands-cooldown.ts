@@ -20,7 +20,7 @@ const donorCdReduction = {
   donor35: 0.65,
 } as const;
 
-const canReducedByDonor = {
+const canReducedByDonor: Record<ValuesOf<typeof RPG_COMMAND_TYPE>, boolean> = {
   daily: false,
   weekly: false,
   lootbox: false,
@@ -36,6 +36,8 @@ const canReducedByDonor = {
   arena: true,
   dungeon: true,
   epicItem: false,
+  pet: false,
+  xmasChimney: false,
 };
 
 export const calcCdReduction = async ({
@@ -56,6 +58,7 @@ export const calcCdReduction = async ({
       cooldown *= canReducedByDonor[commandType] ? donorCdReduction[donor] : 1;
       break;
   }
+
 
   return cooldown;
 };

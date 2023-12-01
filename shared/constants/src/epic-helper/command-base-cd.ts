@@ -19,4 +19,5 @@ export const BOT_REMINDER_BASE_COOLDOWN = {
   arena: ms('12h'),
   dungeon: ms('12h'),
   epicItem: ms('30m'),
+  xmasChimney: ms('3h'),
 } as const;

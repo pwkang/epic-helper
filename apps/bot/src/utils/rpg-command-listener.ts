@@ -203,6 +203,7 @@ const commandKeyword: Record<
   epicItem: 'You have used an EPIC item already',
   guild: 'Your guild has already raided or been upgraded',
   halboo: 'You have scared someone recently',
+  xmasChimney: 'You have went through a chimney recently',
 };
 
 function getCooldownType(embed: Embed) {
