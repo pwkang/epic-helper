@@ -27,6 +27,7 @@ export const serverSchema = new Schema<IServer>({
       boss: String,
       arena: String,
       miniboss: String,
+      santevil: String,
     },
     enchant: {
       muteDuration: {type: Number, default: 5000},
