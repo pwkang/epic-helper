@@ -76,7 +76,7 @@ const isReducedByPocketWatch: Record<ValuesOf<typeof RPG_COMMAND_TYPE>, boolean>
   dungeon: true,
   epicItem: false,
   pet: false,
-  xmasChimney: true,
+  xmasChimney: false,
 };
 
 export const calcCdReduction = async ({
