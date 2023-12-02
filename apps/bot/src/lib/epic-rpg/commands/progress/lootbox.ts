@@ -54,6 +54,12 @@ export function rpgBuyLootbox({
     }
   });
   event.on('cooldown', async (cooldown) => {
+    const toggleUser = await toggleUserChecker({
+      userId: author.id,
+      serverId: message.guild.id,
+      client,
+    });
+    if(!toggleUser?.reminder.lootbox) return;
     await userReminderServices.updateUserCooldown({
       type: RPG_COMMAND_TYPE.lootbox,
       readyAt: new Date(Date.now() + cooldown),

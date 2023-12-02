@@ -78,6 +78,12 @@ export function rpgHunt({author, message, client, isSlashCommand}: IRpgHunt) {
     }
   });
   event.on('cooldown', async (cooldown) => {
+    const toggleUser = await toggleUserChecker({
+      userId: author.id,
+      serverId: message.guild.id,
+      client,
+    });
+    if(!toggleUser?.reminder.hunt) return;
     await userReminderServices.updateUserCooldown({
       userId: author.id,
       type: RPG_COMMAND_TYPE.hunt,

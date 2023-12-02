@@ -44,6 +44,12 @@ export function rpgUltraining({
     }
   });
   event.on('cooldown', async (cooldown) => {
+    const toggleUser = await toggleUserChecker({
+      userId: author.id,
+      serverId: message.guild.id,
+      client,
+    });
+    if(!toggleUser?.reminder.training) return;
     await userReminderServices.updateUserCooldown({
       userId: author.id,
       type: RPG_COMMAND_TYPE.training,

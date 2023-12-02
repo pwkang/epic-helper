@@ -53,6 +53,12 @@ export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
     }
   });
   event.on('cooldown', async (cooldown) => {
+    const toggleUser = await toggleUserChecker({
+      userId: author.id,
+      serverId: message.guild.id,
+      client,
+    });
+    if(!toggleUser?.reminder.quest) return;
     await userReminderServices.updateUserCooldown({
       userId: author.id,
       type: RPG_COMMAND_TYPE.quest,
