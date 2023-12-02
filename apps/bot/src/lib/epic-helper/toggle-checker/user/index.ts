@@ -7,6 +7,7 @@ import {
   _toggleHuntSwitch,
   _toggleMentions,
   _togglePetCatch,
+  _togglePetReminder,
   _toggleQuest,
   _toggleReminder,
   _toggleSlash,
@@ -203,10 +204,9 @@ const toggleUserChecker = async ({
         isDonor,
         type: RPG_COMMAND_TYPE.epicItem,
       }),
-      pet: _toggleReminder({
+      pet: _togglePetReminder({
         toggle: userToggle,
         isDonor,
-        type: RPG_COMMAND_TYPE.pet,
       }),
       xmasChimney: _toggleReminder({
         toggle: userToggle,
