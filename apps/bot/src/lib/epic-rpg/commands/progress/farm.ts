@@ -58,6 +58,12 @@ export function rpgFarm({client, message, author, isSlashCommand}: IRpgFarm) {
     }
   });
   event.on('cooldown', async (cooldown) => {
+    const toggleUser = await toggleUserChecker({
+      userId: author.id,
+      serverId: message.guild.id,
+      client,
+    });
+    if(!toggleUser?.reminder.farm) return;
     await userReminderServices.updateUserCooldown({
       userId: author.id,
       readyAt: new Date(Date.now() + cooldown),

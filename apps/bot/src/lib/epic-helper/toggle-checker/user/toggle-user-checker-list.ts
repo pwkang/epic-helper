@@ -21,6 +21,9 @@ export const _toggleReminder = ({toggle, isDonor, type}: IToggleReminder) =>
   (isDonor && toggle.reminder.all && toggle.reminder[type]) ||
   (!isDonor && toggle.reminder.all);
 
+export const _togglePetReminder = ({toggle}: IToggleUserCheckerItem) =>
+  toggle.reminder.pet;
+
 interface IToggleMentions extends IToggleUserCheckerItem {
   type: ValuesOf<typeof RPG_COMMAND_TYPE> | 'trainingAnswer' | 'petCatch';
 }
