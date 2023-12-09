@@ -1,9 +1,5 @@
-import {serverService} from '../../../../services/database/server.service';
-import {
-  _toggleEnchantMute,
-  _toggleRandomEvent,
-  _toggleTTVerification,
-} from './toggle-server-checker-list';
+import {serverService} from '@epic-helper/services';
+import {_toggleEnchantMute, _toggleRandomEvent, _toggleTTVerification} from './toggle-server-checker-list';
 
 interface IToggleServerChecker {
   serverId: string;

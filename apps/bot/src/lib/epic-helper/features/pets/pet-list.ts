@@ -2,11 +2,7 @@ import type {EmbedField, User} from 'discord.js';
 import {EmbedBuilder} from 'discord.js';
 import {convertNumToPetId, typedObjectEntries} from '@epic-helper/utils';
 import type {IUserPet} from '@epic-helper/models';
-import type {
-  RPG_PET_SKILL_ASCEND,
-  RPG_PET_SKILL_SPECIAL,
-  TSkillTierNumber,
-} from '@epic-helper/constants';
+import type {RPG_PET_SKILL_ASCEND, RPG_PET_SKILL_SPECIAL, TSkillTierNumber} from '@epic-helper/constants';
 import {
   BOT_COLOR,
   BOT_EMOJI,
@@ -17,7 +13,7 @@ import {
   RPG_PET_TYPE_EVENT,
 } from '@epic-helper/constants';
 import {convertNumberToRoman} from '../../../../utils/roman-conversion';
-import {userPetServices} from '../../../../services/database/user-pet.service';
+import {userPetServices} from '@epic-helper/services';
 
 export const PET_LIST_PET_PET_PAGE = 21;
 

@@ -10,7 +10,7 @@ import {
 } from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
-import {userReminderServices} from '../../../../services/database/user-reminder.service';
+import {userReminderServices} from '@epic-helper/services';
 import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
 import timestampHelper from '../../../discordjs/timestamp';
 import {djsMessageHelper} from '../../../discordjs/message';
@@ -58,7 +58,7 @@ export function rpgQuest({client, message, author, isSlashCommand}: IRpgQuest) {
       serverId: message.guild.id,
       client,
     });
-    if(!toggleUser?.reminder.quest) return;
+    if (!toggleUser?.reminder.quest) return;
     await userReminderServices.updateUserCooldown({
       userId: author.id,
       type: RPG_COMMAND_TYPE.quest,

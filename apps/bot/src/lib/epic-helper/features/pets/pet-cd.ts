@@ -4,13 +4,8 @@ import {convertNumToPetId} from '@epic-helper/utils';
 import {convertNumberToRoman} from '../../../../utils/roman-conversion';
 import timestampHelper from '../../../discordjs/timestamp';
 import type {IUserPet} from '@epic-helper/models';
-import {
-  BOT_COLOR,
-  BOT_EMOJI,
-  RPG_PET_ADV_STATUS,
-  RPG_PET_TYPE,
-} from '@epic-helper/constants';
-import {userPetServices} from '../../../../services/database/user-pet.service';
+import {BOT_COLOR, BOT_EMOJI, RPG_PET_ADV_STATUS, RPG_PET_TYPE} from '@epic-helper/constants';
+import {userPetServices} from '@epic-helper/services';
 
 export const PET_CD_PET_PAGE = 21;
 

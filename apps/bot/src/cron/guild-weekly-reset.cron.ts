@@ -1,8 +1,6 @@
-import {redisService} from '../services/redis/redis.service';
-import {redisGuildReminder} from '../services/redis/guild-reminder.redis';
 import {guildReminderTimesUp} from '../lib/epic-helper/reminders/ready/guild.reminder-ready';
-import {guildService} from '../services/database/guild.service';
 import commandHelper from '../lib/epic-helper/command-helper';
+import {guildService, redisGuildReminder, redisService} from '@epic-helper/services';
 
 export default <CronJob>{
   name: 'guildWeeklyReset',

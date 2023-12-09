@@ -1,8 +1,5 @@
 import type {RPG_COMMAND_TYPE} from '@epic-helper/constants';
-import {
-  BOT_CUSTOM_MESSAGE_TYPES,
-  BOT_CUSTOM_MESSAGE_VARIABLES,
-} from '@epic-helper/constants';
+import {BOT_CUSTOM_MESSAGE_TYPES, BOT_CUSTOM_MESSAGE_VARIABLES} from '@epic-helper/constants';
 
 export const CUSTOM_MESSAGE_PAGE_TYPE = {
   general: 'general',

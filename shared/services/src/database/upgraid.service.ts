@@ -1,6 +1,6 @@
-import {mongoClient} from '@epic-helper/services';
 import {upgraidSchema} from '@epic-helper/models';
 import {getGuildWeek} from '@epic-helper/utils';
+import {mongoClient} from '../clients/mongoose.service';
 
 const dbUpgraid = mongoClient.model('upgraids', upgraidSchema);
 

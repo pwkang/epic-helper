@@ -1,16 +1,12 @@
-import {
-  BOT_REMINDER_BASE_COOLDOWN,
-  RPG_COMMAND_TYPE,
-  RPG_COOLDOWN_EMBED_TYPE,
-} from '@epic-helper/constants';
+import {BOT_REMINDER_BASE_COOLDOWN, RPG_COMMAND_TYPE, RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants';
 import type {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
-import {userReminderServices} from '../../../../services/database/user-reminder.service';
+import {userReminderServices} from '@epic-helper/services';
 import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
 import commandHelper from '../../../epic-helper/command-helper';
-import {userService} from '../../../../services/database/user.service';
+import {userService} from '@epic-helper/services';
 
 const DUEL_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.duel;
 
@@ -68,7 +64,7 @@ export function rpgDuel({
       serverId: message.guild.id,
       client,
     });
-    if(!toggleUser?.reminder.duel) return;
+    if (!toggleUser?.reminder.duel) return;
     await userReminderServices.updateUserCooldown({
       userId: author.id,
       readyAt: new Date(Date.now() + cooldown),

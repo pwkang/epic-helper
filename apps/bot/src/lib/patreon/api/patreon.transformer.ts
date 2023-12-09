@@ -4,10 +4,7 @@ import type {
   IIncludeItem,
   IUserAttributes,
 } from '../type';
-import type {
-  PATREON_PATRON_STATUS,
-  PATREON_PAYMENT_STATUS,
-} from '../patreon.constant';
+import type {PATREON_PATRON_STATUS, PATREON_PAYMENT_STATUS} from '../patreon.constant';
 import {PATREON_INCLUDE_TYPE} from '../patreon.constant';
 import type {DONOR_TIER} from '@epic-helper/constants';
 import {DONOR_TIER_ID} from '@epic-helper/constants';

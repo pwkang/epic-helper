@@ -1,4 +1,4 @@
-import {guildService} from '../../../../services/database/guild.service';
+import {guildService} from '@epic-helper/services';
 import {
   _guildEnabled,
   _toggleDuelLogDuelAdd,

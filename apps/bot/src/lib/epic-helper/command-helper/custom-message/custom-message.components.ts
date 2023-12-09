@@ -1,8 +1,5 @@
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle} from 'discord.js';
-import {
-  CUSTOM_MESSAGE_PAGE_TYPE,
-  CUSTOM_MESSAGE_PAGES,
-} from './custom-message.constant';
+import {CUSTOM_MESSAGE_PAGE_TYPE, CUSTOM_MESSAGE_PAGES} from './custom-message.constant';
 
 export interface ICustomMessagePageSelector {
   pageType?: ValuesOf<typeof CUSTOM_MESSAGE_PAGE_TYPE>;

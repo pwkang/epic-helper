@@ -1,6 +1,6 @@
 import type {Client} from 'discord.js';
 import {djsMessageHelper} from '../../../discordjs/message';
-import {guildService} from '../../../../services/database/guild.service';
+import {guildService} from '@epic-helper/services';
 import {toggleGuildChecker} from '../../toggle-checker/guild';
 
 interface IGuildReminderTimesUp {

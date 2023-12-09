@@ -4,7 +4,7 @@ import type {IMessageContentChecker} from '../../../../types/utils';
 import ms from 'ms';
 import {djsMessageHelper} from '../../../discordjs/message';
 import {convertNumToPetId, convertPetIdToNum} from '@epic-helper/utils';
-import {userPetServices} from '../../../../services/database/user-pet.service';
+import {userPetServices} from '@epic-helper/services';
 import {RPG_PET_ADV_STATUS, RPG_PET_TYPE} from '@epic-helper/constants';
 import type {IUserPet} from '@epic-helper/models';
 import convertMsToHumanReadableString from '../../../../utils/convert-ms-to-human-readable-string';

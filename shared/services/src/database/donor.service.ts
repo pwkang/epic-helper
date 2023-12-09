@@ -1,11 +1,11 @@
-import {mongoClient} from '@epic-helper/services';
+import {mongoClient} from '../clients/mongoose.service';
 import type {IDonor} from '@epic-helper/models';
 import {donorSchema} from '@epic-helper/models';
 import type {DONOR_TIER} from '@epic-helper/constants';
-import type {FilterQuery, QueryOptions} from 'mongoose';
-import type {Promise} from 'mongoose';
+import type {FilterQuery, Promise, QueryOptions} from 'mongoose';
 import {redisDonor} from '../redis/donor.redis';
 import {redisUserBoostedServers} from '../redis/user-boosted-servers.redis';
+import type {ValuesOf} from '../type';
 
 const dbDonor = mongoClient.model<IDonor>('donors', donorSchema);
 
@@ -102,10 +102,9 @@ const findDonor = async ({discordUserId}: IFindDonor) => {
   return donor ?? null;
 };
 
-const donorService = {
+export const donorService = {
   registerDonors,
   getDonors,
   findDonor,
 };
 
-export default donorService;

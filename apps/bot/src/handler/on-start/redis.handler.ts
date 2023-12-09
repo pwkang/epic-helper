@@ -1,4 +1,4 @@
-import {redisService} from '../../services/redis/redis.service';
+import {redisService} from '@epic-helper/services/dist/redis/redis.service';
 
 export const loadRedis = async () => {
   await redisService.connect();

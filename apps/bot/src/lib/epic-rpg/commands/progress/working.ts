@@ -1,17 +1,13 @@
 import type {RPG_WORKING_TYPE} from '@epic-helper/constants';
-import {
-  BOT_REMINDER_BASE_COOLDOWN,
-  RPG_COMMAND_TYPE,
-  RPG_COOLDOWN_EMBED_TYPE,
-} from '@epic-helper/constants';
+import {BOT_REMINDER_BASE_COOLDOWN, RPG_COMMAND_TYPE, RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants';
 import type {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {djsMessageHelper} from '../../../discordjs/message';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
-import {userService} from '../../../../services/database/user.service';
-import {userReminderServices} from '../../../../services/database/user-reminder.service';
+import {userService} from '@epic-helper/services';
+import {userReminderServices} from '@epic-helper/services';
 import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
 import commandHelper from '../../../epic-helper/command-helper';
 
@@ -103,7 +99,7 @@ export function rpgWorking({
       serverId: message.guild.id,
       client,
     });
-    if(!toggleUser?.reminder.working) return;
+    if (!toggleUser?.reminder.working) return;
     await userReminderServices.updateUserCooldown({
       userId: author.id,
       type: RPG_COMMAND_TYPE.working,

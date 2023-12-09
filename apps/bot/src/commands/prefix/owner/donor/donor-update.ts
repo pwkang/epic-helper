@@ -1,9 +1,9 @@
 import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
 import patreonApi from '../../../../lib/patreon/api/patreon';
 import {toPatrons} from '../../../../lib/patreon/api/patreon.transformer';
-import donorService from '../../../../services/database/donor.service';
 import {PATREON_PATRON_STATUS} from '../../../../lib/patreon/patreon.constant';
 import {djsMessageHelper} from '../../../../lib/discordjs/message';
+import {donorService} from '@epic-helper/services';
 
 export default <PrefixCommand>{
   name: 'donorUpdate',

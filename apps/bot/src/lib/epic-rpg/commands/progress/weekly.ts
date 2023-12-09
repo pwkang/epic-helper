@@ -1,13 +1,10 @@
 import type {Client, Embed, Message, User} from 'discord.js';
 import ms from 'ms';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {
-  RPG_COMMAND_TYPE,
-  RPG_COOLDOWN_EMBED_TYPE,
-} from '@epic-helper/constants';
+import {RPG_COMMAND_TYPE, RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
-import {userReminderServices} from '../../../../services/database/user-reminder.service';
+import {userReminderServices} from '@epic-helper/services';
 import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
 
 const WEEKLY_COOLDOWN = ms('1w') - ms('10m');
@@ -50,7 +47,7 @@ export function rpgWeekly({
       serverId: message.guild.id,
       client,
     });
-    if(!toggleUser?.reminder.weekly) return;
+    if (!toggleUser?.reminder.weekly) return;
     await userReminderServices.updateUserCooldown({
       userId: author.id,
       readyAt: new Date(Date.now() + cooldown),

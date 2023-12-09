@@ -2,7 +2,7 @@ import type {Client, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import messageChecker from '../../message-checker';
-import {userReminderServices} from '../../../../services/database/user-reminder.service';
+import {userReminderServices} from '@epic-helper/services';
 
 interface IRpgUseSleepyPotion {
   client: Client;

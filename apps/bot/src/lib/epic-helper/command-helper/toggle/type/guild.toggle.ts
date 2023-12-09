@@ -1,9 +1,9 @@
-import {guildService} from '../../../../../services/database/guild.service';
 import type {IGuild} from '@epic-helper/models';
 import {toggleDisplayList} from '../toggle.list';
 import {renderEmbed} from '../toggle.embed';
 import type {IUpdateToggle} from '../toggle.helper';
 import {getUpdateQuery} from '../toggle.helper';
+import {guildService} from '@epic-helper/services';
 
 interface IGetGuildToggle {
   serverId: string;

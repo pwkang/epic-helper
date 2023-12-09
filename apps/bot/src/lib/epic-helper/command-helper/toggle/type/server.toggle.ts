@@ -1,10 +1,10 @@
 import type {Guild} from 'discord.js';
-import {serverService} from '../../../../../services/database/server.service';
 import type {IServer} from '@epic-helper/models';
 import {toggleDisplayList} from '../toggle.list';
 import {renderEmbed} from '../toggle.embed';
 import type {IUpdateToggle} from '../toggle.helper';
 import {getUpdateQuery} from '../toggle.helper';
+import {serverService} from '@epic-helper/services';
 
 interface IGetServerToggle {
   server: Guild;

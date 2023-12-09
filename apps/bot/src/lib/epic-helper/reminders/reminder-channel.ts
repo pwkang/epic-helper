@@ -1,8 +1,8 @@
 import type {Channel, Client} from 'discord.js';
 import type {RPG_COMMAND_TYPE} from '@epic-helper/constants';
-import {userService} from '../../../services/database/user.service';
 import djsChannelHelper from '../../discordjs/channel';
 import {userChecker} from '../user-checker';
+import {userService} from '@epic-helper/services';
 
 interface IUpdateReminderChannel {
   userId: string;
@@ -40,7 +40,7 @@ export const getReminderChannel = async ({
     channelId: settings[commandType],
     client,
   });
-  if(!channel || !djsChannelHelper.isGuildChannel(channel)) return null;
+  if (!channel || !djsChannelHelper.isGuildChannel(channel)) return null;
   const isDonor = await userChecker.isDonor({
     client,
     userId,

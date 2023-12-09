@@ -1,6 +1,6 @@
 import type {IMessageContentChecker, IMessageEmbedChecker} from '../../../../types/utils';
 import type {Client, Embed, Message, User} from 'discord.js';
-import {userPetServices} from '../../../../services/database/user-pet.service';
+import {userPetServices} from '@epic-helper/services';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
 

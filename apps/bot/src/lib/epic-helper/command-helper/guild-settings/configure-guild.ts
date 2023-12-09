@@ -1,19 +1,6 @@
-import type {
-  BaseInteraction,
-  BaseMessageOptions,
-  Client,
-  Guild,
-  StringSelectMenuInteraction,
-  User,
-} from 'discord.js';
-import {
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  EmbedBuilder,
-  PermissionsBitField,
-} from 'discord.js';
-import {guildService} from '../../../../services/database/guild.service';
+import type {BaseInteraction, BaseMessageOptions, Client, Guild, StringSelectMenuInteraction, User} from 'discord.js';
+import {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, PermissionsBitField} from 'discord.js';
+import {guildService} from '@epic-helper/services';
 import {_getGuildSettingsEmbed} from './embed/guild-settings.embed';
 import messageFormatter from '../../../discordjs/message-formatter';
 import {djsMemberHelper} from '../../../discordjs/member';

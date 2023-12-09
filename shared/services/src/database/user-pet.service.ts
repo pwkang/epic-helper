@@ -1,10 +1,11 @@
 import type {Model} from 'mongoose';
 import {type FilterQuery, type QueryOptions} from 'mongoose';
-import {mongoClient} from '@epic-helper/services';
 import {RPG_PET_ADV_STATUS} from '@epic-helper/constants';
 import {type IUserPet, userPetSchema} from '@epic-helper/models';
 import {userReminderServices} from './user-reminder.service';
 import 'mongodb';
+import {mongoClient} from '../clients/mongoose.service';
+import type {ValuesOf} from '../type';
 
 userPetSchema.post('findOneAndUpdate', async function () {
   const updatedUserId = this.getQuery().userId;

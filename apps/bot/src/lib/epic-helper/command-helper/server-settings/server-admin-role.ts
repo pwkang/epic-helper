@@ -1,5 +1,5 @@
 import type {BaseMessageOptions, Guild} from 'discord.js';
-import {serverService} from '../../../../services/database/server.service';
+import {serverService} from '@epic-helper/services';
 import type {IServer} from '@epic-helper/models';
 import {_getServerAdminRoleEmbed} from './embed/server-admin-role-embed';
 

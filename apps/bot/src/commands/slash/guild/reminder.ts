@@ -1,9 +1,6 @@
 import {SLASH_COMMAND} from '../constant';
 import djsInteractionHelper from '../../../lib/discordjs/interaction';
-import {
-  USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
-} from '@epic-helper/constants';
+import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
 import commandHelper from '../../../lib/epic-helper/command-helper';
 
 export default <SlashCommand>{

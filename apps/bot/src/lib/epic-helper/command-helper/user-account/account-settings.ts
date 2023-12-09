@@ -1,18 +1,16 @@
-import type {
-  BaseMessageOptions,
-  StringSelectMenuInteraction,
-  User,
-} from 'discord.js';
+import type {BaseMessageOptions, StringSelectMenuInteraction, User} from 'discord.js';
 import {ActionRowBuilder, StringSelectMenuBuilder} from 'discord.js';
-import {userService} from '../../../../services/database/user.service';
+import {
+  donorService,
+  freeDonorService,
+  guildService,
+  redisServerInfo,
+  serverService,
+  userService,
+} from '@epic-helper/services';
 import {_getUserSettingsEmbed} from './embeds/user-settings.embed';
 import {_getUserReminderChannelEmbed} from './embeds/reminder-channels.embed';
-import donorService from '../../../../services/database/donor.service';
-import freeDonorService from '../../../../services/database/free-donor.service';
-import {serverService} from '../../../../services/database/server.service';
 import {_getDonorInfoEmbed} from './embeds/donor-info.embed';
-import {guildService} from '../../../../services/database/guild.service';
-import {redisServerInfo} from '../../../../services/redis/server-info.redis';
 
 interface IAccountSettings {
   author: User;

@@ -139,7 +139,7 @@ const getUserCooldownEmbed = ({
           time: cooldown.readyAt,
         });
       const isCmdReady = !cooldown?.readyAt || cooldown?.readyAt.getTime() < Date.now();
-      if(field.skipIfNone && isCmdReady) continue;
+      if (field.skipIfNone && isCmdReady) continue;
 
       const icon =
         isCmdReady

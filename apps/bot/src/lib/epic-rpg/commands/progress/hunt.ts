@@ -11,8 +11,7 @@ import {
 } from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
-import {userReminderServices} from '../../../../services/database/user-reminder.service';
-import {userService} from '../../../../services/database/user.service';
+import {userReminderServices, userService} from '@epic-helper/services';
 import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
 import commandHelper from '../../../epic-helper/command-helper';
 
@@ -83,7 +82,7 @@ export function rpgHunt({author, message, client, isSlashCommand}: IRpgHunt) {
       serverId: message.guild.id,
       client,
     });
-    if(!toggleUser?.reminder.hunt) return;
+    if (!toggleUser?.reminder.hunt) return;
     await userReminderServices.updateUserCooldown({
       userId: author.id,
       type: RPG_COMMAND_TYPE.hunt,

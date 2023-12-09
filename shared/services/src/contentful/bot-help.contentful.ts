@@ -1,4 +1,4 @@
-import {contentfulService} from '@epic-helper/services';
+import {contentfulService} from '../clients/contentful.service';
 import type {EntryFieldTypes} from 'contentful';
 import {redisHelpCommands} from '../redis/help-commands.redis';
 import {toHelpCommands} from '../transformer/help-commands.transformer';

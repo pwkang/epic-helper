@@ -1,6 +1,4 @@
-import freeDonorService from '../../../../services/database/free-donor.service';
-import donorService from '../../../../services/database/donor.service';
-import {serverService} from '../../../../services/database/server.service';
+import {donorService, freeDonorService, serverService} from '@epic-helper/services';
 import {DONOR_TOKEN_AMOUNT} from '@epic-helper/constants';
 import type {BaseMessageOptions} from 'discord.js';
 

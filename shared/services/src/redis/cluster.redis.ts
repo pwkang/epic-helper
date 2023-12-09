@@ -1,6 +1,5 @@
 import {redisService} from './redis.service';
 import type {Client} from 'discord.js';
-import {randomUUID} from 'crypto';
 
 const prefix = 'epic-helper:cluster:';
 
@@ -10,17 +9,14 @@ const findCluster = async (clusterId: number) => {
   return toCluster(JSON.parse(data));
 };
 
-const setCluster = async (clusterId: number, client: Client) => {
-  const data = getClusterData(client);
+const setCluster = async (clusterId: number, client: Client, uuid: string) => {
+  const data = getClusterData(client, clusterId, uuid);
   await redisService.set(`${prefix}${clusterId}`, JSON.stringify(data));
 };
 
-const getClusterData = (client: Client) => {
-  const uuid = randomUUID();
-  client.clusterSession = uuid;
-
+const getClusterData = (client: Client, clusterId: number, uuid: string) => {
   return {
-    clusterId: client.cluster?.id,
+    clusterId,
     activeSession: uuid,
   };
 };

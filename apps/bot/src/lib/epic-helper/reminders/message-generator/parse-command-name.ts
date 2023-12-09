@@ -1,9 +1,4 @@
-import type {
-  RPG_EPIC_ITEM_TYPES,
-  RPG_FARM_SEED,
-  RPG_LOOTBOX_TYPE,
-  RPG_WORKING_TYPE,
-} from '@epic-helper/constants';
+import type {RPG_EPIC_ITEM_TYPES, RPG_FARM_SEED, RPG_LOOTBOX_TYPE, RPG_WORKING_TYPE} from '@epic-helper/constants';
 import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import type {IUserReminder} from '@epic-helper/models';
 import type {IToggleUserCheckerReturnType} from '../../toggle-checker/user';

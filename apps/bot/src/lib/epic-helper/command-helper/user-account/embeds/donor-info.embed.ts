@@ -1,7 +1,7 @@
 import type {User} from 'discord.js';
 import {EmbedBuilder} from 'discord.js';
 import type {IDonor, IFreeDonor} from '@epic-helper/models';
-import type {serverService} from '../../../../../services/database/server.service';
+import type {serverService} from '@epic-helper/services';
 import {BOT_COLOR, DONOR_TOKEN_AMOUNT, PREFIX} from '@epic-helper/constants';
 import {capitalizeFirstLetters} from '@epic-helper/utils';
 

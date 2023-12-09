@@ -1,20 +1,8 @@
-import type {
-  BaseInteraction,
-  BaseMessageOptions,
-  Client,
-  Guild,
-  User,
-} from 'discord.js';
-import {
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  EmbedBuilder,
-} from 'discord.js';
-import {guildService} from '../../../../services/database/guild.service';
+import type {BaseInteraction, BaseMessageOptions, Client, Guild, User} from 'discord.js';
+import {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder} from 'discord.js';
+import {guildDuelService, guildService} from '@epic-helper/services';
 import {BOT_COLOR} from '@epic-helper/constants';
 import messageFormatter from '../../../discordjs/message-formatter';
-import {guildDuelService} from '../../../../services/database/guild-duel.service';
 import {userChecker} from '../../user-checker';
 
 interface IResetDuelRecord {

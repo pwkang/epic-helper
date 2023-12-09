@@ -1,4 +1,3 @@
-import {mongoClient} from '@epic-helper/services';
 import {guildSchema, type IGuild} from '@epic-helper/models';
 import type {UpdateQuery} from 'mongoose';
 import {redisGuildReminder} from '../redis/guild-reminder.redis';
@@ -7,6 +6,7 @@ import {toGuild, toGuilds} from '../transformer/guild.transformer';
 import {redisGuildMembers} from '../redis/guild-members.redis';
 import {redisGuild} from '../redis/guild.redis';
 import mongooseLeanDefaults from 'mongoose-lean-defaults';
+import {mongoClient} from '../clients/mongoose.service';
 
 guildSchema.post('findOneAndUpdate', async (doc: IGuild) => {
   if (!doc) return;

@@ -1,10 +1,5 @@
 import type {IGuild} from '@epic-helper/models';
-import type {
-  BaseInteraction,
-  BaseMessageOptions,
-  Guild,
-  StringSelectMenuInteraction,
-} from 'discord.js';
+import type {BaseInteraction, BaseMessageOptions, Guild, StringSelectMenuInteraction} from 'discord.js';
 import {ActionRowBuilder, StringSelectMenuBuilder} from 'discord.js';
 import {generateNavigationRow} from './pagination-row';
 

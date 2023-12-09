@@ -1,7 +1,7 @@
 import type {Client, Embed, User} from 'discord.js';
 import {EmbedBuilder} from 'discord.js';
-import {upgraidService} from '../../../../services/database/upgraid.service';
-import {guildService} from '../../../../services/database/guild.service';
+import {upgraidService} from '@epic-helper/services';
+import {guildService} from '@epic-helper/services';
 import {_renderThisWeekUpgraidListEmbed} from '../../../epic-helper/command-helper/guild/embed/this-week-upgraid-list';
 import {djsMessageHelper} from '../../../discordjs/message';
 

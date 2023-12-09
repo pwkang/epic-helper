@@ -1,9 +1,8 @@
 import type {Client, User} from 'discord.js';
 import {EmbedBuilder} from 'discord.js';
-import {userDuelService} from '../../../../services/database/user-duel.service';
 import {BOT_COLOR} from '@epic-helper/constants';
-import {guildDuelService} from '../../../../services/database/guild-duel.service';
 import {sendDuelLog} from './send-duel-log';
+import {guildDuelService, userDuelService} from '@epic-helper/services';
 
 interface IUndoDuelRecord {
   user: User;

@@ -3,7 +3,7 @@ import type {RpgArea} from '../../../types/rpg.types';
 
 type IDismantleEverything = (
   inventory: IInventoryItem,
-  currentArea?: RpgArea
+  currentArea?: RpgArea,
 ) => IInventoryItem;
 
 const dismantleRecommend: IDismantleEverything = (inventory, currentArea) => {

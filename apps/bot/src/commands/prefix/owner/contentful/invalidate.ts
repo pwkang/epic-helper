@@ -1,6 +1,5 @@
 import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
-import {redisHelpCommands} from '../../../../services/redis/help-commands.redis';
-import {redisHelpCommandsGroup} from '../../../../services/redis/help-commands-group.redis';
+import {redisHelpCommands, redisHelpCommandsGroup} from '@epic-helper/services';
 import {djsMessageHelper} from '../../../../lib/discordjs/message';
 
 export default <PrefixCommand>{

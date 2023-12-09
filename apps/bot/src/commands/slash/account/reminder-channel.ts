@@ -6,7 +6,7 @@ import {
   USER_ACC_OFF_ACTIONS,
   USER_NOT_REGISTERED_ACTIONS,
 } from '@epic-helper/constants';
-import {userService} from '../../../services/database/user.service';
+import {userService} from '@epic-helper/services';
 import {SLASH_COMMAND} from '../constant';
 
 export default <SlashCommand>{

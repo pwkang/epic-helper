@@ -1,4 +1,3 @@
-import {mongoClient} from '@epic-helper/services';
 import type {IEnchantChannel, IServer} from '@epic-helper/models';
 import {serverSchema} from '@epic-helper/models';
 import type {RPG_RANDOM_EVENTS} from '@epic-helper/constants';
@@ -7,6 +6,8 @@ import {typedObjectEntries} from '@epic-helper/utils';
 import {redisServerAccount} from '../redis/server-account.redis';
 import mongooseLeanDefaults from 'mongoose-lean-defaults';
 import {redisUserBoostedServers} from '../redis/user-boosted-servers.redis';
+import {mongoClient} from '../clients/mongoose.service';
+import type {ValuesOf} from '../type';
 
 serverSchema.post('findOneAndUpdate', async function(doc) {
   if (!doc) return;

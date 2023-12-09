@@ -1,5 +1,5 @@
 import type {Client} from 'discord.js';
-import {serverService} from '../../../../services/database/server.service';
+import {serverService} from '@epic-helper/services';
 import {djsServerHelper} from '../../../discordjs/server';
 import commandHelper from '../index';
 import {SERVER_SETTINGS_PAGE_TYPE} from './constant';

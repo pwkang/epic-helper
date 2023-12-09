@@ -3,11 +3,10 @@ import type {Channel, Client, Embed, Guild, Message, User} from 'discord.js';
 import type {IMessageEmbedChecker} from '../../../../types/utils';
 import embedReaders from '../../embed-readers';
 import commandHelper from '../../../epic-helper/command-helper';
-import {serverService} from '../../../../services/database/server.service';
+import {serverService, userService} from '@epic-helper/services';
 import {djsMessageHelper} from '../../../discordjs/message';
 import embedProvider from '../../../epic-helper/embeds';
 import toggleServerChecker from '../../../epic-helper/toggle-checker/server';
-import {userService} from '../../../../services/database/user.service';
 
 interface IRpgProfile {
   server: Guild;
@@ -84,13 +83,13 @@ const rpgProfileSuccess = async ({
     channelId: channel.id,
     timeTravels: profile.timeTravels,
   });
-  if(profile.currentArea && userAccount?.rpgInfo.currentArea !== profile.currentArea) {
+  if (profile.currentArea && userAccount?.rpgInfo.currentArea !== profile.currentArea) {
     await userService.updateUserCurrentArea({
       userId: author.id,
       area: profile.currentArea,
     });
   }
-  if(profile.maxArea && userAccount?.rpgInfo.maxArea !== profile.maxArea) {
+  if (profile.maxArea && userAccount?.rpgInfo.maxArea !== profile.maxArea) {
     await userService.updateUserMaxArea({
       userId: author.id,
       area: profile.maxArea,

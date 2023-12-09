@@ -1,8 +1,4 @@
-import {
-  PREFIX_COMMAND_TYPE,
-  USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
-} from '@epic-helper/constants';
+import {PREFIX_COMMAND_TYPE, USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
 import {rpgPetClaim} from '../../../../lib/epic-rpg/commands/pets/pet-claim';
 
 export default <PrefixCommand>{

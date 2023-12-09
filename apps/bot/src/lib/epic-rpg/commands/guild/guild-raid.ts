@@ -1,9 +1,9 @@
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import type {Client, Message, User} from 'discord.js';
 import type {IMessageContentChecker, IMessageEmbedChecker} from '../../../../types/utils';
-import {guildService} from '../../../../services/database/guild.service';
+import {guildService} from '@epic-helper/services';
 import ms from 'ms';
-import {upgraidService} from '../../../../services/database/upgraid.service';
+import {upgraidService} from '@epic-helper/services';
 import {_sendUpgraidResultToGuildChannel} from './_shared';
 import {RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants';
 import {toggleGuildChecker} from '../../../epic-helper/toggle-checker/guild';

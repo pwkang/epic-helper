@@ -1,11 +1,6 @@
-import type {
-  BaseMessageOptions,
-  Client,
-  Guild,
-  StringSelectMenuInteraction,
-} from 'discord.js';
+import type {BaseMessageOptions, Client, Guild, StringSelectMenuInteraction} from 'discord.js';
 import {ActionRowBuilder, StringSelectMenuBuilder} from 'discord.js';
-import {serverService} from '../../../../services/database/server.service';
+import {serverService} from '@epic-helper/services';
 import {_getRandomEventSettingsEmbed} from './embed/random-event.embed';
 import _getEnchantChannelsEmbed from './embed/enchant-channels.embed';
 import {SERVER_SETTINGS_PAGE_TYPE} from './constant';

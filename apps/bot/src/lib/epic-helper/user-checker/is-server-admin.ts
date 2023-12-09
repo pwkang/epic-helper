@@ -1,7 +1,7 @@
 import type {Client} from 'discord.js';
 import {PermissionsBitField} from 'discord.js';
 import {djsMemberHelper} from '../../discordjs/member';
-import {serverService} from '../../../services/database/server.service';
+import {serverService} from '@epic-helper/services';
 
 interface IIsServerAdmin {
   client: Client;

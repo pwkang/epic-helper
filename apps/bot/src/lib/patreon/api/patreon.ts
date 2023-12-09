@@ -1,8 +1,5 @@
 import patreonUrlGenerator from './patreon-url-generator';
-import type {
-  IFetchPatreonCampaignMembersResponse,
-  IFetchPatreonCampaignResponse,
-} from '../type';
+import type {IFetchPatreonCampaignMembersResponse, IFetchPatreonCampaignResponse} from '../type';
 import {logger, sleep} from '@epic-helper/utils';
 import {patreonAxiosClient} from '@epic-helper/services';
 import type {Client} from 'discord.js';

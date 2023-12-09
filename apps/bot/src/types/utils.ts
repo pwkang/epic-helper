@@ -1,8 +1,5 @@
 import type {Embed, Message, User} from 'discord.js';
-import type {
-  USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
-} from '@epic-helper/constants';
+import type {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
 
 export interface IMessageContentChecker {
   message: Message;

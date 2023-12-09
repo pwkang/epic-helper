@@ -1,5 +1,5 @@
 import {EPIC_RPG_ID} from '@epic-helper/constants';
-import {serverService} from '../../../../services/database/server.service';
+import {serverService} from '@epic-helper/services';
 import {djsMessageHelper} from '../../../../lib/discordjs/message';
 import toggleServerChecker from '../../../../lib/epic-helper/toggle-checker/server';
 

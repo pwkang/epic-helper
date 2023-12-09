@@ -1,7 +1,7 @@
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import type {Client, Embed, Message, User} from 'discord.js';
 import embedReaders from '../../embed-readers';
-import {userService} from '../../../../services/database/user.service';
+import {userService} from '@epic-helper/services';
 import messageChecker from '../../message-checker';
 
 interface IRpgArtifacts {

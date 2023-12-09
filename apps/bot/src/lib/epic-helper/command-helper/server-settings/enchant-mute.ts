@@ -1,7 +1,7 @@
 import type {Client} from 'discord.js';
 import {EmbedBuilder} from 'discord.js';
 import {serverChecker} from '../../server-checker';
-import {serverService} from '../../../../services/database/server.service';
+import {serverService} from '@epic-helper/services';
 import commandHelper from '../index';
 import {SERVER_SETTINGS_PAGE_TYPE} from './constant';
 import {djsServerHelper} from '../../../discordjs/server';

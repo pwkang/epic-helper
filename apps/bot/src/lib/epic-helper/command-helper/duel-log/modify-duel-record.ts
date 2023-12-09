@@ -1,13 +1,12 @@
 import type {BaseMessageOptions, Client, Guild, User} from 'discord.js';
 import {EmbedBuilder} from 'discord.js';
-import {guildDuelService} from '../../../../services/database/guild-duel.service';
 import {BOT_COLOR} from '@epic-helper/constants';
 import messageFormatter from '../../../discordjs/message-formatter';
 import {userChecker} from '../../user-checker';
 import {toggleGuildChecker} from '../../toggle-checker/guild';
 import {sendDuelLog} from './send-duel-log';
 import type {IGuild} from '@epic-helper/models';
-import {guildService} from '../../../../services/database/guild.service';
+import {guildDuelService, guildService} from '@epic-helper/services';
 import commandHelper from '../index';
 
 interface IModifyDuelRecord {

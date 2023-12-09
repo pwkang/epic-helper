@@ -1,4 +1,3 @@
-import {mongoClient} from '@epic-helper/services';
 import type {
   RPG_EPIC_ITEM_TYPES,
   RPG_FARM_SEED,
@@ -10,6 +9,8 @@ import type {IUserPet, IUserReminder} from '@epic-helper/models';
 import {userReminderSchema} from '@epic-helper/models';
 import {redisUserReminder} from '../redis/user-reminder.redis';
 import type {Model} from 'mongoose';
+import {mongoClient} from '../clients/mongoose.service';
+import type {ValuesOf} from '../type';
 
 userReminderSchema.post('findOneAndUpdate', async function () {
   const updatedUserId = this.getQuery().userId;

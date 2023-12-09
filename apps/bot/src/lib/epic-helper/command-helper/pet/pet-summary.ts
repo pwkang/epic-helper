@@ -1,7 +1,6 @@
 import type {User} from 'discord.js';
 import {EmbedBuilder} from 'discord.js';
-import {userService} from '../../../../services/database/user.service';
-import {userPetServices} from '../../../../services/database/user-pet.service';
+import {userPetServices, userService} from '@epic-helper/services';
 import type {IUserPet} from '@epic-helper/models';
 import type {TSkillTierNumber} from '@epic-helper/constants';
 import {
