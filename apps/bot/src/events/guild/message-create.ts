@@ -3,6 +3,7 @@ import {Events} from 'discord.js';
 import {DEVS_ID, EPIC_RPG_ID, PREFIX, PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
 import {preCheckCommand} from '../../utils/command-precheck';
 import commandHelper from '../../lib/epic-helper/command-helper';
+import type {ValuesOf} from '@epic-helper/types';
 
 export default <BotEvent>{
   eventName: Events.MessageCreate,

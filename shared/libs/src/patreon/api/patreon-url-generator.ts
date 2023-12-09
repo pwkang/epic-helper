@@ -6,6 +6,7 @@ import type {
   PATREON_TIER_ATTRIBUTES,
   PATREON_USER_ATTRIBUTES,
 } from '../patreon.constant';
+import type {ValuesOf} from '@epic-helper/types';
 
 interface IGenerateFetchPatreonApiUrl {
   campaignId: string;

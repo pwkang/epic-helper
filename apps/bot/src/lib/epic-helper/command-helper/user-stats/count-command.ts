@@ -1,5 +1,6 @@
 import type {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {userService, userStatsService} from '@epic-helper/services';
+import type {ValuesOf} from '@epic-helper/types';
 
 interface ICountCommand {
   userId: string;

@@ -5,7 +5,7 @@ import type {
   RPG_PET_TYPE,
   TSkillTierNumber,
 } from '@epic-helper/constants';
-import type {ValuesOf} from '../type';
+import type {ValuesOf} from '@epic-helper/types';
 
 export interface IUserPet {
   userId: string;

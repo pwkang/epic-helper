@@ -6,7 +6,7 @@ import type {IUser, IUserToggle, USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper
 import {userSchema} from '@epic-helper/models';
 import mongooseLeanDefaults from 'mongoose-lean-defaults';
 import {mongoClient} from '../clients/mongoose.service';
-import type {ValuesOf} from '../type';
+import type {ValuesOf} from '@epic-helper/types';
 
 
 userSchema.post('findOneAndUpdate', async function(doc) {

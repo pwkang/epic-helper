@@ -6,6 +6,7 @@ import type {IUserPet} from '@epic-helper/models';
 import type {RPG_PET_SKILL_TIER} from '@epic-helper/constants';
 import {BOT_COLOR, BOT_EMOJI, RPG_PET_SKILL, RPG_PET_SKILL_TIER_REVERSE} from '@epic-helper/constants';
 import {userPetServices} from '@epic-helper/services';
+import type {ValuesOf} from '@epic-helper/types';
 
 interface IGenerateFusionScoreEmbed {
   author: User;

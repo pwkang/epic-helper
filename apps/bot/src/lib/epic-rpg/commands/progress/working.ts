@@ -10,6 +10,7 @@ import {userService} from '@epic-helper/services';
 import {userReminderServices} from '@epic-helper/services';
 import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
 import commandHelper from '../../../epic-helper/command-helper';
+import type {ValuesOf} from '@epic-helper/types';
 
 const WORKING_ITEMS = [
   'normie fish',

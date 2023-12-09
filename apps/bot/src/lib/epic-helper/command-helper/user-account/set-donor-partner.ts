@@ -2,6 +2,7 @@ import type {BaseMessageOptions, User} from 'discord.js';
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder} from 'discord.js';
 import {BOT_CLICKABLE_SLASH_COMMANDS, BOT_COLOR, RPG_DONOR_TIER} from '@epic-helper/constants';
 import {userService} from '@epic-helper/services';
+import type {ValuesOf} from '@epic-helper/types';
 
 interface ISetDonor {
   author: User;

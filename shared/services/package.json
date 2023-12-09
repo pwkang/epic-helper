@@ -12,7 +12,8 @@
   "dependencies": {
     "@epic-helper/constants": "workspace:*",
     "@epic-helper/models": "workspace:*",
-    "@epic-helper/utils": "workspace:*"
+    "@epic-helper/utils": "workspace:*",
+    "@epic-helper/types": "workspace:*"
   },
   "devDependencies": {
     "@epic-helper/tsconfig": "workspace:*"

@@ -1,18 +1,15 @@
 {
-  "name": "@epic-helper/models",
+  "name": "@epic-helper/types",
   "version": "1.0.0",
   "private": true,
-  "description": "",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build:shared": "tsc",
     "type-check": "tsc --noEmit --skipLibCheck",
     "lint": "eslint src/ --ext .ts --fix"
   },
-  "dependencies": {
-    "@epic-helper/constants": "workspace:*",
-    "@epic-helper/types": "workspace:*"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@epic-helper/tsconfig": "workspace:*"
   }

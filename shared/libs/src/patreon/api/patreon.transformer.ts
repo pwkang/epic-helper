@@ -9,6 +9,7 @@ import {PATREON_INCLUDE_TYPE} from '../patreon.constant';
 import type {DONOR_TIER} from '@epic-helper/constants';
 import {DONOR_TIER_ID} from '@epic-helper/constants';
 import {typedObjectEntries} from '@epic-helper/utils';
+import type {ValuesOf} from '@epic-helper/types';
 
 interface ITier {
   id: string;

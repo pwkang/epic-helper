@@ -11,6 +11,8 @@ import {
 import {generateUserReminderMessage} from '../../reminders/message-generator/custom-message-generator';
 import ms from 'ms';
 import type {IToggleUserCheckerReturnType} from '../../toggle-checker/user';
+import type {ValuesOf} from '@epic-helper/types';
+
 
 export interface IGetCustomMessageEmbed {
   client: Client;

@@ -5,7 +5,7 @@ import type {DONOR_TIER} from '@epic-helper/constants';
 import type {FilterQuery, Promise, QueryOptions} from 'mongoose';
 import {redisDonor} from '../redis/donor.redis';
 import {redisUserBoostedServers} from '../redis/user-boosted-servers.redis';
-import type {ValuesOf} from '../type';
+import type {ValuesOf} from '@epic-helper/types';
 
 const dbDonor = mongoClient.model<IDonor>('donors', donorSchema);
 

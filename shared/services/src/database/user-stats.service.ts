@@ -4,7 +4,7 @@ import type {IUserStats, USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models'
 import {userStatsSchema} from '@epic-helper/models';
 import mongooseLeanDefaults from 'mongoose-lean-defaults';
 import {mongoClient} from '../clients/mongoose.service';
-import type {ValuesOf} from '../type';
+import type {ValuesOf} from '@epic-helper/types';
 
 userStatsSchema.plugin(mongooseLeanDefaults);
 

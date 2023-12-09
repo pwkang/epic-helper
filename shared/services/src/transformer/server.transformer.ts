@@ -1,7 +1,7 @@
 import type {IServer} from '@epic-helper/models';
 import {typedObjectEntries} from '@epic-helper/utils';
 import {RPG_RANDOM_EVENTS} from '@epic-helper/constants';
-import type {ValuesOf} from '../type';
+import type {ValuesOf} from '@epic-helper/types';
 
 export const toServer = (server: any): IServer => {
   return {

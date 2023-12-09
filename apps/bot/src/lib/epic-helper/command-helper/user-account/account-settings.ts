@@ -11,6 +11,7 @@ import {
 import {_getUserSettingsEmbed} from './embeds/user-settings.embed';
 import {_getUserReminderChannelEmbed} from './embeds/reminder-channels.embed';
 import {_getDonorInfoEmbed} from './embeds/donor-info.embed';
+import type {ValuesOf} from '@epic-helper/types';
 
 interface IAccountSettings {
   author: User;

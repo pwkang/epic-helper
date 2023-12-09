@@ -136,12 +136,18 @@ importers:
       '@epic-helper/constants':
         specifier: workspace:*
         version: link:../../shared/constants
+      '@epic-helper/libs':
+        specifier: workspace:*
+        version: link:../../shared/libs
       '@epic-helper/models':
         specifier: workspace:*
         version: link:../../shared/models
       '@epic-helper/services':
         specifier: workspace:*
         version: link:../../shared/services
+      '@epic-helper/types':
+        specifier: workspace:*
+        version: link:../../shared/types
       '@epic-helper/utils':
         specifier: workspace:*
         version: link:../../shared/utils
@@ -154,6 +160,32 @@ importers:
         version: link:../../shared/tsconfig
 
   shared/constants:
+    dependencies:
+      '@epic-helper/types':
+        specifier: workspace:*
+        version: link:../types
+    devDependencies:
+      '@epic-helper/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+
+  shared/libs:
+    dependencies:
+      '@epic-helper/constants':
+        specifier: workspace:*
+        version: link:../constants
+      '@epic-helper/services':
+        specifier: workspace:*
+        version: link:../services
+      '@epic-helper/types':
+        specifier: workspace:*
+        version: link:../types
+      '@epic-helper/utils':
+        specifier: workspace:*
+        version: link:../utils
+      readdirp:
+        specifier: ^3.6.0
+        version: 3.6.0
     devDependencies:
       '@epic-helper/tsconfig':
         specifier: workspace:*
@@ -164,6 +196,9 @@ importers:
       '@epic-helper/constants':
         specifier: workspace:*
         version: link:../constants
+      '@epic-helper/types':
+        specifier: workspace:*
+        version: link:../types
     devDependencies:
       '@epic-helper/tsconfig':
         specifier: workspace:*
@@ -177,6 +212,9 @@ importers:
       '@epic-helper/models':
         specifier: workspace:*
         version: link:../models
+      '@epic-helper/types':
+        specifier: workspace:*
+        version: link:../types
       '@epic-helper/utils':
         specifier: workspace:*
         version: link:../utils
@@ -186,6 +224,12 @@ importers:
         version: link:../tsconfig
 
   shared/tsconfig: {}
+
+  shared/types:
+    devDependencies:
+      '@epic-helper/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
 
   shared/utils:
     dependencies:

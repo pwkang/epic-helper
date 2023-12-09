@@ -9,6 +9,7 @@ import {_getServerAdminEmbed} from './embed/server-admin-embed';
 import {_getServerAdminRoleEmbed} from './embed/server-admin-role-embed';
 import {_getTokenBoostsEmbed} from './embed/token-boost.embed';
 import {serverChecker} from '../../server-checker';
+import type {ValuesOf} from '@epic-helper/types';
 
 interface IServerSettings {
   server: Guild;

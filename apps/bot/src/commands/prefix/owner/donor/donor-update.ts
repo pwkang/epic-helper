@@ -1,9 +1,8 @@
 import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
-import patreonApi from '../../../../lib/patreon/api/patreon';
-import {toPatrons} from '../../../../lib/patreon/api/patreon.transformer';
-import {PATREON_PATRON_STATUS} from '../../../../lib/patreon/patreon.constant';
 import {djsMessageHelper} from '../../../../lib/discordjs/message';
 import {donorService} from '@epic-helper/services';
+import {PATREON_PATRON_STATUS, patreonApi} from '@epic-helper/libs';
+
 
 export default <PrefixCommand>{
   name: 'donorUpdate',
@@ -11,12 +10,7 @@ export default <PrefixCommand>{
   type: PREFIX_COMMAND_TYPE.dev,
   preCheck: {},
   execute: async (client, message) => {
-    const data = await patreonApi.getPatrons(client);
-    if (!data) return;
-    const patrons = toPatrons({
-      data: data.data,
-      included: data.included,
-    });
+    const patrons = await patreonApi.getPatrons();
     await donorService.registerDonors(
       patrons.map((patron) => ({
         discord: {

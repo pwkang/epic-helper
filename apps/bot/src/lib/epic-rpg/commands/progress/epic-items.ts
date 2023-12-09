@@ -11,6 +11,7 @@ import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown'
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
 import {userReminderServices} from '@epic-helper/services';
+import type {ValuesOf} from '@epic-helper/types';
 
 const EPIC_ITEM_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.epicItem;
 

@@ -10,10 +10,9 @@ import type {
 import type {ScheduleOptions} from 'node-cron';
 import type {PREFIX_COMMAND_TYPE, SLASH_MESSAGE_BOT_TYPE} from '@epic-helper/constants';
 import type {ICommandPreCheck} from './utils';
+import type {ValuesOf} from '@epic-helper/types';
 
 declare global {
-  export type ValuesOf<T extends Record<string, unknown>> = T[keyof T];
-
   interface PrefixCommand {
     name: string;
     commands: string[];

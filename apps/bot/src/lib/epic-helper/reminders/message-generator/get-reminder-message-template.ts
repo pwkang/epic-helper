@@ -1,6 +1,7 @@
 import type {IUser} from '@epic-helper/models';
 import type {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import {BOT_REMINDER_DEFAULT_MESSAGES} from '@epic-helper/constants';
+import type {ValuesOf} from '@epic-helper/types';
 
 interface IGetReminderMessageTemplate {
   userId: string;

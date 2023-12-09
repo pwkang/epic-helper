@@ -4,6 +4,7 @@ import {BOT_COLOR, RPG_ENCHANT_LEVEL} from '@epic-helper/constants';
 import {serverService, userService} from '@epic-helper/services';
 import type {IServer} from '@epic-helper/models';
 import messageFormatter from '../../../discordjs/message-formatter';
+import type {ValuesOf} from '@epic-helper/types';
 
 interface ISlashAccountEnchant {
   author: User;

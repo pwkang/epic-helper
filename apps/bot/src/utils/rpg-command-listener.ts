@@ -7,6 +7,7 @@ import type {RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants';
 import {EPIC_RPG_ID} from '@epic-helper/constants';
 import {createMessageEditedListener} from './message-edited-listener';
 import djsChannelHelper from '../lib/discordjs/channel';
+import type {ValuesOf} from '@epic-helper/types';
 
 interface IRpgCommandListener {
   client: Client;

@@ -13,6 +13,8 @@
     "@epic-helper/models": "workspace:*",
     "@epic-helper/services": "workspace:*",
     "@epic-helper/utils": "workspace:*",
+    "@epic-helper/libs": "workspace:*",
+    "@epic-helper/types": "workspace:*",
     "@sentry/node": "^7.52.1"
   },
   "devDependencies": {

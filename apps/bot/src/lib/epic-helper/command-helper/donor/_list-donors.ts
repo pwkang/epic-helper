@@ -8,6 +8,7 @@ import {djsUserHelper} from '../../../discordjs/user';
 import timestampHelper from '../../../discordjs/timestamp';
 import {generateNavigationRow} from '../../../../utils/pagination-row';
 import {capitalizeFirstLetters, typedObjectEntries} from '@epic-helper/utils';
+import type {ValuesOf} from '@epic-helper/types';
 
 const PAGE_SIZE = 6;
 

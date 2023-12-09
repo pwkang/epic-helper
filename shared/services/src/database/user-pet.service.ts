@@ -5,7 +5,7 @@ import {type IUserPet, userPetSchema} from '@epic-helper/models';
 import {userReminderServices} from './user-reminder.service';
 import 'mongodb';
 import {mongoClient} from '../clients/mongoose.service';
-import type {ValuesOf} from '../type';
+import type {ValuesOf} from '@epic-helper/types';
 
 userPetSchema.post('findOneAndUpdate', async function () {
   const updatedUserId = this.getQuery().userId;

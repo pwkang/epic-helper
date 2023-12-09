@@ -4,6 +4,7 @@ import type {CUSTOM_MESSAGE_PAGE_TYPE} from './custom-message.constant';
 import {_getCustomMessageEmbed} from './custom-message.embed';
 import {_customMessagePageSelector} from './custom-message.components';
 import type {IToggleUserCheckerReturnType} from '../../toggle-checker/user';
+import type {ValuesOf} from '@epic-helper/types';
 
 export interface IGetMessageOptions {
   client: Client;
@@ -20,7 +21,7 @@ export const _getMessageOptions = async ({
   pageType,
   toggleChecker,
 }: IGetMessageOptions): Promise<BaseMessageOptions> => {
-  const embed = await _getCustomMessageEmbed({
+  const embed = _getCustomMessageEmbed({
     client,
     userAccount,
     author,
