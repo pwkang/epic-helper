@@ -8,9 +8,10 @@ import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import type {Client, Message, User} from 'discord.js';
 import type {IMessageContentChecker} from '../../../../types/utils';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
-import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
+import {userReminderServices} from '@epic-helper/services';
+import type {ValuesOf} from '@epic-helper/types';
 
 const EPIC_ITEM_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.epicItem;
 
@@ -60,7 +61,7 @@ export function rpgUseEpicItem({
       serverId: message.guild.id,
       client,
     });
-    if(!toggleUser?.reminder.epicItem) return;
+    if (!toggleUser?.reminder.epicItem) return;
     await userReminderServices.updateUserCooldown({
       userId: author.id,
       readyAt: new Date(Date.now() + cooldown),

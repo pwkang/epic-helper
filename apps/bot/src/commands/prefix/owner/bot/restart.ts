@@ -14,10 +14,10 @@ export default <PrefixCommand>{
     if (ids.length) {
       await commandHelper.cluster.restartClusters(client, ids);
       content = `Restarting clusters ${ids.join(', ')}...`;
-    } else if(args[1] === 'all') {
+    } else if (args[1] === 'all') {
       await commandHelper.cluster.restartAll(client);
       content = 'Restarting all clusters...';
-    }else{
+    } else {
       content = 'Please provide cluster id(s) or `all`';
     }
 

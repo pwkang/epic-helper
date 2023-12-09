@@ -1,6 +1,5 @@
 import type {Client, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
-import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import {
   ADVENTURE_MONSTER_LIST,
   BOT_REMINDER_BASE_COOLDOWN,
@@ -11,7 +10,7 @@ import {
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
-import {userService} from '../../../../services/database/user.service';
+import {userReminderServices, userService} from '@epic-helper/services';
 import {djsMessageHelper} from '../../../discordjs/message';
 import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
 import commandHelper from '../../../epic-helper/command-helper';
@@ -60,7 +59,7 @@ export function rpgAdventure({
       serverId: message.guild.id,
       client,
     });
-    if(!toggleUser?.reminder.adventure) return;
+    if (!toggleUser?.reminder.adventure) return;
     await userReminderServices.updateUserCooldown({
       userId: author.id,
       type: RPG_COMMAND_TYPE.adventure,

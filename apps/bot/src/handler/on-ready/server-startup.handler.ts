@@ -1,6 +1,5 @@
 import type {Client} from 'discord.js';
-import {serverService} from '../../services/database/server.service';
-import {redisServerInfo} from '../../services/redis/server-info.redis';
+import {redisServerInfo, serverService} from '@epic-helper/services';
 import {EPIC_RPG_SERVER_INFO} from '@epic-helper/constants';
 
 const loadServerOnReady = async (client: Client) => {

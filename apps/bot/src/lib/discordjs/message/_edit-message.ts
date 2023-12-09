@@ -1,9 +1,4 @@
-import type {
-  Client,
-  Message,
-  MessageEditOptions,
-  MessagePayload,
-} from 'discord.js';
+import type {Client, Message, MessageEditOptions, MessagePayload} from 'discord.js';
 import {logger} from '@epic-helper/utils';
 
 export interface EditMessageProps {

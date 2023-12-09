@@ -1,10 +1,4 @@
-import type {
-  BaseMessageOptions,
-  ChatInputCommandInteraction,
-  Client,
-  EmbedBuilder,
-  Message,
-} from 'discord.js';
+import type {BaseMessageOptions, ChatInputCommandInteraction, Client, EmbedBuilder, Message} from 'discord.js';
 import {generateNavigationRow, NAVIGATION_ROW_BUTTONS} from './pagination-row';
 import {sleep} from '@epic-helper/utils';
 import djsInteractionHelper from '../lib/discordjs/interaction';

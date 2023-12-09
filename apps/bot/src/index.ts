@@ -37,7 +37,7 @@ manager.on('clusterCreate', (cluster) => {
         break;
       case 'restart':
         if (!data.clustersId) return;
-        for(const cluster of data.clustersId) {
+        for (const cluster of data.clustersId) {
           const c = manager.clusters.get(cluster);
           if (!c) continue;
           c.respawn().catch((error) => {

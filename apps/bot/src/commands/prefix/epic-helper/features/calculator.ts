@@ -3,11 +3,7 @@ import materialCalculator from '../../../../lib/epic-helper/features/calculator/
 import {rpgInventoryChecker} from '../../../../lib/epic-rpg/commands/account/inventory';
 import sttScoreCalculator from '../../../../lib/epic-helper/features/calculator/stt-score-calculator';
 import {djsMessageHelper} from '../../../../lib/discordjs/message';
-import {
-  PREFIX_COMMAND_TYPE,
-  USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
-} from '@epic-helper/constants';
+import {PREFIX_COMMAND_TYPE, USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
 
 export default <PrefixCommand>{
   name: 'matsCalc',

@@ -1,5 +1,5 @@
 import {RPG_COMMAND_TYPE} from '../epic-rpg/rpg';
-import type {ValuesOf} from '../type';
+import type {ValuesOf} from '@epic-helper/types';
 
 export const BOT_REMINDER_DEFAULT_MESSAGES: Partial<
   Record<ValuesOf<typeof RPG_COMMAND_TYPE> | 'all', string>

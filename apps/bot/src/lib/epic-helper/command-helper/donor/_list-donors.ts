@@ -1,5 +1,5 @@
 import {BOT_COLOR, DONOR_TIER, DONOR_TOKEN_AMOUNT} from '@epic-helper/constants';
-import donorService from '../../../../services/database/donor.service';
+import {donorService, serverService} from '@epic-helper/services';
 import type {BaseInteraction, BaseMessageOptions, Client, StringSelectMenuInteraction} from 'discord.js';
 import {ActionRowBuilder, EmbedBuilder, StringSelectMenuBuilder, UserSelectMenuBuilder} from 'discord.js';
 import type {IDonor} from '@epic-helper/models';
@@ -8,7 +8,7 @@ import {djsUserHelper} from '../../../discordjs/user';
 import timestampHelper from '../../../discordjs/timestamp';
 import {generateNavigationRow} from '../../../../utils/pagination-row';
 import {capitalizeFirstLetters, typedObjectEntries} from '@epic-helper/utils';
-import {serverService} from '../../../../services/database/server.service';
+import type {ValuesOf} from '@epic-helper/types';
 
 const PAGE_SIZE = 6;
 

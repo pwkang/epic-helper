@@ -1,5 +1,5 @@
 import type {Client, EmbedBuilder} from 'discord.js';
-import {guildService} from '../../../../services/database/guild.service';
+import {guildService} from '@epic-helper/services';
 import {djsMessageHelper} from '../../../discordjs/message';
 
 interface ISendDuelLog {

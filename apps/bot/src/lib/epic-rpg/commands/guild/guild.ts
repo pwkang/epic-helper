@@ -2,7 +2,7 @@ import type {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import type {IMessageEmbedChecker} from '../../../../types/utils';
 import embedReaders from '../../embed-readers';
-import {guildService} from '../../../../services/database/guild.service';
+import {guildService} from '@epic-helper/services';
 import {toggleGuildChecker} from '../../../epic-helper/toggle-checker/guild';
 import {djsMessageHelper} from '../../../discordjs/message';
 import commandHelper from '../../../epic-helper/command-helper';

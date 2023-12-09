@@ -1,8 +1,4 @@
-import type {
-  ActionRow,
-  MessageActionRowComponent,
-  MessageActionRowComponentBuilder,
-} from 'discord.js';
+import type {ActionRow, MessageActionRowComponent, MessageActionRowComponentBuilder} from 'discord.js';
 import {
   ActionRowBuilder,
   ButtonBuilder,

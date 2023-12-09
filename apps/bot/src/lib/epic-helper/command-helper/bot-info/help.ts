@@ -1,14 +1,5 @@
 import type {BaseMessageOptions, Client} from 'discord.js';
-import {
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  EmbedBuilder,
-} from 'discord.js';
-import {
-  getAllCommands,
-  getAllCommandsGroup,
-} from '../../../../services/contentful/bot-help.contentful';
+import {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder} from 'discord.js';
 import {
   BOT_COLOR,
   BOT_INVITE_LINK,
@@ -18,8 +9,8 @@ import {
   TOPGG_LINK,
 } from '@epic-helper/constants';
 import Fuse from 'fuse.js';
-import type {IHelpCommand} from '../../../../services/transformer/help-commands.transformer';
-import type {IHelpCommandsGroup} from '../../../../services/transformer/toHelpCommandsGroup.transformer';
+import type {IHelpCommand, IHelpCommandsGroup} from '@epic-helper/services';
+import {getAllCommands, getAllCommandsGroup} from '@epic-helper/services';
 
 interface IHelp {
   client: Client<true>;

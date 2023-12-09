@@ -17,7 +17,7 @@ const _profileBackgroundNotSupported = ({
     })
     .setDescription(
       'Profile background is not supported yet.\n' +
-        `Use ${RPG_CLICKABLE_SLASH_COMMANDS.progress} instead.`,
+      `Use ${RPG_CLICKABLE_SLASH_COMMANDS.progress} instead.`,
     );
 };
 

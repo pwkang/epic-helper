@@ -1,8 +1,4 @@
-import {
-  PREFIX_COMMAND_TYPE,
-  USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
-} from '@epic-helper/constants';
+import {PREFIX_COMMAND_TYPE, USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
 import {rpgUseEpicItem} from '../../../../lib/epic-rpg/commands/progress/epic-items';
 
 export default <PrefixCommand>{

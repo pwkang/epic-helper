@@ -1,10 +1,5 @@
 import type {EmbedField, User} from 'discord.js';
-import {
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  EmbedBuilder,
-} from 'discord.js';
+import {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder} from 'discord.js';
 import {
   getDayOfWeek,
   getStartOfLastWeek,
@@ -16,8 +11,7 @@ import {
 import {BOT_COLOR} from '@epic-helper/constants';
 import type {IUser, IUserStats} from '@epic-helper/models';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
-import {userStatsService} from '../../../services/database/user-stats.service';
-import {userService} from '../../../services/database/user.service';
+import {userService, userStatsService} from '@epic-helper/services';
 
 interface IGetDonorStatsEmbed {
   author: User;

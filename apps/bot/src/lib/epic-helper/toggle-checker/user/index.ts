@@ -1,4 +1,4 @@
-import {userService} from '../../../../services/database/user.service';
+import {userService} from '@epic-helper/services';
 import {
   _toggleCountdown,
   _toggleDmReminder,

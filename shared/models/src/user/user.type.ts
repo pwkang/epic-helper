@@ -6,7 +6,7 @@ import type {
   RPG_DONOR_TIER,
   RPG_ENCHANT_LEVEL,
 } from '@epic-helper/constants';
-import type {ValuesOf} from '../type';
+import type {ValuesOf} from '@epic-helper/types';
 
 type ToggleDmOptions = keyof typeof RPG_COMMAND_TYPE | 'all';
 type ToggleReminderOptions = keyof typeof RPG_COMMAND_TYPE | 'all';

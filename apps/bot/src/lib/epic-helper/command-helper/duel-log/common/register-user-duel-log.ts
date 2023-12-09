@@ -1,14 +1,11 @@
-import {userDuelService} from '../../../../../services/database/user-duel.service';
-import {guildDuelService} from '../../../../../services/database/guild-duel.service';
 import embeds from '../../../embeds';
-import {redisServerInfo} from '../../../../../services/redis/server-info.redis';
 import {generateDuelLogEmbed} from '../embeds/duel-log';
 import {sendDuelLog} from '../send-duel-log';
 import type {Client, User} from 'discord.js';
 import {EmbedBuilder} from 'discord.js';
 import {toggleGuildChecker} from '../../../toggle-checker/guild';
 import {BOT_COLOR} from '@epic-helper/constants';
-import {guildService} from '../../../../../services/database/guild.service';
+import {guildDuelService, guildService, redisServerInfo, userDuelService} from '@epic-helper/services';
 
 interface IRegisterUserDuel {
   author: User;

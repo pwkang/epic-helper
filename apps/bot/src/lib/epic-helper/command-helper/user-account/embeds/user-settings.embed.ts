@@ -84,7 +84,7 @@ export const _getUserSettingsEmbed = ({
       value: `Guild: **${guildName}** @ ${guildServerName}`,
     });
 
-  if(userProfile.rpgInfo.artifacts.pocketWatch.owned)
+  if (userProfile.rpgInfo.artifacts.pocketWatch.owned)
     helperSettings.push({
       icon: BOT_EMOJI.artifacts.pocketWatch,
       value: `Pocket Watch: **${userProfile.rpgInfo.artifacts.pocketWatch.percent}%**`,

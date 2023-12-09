@@ -9,9 +9,9 @@ import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
-import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
 import commandHelper from '../../../epic-helper/command-helper';
+import {userReminderServices} from '@epic-helper/services';
 
 const LOOTBOX_COOLDOWN = BOT_REMINDER_BASE_COOLDOWN.lootbox;
 
@@ -59,7 +59,7 @@ export function rpgBuyLootbox({
       serverId: message.guild.id,
       client,
     });
-    if(!toggleUser?.reminder.lootbox) return;
+    if (!toggleUser?.reminder.lootbox) return;
     await userReminderServices.updateUserCooldown({
       type: RPG_COMMAND_TYPE.lootbox,
       readyAt: new Date(Date.now() + cooldown),

@@ -1,7 +1,7 @@
 import type {Message} from 'discord.js';
-import {redisMessageEdited} from '../services/redis/message-edited.redis';
 import {EventEmitter} from 'events';
 import ms from 'ms';
+import {redisMessageEdited} from '@epic-helper/services';
 
 const messageEditedEvent = new EventEmitter();
 

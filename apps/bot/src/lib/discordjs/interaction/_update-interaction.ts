@@ -1,8 +1,4 @@
-import type {
-  Client,
-  InteractionUpdateOptions,
-  MessageComponentInteraction,
-} from 'discord.js';
+import type {Client, InteractionUpdateOptions, MessageComponentInteraction} from 'discord.js';
 import {logger} from '@epic-helper/utils';
 
 export interface IUpdateInteraction {

@@ -1,7 +1,7 @@
 import type {Client, Embed, Message, User} from 'discord.js';
 import ms from 'ms';
 import embedReaders from '../../embed-readers';
-import {userPetServices} from '../../../../services/database/user-pet.service';
+import {userPetServices} from '@epic-helper/services';
 import {RPG_PET_SKILL_ASCEND, RPG_PET_SKILL_SPECIAL} from '@epic-helper/constants';
 import type {IUserPet} from '@epic-helper/models';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';

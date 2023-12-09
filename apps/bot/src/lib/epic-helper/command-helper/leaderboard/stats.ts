@@ -1,10 +1,9 @@
 import type {Client} from 'discord.js';
 import {EmbedBuilder} from 'discord.js';
-import {userStatsService} from '../../../../services/database/user-stats.service';
 import {getStartOfYesterday} from '@epic-helper/utils';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {BOT_COLOR} from '@epic-helper/constants';
-import {userService} from '../../../../services/database/user.service';
+import {userService, userStatsService} from '@epic-helper/services';
 import {djsMessageHelper} from '../../../discordjs/message';
 
 interface IStatsLeaderboard {

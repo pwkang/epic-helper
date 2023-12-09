@@ -1,5 +1,6 @@
 import type {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import type {IUserToggle} from '@epic-helper/models';
+import type {ValuesOf} from '@epic-helper/types';
 
 interface IToggleUserCheckerItem {
   toggle: IUserToggle;

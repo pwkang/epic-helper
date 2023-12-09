@@ -1,7 +1,4 @@
-import {
-  RPG_CLICKABLE_SLASH_COMMANDS,
-  RPG_COMMAND_TYPE,
-} from '@epic-helper/constants';
+import {RPG_CLICKABLE_SLASH_COMMANDS, RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import type {IUserReminder} from '@epic-helper/models';
 
 export const _parseSlash = (data: IUserReminder) => {

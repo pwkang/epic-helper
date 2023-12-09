@@ -1,4 +1,5 @@
 import {BOT_EMOJI, RPG_COMMAND_TYPE} from '@epic-helper/constants';
+import type {ValuesOf} from '@epic-helper/types';
 
 interface IParseEmoji {
   type: ValuesOf<typeof RPG_COMMAND_TYPE>;

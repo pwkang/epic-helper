@@ -1,5 +1,4 @@
 import type {BaseMessageOptions, Client, User} from 'discord.js';
-import {userService} from '../../../../../services/database/user.service';
 import type {IUser, IUserToggle} from '@epic-helper/models';
 import {toggleDisplayList} from '../toggle.list';
 import {renderEmbed} from '../toggle.embed';
@@ -7,6 +6,7 @@ import {PREFIX} from '@epic-helper/constants';
 import type {IUpdateToggle} from '../toggle.helper';
 import {getUpdateQuery} from '../toggle.helper';
 import {userChecker} from '../../../user-checker';
+import {userService} from '@epic-helper/services';
 
 interface IGetUserToggle {
   author: User;

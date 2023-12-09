@@ -1,7 +1,7 @@
 import {PREFIX_COMMAND_TYPE} from '@epic-helper/constants';
 import ms from 'ms';
 import {djsMessageHelper} from '../../../../lib/discordjs/message';
-import freeDonorService from '../../../../services/database/free-donor.service';
+import {freeDonorService} from '@epic-helper/services';
 
 export default <PrefixCommand>{
   name: 'giveFreeDonor',

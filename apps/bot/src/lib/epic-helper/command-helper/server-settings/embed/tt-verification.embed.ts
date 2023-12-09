@@ -30,8 +30,8 @@ export const _getTTVerificationSettingsEmbed = ({
             .map((rule) => {
               return (
                 `**Role:** ${messageFormatter.role(rule.roleId)}\n` +
-                  `**Range:** ${rule.minTT} -> ${rule.maxTT ?? '∞'}\n` +
-                  `**Message:** ${rule.message ?? '-'}\n`
+                `**Range:** ${rule.minTT} -> ${rule.maxTT ?? '∞'}\n` +
+                `**Message:** ${rule.message ?? '-'}\n`
               );
             })
             .join('\n')

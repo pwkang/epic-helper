@@ -1,7 +1,7 @@
 import type {Client} from 'discord.js';
+import {EmbedBuilder} from 'discord.js';
 import {broadcastEval} from '../../../../utils/broadcast-eval';
 import {BOT_COLOR} from '@epic-helper/constants';
-import {EmbedBuilder} from 'discord.js';
 
 interface IOwnerInfo {
   client: Client;

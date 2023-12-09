@@ -11,10 +11,9 @@ import {
   RPG_ENCHANT_LEVEL_RANK,
   TOKENS_REQUIRED,
 } from '@epic-helper/constants';
-import {userService} from '../../../../services/database/user.service';
+import {serverService, userService} from '@epic-helper/services';
 import toggleServerChecker from '../../../epic-helper/toggle-checker/server';
 import {serverChecker} from '../../../epic-helper/server-checker';
-import {serverService} from '../../../../services/database/server.service';
 
 const ENCHANT_CMD_TYPE = {
   enchant: 'enchant',

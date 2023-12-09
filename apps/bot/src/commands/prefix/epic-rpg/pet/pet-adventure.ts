@@ -1,8 +1,4 @@
-import {
-  PREFIX_COMMAND_TYPE,
-  USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
-} from '@epic-helper/constants';
+import {PREFIX_COMMAND_TYPE, USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
 import {rpgPetAdventure} from '../../../../lib/epic-rpg/commands/pets/pet-adventure';
 
 const args1 = ['pets', 'pet'];

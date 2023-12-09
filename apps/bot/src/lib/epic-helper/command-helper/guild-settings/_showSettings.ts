@@ -1,4 +1,4 @@
-import {guildService} from '../../../../services/database/guild.service';
+import {guildService} from '@epic-helper/services';
 import type {
   BaseInteraction,
   BaseMessageOptions,
@@ -10,6 +10,7 @@ import {_getGuildSettingsEmbed} from './embed/guild-settings.embed';
 import messageFormatter from '../../../discordjs/message-formatter';
 import {getGuildToggleEmbed} from '../toggle/type/guild.toggle';
 import {guildSelectorHelper} from '../../../../utils/guild-selector';
+import type {ValuesOf} from '@epic-helper/types';
 
 export const GUILD_SETTINGS_PAGE_TYPE = {
   settings: 'settings',

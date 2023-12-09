@@ -6,6 +6,7 @@ import {EmbedBuilder} from 'discord.js';
 import {_parseCommandString} from '../reminders/message-generator/parse-command-name';
 import {capitalizeFirstLetters} from '@epic-helper/utils';
 import type {IToggleUserCheckerReturnType} from '../toggle-checker/user';
+import type {ValuesOf} from '@epic-helper/types';
 
 interface ICooldownItem {
   type: ValuesOf<typeof RPG_COMMAND_TYPE>;
@@ -139,7 +140,7 @@ const getUserCooldownEmbed = ({
           time: cooldown.readyAt,
         });
       const isCmdReady = !cooldown?.readyAt || cooldown?.readyAt.getTime() < Date.now();
-      if(field.skipIfNone && isCmdReady) continue;
+      if (field.skipIfNone && isCmdReady) continue;
 
       const icon =
         isCmdReady

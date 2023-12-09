@@ -3,12 +3,7 @@ import {EmbedBuilder} from 'discord.js';
 import type {RpgArea} from '../../../../types/rpg.types';
 import tradeHelper from '../../../epic-rpg/inventory/trade-helper';
 import embedReaders from '../../../epic-rpg/embed-readers';
-import {
-  BOT_COLOR,
-  BOT_EMOJI,
-  PREFIX,
-  RPG_CLICKABLE_SLASH_COMMANDS,
-} from '@epic-helper/constants';
+import {BOT_COLOR, BOT_EMOJI, PREFIX, RPG_CLICKABLE_SLASH_COMMANDS} from '@epic-helper/constants';
 
 interface ICalcOptions {
   embed: Embed;

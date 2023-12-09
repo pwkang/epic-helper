@@ -1,16 +1,8 @@
 import type {BaseMessageOptions, User} from 'discord.js';
-import {
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  EmbedBuilder,
-} from 'discord.js';
-import {
-  BOT_CLICKABLE_SLASH_COMMANDS,
-  BOT_COLOR,
-  RPG_DONOR_TIER,
-} from '@epic-helper/constants';
-import {userService} from '../../../../services/database/user.service';
+import {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder} from 'discord.js';
+import {BOT_CLICKABLE_SLASH_COMMANDS, BOT_COLOR, RPG_DONOR_TIER} from '@epic-helper/constants';
+import {userService} from '@epic-helper/services';
+import type {ValuesOf} from '@epic-helper/types';
 
 interface ISetDonor {
   author: User;
@@ -104,7 +96,7 @@ const getSuccessEmbed = (tier: ValuesOf<typeof RPG_DONOR_TIER> | 'remove') => {
         )
         .setDescription(
           'You will now hunt with your partner\'s cooldown reduction\n\n' +
-            `If you wish to hunt with your own cooldown
+          `If you wish to hunt with your own cooldown
 You may use ${BOT_CLICKABLE_SLASH_COMMANDS.accountDonorPartner} and select "Remove"`,
         );
       break;

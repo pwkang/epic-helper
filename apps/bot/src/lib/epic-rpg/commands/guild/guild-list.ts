@@ -3,7 +3,7 @@ import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {djsMessageHelper} from '../../../discordjs/message';
 import {djsMemberHelper} from '../../../discordjs/member';
 import {djsServerHelper} from '../../../discordjs/server';
-import {guildService} from '../../../../services/database/guild.service';
+import {guildService} from '@epic-helper/services';
 import embedReaders from '../../embed-readers';
 import commandHelper from '../../../epic-helper/command-helper';
 

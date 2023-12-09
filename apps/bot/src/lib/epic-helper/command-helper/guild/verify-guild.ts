@@ -1,5 +1,5 @@
 import type {Client, EmbedBuilder, Guild} from 'discord.js';
-import {guildService} from '../../../../services/database/guild.service';
+import {guildService} from '@epic-helper/services';
 import type {IGuild} from '@epic-helper/models';
 import commandHelper from '../index';
 import {djsMemberHelper} from '../../../discordjs/member';

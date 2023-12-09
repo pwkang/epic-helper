@@ -1,7 +1,6 @@
 import type {User} from 'discord.js';
 import {EmbedBuilder} from 'discord.js';
-import {userService} from '../../../../services/database/user.service';
-import {userPetServices} from '../../../../services/database/user-pet.service';
+import {userPetServices, userService} from '@epic-helper/services';
 import type {IUserPet} from '@epic-helper/models';
 import type {TSkillTierNumber} from '@epic-helper/constants';
 import {
@@ -16,7 +15,7 @@ import {
 } from '@epic-helper/constants';
 import {convertNumberToRoman} from '../../../../utils/roman-conversion';
 import {convertNumToPetId, typedObjectEntries} from '@epic-helper/utils';
-import type {ValuesOf} from '@epic-helper/models/dist/type';
+import type {ValuesOf} from '@epic-helper/types';
 
 interface IPetSummaryHelper {
   author: User;

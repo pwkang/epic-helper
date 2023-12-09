@@ -22,7 +22,7 @@ export interface IReplyInteraction {
 
 type TEventCB = (
   collected: BaseInteraction | StringSelectMenuInteraction,
-  customId: string
+  customId: string,
 ) => Promise<InteractionUpdateOptions | null> | InteractionUpdateOptions | null;
 
 export default async function _replyInteraction<T>({

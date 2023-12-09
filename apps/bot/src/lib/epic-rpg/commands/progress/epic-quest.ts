@@ -1,16 +1,12 @@
 import type {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
-import {
-  BOT_REMINDER_BASE_COOLDOWN,
-  RPG_COMMAND_TYPE,
-  RPG_COOLDOWN_EMBED_TYPE,
-} from '@epic-helper/constants';
+import {BOT_REMINDER_BASE_COOLDOWN, RPG_COMMAND_TYPE, RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants';
 import {calcCdReduction} from '../../../epic-helper/reminders/commands-cooldown';
 import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-channel';
-import {userReminderServices} from '../../../../services/database/user-reminder.service';
 import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
 import commandHelper from '../../../epic-helper/command-helper';
+import {userReminderServices} from '@epic-helper/services';
 
 interface IRpgEpicQuest {
   client: Client;
@@ -57,7 +53,7 @@ export function rpgEpicQuest({
       serverId: message.guild.id,
       client,
     });
-    if(!toggleUser?.reminder.quest) return;
+    if (!toggleUser?.reminder.quest) return;
     await userReminderServices.updateUserCooldown({
       userId: author.id,
       readyAt: new Date(Date.now() + cooldown),

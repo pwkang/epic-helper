@@ -10,7 +10,10 @@
     "lint": "eslint src/ --ext .ts --fix"
   },
   "dependencies": {
-    "@epic-helper/utils": "workspace:*"
+    "@epic-helper/constants": "workspace:*",
+    "@epic-helper/models": "workspace:*",
+    "@epic-helper/utils": "workspace:*",
+    "@epic-helper/types": "workspace:*"
   },
   "devDependencies": {
     "@epic-helper/tsconfig": "workspace:*"

@@ -1,7 +1,7 @@
 import type {Client, Embed, Message, User} from 'discord.js';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {RPG_ITEMS} from '@epic-helper/constants';
-import {userService} from '../../../../services/database/user.service';
+import {userService} from '@epic-helper/services';
 
 interface IRpgSuccess {
   client: Client;

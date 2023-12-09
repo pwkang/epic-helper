@@ -1,6 +1,6 @@
 import type {Client, User} from 'discord.js';
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle} from 'discord.js';
-import {userService} from '../../../services/database/user.service';
+import {userService} from '@epic-helper/services';
 import toggleUserChecker from '../toggle-checker/user';
 
 type TAnswerType = string | number | boolean;

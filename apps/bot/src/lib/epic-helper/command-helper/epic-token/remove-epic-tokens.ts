@@ -1,10 +1,6 @@
-import {serverService} from '../../../../services/database/server.service';
+import {serverService} from '@epic-helper/services';
 import type {BaseInteraction, BaseMessageOptions} from 'discord.js';
-import {
-  ActionRowBuilder,
-  EmbedBuilder,
-  StringSelectMenuBuilder,
-} from 'discord.js';
+import {ActionRowBuilder, EmbedBuilder, StringSelectMenuBuilder} from 'discord.js';
 import {generateNavigationRow} from '../../../../utils/pagination-row';
 import {BOT_COLOR} from '@epic-helper/constants';
 

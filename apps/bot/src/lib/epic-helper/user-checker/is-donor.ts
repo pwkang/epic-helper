@@ -1,8 +1,7 @@
-import donorService from '../../../services/database/donor.service';
-import freeDonorService from '../../../services/database/free-donor.service';
 import {serverChecker} from '../server-checker';
 import type {Client} from 'discord.js';
 import {djsMemberHelper} from '../../discordjs/member';
+import {donorService, freeDonorService} from '@epic-helper/services';
 
 interface IIsDonor {
   userId: string;

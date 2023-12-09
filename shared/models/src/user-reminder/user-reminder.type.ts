@@ -5,7 +5,7 @@ import type {
   RPG_LOOTBOX_TYPE,
   RPG_WORKING_TYPE,
 } from '@epic-helper/constants';
-import type {ValuesOf} from '../type';
+import type {ValuesOf} from '@epic-helper/types';
 
 export interface IHuntReminderProps {
   together: boolean;

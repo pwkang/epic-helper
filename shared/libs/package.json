@@ -1,0 +1,22 @@
+{
+  "name": "@epic-helper/libs",
+  "version": "1.0.0",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build:shared": "tsc",
+    "type-check": "tsc --noEmit --skipLibCheck",
+    "lint": "eslint src/ --ext .ts --fix"
+  },
+  "dependencies": {
+    "@epic-helper/constants": "workspace:*",
+    "@epic-helper/services": "workspace:*",
+    "@epic-helper/utils": "workspace:*",
+    "@epic-helper/types": "workspace:*",
+    "readdirp": "^3.6.0"
+  },
+  "devDependencies": {
+    "@epic-helper/tsconfig": "workspace:*"
+  }
+}

@@ -1,8 +1,7 @@
 import type {Guild} from 'discord.js';
 import {Events} from 'discord.js';
-import {serverService} from '../../services/database/server.service';
-import {redisServerInfo} from '../../services/redis/server-info.redis';
 import commandHelper from '../../lib/epic-helper/command-helper';
+import {redisServerInfo, serverService} from '@epic-helper/services';
 
 export default <BotEvent>{
   eventName: Events.GuildCreate,

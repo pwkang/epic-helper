@@ -2,7 +2,7 @@ import type {Client, Message, User} from 'discord.js';
 import {convertNumToPetId, convertPetIdToNum} from '@epic-helper/utils';
 import type {IUserPet} from '@epic-helper/models';
 import {RPG_PET_ADV_STATUS} from '@epic-helper/constants';
-import {userPetServices} from '../../../../services/database/user-pet.service';
+import {userPetServices} from '@epic-helper/services';
 import {djsMessageHelper} from '../../../discordjs/message';
 import {collectSelectedPets} from './_shared';
 

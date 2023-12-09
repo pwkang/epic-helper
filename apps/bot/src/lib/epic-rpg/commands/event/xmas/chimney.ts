@@ -4,7 +4,7 @@ import {BOT_REMINDER_BASE_COOLDOWN, RPG_COMMAND_TYPE, RPG_COOLDOWN_EMBED_TYPE} f
 import messageChecker from '../../../message-checker';
 import toggleUserChecker from '../../../../epic-helper/toggle-checker/user';
 import {calcCdReduction} from '../../../../epic-helper/reminders/commands-cooldown';
-import {userReminderServices} from '../../../../../services/database/user-reminder.service';
+import {userReminderServices} from '@epic-helper/services';
 
 interface IRpgXmasChimney {
   client: Client;
@@ -20,9 +20,9 @@ export const rpgXmasChimney = async ({message, client, isSlashCommand, author}: 
     commandType: RPG_COOLDOWN_EMBED_TYPE.xmasChimney,
     channelId: message.channel.id,
   });
-  if(!event) return;
+  if (!event) return;
   event.on('content', async (content, message) => {
-    if(messageChecker.event.xmas.isChimneySuccess(content, author)) {
+    if (messageChecker.event.xmas.isChimneySuccess(content, author)) {
       event?.stop();
       await rpgXmasChimneySuccess({client, author, message});
     }
@@ -33,10 +33,10 @@ export const rpgXmasChimney = async ({message, client, isSlashCommand, author}: 
       readyAt: new Date(Date.now() + cooldown),
     });
   });
-  event.on('end', ( )=> {
+  event.on('end', () => {
     event = undefined;
   });
-  if(isSlashCommand) event.triggerCollect(message);
+  if (isSlashCommand) event.triggerCollect(message);
 };
 
 interface IRpgXmasChimneySuccess {
@@ -51,9 +51,9 @@ const rpgXmasChimneySuccess = async ({client, author, message}: IRpgXmasChimneyS
     client,
     serverId: message.guild.id,
   });
-  if(!toggleChecker) return;
+  if (!toggleChecker) return;
 
-  if(toggleChecker.reminder.xmasChimney) {
+  if (toggleChecker.reminder.xmasChimney) {
     const cooldown = await calcCdReduction({
       userId: author.id,
       commandType: RPG_COMMAND_TYPE.xmasChimney,

@@ -1,8 +1,4 @@
-import {
-  PREFIX_COMMAND_TYPE,
-  USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
-} from '@epic-helper/constants';
+import {PREFIX_COMMAND_TYPE, USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
 import {djsMessageHelper} from '../../../../lib/discordjs/message';
 import commandHelper from '../../../../lib/epic-helper/command-helper';
 

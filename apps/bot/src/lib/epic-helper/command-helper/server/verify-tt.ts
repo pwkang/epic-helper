@@ -1,6 +1,6 @@
 import type {Client, Guild, User} from 'discord.js';
 import {EmbedBuilder} from 'discord.js';
-import {serverService} from '../../../../services/database/server.service';
+import {serverService} from '@epic-helper/services';
 import {djsMemberHelper} from '../../../discordjs/member';
 import {djsMessageHelper} from '../../../discordjs/message';
 import {BOT_COLOR, PREFIX, TOKENS_REQUIRED} from '@epic-helper/constants';

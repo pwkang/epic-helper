@@ -1,6 +1,6 @@
 import type {BaseMessageOptions, User} from 'discord.js';
 import {EmbedBuilder} from 'discord.js';
-import {userService} from '../../../../services/database/user.service';
+import {userService} from '@epic-helper/services';
 import {
   BOT_CLICKABLE_SLASH_COMMANDS,
   BOT_COLOR,

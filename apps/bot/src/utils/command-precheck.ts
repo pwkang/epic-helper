@@ -1,24 +1,13 @@
-import type {
-  BaseInteraction,
-  BaseMessageOptions,
-  Client,
-  Guild,
-  Message,
-  User,
-} from 'discord.js';
+import type {BaseInteraction, BaseMessageOptions, Client, Guild, Message, User} from 'discord.js';
 import {PermissionsBitField} from 'discord.js';
-import {userService} from '../services/database/user.service';
-import {
-  USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
-} from '@epic-helper/constants';
+import {USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
 import embedProvider from '../lib/epic-helper/embeds';
 import {djsMessageHelper} from '../lib/discordjs/message';
 import type {ICommandPreCheck} from '../types/utils';
 import {djsMemberHelper} from '../lib/discordjs/member';
-import {serverService} from '../services/database/server.service';
 import djsInteractionHelper from '../lib/discordjs/interaction';
 import {userChecker} from '../lib/epic-helper/user-checker';
+import {serverService, userService} from '@epic-helper/services';
 
 type IPreCheckCommand = {
   client: Client;

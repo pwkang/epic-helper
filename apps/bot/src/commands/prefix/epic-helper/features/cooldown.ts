@@ -1,12 +1,8 @@
 import embedProvider from '../../../../lib/epic-helper/embeds';
 import {djsMessageHelper} from '../../../../lib/discordjs/message';
-import {
-  PREFIX_COMMAND_TYPE,
-  USER_ACC_OFF_ACTIONS,
-  USER_NOT_REGISTERED_ACTIONS,
-} from '@epic-helper/constants';
-import {userReminderServices} from '../../../../services/database/user-reminder.service';
-import {userService} from '../../../../services/database/user.service';
+import {PREFIX_COMMAND_TYPE, USER_ACC_OFF_ACTIONS, USER_NOT_REGISTERED_ACTIONS} from '@epic-helper/constants';
+import {userReminderServices} from '@epic-helper/services';
+import {userService} from '@epic-helper/services';
 import toggleUserChecker from '../../../../lib/epic-helper/toggle-checker/user';
 
 export default <PrefixCommand>{

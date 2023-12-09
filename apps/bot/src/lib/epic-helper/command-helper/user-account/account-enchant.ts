@@ -1,19 +1,10 @@
-import type {
-  BaseMessageOptions,
-  Guild,
-  StringSelectMenuInteraction,
-  User,
-} from 'discord.js';
-import {
-  ActionRowBuilder,
-  EmbedBuilder,
-  StringSelectMenuBuilder,
-} from 'discord.js';
+import type {BaseMessageOptions, Guild, StringSelectMenuInteraction, User} from 'discord.js';
+import {ActionRowBuilder, EmbedBuilder, StringSelectMenuBuilder} from 'discord.js';
 import {BOT_COLOR, RPG_ENCHANT_LEVEL} from '@epic-helper/constants';
-import {userService} from '../../../../services/database/user.service';
+import {serverService, userService} from '@epic-helper/services';
 import type {IServer} from '@epic-helper/models';
-import {serverService} from '../../../../services/database/server.service';
 import messageFormatter from '../../../discordjs/message-formatter';
+import type {ValuesOf} from '@epic-helper/types';
 
 interface ISlashAccountEnchant {
   author: User;

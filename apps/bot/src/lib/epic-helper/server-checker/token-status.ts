@@ -1,9 +1,9 @@
 import type {Client} from 'discord.js';
-import {serverService} from '../../../services/database/server.service';
 import {userChecker} from '../user-checker';
 import {djsServerHelper} from '../../discordjs/server';
 import {djsMemberHelper} from '../../discordjs/member';
 import {USERS_PER_TOKEN} from '@epic-helper/constants';
+import {serverService} from '@epic-helper/services';
 
 interface IHasEnoughTokens {
   client: Client;
@@ -28,7 +28,7 @@ export const _getTokenStatus = async ({client, serverId}: IHasEnoughTokens) => {
   const totalTokens =
     serverAccount?.tokens?.reduce((acc, curr) => acc + curr.amount, 0) ?? 0;
 
-  if(totalTokens)
+  if (totalTokens)
     await djsMemberHelper.fetchAll({serverId, client});
 
   const totalMembers =

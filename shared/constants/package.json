@@ -11,6 +11,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "@epic-helper/types": "workspace:*"
+  },
   "devDependencies": {
     "@epic-helper/tsconfig": "workspace:*"
   }

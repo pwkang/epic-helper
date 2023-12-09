@@ -1,8 +1,6 @@
 import type {BaseMessageOptions, User} from 'discord.js';
 import {EmbedBuilder} from 'discord.js';
-import {userService} from '../../../../services/database/user.service';
-import {userReminderServices} from '../../../../services/database/user-reminder.service';
-import {userPetServices} from '../../../../services/database/user-pet.service';
+import {userPetServices, userReminderServices, userService} from '@epic-helper/services';
 import {BOT_COLOR} from '@epic-helper/constants';
 
 interface ITurnOnAccount {

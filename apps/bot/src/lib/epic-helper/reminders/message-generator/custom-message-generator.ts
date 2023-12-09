@@ -10,6 +10,7 @@ import type {BOT_CUSTOM_MESSAGE_VARIABLES} from '@epic-helper/constants';
 import {convertNumToPetId} from '@epic-helper/utils';
 import timestampHelper from '../../../discordjs/timestamp';
 import type {IToggleUserCheckerReturnType} from '../../toggle-checker/user';
+import type {ValuesOf} from '@epic-helper/types';
 
 interface IGenerateCustomMessage {
   client: Client;
