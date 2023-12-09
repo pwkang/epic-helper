@@ -30,3 +30,6 @@ export * from './free-donor/free-donor.type';
 
 export * from './user-duel/user-duel.type';
 export * from './user-duel/user-duel.schema';
+
+export * from './guild-duel/guild-duel.type';
+export * from './guild-duel/guild-duel.schema';

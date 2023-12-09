@@ -1,7 +1,7 @@
-import {guildDuelSchema} from '@epic-helper/models/dist/guild-duel/guild-duel.schema';
 import {getGuildWeek} from '@epic-helper/utils';
 import ms from 'ms';
 import {mongoClient} from '../clients/mongoose.service';
+import {guildDuelSchema} from '@epic-helper/models';
 
 const dbGuildDuel = mongoClient.model('guild-duel', guildDuelSchema);
 

@@ -1,9 +1,8 @@
 import type {BaseInteraction, BaseMessageOptions, Client, Guild, StringSelectMenuInteraction, User} from 'discord.js';
 import {EmbedBuilder} from 'discord.js';
 import {guildDuelService, guildService} from '@epic-helper/services';
-import type {IGuildDuel} from '@epic-helper/models/dist/guild-duel/guild-duel.type';
 import {BOT_COLOR} from '@epic-helper/constants';
-import type {IGuild} from '@epic-helper/models';
+import type {IGuild, IGuildDuel} from '@epic-helper/models';
 import {getGuildWeek} from '@epic-helper/utils';
 import ms from 'ms';
 import messageFormatter from '../../../discordjs/message-formatter';

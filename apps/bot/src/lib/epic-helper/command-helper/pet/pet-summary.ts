@@ -15,7 +15,7 @@ import {
 } from '@epic-helper/constants';
 import {convertNumberToRoman} from '../../../../utils/roman-conversion';
 import {convertNumToPetId, typedObjectEntries} from '@epic-helper/utils';
-import type {ValuesOf} from '@epic-helper/models/dist/type';
+import type {ValuesOf} from '@epic-helper/types';
 
 interface IPetSummaryHelper {
   author: User;
