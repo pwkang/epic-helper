@@ -19,4 +19,5 @@ export const donorSchema = new Schema<IDonor>({
     },
   },
   tier: {type: String, enum: Object.values(DONOR_TIER)},
+  active: {type: Boolean, default: false},
 });

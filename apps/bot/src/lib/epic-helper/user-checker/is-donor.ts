@@ -15,10 +15,7 @@ export const _isDonor = async ({userId, client, serverId}: IIsDonor) => {
     discordUserId: userId,
   });
 
-  const isDonor =
-    !!donor?.tier &&
-    !!donor?.expiresAt &&
-    donor?.expiresAt.getTime() > Date.now();
+  const isDonor = donor?.active || (!!donor?.expiresAt && new Date() < donor?.expiresAt);
 
   const freeDonor = await freeDonorService.findFreeDonor({
     discordUserId: userId,

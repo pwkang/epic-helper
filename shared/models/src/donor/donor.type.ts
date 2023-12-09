@@ -14,4 +14,5 @@ export interface IDonor {
   };
   tier?: ValuesOf<typeof DONOR_TIER>;
   expiresAt: Date;
+  active: boolean;
 }

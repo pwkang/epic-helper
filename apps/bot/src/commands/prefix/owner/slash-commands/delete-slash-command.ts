@@ -42,7 +42,7 @@ export default <PrefixCommand>{
           guild: message.guild!,
           client,
         });
-      for (const command of args) {
+      for (const command of args.slice(3)) {
         const guildCommand = registeredGuildSlashCommands.find(
           (gsc) => gsc.name === command,
         );

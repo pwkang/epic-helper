@@ -22,6 +22,7 @@ interface IRegisterDonor {
   };
   tier?: ValuesOf<typeof DONOR_TIER>;
   expiresAt?: Date;
+  active: boolean;
 }
 
 const registerDonors = async (donors: IRegisterDonor[]): Promise<void> => {
@@ -44,6 +45,7 @@ const registerDonors = async (donors: IRegisterDonor[]): Promise<void> => {
           'patreon.memberId': donor.patreon.memberId,
           tier: donor.tier,
           expiresAt: donor.expiresAt,
+          active: donor.active,
         },
       });
   }

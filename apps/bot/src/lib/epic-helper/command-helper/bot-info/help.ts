@@ -91,7 +91,7 @@ export const generateEmbedHome = ({groups, client}: IGenerateEmbed) => {
   const embed = new EmbedBuilder()
     .setColor(BOT_COLOR.embed)
     .setTitle('EPIC Helper Help')
-    .setDescription(`Prefix: \`wr\` | \`@${client.user.username}\``);
+    .setDescription(`Prefix: \`${PREFIX.bot}\` | \`@${client.user.username}\``);
 
   for (const group of groups) {
     if (!group.commands?.length || !group.fieldLabel) continue;

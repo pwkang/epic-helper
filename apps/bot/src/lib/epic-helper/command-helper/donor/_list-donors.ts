@@ -1,21 +1,7 @@
-import {
-  BOT_COLOR,
-  DONOR_TIER,
-  DONOR_TOKEN_AMOUNT,
-} from '@epic-helper/constants';
+import {BOT_COLOR, DONOR_TIER, DONOR_TOKEN_AMOUNT} from '@epic-helper/constants';
 import donorService from '../../../../services/database/donor.service';
-import type {
-  BaseInteraction,
-  BaseMessageOptions,
-  Client,
-  StringSelectMenuInteraction,
-} from 'discord.js';
-import {
-  ActionRowBuilder,
-  EmbedBuilder,
-  StringSelectMenuBuilder,
-  UserSelectMenuBuilder,
-} from 'discord.js';
+import type {BaseInteraction, BaseMessageOptions, Client, StringSelectMenuInteraction} from 'discord.js';
+import {ActionRowBuilder, EmbedBuilder, StringSelectMenuBuilder, UserSelectMenuBuilder} from 'discord.js';
 import type {IDonor} from '@epic-helper/models';
 import messageFormatter from '../../../discordjs/message-formatter';
 import {djsUserHelper} from '../../../discordjs/user';
@@ -128,9 +114,11 @@ const buildDonorsEmbed = async ({donors, page, total, client}: IBuildEmbed) => {
 
   for (const donor of donors) {
     const user = await fetchUser(client, donor.discord.userId);
+    const isActive = (donor.expiresAt && donor.expiresAt.getTime() > Date.now()) || donor.active;
     embed.addFields({
       name: donor.discord.userId ?? '-',
       value: [
+        `**Status:** ${isActive ? 'Active' : 'Expired'}`,
         user ? messageFormatter.user(user.id) : 'Unknown',
         user ? `**${user.tag}**` : null,
         `**Tier:** ${donor.tier ?? '-'}`,
@@ -202,7 +190,7 @@ const buildDonorEmbed = async ({donor, userId, client}: IBuildDonorEmbed) => {
       value: [
         `**Status:** ${
           donor
-            ? donor.expiresAt.getTime() > Date.now()
+            ? (donor.expiresAt.getTime() > Date.now() || donor.active)
               ? 'Active'
               : 'Expired'
             : 'Non-donor'
