@@ -17,6 +17,14 @@
         "dist/**"
       ]
     },
+    "build:api": {
+      "dependsOn": [
+        "^build:shared"
+      ],
+      "outputs": [
+        "dist/**"
+      ]
+    },
     "lint": {},
     "type-check": {}
   }

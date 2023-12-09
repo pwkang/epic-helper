@@ -18,11 +18,13 @@
     "format": "prettier --write \"apps/**/*.ts\" \"shared/**/*.ts\"",
     "format:check": "prettier --check \"apps/**/*.ts\" \"shared/**/*.ts\"",
     "build:bot": "turbo run build:bot",
+    "build:api": "turbo run build:api",
     "lint": "turbo run lint",
     "type-check": "turbo run type-check",
     "dev-shard:bot": "npm run build:bot && USE_PINO_PRETTY=true node apps/bot/dist/index.js",
     "start:bot": "node apps/bot/dist/index.js",
-    "prod:bot": "pm2 start ecosystem.config.js"
+    "prod:bot": "pm2 start ecosystem.config.js --only epic-helper",
+    "prod:api": "pm2 start ecosystem.config.js --only epic-helper-api"
   },
   "repository": {
     "type": "git",
