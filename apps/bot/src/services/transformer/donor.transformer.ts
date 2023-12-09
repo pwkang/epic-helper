@@ -14,6 +14,7 @@ export const toDonor = (donor: IDonor): IDonor => {
       fullName: donor.patreon.fullName,
       memberId: donor.patreon.memberId,
     },
+    active: donor.active,
   };
 };
 
