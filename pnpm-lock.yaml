@@ -96,6 +96,12 @@ importers:
 
   apps/api:
     dependencies:
+      '@epic-helper/libs':
+        specifier: workspace:*
+        version: link:../../shared/libs
+      '@epic-helper/services':
+        specifier: workspace:*
+        version: link:../../shared/services
       '@epic-helper/utils':
         specifier: workspace:*
         version: link:../../shared/utils
