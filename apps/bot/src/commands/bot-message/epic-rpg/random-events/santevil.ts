@@ -9,7 +9,7 @@ export default <BotMessage>{
   match: (message) => {
     const embed = message.embeds[0];
     if (!embed) return false;
-    return embed.fields[0]?.name.includes('SANTEVIL');
+    return embed.fields[0]?.name.includes('SANTEVIL JUST SPAWNED!');
   },
   execute: async (client, message) => {
     if (!message.guild) return;

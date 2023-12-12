@@ -14,6 +14,7 @@ import {updateReminderChannel} from '../../../epic-helper/reminders/reminder-cha
 import {userReminderServices, userService} from '@epic-helper/services';
 import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
 import commandHelper from '../../../epic-helper/command-helper';
+import messageFormatter from '../../../discordjs/message-formatter';
 
 interface IRpgHunt {
   client: Client;
@@ -181,7 +182,7 @@ const healReminder = async ({
   await djsMessageHelper.send({
     channelId: message.channel.id,
     options: {
-      content: author + healReminderMsg,
+      content: `${messageFormatter.user(author.id)}, ${healReminderMsg}`,
     },
     client,
   });
