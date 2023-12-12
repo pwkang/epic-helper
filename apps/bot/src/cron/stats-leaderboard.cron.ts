@@ -9,7 +9,7 @@ export default <CronJob>{
     runOnInit: true,
   },
   execute: async (client) => {
-    if (!channelId || !client.channels.cache.has(channelId)) return;
+    if (!channelId || client.cluster?.id !== 0) return;
 
     const isClusterActive = await commandHelper.cluster.isClusterActive(client);
     if (!isClusterActive) return;

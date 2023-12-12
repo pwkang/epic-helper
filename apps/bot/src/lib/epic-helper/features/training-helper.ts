@@ -1,4 +1,4 @@
-import type {Client, User} from 'discord.js';
+import type {BaseMessageOptions, Client, User} from 'discord.js';
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle} from 'discord.js';
 import {userService} from '@epic-helper/services';
 import toggleUserChecker from '../toggle-checker/user';
@@ -59,8 +59,9 @@ export default async function getTrainingAnswer({
   author,
   serverId,
   client,
-}: IGetTrainingAnswer): Promise<ActionRowBuilder<ButtonBuilder>[] | null> {
+}: IGetTrainingAnswer): Promise<BaseMessageOptions | null> {
   let components: ActionRowBuilder<ButtonBuilder>[] = [];
+  let messageContent;
   const toggleChecker = await toggleUserChecker({
     userId: author.id,
     client,
@@ -119,8 +120,12 @@ export default async function getTrainingAnswer({
     const questionRuby = Number(content.match(/more than (\d+) </)?.[1] ?? 0);
     const userRuby = await userService.getUserRubyAmount(author.id);
     components = generateRows(TRUE_FALSE, userRuby > questionRuby);
+    messageContent = `You have ${userRuby} rubies`;
   }
-  return components;
+  return {
+    components,
+    content: messageContent,
+  };
 }
 
 function generateRows(list: ITrainingAnswer[], answer: TAnswerType) {

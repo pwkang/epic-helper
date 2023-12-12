@@ -34,19 +34,17 @@ export function rpgTraining({
   event.on('content', async (content) => {
     if (isRpgTrainingQuestion({author, content})) {
       event?.pendingAnswer();
-      const answer = await getTrainingAnswer({
+      const messageOptions = await getTrainingAnswer({
         author,
         content,
         serverId: message.guild.id,
         client,
       });
-      if (!answer) return;
+      if (!messageOptions) return;
       await djsMessageHelper.send({
         channelId: message.channel.id,
         client,
-        options: {
-          components: answer,
-        },
+        options: messageOptions,
       });
     }
 

@@ -18,6 +18,8 @@ export const createMessageEditedListener = async ({
     messageId,
   });
 
+  if (messageEditedEvent.eventNames().includes(messageId)) return messageEditedEvent;
+
   messageEditedEvent.on = (
     messageId: string | symbol,
     callback: (message: Message) => void,
@@ -28,6 +30,7 @@ export const createMessageEditedListener = async ({
 
     return messageEditedEvent.addListener(messageId, callback);
   };
+
 
   return messageEditedEvent;
 };
