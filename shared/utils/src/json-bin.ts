@@ -7,7 +7,7 @@ interface ICreateJsonBinResponse {
 }
 
 // const url = 'http://localhost:8080/api/create';
-const url = 'https://json-bin.pwkang.me/api/create';
+const url = 'https://json-bin.pwkang.com/api/create';
 export const createJsonBin = async (json: Record<any, any>) => {
   try {
     const response = await axios.post(url, {
