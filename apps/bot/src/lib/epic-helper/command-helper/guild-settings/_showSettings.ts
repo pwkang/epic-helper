@@ -1,11 +1,5 @@
 import {guildService} from '@epic-helper/services';
-import type {
-  BaseInteraction,
-  BaseMessageOptions,
-  Guild,
-  InteractionReplyOptions,
-  StringSelectMenuInteraction,
-} from 'discord.js';
+import type {BaseInteraction, BaseMessageOptions, Guild, StringSelectMenuInteraction} from 'discord.js';
 import {_getGuildSettingsEmbed} from './embed/guild-settings.embed';
 import messageFormatter from '../../../discordjs/message-formatter';
 import {getGuildToggleEmbed} from '../toggle/type/guild.toggle';

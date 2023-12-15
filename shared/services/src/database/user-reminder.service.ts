@@ -1,13 +1,13 @@
 import type {RPG_EPIC_ITEM_TYPES, RPG_FARM_SEED, RPG_LOOTBOX_TYPE, RPG_WORKING_TYPE} from '@epic-helper/constants';
 import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
-import type {IHuntReminder, IUserPet, IUserReminder} from '@epic-helper/models';
+import type {IUserReminder} from '@epic-helper/models';
 import {userReminderSchema} from '@epic-helper/models';
 import {redisUserNextReminderTime} from '../redis/user-next-reminder-time.redis';
-import type {Model} from 'mongoose';
 import {mongoClient} from '../clients/mongoose.service';
 import type {ValuesOf} from '@epic-helper/types';
+import {redisUserReminder} from '../redis/user-reminder.redis';
 
-userReminderSchema.post('findOneAndUpdate', async function() {
+/*userReminderSchema.post('findOneAndUpdate', async function() {
   const updatedUserId = this.getQuery().userId;
   await updateNextReminderTime(updatedUserId, this.model);
 });
@@ -39,12 +39,29 @@ async function updateNextReminderTime(
       nextReminderTime[0].readyAt,
     );
   else await redisUserNextReminderTime.deleteReminderTime(userId);
-}
+}*/
 
 const dbUserReminder = mongoClient.model<IUserReminder>(
   'user-reminders',
   userReminderSchema,
 );
+
+const saveReminder = async (userId: string, reminder: IUserReminder) => {
+  await redisUserReminder.setReminder(userId, reminder.type, reminder);
+  const userReminders = await redisUserReminder.getReminders(userId);
+  const nextReminderTime = userReminders
+    .filter((reminder) => reminder.readyAt)
+    .sort((a, b) => {
+      if (!a.readyAt || !b.readyAt) return 0;
+      return a.readyAt.getTime() - b.readyAt.getTime();
+    });
+  if (nextReminderTime.length && nextReminderTime[0].readyAt) {
+    await redisUserNextReminderTime.setReminderTime(
+      userId,
+      nextReminderTime[0].readyAt,
+    );
+  }
+};
 
 interface ISaveUserHuntCooldown {
   userId: string;
@@ -55,28 +72,20 @@ interface ISaveUserHuntCooldown {
 
 const saveUserHuntCooldown = async ({
   userId,
-  together,
   readyAt,
+  together = false,
   hardMode,
 }: ISaveUserHuntCooldown): Promise<void> => {
-  await dbUserReminder.findOneAndUpdate(
-    {
-      userId,
-      type: RPG_COMMAND_TYPE.hunt,
+  const reminder: IUserReminder = {
+    type: RPG_COMMAND_TYPE.hunt,
+    readyAt,
+    userId,
+    props: {
+      together,
+      hardMode,
     },
-    {
-      $set: {
-        readyAt,
-        props: {
-          together,
-          hardMode,
-        },
-      },
-    },
-    {
-      upsert: true,
-    },
-  );
+  };
+  await saveReminder(userId, reminder);
 };
 
 interface ISaveUserAdventureCooldown {
@@ -90,23 +99,15 @@ const saveUserAdventureCooldown = async ({
   hardMode,
   readyAt,
 }: ISaveUserAdventureCooldown): Promise<void> => {
-  await dbUserReminder.findOneAndUpdate(
-    {
-      userId,
-      type: RPG_COMMAND_TYPE.adventure,
+  const reminder: IUserReminder = {
+    type: RPG_COMMAND_TYPE.adventure,
+    readyAt,
+    userId,
+    props: {
+      hardMode,
     },
-    {
-      $set: {
-        readyAt,
-        props: {
-          hardMode,
-        },
-      },
-    },
-    {
-      upsert: true,
-    },
-  );
+  };
+  await saveReminder(userId, reminder);
 };
 
 interface ISaveUserTrainingCooldown {
@@ -120,23 +121,15 @@ const saveUserTrainingCooldown = async ({
   readyAt,
   ultraining,
 }: ISaveUserTrainingCooldown): Promise<void> => {
-  await dbUserReminder.findOneAndUpdate(
-    {
-      userId,
-      type: RPG_COMMAND_TYPE.training,
+  const reminder: IUserReminder = {
+    type: RPG_COMMAND_TYPE.training,
+    readyAt,
+    userId,
+    props: {
+      ultraining,
     },
-    {
-      $set: {
-        readyAt,
-        props: {
-          ultraining,
-        },
-      },
-    },
-    {
-      upsert: true,
-    },
-  );
+  };
+  await saveReminder(userId, reminder);
 };
 
 interface ISaveUserQuestCooldown {
@@ -150,23 +143,15 @@ const saveUserQuestCooldown = async ({
   readyAt,
   epicQuest,
 }: ISaveUserQuestCooldown): Promise<void> => {
-  await dbUserReminder.findOneAndUpdate(
-    {
-      userId,
-      type: RPG_COMMAND_TYPE.quest,
+  const reminder: IUserReminder = {
+    type: RPG_COMMAND_TYPE.quest,
+    readyAt,
+    userId,
+    props: {
+      epicQuest,
     },
-    {
-      $set: {
-        readyAt,
-        props: {
-          epicQuest,
-        },
-      },
-    },
-    {
-      upsert: true,
-    },
-  );
+  };
+  await saveReminder(userId, reminder);
 };
 
 interface ISaveUserWorkingCooldown {
@@ -174,6 +159,23 @@ interface ISaveUserWorkingCooldown {
   readyAt?: Date;
   workingType?: ValuesOf<typeof RPG_WORKING_TYPE>;
 }
+
+const saveUserWorkingCooldown = async ({
+  userId,
+  readyAt,
+  workingType,
+}: ISaveUserWorkingCooldown): Promise<void> => {
+  const reminder: IUserReminder = {
+    type: RPG_COMMAND_TYPE.working,
+    readyAt,
+    userId,
+    props: {
+      workingType,
+    },
+  };
+  await saveReminder(userId, reminder);
+};
+
 
 interface ISaveUserFarmCooldown {
   userId: string;
@@ -186,23 +188,15 @@ const saveUserFarmCooldown = async ({
   readyAt,
   seedType,
 }: ISaveUserFarmCooldown): Promise<void> => {
-  await dbUserReminder.findOneAndUpdate(
-    {
-      userId,
-      type: RPG_COMMAND_TYPE.farm,
+  const reminder: IUserReminder = {
+    type: RPG_COMMAND_TYPE.farm,
+    readyAt,
+    userId,
+    props: {
+      seedType,
     },
-    {
-      $set: {
-        readyAt,
-        props: {
-          seedType,
-        },
-      },
-    },
-    {
-      upsert: true,
-    },
-  );
+  };
+  await saveReminder(userId, reminder);
 };
 
 interface ISaveUserDuelCooldown {
@@ -214,20 +208,12 @@ const saveUserDuelCooldown = async ({
   userId,
   readyAt,
 }: ISaveUserDuelCooldown): Promise<void> => {
-  await dbUserReminder.findOneAndUpdate(
-    {
-      userId,
-      type: RPG_COMMAND_TYPE.duel,
-    },
-    {
-      $set: {
-        readyAt,
-      },
-    },
-    {
-      upsert: true,
-    },
-  );
+  const reminder: IUserReminder = {
+    type: RPG_COMMAND_TYPE.duel,
+    readyAt,
+    userId,
+  };
+  await saveReminder(userId, reminder);
 };
 
 interface ISaveUserDailyCooldown {
@@ -239,20 +225,12 @@ const saveUserDailyCooldown = async ({
   userId,
   readyAt,
 }: ISaveUserDailyCooldown): Promise<void> => {
-  await dbUserReminder.findOneAndUpdate(
-    {
-      userId,
-      type: RPG_COMMAND_TYPE.daily,
-    },
-    {
-      $set: {
-        readyAt,
-      },
-    },
-    {
-      upsert: true,
-    },
-  );
+  const reminder: IUserReminder = {
+    type: RPG_COMMAND_TYPE.daily,
+    readyAt,
+    userId,
+  };
+  await saveReminder(userId, reminder);
 };
 
 interface ISaveUserWeeklyCooldown {
@@ -264,44 +242,12 @@ const saveUserWeeklyCooldown = async ({
   userId,
   readyAt,
 }: ISaveUserWeeklyCooldown): Promise<void> => {
-  await dbUserReminder.findOneAndUpdate(
-    {
-      userId,
-      type: RPG_COMMAND_TYPE.weekly,
-    },
-    {
-      $set: {
-        readyAt,
-      },
-    },
-    {
-      upsert: true,
-    },
-  );
-};
-
-const saveUserWorkingCooldown = async ({
-  userId,
-  readyAt,
-  workingType,
-}: ISaveUserWorkingCooldown): Promise<void> => {
-  await dbUserReminder.findOneAndUpdate(
-    {
-      userId,
-      type: RPG_COMMAND_TYPE.working,
-    },
-    {
-      $set: {
-        readyAt,
-        props: {
-          workingType,
-        },
-      },
-    },
-    {
-      upsert: true,
-    },
-  );
+  const reminder: IUserReminder = {
+    type: RPG_COMMAND_TYPE.weekly,
+    readyAt,
+    userId,
+  };
+  await saveReminder(userId, reminder);
 };
 
 interface ISaveUserLootboxCooldown {
@@ -315,23 +261,15 @@ const saveUserLootboxCooldown = async ({
   readyAt,
   lootboxType,
 }: ISaveUserLootboxCooldown): Promise<void> => {
-  await dbUserReminder.findOneAndUpdate(
-    {
-      userId,
-      type: RPG_COMMAND_TYPE.lootbox,
+  const reminder: IUserReminder = {
+    type: RPG_COMMAND_TYPE.lootbox,
+    readyAt,
+    userId,
+    props: {
+      lootboxType,
     },
-    {
-      $set: {
-        readyAt,
-        props: {
-          lootboxType,
-        },
-      },
-    },
-    {
-      upsert: true,
-    },
-  );
+  };
+  await saveReminder(userId, reminder);
 };
 
 interface ISaveUserEpicItemCooldown {
@@ -345,48 +283,32 @@ const saveUserEpicItemCooldown = async ({
   readyAt,
   epicItemType,
 }: ISaveUserEpicItemCooldown): Promise<void> => {
-  await dbUserReminder.findOneAndUpdate(
-    {
-      userId,
-      type: RPG_COMMAND_TYPE.epicItem,
+  const reminder: IUserReminder = {
+    type: RPG_COMMAND_TYPE.epicItem,
+    readyAt,
+    userId,
+    props: {
+      epicItemType,
     },
-    {
-      $set: {
-        readyAt,
-        props: {
-          epicItemType,
-        },
-      },
-    },
-    {
-      upsert: true,
-    },
-  );
+  };
+  await saveReminder(userId, reminder);
 };
 
 interface ISaveUserPetCooldown {
   userId: string;
-  readyAt: IUserPet['readyAt'];
+  readyAt?: Date;
 }
 
 const saveUserPetCooldown = async ({
   userId,
   readyAt,
 }: ISaveUserPetCooldown): Promise<void> => {
-  await dbUserReminder.findOneAndUpdate(
-    {
-      userId,
-      type: RPG_COMMAND_TYPE.pet,
-    },
-    {
-      $set: {
-        readyAt,
-      },
-    },
-    {
-      upsert: true,
-    },
-  );
+  const reminder: IUserReminder = {
+    type: RPG_COMMAND_TYPE.pet,
+    readyAt,
+    userId,
+  };
+  await saveReminder(userId, reminder);
 };
 
 interface ISaveUserXmasChimneyCooldown {
@@ -398,20 +320,12 @@ const saveUserXmasChimneyCooldown = async ({
   userId,
   readyAt,
 }: ISaveUserXmasChimneyCooldown): Promise<void> => {
-  await dbUserReminder.findOneAndUpdate(
-    {
-      userId,
-      type: RPG_COMMAND_TYPE.xmasChimney,
-    },
-    {
-      $set: {
-        readyAt,
-      },
-    },
-    {
-      upsert: true,
-    },
-  );
+  const reminder: IUserReminder = {
+    type: RPG_COMMAND_TYPE.xmasChimney,
+    readyAt,
+    userId,
+  };
+  await saveReminder(userId, reminder);
 };
 
 
@@ -426,20 +340,13 @@ const updateUserCooldown = async ({
   readyAt,
   type,
 }: IUpdateUserCooldown) => {
-  await dbUserReminder.findOneAndUpdate(
-    {
-      userId,
-      type,
-    },
-    {
-      $set: {
-        readyAt,
-      },
-    },
-    {
-      upsert: true,
-    },
-  );
+  const cooldown = await findUserCooldown({
+    userId,
+    type,
+  });
+  if (!cooldown) return;
+  cooldown.readyAt = readyAt;
+  await saveReminder(userId, cooldown);
 };
 
 interface IDeleteUserCooldown {
@@ -448,38 +355,24 @@ interface IDeleteUserCooldown {
 }
 
 const deleteUserCooldowns = async ({userId, types}: IDeleteUserCooldown) => {
-  await dbUserReminder.deleteMany({
-    userId,
-    type: {$in: types},
-  });
+  await redisUserReminder.clearReminders(userId, types);
 };
 
 const findUserReadyCommands = async (
   userId: string,
 ): Promise<IUserReminder[]> => {
-  const reminderList = await dbUserReminder.find({
-    userId,
-    readyAt: {$lte: new Date()},
-  });
-
-  return reminderList
-    ? reminderList.map((reminder) => reminder.toObject())
-    : [];
+  const userReminders = await redisUserReminder.getReminders(userId);
+  return userReminders.filter((reminder) => reminder.readyAt && reminder.readyAt.getTime() < new Date().getTime());
 };
 
 const getUserAllCooldowns = async (
   userId: string,
 ): Promise<IUserReminder[]> => {
-  const reminderList = await dbUserReminder.find({
-    userId,
-  });
-
-  return reminderList
-    ? reminderList.map((reminder) => reminder.toObject())
-    : [];
+  return await redisUserReminder.getReminders(userId);
 };
 
 const clearUserCooldowns = async (userId: string): Promise<void> => {
+  await redisUserReminder.clearReminders(userId, Object.values(RPG_COMMAND_TYPE));
   await dbUserReminder.deleteMany({
     userId,
   });
@@ -492,20 +385,15 @@ interface IGetNextReadyCommand {
 const getNextReadyCommand = async ({
   userId,
 }: IGetNextReadyCommand): Promise<IUserReminder | null> => {
-  const reminder = await dbUserReminder.find(
-    {
-      userId,
-      readyAt: {$gte: new Date()},
-    },
-    null,
-    {
-      sort: {
-        readyAt: 1,
-      },
-      limit: 1,
-    },
-  );
-  return reminder?.length ? reminder[0].toObject() : null;
+  let userReminders = await redisUserReminder.getReminders(userId);
+  if (!userReminders.length) return null;
+  userReminders = userReminders.filter(reminder =>
+    reminder.readyAt && reminder.readyAt >= new Date(),
+  ).sort((a, b) => {
+    if (!a.readyAt || !b.readyAt) return 0;
+    return a.readyAt.getTime() - b.readyAt.getTime();
+  });
+  return userReminders[0];
 };
 
 interface IUpdateRemindedCooldowns {
@@ -517,17 +405,15 @@ const updateRemindedCooldowns = async ({
   userId,
   types,
 }: IUpdateRemindedCooldowns) => {
-  await dbUserReminder.updateMany(
-    {
+  await Promise.all(types.map(async (type) => {
+    const cooldown = await findUserCooldown({
       userId,
-      type: {$in: types},
-    },
-    {
-      $unset: {
-        readyAt: 1,
-      },
-    },
-  );
+      type,
+    });
+    if (!cooldown) return;
+    delete cooldown.readyAt;
+    await saveReminder(userId, cooldown);
+  }));
 };
 
 interface IFindUserCooldown {
@@ -538,13 +424,14 @@ interface IFindUserCooldown {
 const findUserCooldown = async ({
   userId,
   type,
-}: IFindUserCooldown): Promise<IUserReminder | null> => {
-  const reminder = await dbUserReminder.findOne({
+}: IFindUserCooldown): Promise<IUserReminder> => {
+  const data = await redisUserReminder.getReminder(userId, type);
+  if (data) return data;
+  return {
     userId,
     type,
-  });
-
-  return reminder ? reminder.toObject() : null;
+    props: {},
+  } as IUserReminder;
 };
 
 export const userReminderServices = {

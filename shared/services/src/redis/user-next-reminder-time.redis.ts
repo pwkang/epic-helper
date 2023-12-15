@@ -1,6 +1,6 @@
 import {redisService} from './redis.service';
 
-const prefix = 'epic-helper:user-reminder:';
+const prefix = 'epic-helper:user-reminder-time:';
 
 interface IRedisUserReminder {
   userId: string;
@@ -38,8 +38,18 @@ const deleteReminderTime: (userId: string) => Promise<void> = async (
   await redisService.del(`${prefix}${userId}`);
 };
 
+const findUserReminderTime: (userId: string) => Promise<Date | null> = async (
+  userId,
+) => {
+  const data = await redisService.get(`${prefix}${userId}`);
+  if (!data) return null;
+  const {readyAt} = JSON.parse(data) as IRedisUserReminder;
+  return new Date(readyAt);
+};
+
 export const redisUserNextReminderTime = {
   setReminderTime,
   getReminderTime,
   deleteReminderTime,
+  findUserReminderTime,
 };

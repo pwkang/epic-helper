@@ -36,7 +36,7 @@ async function updateNextPetReminderTime(
   else
     await userReminderServices.saveUserPetCooldown({
       userId,
-      readyAt: nextReminderTime[0].readyAt,
+      readyAt: nextReminderTime[0].readyAt ?? undefined,
     });
 }
 
