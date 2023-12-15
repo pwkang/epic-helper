@@ -37,7 +37,7 @@ export const _showSettings = async ({
     server,
   });
 
-  function getMessagePayload(): InteractionReplyOptions {
+  function getMessagePayload() {
     if (!guilds.length)
       return {
         content: 'There is no guild setup in this server',
@@ -94,5 +94,4 @@ export const _showSettings = async ({
 
 interface IReplyInteraction {
   interaction: BaseInteraction | StringSelectMenuInteraction;
-  customId: string;
 }
