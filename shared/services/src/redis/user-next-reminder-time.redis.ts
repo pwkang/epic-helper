@@ -38,7 +38,7 @@ const deleteReminderTime: (userId: string) => Promise<void> = async (
   await redisService.del(`${prefix}${userId}`);
 };
 
-export const redisUserReminder = {
+export const redisUserNextReminderTime = {
   setReminderTime,
   getReminderTime,
   deleteReminderTime,

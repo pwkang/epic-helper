@@ -1,6 +1,6 @@
 import {userReminderTimesUp} from '../lib/epic-helper/reminders/ready/user.reminder-ready';
 import commandHelper from '../lib/epic-helper/command-helper';
-import {redisService, redisUserReminder} from '@epic-helper/services';
+import {redisService, redisUserNextReminderTime} from '@epic-helper/services';
 
 export default <CronJob>{
   name: 'user-reminder',
@@ -11,7 +11,7 @@ export default <CronJob>{
     const isClusterActive = await commandHelper.cluster.isClusterActive(client);
     if (!isClusterActive) return;
 
-    const usersId = await redisUserReminder.getReminderTime();
+    const usersId = await redisUserNextReminderTime.getReminderTime();
     if (!usersId.length) return;
     usersId.forEach((userId) => {
       userReminderTimesUp(client, userId);
