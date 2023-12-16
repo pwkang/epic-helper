@@ -31,6 +31,7 @@ export const getReminderChannel = async ({
   userId,
   client,
 }: IGetReminderChannel) => {
+  if (commandType === 'petSummary') commandType = 'pet';
   const settings = await userService.getUserReminderChannel({
     userId,
   });

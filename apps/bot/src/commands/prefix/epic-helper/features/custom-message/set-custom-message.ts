@@ -20,8 +20,8 @@ export default <PrefixCommand>{
   execute: async (client, message, args) => {
     const type = args[2];
     if (
-      !Object.values(CUSTOM_MESSAGE_TYPES_DISPLAY_NAME).includes(
-        type.toLowerCase(),
+      !Object.values(CUSTOM_MESSAGE_TYPES_DISPLAY_NAME).some(name =>
+        name.toLowerCase() === type.toLowerCase(),
       )
     ) {
       return djsMessageHelper.reply({

@@ -20,7 +20,7 @@ export const rpgGuildList = async ({
   isSlashCommand,
   message,
 }: IIdleGuild) => {
-  if (message.mentions.users.size) return;
+  if (message.mentions.users.filter(user => !user.bot).size) return;
   let event = createRpgCommandListener({
     author,
     client,

@@ -11,7 +11,7 @@ export const userReminderSchema = new Schema<IUserReminder>(
     },
     type: {type: String, required: true},
     readyAt: {type: Date},
-    updatedAt: {type: Date},
+    updatedAt: {type: Date, default: Date.now},
     props: {
       together: Boolean,
       hardMode: Boolean,

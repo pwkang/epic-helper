@@ -1,11 +1,8 @@
-import {freeDonorSchema} from '@epic-helper/models';
-import type {QueryOptions} from 'mongoose';
+import type {Promise, QueryOptions} from 'mongoose';
 import {redisFreeDonor} from '../redis/free-donor.redis';
-import type {Promise} from 'mongoose';
 import {redisUserBoostedServers} from '../redis/user-boosted-servers.redis';
-import {mongoClient} from '../clients/mongoose.service';
+import {dbFreeDonor} from './models';
 
-const dbFreeDonor = mongoClient.model('freeDonors', freeDonorSchema);
 
 interface ICreateFreeDonors {
   usersId: string[];

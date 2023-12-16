@@ -1,9 +1,7 @@
 import {getGuildWeek} from '@epic-helper/utils';
 import ms from 'ms';
-import {mongoClient} from '../clients/mongoose.service';
-import {guildDuelSchema} from '@epic-helper/models';
+import {dbGuildDuel} from './models';
 
-const dbGuildDuel = mongoClient.model('guild-duel', guildDuelSchema);
 
 interface IAddLog {
   userId: string;

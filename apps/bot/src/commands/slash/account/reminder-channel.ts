@@ -115,6 +115,7 @@ const keyWords: IKeyword = {
   horse: ['horse', 'horse breed', 'horse race'],
   lootbox: ['lootbox', 'buy'],
   pet: ['pet', 'pets'],
+  petSummary: ['pet summary', 'pets summary'],
   quest: ['quest', 'epic quest'],
   epicItem: ['use', 'epic items', 'epic item', 'epicItems', 'epicItem'],
   training: ['training', 'tr'],

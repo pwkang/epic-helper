@@ -1,6 +1,53 @@
 import {Schema} from 'mongoose';
-import type {IUser} from './user.type';
-import {BOT_TIME_FORMAT, BOT_TIMEZONE_LIST, RPG_DONOR_TIER} from '@epic-helper/constants';
+import type {IUser, IUserPet} from './user.type';
+import {
+  BOT_TIME_FORMAT,
+  BOT_TIMEZONE_LIST,
+  RPG_DONOR_TIER,
+  RPG_PET_ADV_STATUS,
+  RPG_PET_TYPE,
+} from '@epic-helper/constants';
+
+const userPetSchema = new Schema<IUserPet>({
+  userId: {
+    type: String,
+    required: true,
+    immutable: true,
+    index: true,
+  },
+  name: {
+    type: String,
+    required: true,
+    enum: Object.keys(RPG_PET_TYPE),
+  },
+  petId: {
+    type: Number,
+    required: true,
+    index: true,
+  },
+  skills: {
+    fast: Number,
+    happy: Number,
+    clever: Number,
+    digger: Number,
+    lucky: Number,
+    timeTraveler: Number,
+    epic: Number,
+    ascended: Number,
+    fighter: Number,
+    perfect: Number,
+    master: Number,
+  },
+  tier: {
+    type: Number,
+    required: true,
+  },
+  status: {
+    type: String,
+    enum: Object.values(RPG_PET_ADV_STATUS),
+  },
+  readyAt: Date,
+});
 
 export const userSchema = new Schema<IUser>({
   userId: {
@@ -112,6 +159,7 @@ export const userSchema = new Schema<IUser>({
     dungeon: String,
     epicItem: String,
     pet: String,
+    petSummary: String,
     xmasChimney: String,
   },
   channel: {
@@ -178,5 +226,7 @@ export const userSchema = new Schema<IUser>({
         percent: {type: Number, default: 0},
       },
     },
+    pets: [userPetSchema],
   },
+  updatedAt: {type: Date, default: Date.now},
 });

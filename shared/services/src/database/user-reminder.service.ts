@@ -1,16 +1,11 @@
 import type {RPG_EPIC_ITEM_TYPES, RPG_FARM_SEED, RPG_LOOTBOX_TYPE, RPG_WORKING_TYPE} from '@epic-helper/constants';
 import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import type {IUserReminder} from '@epic-helper/models';
-import {userReminderSchema} from '@epic-helper/models';
 import {redisUserNextReminderTime} from '../redis/user-next-reminder-time.redis';
-import {mongoClient} from '../clients/mongoose.service';
 import type {ValuesOf} from '@epic-helper/types';
 import {redisUserReminder} from '../redis/user-reminder.redis';
+import {dbUserReminder} from './models';
 
-const dbUserReminder = mongoClient.model<IUserReminder>(
-  'user-reminders',
-  userReminderSchema,
-);
 
 const saveReminder = async (userId: string, reminder: IUserReminder) => {
   reminder.updatedAt = new Date();
@@ -278,6 +273,23 @@ const saveUserPetCooldown = async ({
   await saveReminder(userId, reminder);
 };
 
+interface ISaveUserPetSummaryCooldown {
+  userId: string;
+  readyAt?: Date;
+}
+
+const saveUserPetSummaryCooldown = async ({
+  userId,
+  readyAt,
+}: ISaveUserPetSummaryCooldown): Promise<void> => {
+  const reminder: IUserReminder = {
+    type: RPG_COMMAND_TYPE.petSummary,
+    readyAt,
+    userId,
+  };
+  await saveReminder(userId, reminder);
+};
+
 interface ISaveUserXmasChimneyCooldown {
   userId: string;
   readyAt: Date;
@@ -439,6 +451,7 @@ export const userReminderServices = {
   saveUserWorkingCooldown,
   saveUserLootboxCooldown,
   saveUserPetCooldown,
+  saveUserPetSummaryCooldown,
   updateUserCooldown,
   deleteUserCooldowns,
   findUserReadyCommands,

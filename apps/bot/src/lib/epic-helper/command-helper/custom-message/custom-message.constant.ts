@@ -44,6 +44,7 @@ export const CUSTOM_MESSAGE_PAGES: IPage[] = [
     label: 'Other',
     rows: [
       {label: 'Pet', type: 'pet'},
+      {label: 'Pet Summary', type: 'petSummary'},
       {label: 'Epic Items', type: 'epicItem'},
     ],
   },

@@ -23,7 +23,7 @@ export const rpgGuildRaid = async ({
   isSlashCommand,
   client,
 }: IRpgGuildRaid) => {
-  if (!message.inGuild() || !!message.mentions.users.size) return;
+  if (!message.inGuild() || !!message.mentions.users.filter(user => !user.bot).size) return;
   let event = createRpgCommandListener({
     author,
     client,

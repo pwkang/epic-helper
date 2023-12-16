@@ -1,9 +1,8 @@
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import type {Client, Message, User} from 'discord.js';
 import type {IMessageContentChecker, IMessageEmbedChecker} from '../../../../types/utils';
-import {guildService} from '@epic-helper/services';
+import {guildService, upgraidService} from '@epic-helper/services';
 import ms from 'ms';
-import {upgraidService} from '@epic-helper/services';
 import {_sendUpgraidResultToGuildChannel} from './_shared';
 import {RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants';
 import {toggleGuildChecker} from '../../../epic-helper/toggle-checker/guild';
@@ -23,7 +22,7 @@ export const rpgGuildUpgrade = async ({
   isSlashCommand,
   client,
 }: IRpgGuildUpgrade) => {
-  if (!message.inGuild() || !!message.mentions.users.size) return;
+  if (!message.inGuild() || !!message.mentions.users.filter(user => user.bot).size) return;
   let event = createRpgCommandListener({
     author,
     client,

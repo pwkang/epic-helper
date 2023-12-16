@@ -1,22 +1,44 @@
-import type {UpdateQuery} from 'mongoose';
 import type {RPG_AREA, RPG_DONOR_TIER, RPG_ENCHANT_LEVEL} from '@epic-helper/constants';
-import userAccountRedis from '../redis/user-account.redis';
 import redisUserAccount from '../redis/user-account.redis';
 import type {IUser, IUserToggle, USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
-import {userSchema} from '@epic-helper/models';
-import mongooseLeanDefaults from 'mongoose-lean-defaults';
-import {mongoClient} from '../clients/mongoose.service';
 import type {ValuesOf} from '@epic-helper/types';
+import {dbUser} from './models';
+import type {UpdateQuery} from 'mongoose';
 
 
-userSchema.post('findOneAndUpdate', async function(doc) {
-  if (!doc) return;
-  await userAccountRedis.setUser(doc.userId, doc);
-});
+const saveUser = async (user: IUser) => {
+  user.updatedAt = new Date();
+  await redisUserAccount.setUser(user.userId, user);
+};
 
-userSchema.plugin(mongooseLeanDefaults);
+const getUserAccount = async (userId: string): Promise<IUser | null> => {
+  const cachedUser = await redisUserAccount.findUser(userId);
+  if (cachedUser) return cachedUser;
 
-const dbUser = mongoClient.model<IUser>('users', userSchema);
+  const user = await dbUser
+    .findOne({
+      userId,
+    })
+    .lean({defaults: true});
+
+  if (user) await redisUserAccount.setUser(userId, user);
+
+  return user ?? null;
+};
+
+const syncUser = async (userId: string) => {
+  const user = await getUserAccount(userId);
+  if (!user) return;
+  await dbUser.findOneAndUpdate(
+    {
+      userId,
+    },
+    user,
+    {
+      upsert: true,
+    },
+  );
+};
 
 interface RegisterUserProps {
   userId: string;
@@ -46,46 +68,32 @@ const registerUserAccount = async ({
   return false;
 };
 
-const userAccountOn = async (userId: string): Promise<void> => {
-  await dbUser.findOneAndUpdate(
-    {
-      userId,
-    },
-    {
-      $set: {
-        'config.onOff': true,
-      },
-    },
-    {new: true},
-  );
+const userAccountOn = async (userId: string) => {
+  const user = await getUserAccount(userId);
+  if (!user) return;
+  user.config.onOff = true;
+  await saveUser(user);
+  return user;
 };
 
-const userAccountOff = async (userId: string): Promise<void> => {
-  await dbUser.findOneAndUpdate(
-    {
-      userId,
-    },
-    {
-      $set: {
-        'config.onOff': false,
-      },
-    },
-    {new: true},
-  );
+const userAccountOff = async (userId: string) => {
+  const user = await getUserAccount(userId);
+  if (!user) return;
+  user.config.onOff = false;
+  await saveUser(user);
+  return user;
 };
 
-const userAccountDelete = async (userId: string): Promise<void> => {
+const userAccountDelete = async (userId: string) => {
   await dbUser.findOneAndDelete({
     userId,
   });
   await redisUserAccount.delUser(userId);
 };
 
-const isUserAccountExist = async (userId: string): Promise<boolean> => {
-  const user = await dbUser.count({
-    userId,
-  });
-  return user > 0;
+const isUserAccountExist = async (userId: string) => {
+  const user = await getUserAccount(userId);
+  return !!user;
 };
 
 interface IUpdateRpgDonorTier {
@@ -96,18 +104,12 @@ interface IUpdateRpgDonorTier {
 const updateRpgDonorTier = async ({
   userId,
   tier,
-}: IUpdateRpgDonorTier): Promise<void> => {
-  await dbUser.findOneAndUpdate(
-    {
-      userId,
-    },
-    {
-      $set: {
-        'config.donor': tier,
-      },
-    },
-    {new: true},
-  );
+}: IUpdateRpgDonorTier) => {
+  const user = await getUserAccount(userId);
+  if (!user) return;
+  user.config.donor = tier;
+  await saveUser(user);
+  return user;
 };
 
 interface IUpdateRpgDonorPTier {
@@ -118,48 +120,26 @@ interface IUpdateRpgDonorPTier {
 const updateRpgDonorPTier = async ({
   userId,
   tier,
-}: IUpdateRpgDonorPTier): Promise<void> => {
-  await dbUser.findOneAndUpdate(
-    {
-      userId,
-    },
-    {
-      $set: {
-        'config.donorP': tier,
-      },
-    },
-    {new: true},
-  );
+}: IUpdateRpgDonorPTier) => {
+  const user = await getUserAccount(userId);
+  if (!user) return;
+  if (tier) {
+    user.config.donorP = tier;
+  } else {
+    delete user.config.donorP;
+  }
+  await saveUser(user);
+  return user;
 };
 
-const removeRpgDonorPTier = async (userId: string): Promise<void> => {
-  await dbUser.findOneAndUpdate(
-    {
-      userId,
-    },
-    {
-      $unset: {
-        'config.donorP': '',
-      },
-    },
-    {new: true},
-  );
+const removeRpgDonorPTier = async (userId: string) => {
+  const user = await getUserAccount(userId);
+  if (!user) return;
+  delete user.config.donorP;
+  await saveUser(user);
+  return user;
 };
 
-const getUserAccount = async (userId: string): Promise<IUser | null> => {
-  const cachedUser = await redisUserAccount.findUser(userId);
-  if (cachedUser) return cachedUser;
-
-  const user = await dbUser
-    .findOne({
-      userId,
-    })
-    .lean({defaults: true});
-
-  if (user) await redisUserAccount.setUser(userId, user);
-
-  return user ?? null;
-};
 
 interface IUpdateUserRubyAmount {
   userId: string;
@@ -171,26 +151,22 @@ const updateUserRubyAmount = async ({
   ruby,
   userId,
   type,
-}: IUpdateUserRubyAmount): Promise<void> => {
-  const query: UpdateQuery<IUser> = {};
-  if (type === 'set') {
-    query.$set = {
-      'items.ruby': ruby,
-    };
-  } else {
-    query.$inc = {
-      'items.ruby': type === 'inc' ? ruby : -ruby,
-    };
+}: IUpdateUserRubyAmount) => {
+  const user = await getUserAccount(userId);
+  if (!user) return;
+  switch (type) {
+    case 'set':
+      user.items.ruby = ruby;
+      break;
+    case 'inc':
+      user.items.ruby += ruby;
+      break;
+    case 'dec':
+      user.items.ruby -= ruby;
+      break;
   }
-  await dbUser.findOneAndUpdate(
-    {
-      userId,
-    },
-    query,
-    {
-      new: true,
-    },
-  );
+  await saveUser(user);
+  return user;
 };
 
 const getUserRubyAmount = async (userId: string): Promise<number> => {
@@ -206,18 +182,12 @@ interface ISetUserEnchantTier {
 const setUserEnchantTier = async ({
   userId,
   tier,
-}: ISetUserEnchantTier): Promise<void> => {
-  await dbUser.findOneAndUpdate(
-    {
-      userId,
-    },
-    {
-      $set: {
-        'config.enchant': tier,
-      },
-    },
-    {new: true},
-  );
+}: ISetUserEnchantTier) => {
+  const user = await getUserAccount(userId);
+  if (!user) return;
+  user.config.enchant = tier;
+  await saveUser(user);
+  return user;
 };
 
 interface IRemoveUserEnchantTier {
@@ -226,18 +196,12 @@ interface IRemoveUserEnchantTier {
 
 const removeUserEnchantTier = async ({
   userId,
-}: IRemoveUserEnchantTier): Promise<void> => {
-  await dbUser.findOneAndUpdate(
-    {
-      userId,
-    },
-    {
-      $unset: {
-        'config.enchant': '',
-      },
-    },
-    {new: true},
-  );
+}: IRemoveUserEnchantTier) => {
+  const user = await getUserAccount(userId);
+  if (!user) return;
+  delete user.config.enchant;
+  await saveUser(user);
+  return user;
 };
 
 interface IGetUserEnchantTier {
@@ -257,18 +221,12 @@ interface IRemoveUserHealReminder {
 
 const removeUserHealReminder = async ({
   userId,
-}: IRemoveUserHealReminder): Promise<void> => {
-  await dbUser.findOneAndUpdate(
-    {
-      userId,
-    },
-    {
-      $unset: {
-        'config.heal': '',
-      },
-    },
-    {new: true},
-  );
+}: IRemoveUserHealReminder) => {
+  const user = await getUserAccount(userId);
+  if (!user) return;
+  delete user.config.heal;
+  await saveUser(user);
+  return user;
 };
 
 interface IGetUserHealReminder {
@@ -290,18 +248,12 @@ interface ISetUserHealReminder {
 const setUserHealReminder = async ({
   userId,
   hp,
-}: ISetUserHealReminder): Promise<void> => {
-  await dbUser.findOneAndUpdate(
-    {
-      userId,
-    },
-    {
-      $set: {
-        'config.heal': hp,
-      },
-    },
-    {new: true},
-  );
+}: ISetUserHealReminder) => {
+  const user = await getUserAccount(userId);
+  if (!user) return;
+  user.config.heal = hp;
+  await saveUser(user);
+  return user;
 };
 
 interface ISetUserReminderChannel {
@@ -315,20 +267,13 @@ const setUserReminderChannel = async ({
   commandType,
   channelId,
 }: ISetUserReminderChannel) => {
-  const updateQuery: Record<string, string> = {};
+  const user = await getUserAccount(userId);
+  if (!user) return;
   commandType.forEach((type) => {
-    updateQuery[`channel.${type}`] = channelId;
+    user.channel[type] = channelId;
   });
-
-  await dbUser.findOneAndUpdate(
-    {
-      userId,
-    },
-    {
-      $set: updateQuery,
-    },
-    {new: true},
-  );
+  await saveUser(user);
+  return user;
 };
 
 interface IRemoveUserReminderChannel {
@@ -340,20 +285,14 @@ const removeUserReminderChannel = async ({
   userId,
   commandType,
 }: IRemoveUserReminderChannel) => {
-  const updateQuery: Record<string, string> = {};
+  commandType = commandType.filter((type) => type !== 'all');
+  const user = await getUserAccount(userId);
+  if (!user) return;
   commandType.forEach((type) => {
-    if (type === 'all') return;
-    updateQuery[`channel.${type}`] = '';
+    delete user.channel[type];
   });
-  await dbUser.findOneAndUpdate(
-    {
-      userId,
-    },
-    {
-      $unset: updateQuery,
-    },
-    {new: true},
-  );
+  await saveUser(user);
+  return user;
 };
 
 interface IGetUserReminderChannel {
@@ -381,6 +320,7 @@ const updateUserToggle = async ({
   userId,
   query,
 }: IUpdateUserToggle): Promise<null | IUser> => {
+  await syncUser(userId);
   await dbUser.findOneAndUpdate(
     {
       userId,
@@ -400,6 +340,7 @@ interface IResetUserToggle {
 const resetUserToggle = async ({
   userId,
 }: IResetUserToggle): Promise<IUser | null> => {
+  await syncUser(userId);
   await dbUser.findOneAndUpdate(
     {
       userId,
@@ -413,7 +354,7 @@ const resetUserToggle = async ({
       new: true,
     },
   );
-
+  await redisUserAccount.delUser(userId);
   return await getUserAccount(userId);
 };
 
@@ -438,21 +379,12 @@ const updateUserCustomMessage = async ({
   userId,
   type,
   message,
-}: IUpdateUserCustomMessage): Promise<IUser | null> => {
-  await dbUser.findOneAndUpdate(
-    {
-      userId,
-    },
-    {
-      $set: {
-        [`customMessage.${type}`]: message,
-      },
-    },
-    {
-      new: true,
-    },
-  );
-  return await getUserAccount(userId);
+}: IUpdateUserCustomMessage) => {
+  const user = await getUserAccount(userId);
+  if (!user) return null;
+  user.customMessage[type] = message;
+  await saveUser(user);
+  return user;
 };
 
 interface IResetUserCustomMessage {
@@ -462,6 +394,7 @@ interface IResetUserCustomMessage {
 const resetUserCustomMessage = async ({
   userId,
 }: IResetUserCustomMessage): Promise<IUser | null> => {
+  await syncUser(userId);
   await dbUser.findOneAndUpdate(
     {
       userId,
@@ -475,6 +408,7 @@ const resetUserCustomMessage = async ({
       new: true,
     },
   );
+  await redisUserAccount.delUser(userId);
   return await getUserAccount(userId);
 };
 
@@ -505,17 +439,11 @@ interface IUpdateBestStats {
 }
 
 const updateBestStats = async ({userId, type, value}: IUpdateBestStats) => {
-  await dbUser.findOneAndUpdate(
-    {userId},
-    {
-      $max: {
-        [`stats.best.${type}`]: value,
-      },
-    },
-    {
-      new: true,
-    },
-  );
+  const user = await getUserAccount(userId);
+  if (!user) return;
+  user.stats.best[type] = value;
+  await saveUser(user);
+  return user;
 };
 
 interface IUpdateUserMaxArea {
@@ -524,17 +452,11 @@ interface IUpdateUserMaxArea {
 }
 
 const updateUserMaxArea = async ({userId, area}: IUpdateUserMaxArea) => {
-  await dbUser.findOneAndUpdate(
-    {userId},
-    {
-      $set: {
-        'rpgInfo.maxArea': area,
-      },
-    },
-    {
-      new: true,
-    },
-  );
+  const user = await getUserAccount(userId);
+  if (!user) return;
+  user.rpgInfo.maxArea = area;
+  await saveUser(user);
+  return user;
 };
 
 interface IUpdateUserCurrentArea {
@@ -543,17 +465,11 @@ interface IUpdateUserCurrentArea {
 }
 
 const updateUserCurrentArea = async ({userId, area}: IUpdateUserCurrentArea) => {
-  await dbUser.findOneAndUpdate(
-    {userId},
-    {
-      $set: {
-        'rpgInfo.currentArea': area,
-      },
-    },
-    {
-      new: true,
-    },
-  );
+  const user = await getUserAccount(userId);
+  if (!user) return;
+  user.rpgInfo.currentArea = area;
+  await saveUser(user);
+  return user;
 };
 
 interface IUpdateUserPocketWatch {
@@ -563,20 +479,43 @@ interface IUpdateUserPocketWatch {
 }
 
 const updateUserPocketWatch = async ({userId, percent, owned}: IUpdateUserPocketWatch) => {
-  await dbUser.findOneAndUpdate(
-    {userId},
-    {
-      $set: {
-        'rpgInfo.artifacts.pocketWatch': {
-          owned,
-          percent,
-        },
+  const user = await getUserAccount(userId);
+  if (!user) return;
+  user.rpgInfo.artifacts.pocketWatch = {
+    owned,
+    percent,
+  };
+  await saveUser(user);
+  return user;
+};
+
+interface ISaveUserPets {
+  userId: string;
+  pets: IUser['rpgInfo']['pets'];
+}
+
+const saveUserPets = async ({userId, pets}: ISaveUserPets) => {
+  const user = await getUserAccount(userId);
+  if (!user) return;
+  user.rpgInfo.pets = pets;
+  await saveUser(user);
+  return user;
+};
+
+interface ISaveUsersToDb {
+  users: IUser[];
+}
+
+const saveUsersToDb = async ({users}: ISaveUsersToDb) => {
+  await Promise.all(users.map(async (user) => {
+    await dbUser.findOneAndUpdate(
+      {userId: user.userId},
+      user,
+      {
+        upsert: true,
       },
-    },
-    {
-      new: true,
-    },
-  );
+    );
+  }));
 };
 
 export const userService = {
@@ -612,4 +551,6 @@ export const userService = {
   updateUserMaxArea,
   updateUserCurrentArea,
   updateUserPocketWatch,
+  saveUserPets,
+  saveUsersToDb,
 };

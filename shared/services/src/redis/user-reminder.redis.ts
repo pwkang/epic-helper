@@ -23,8 +23,15 @@ const clearReminders = async (userId: string, types: ValuesOf<typeof RPG_COMMAND
   await redisService.del(types.map((type) => getReminderKey(userId, type)));
 };
 
-const getAllReminders = async () => {
-  const keys = await redisService.keys(`${PREFIX}*`);
+const getAllReminders = async (size: number, excluded?: string[]) => {
+  let keys = await redisService.keys(`${PREFIX}*`);
+  keys = keys
+    .filter(key => {
+      const userId = key.split(':')[1];
+      return !excluded?.includes(userId);
+    })
+    .slice(0, size);
+
   const reminders = await Promise.all(
     keys.map(async (key) => {
       const data = await redisService.get(key);

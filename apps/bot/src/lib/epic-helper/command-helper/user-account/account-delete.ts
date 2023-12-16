@@ -1,6 +1,6 @@
 import type {BaseMessageOptions, User} from 'discord.js';
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder} from 'discord.js';
-import {userPetServices, userReminderServices, userService, userStatsService} from '@epic-helper/services';
+import {userReminderServices, userService, userStatsService} from '@epic-helper/services';
 import {BOT_CLICKABLE_SLASH_COMMANDS, BOT_COLOR} from '@epic-helper/constants';
 
 interface ISlashAccountDelete {
@@ -21,9 +21,6 @@ export const _deleteAccount = ({author}: ISlashAccountDelete) => {
     if (customId === 'confirm') {
       await userService.userAccountDelete(author.id);
       await userReminderServices.clearUserCooldowns(author.id);
-      await userPetServices.clearUserPets({
-        userId: author.id,
-      });
       await userStatsService.clearUserStats({userId: author.id});
       return {
         components: [],
