@@ -15,6 +15,7 @@ import {_userStatsHelper} from './user-stats';
 import {_leaderboardHelper} from './leaderboard';
 import {_clusterHelper} from './cluster';
 import {_redisHelper} from './redis';
+import {_utilsHelper} from './utils';
 
 const commandHelper = {
   toggle: _toggleHelper,
@@ -34,6 +35,7 @@ const commandHelper = {
   leaderboard: _leaderboardHelper,
   cluster: _clusterHelper,
   redis: _redisHelper,
+  utils: _utilsHelper,
 };
 
 export default commandHelper;
