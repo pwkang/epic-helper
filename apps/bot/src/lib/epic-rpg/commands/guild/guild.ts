@@ -20,7 +20,7 @@ export const rpgGuild = ({
   message,
   isSlashCommand,
 }: IRpgGuild) => {
-  if (!message.inGuild() || !!message.mentions.users.size) return;
+  if (!message.inGuild() || !!message.mentions.users.filter(user => user.bot).size) return;
   let event = createRpgCommandListener({
     channelId: message.channel.id,
     client,
