@@ -15,8 +15,16 @@ const getReminder = async (userId: string, type: ValuesOf<typeof RPG_COMMAND_TYP
   return toUserReminder(JSON.parse(data));
 };
 
-const getReminders = async (userId: string) => {
-  const keys = await redisService.keys(`${PREFIX}${userId}:*`);
+const setReminder = async (userId: string, type: ValuesOf<typeof RPG_COMMAND_TYPE>, value: any) => {
+  await redisService.set(getReminderKey(userId, type), JSON.stringify(value));
+};
+
+const clearReminders = async (userId: string, types: ValuesOf<typeof RPG_COMMAND_TYPE>[]) => {
+  await redisService.del(types.map((type) => getReminderKey(userId, type)));
+};
+
+const getAllReminders = async () => {
+  const keys = await redisService.keys(`${PREFIX}*`);
   const reminders = await Promise.all(
     keys.map(async (key) => {
       const data = await redisService.get(key);
@@ -27,16 +35,9 @@ const getReminders = async (userId: string) => {
   return toUserReminders(reminders.filter((reminder) => reminder !== null));
 };
 
-const setReminder = async (userId: string, type: ValuesOf<typeof RPG_COMMAND_TYPE>, value: any) => {
-  await redisService.set(getReminderKey(userId, type), JSON.stringify(value));
-};
-
-const clearReminders = async (userId: string, types: ValuesOf<typeof RPG_COMMAND_TYPE>[]) => {
-  await redisService.del(types.map((type) => getReminderKey(userId, type)));
-};
 export const redisUserReminder = {
   getReminder,
-  getReminders,
   setReminder,
   clearReminders,
+  getAllReminders,
 };

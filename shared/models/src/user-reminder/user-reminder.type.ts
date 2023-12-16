@@ -112,6 +112,7 @@ export interface IXmasChimneyReminder extends BaseUserReminder {
 type BaseUserReminder = {
   userId: string;
   readyAt?: Date;
+  updatedAt?: Date;
 };
 
 export type IUserReminder =

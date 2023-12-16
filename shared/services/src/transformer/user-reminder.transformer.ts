@@ -15,6 +15,7 @@ export const toUserReminder = (user: any): IUserReminder => {
       ultraining: user?.props?.ultraining,
       workingType: user?.props?.workingType,
     },
+    updatedAt: user?.updatedAt ? new Date(user?.updatedAt) : undefined,
   };
 };
 

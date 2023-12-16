@@ -8,8 +8,9 @@ export default <CronJob>{
   cronOptions: {
     runOnInit: true,
   },
+  clusterId: 0,
   execute: async (client) => {
-    if (!channelId || client.cluster?.id !== 0) return;
+    if (!channelId) return;
 
     const isClusterActive = await commandHelper.cluster.isClusterActive(client);
     if (!isClusterActive) return;
