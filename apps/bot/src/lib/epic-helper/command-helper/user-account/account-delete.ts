@@ -1,6 +1,6 @@
 import type {BaseMessageOptions, User} from 'discord.js';
 import {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder} from 'discord.js';
-import {userPetServices, userReminderServices, userService, userStatsService} from '@epic-helper/services';
+import {userReminderServices, userService, userStatsService} from '@epic-helper/services';
 import {BOT_CLICKABLE_SLASH_COMMANDS, BOT_COLOR} from '@epic-helper/constants';
 
 interface ISlashAccountDelete {
