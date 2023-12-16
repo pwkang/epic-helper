@@ -1,11 +1,5 @@
 import {guildService} from '@epic-helper/services';
-import type {
-  BaseInteraction,
-  BaseMessageOptions,
-  Guild,
-  InteractionReplyOptions,
-  StringSelectMenuInteraction,
-} from 'discord.js';
+import type {BaseInteraction, BaseMessageOptions, Guild, StringSelectMenuInteraction} from 'discord.js';
 import {_getGuildSettingsEmbed} from './embed/guild-settings.embed';
 import messageFormatter from '../../../discordjs/message-formatter';
 import {getGuildToggleEmbed} from '../toggle/type/guild.toggle';
@@ -37,7 +31,7 @@ export const _showSettings = async ({
     server,
   });
 
-  function getMessagePayload(): InteractionReplyOptions {
+  function getMessagePayload() {
     if (!guilds.length)
       return {
         content: 'There is no guild setup in this server',
@@ -94,5 +88,4 @@ export const _showSettings = async ({
 
 interface IReplyInteraction {
   interaction: BaseInteraction | StringSelectMenuInteraction;
-  customId: string;
 }

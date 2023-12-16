@@ -16,6 +16,7 @@ export default async function loadCronJob(client: Client) {
   });
   commands.forEach(({data}) => {
     if (!data?.name || data.disabled) return;
+    if (data.clusterId !== undefined && client.cluster && data.clusterId !== client.cluster?.id) return;
     schedule(data.expression, () => data.execute(client), {
       ...data.cronOptions,
       timezone: 'Asia/Kuala_Lumpur',
