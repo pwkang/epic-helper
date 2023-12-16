@@ -69,6 +69,7 @@
     ],
     "no-multi-spaces": "error",
     "no-multiple-empty-lines": "error",
-    "@typescript-eslint/consistent-type-imports": "error"
+    "@typescript-eslint/consistent-type-imports": "error",
+    "no-constant-condition": "off"
   }
 }

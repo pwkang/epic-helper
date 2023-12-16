@@ -1,46 +1,36 @@
-import type {Model} from 'mongoose';
-import {type FilterQuery, type QueryOptions} from 'mongoose';
 import {RPG_PET_ADV_STATUS} from '@epic-helper/constants';
-import {type IUserPet, userPetSchema} from '@epic-helper/models';
-import {userReminderServices} from './user-reminder.service';
+import type {IUser} from '@epic-helper/models';
+import {type IUserPet} from '@epic-helper/models';
 import 'mongodb';
-import {mongoClient} from '../clients/mongoose.service';
 import type {ValuesOf} from '@epic-helper/types';
+import {userService} from './user.service';
+import {userReminderServices} from './user-reminder.service';
 
-userPetSchema.post('findOneAndUpdate', async function () {
-  const updatedUserId = this.getQuery().userId;
-  await updateNextPetReminderTime(updatedUserId, this.model);
-});
+const saveUser = async (user: IUser) => {
+  user.rpgInfo.pets = user.rpgInfo.pets.sort((a, b) => a.petId - b.petId);
+  await userService.saveUserPets({
+    userId: user.userId,
+    pets: user.rpgInfo.pets,
+  });
 
-userPetSchema.post('updateMany', async function () {
-  const updatedUserId = this.getQuery().userId;
-  await updateNextPetReminderTime(updatedUserId, this.model);
-});
+  const nextReminderTime = user.rpgInfo.pets
+    .filter(pet => pet.readyAt)
+    .sort((a, b) =>
+      (a.readyAt?.getTime() ?? 0) - (b.readyAt?.getTime() ?? 0),
+    )[0]?.readyAt;
 
-async function updateNextPetReminderTime(
-  userId: string,
-  model: Model<IUserPet>,
-) {
-  const nextReminderTime = await model
-    .find({
-      userId,
-      readyAt: {$gt: new Date()},
-    })
-    .sort({readyAt: 1})
-    .limit(1);
-  if (!nextReminderTime.length)
+  if (!nextReminderTime) {
     await userReminderServices.updateRemindedCooldowns({
-      userId,
+      userId: user.userId,
       types: ['pet'],
     });
-  else
+  } else {
     await userReminderServices.saveUserPetCooldown({
-      userId,
-      readyAt: nextReminderTime[0].readyAt ?? undefined,
+      userId: user.userId,
+      readyAt: nextReminderTime,
     });
-}
-
-const dbUserPet = mongoClient.model<IUserPet>('user-pet', userPetSchema);
+  }
+};
 
 interface IGetUserPets {
   userId: string;
@@ -59,30 +49,32 @@ const getUserPets = async ({
   status,
   orderBy = 'petId',
 }: IGetUserPets) => {
-  const query: FilterQuery<IUserPet> = {
-    userId,
-  };
+  const user = await userService.getUserAccount(userId);
+  if (!user) return [];
+  let pets = user.rpgInfo.pets;
+
+  if (orderBy === 'petId') {
+    pets = pets.sort((a, b) => a.petId - b.petId);
+  } else if (orderBy === 'readyAt') {
+    pets = pets.sort((a, b) => {
+      if (!a.readyAt || !b.readyAt) return 0;
+      return a.readyAt.getTime() - b.readyAt.getTime();
+    });
+  }
+
   if (petsId) {
-    query.petId = {
-      $in: petsId,
-    };
+    pets = pets.filter(pet => petsId.includes(pet.petId));
   }
+
   if (status) {
-    query.status = {
-      $in: status,
-    };
+    pets = pets.filter(pet => status.includes(pet.status));
   }
-  const options: QueryOptions<IUserPet> = {};
-  if (orderBy) {
-    options.sort = {
-      [orderBy]: 1,
-    };
+
+  if (page !== undefined && limit !== undefined) {
+    pets = pets.slice(page * limit, (page + 1) * limit);
   }
-  if (page !== undefined && limit) {
-    options.skip = page * limit;
-    options.limit = limit;
-  }
-  return dbUserPet.find(query, null, options).lean();
+
+  return pets;
 };
 
 interface ICalcTotalPets {
@@ -91,15 +83,15 @@ interface ICalcTotalPets {
 }
 
 const calcTotalPets = async ({userId, status}: ICalcTotalPets) => {
-  const query: FilterQuery<IUserPet> = {
-    userId,
-  };
+  const user = await userService.getUserAccount(userId);
+  if (!user) return 0;
+  let pets = user.rpgInfo.pets;
+
   if (status) {
-    query.status = {
-      $in: status,
-    };
+    pets = pets.filter(pet => status.includes(pet.status));
   }
-  return dbUserPet.countDocuments(query);
+
+  return pets.length;
 };
 
 interface ICreateUserPet {
@@ -108,18 +100,11 @@ interface ICreateUserPet {
 }
 
 const createUserPet = async ({userId, pet}: ICreateUserPet) => {
-  return dbUserPet.findOneAndUpdate(
-    {
-      userId,
-      petId: pet.petId,
-    },
-    {
-      $set: pet,
-    },
-    {
-      upsert: true,
-    },
-  );
+  const user = await userService.getUserAccount(userId);
+  if (!user) return [];
+  user.rpgInfo.pets.push(pet);
+  await saveUser(user);
+  return user.rpgInfo.pets;
 };
 
 interface IUpdateUserPet {
@@ -128,15 +113,13 @@ interface IUpdateUserPet {
 }
 
 const updateUserPet = async ({userId, pet}: IUpdateUserPet) => {
-  return dbUserPet.findOneAndUpdate(
-    {
-      userId,
-      petId: pet.petId,
-    },
-    {
-      $set: pet,
-    },
-  );
+  const user = await userService.getUserAccount(userId);
+  if (!user) return [];
+  const petIndex = user.rpgInfo.pets.findIndex(p => p.petId === pet.petId);
+  if (petIndex === -1) return [];
+  user.rpgInfo.pets[petIndex] = pet;
+  await saveUser(user);
+  return user.rpgInfo.pets;
 };
 
 interface IDeleteExtraPets {
@@ -145,12 +128,11 @@ interface IDeleteExtraPets {
 }
 
 const deleteExtraPets = async ({userId, maxPetId}: IDeleteExtraPets) => {
-  return dbUserPet.deleteMany({
-    userId,
-    petId: {
-      $gt: maxPetId,
-    },
-  });
+  const user = await userService.getUserAccount(userId);
+  if (!user) return [];
+  user.rpgInfo.pets = user.rpgInfo.pets.filter(pet => pet.petId <= maxPetId);
+  await saveUser(user);
+  return user.rpgInfo.pets;
 };
 
 interface IGetUserReadyPets {
@@ -158,12 +140,9 @@ interface IGetUserReadyPets {
 }
 
 const getUserReadyPets = async ({userId}: IGetUserReadyPets) => {
-  return dbUserPet.find({
-    userId,
-    readyAt: {
-      $lte: new Date(),
-    },
-  });
+  const user = await userService.getUserAccount(userId);
+  if (!user) return [];
+  return user.rpgInfo.pets.filter(pet => pet.readyAt && pet.readyAt.getTime() <= new Date().getTime());
 };
 
 interface IUpdateRemindedPets {
@@ -172,22 +151,17 @@ interface IUpdateRemindedPets {
 }
 
 const updateRemindedPets = async ({userId, petIds}: IUpdateRemindedPets) => {
-  return dbUserPet.updateMany(
-    {
-      userId,
-      petId: {
-        $in: petIds,
-      },
-    },
-    {
-      $unset: {
-        readyAt: 1,
-      },
-      $set: {
-        status: RPG_PET_ADV_STATUS.back,
-      },
-    },
-  );
+  const user = await userService.getUserAccount(userId);
+  if (!user) return null;
+  user.rpgInfo.pets = user.rpgInfo.pets.map(pet => {
+    if (petIds.includes(pet.petId)) {
+      pet.readyAt = null;
+      pet.status = RPG_PET_ADV_STATUS.back;
+    }
+    return pet;
+  });
+  await saveUser(user);
+  return user.rpgInfo.pets;
 };
 
 interface IGetAvailableEpicPets {
@@ -195,13 +169,9 @@ interface IGetAvailableEpicPets {
 }
 
 const getAvailableEpicPets = async ({userId}: IGetAvailableEpicPets) => {
-  return dbUserPet.find({
-    userId,
-    status: RPG_PET_ADV_STATUS.idle,
-    'skills.epic': {
-      $ne: null,
-    },
-  });
+  const user = await userService.getUserAccount(userId);
+  if (!user) return [];
+  return user.rpgInfo.pets.filter(pet => pet.status === RPG_PET_ADV_STATUS.idle && pet.skills.epic);
 };
 
 interface IGetAdventureEpicPets {
@@ -209,67 +179,35 @@ interface IGetAdventureEpicPets {
 }
 
 const getAdventureEpicPets = async ({userId}: IGetAdventureEpicPets) => {
-  return dbUserPet.find({
-    userId,
-    status: {
-      $in: [RPG_PET_ADV_STATUS.adventure, RPG_PET_ADV_STATUS.back],
-    },
-    'skills.epic': {
-      $ne: null,
-    },
-  });
+  const user = await userService.getUserAccount(userId);
+  if (!user) return [];
+  return user.rpgInfo.pets.filter(pet => pet.status === RPG_PET_ADV_STATUS.adventure && pet.skills.epic);
 };
 
 const claimAllPets = async ({userId}: {userId: string}) => {
-  return dbUserPet.updateMany(
-    {
-      userId,
-      $or: [
-        {
-          status: RPG_PET_ADV_STATUS.back,
-        },
-        {
-          readyAt: {
-            $lte: new Date(),
-          },
-        },
-      ],
-    },
-    {
-      $set: {
-        status: RPG_PET_ADV_STATUS.idle,
-      },
-      $unset: {
-        readyAt: 1,
-      },
-    },
-  );
+  const user = await userService.getUserAccount(userId);
+  if (!user) return null;
+  user.rpgInfo.pets = user.rpgInfo.pets.map(pet => {
+    if (pet.status === RPG_PET_ADV_STATUS.back || (pet.readyAt && pet.readyAt.getTime() <= new Date().getTime())) {
+      pet.status = RPG_PET_ADV_STATUS.idle;
+      pet.readyAt = null;
+    }
+    return pet;
+  });
+  await saveUser(user);
+  return user.rpgInfo.pets;
 };
 
 const resetUserPetsAdvStatus = async (userId: string) => {
-  return dbUserPet.updateMany(
-    {
-      userId,
-    },
-    {
-      $set: {
-        status: RPG_PET_ADV_STATUS.idle,
-      },
-      $unset: {
-        readyAt: 1,
-      },
-    },
-  );
-};
-
-interface IClearUserPets {
-  userId: string;
-}
-
-const clearUserPets = async ({userId}: IClearUserPets) => {
-  return dbUserPet.deleteMany({
-    userId,
+  const user = await userService.getUserAccount(userId);
+  if (!user) return null;
+  user.rpgInfo.pets = user.rpgInfo.pets.map(pet => {
+    pet.status = RPG_PET_ADV_STATUS.idle;
+    pet.readyAt = null;
+    return pet;
   });
+  await saveUser(user);
+  return user.rpgInfo.pets;
 };
 
 interface ICancelAdventurePets {
@@ -278,22 +216,17 @@ interface ICancelAdventurePets {
 }
 
 const cancelAdventurePets = async ({userId, petIds}: ICancelAdventurePets) => {
-  return dbUserPet.updateMany(
-    {
-      userId,
-      petId: {
-        $in: petIds,
-      },
-    },
-    {
-      $set: {
-        status: RPG_PET_ADV_STATUS.idle,
-      },
-      $unset: {
-        readyAt: 1,
-      },
-    },
-  );
+  const user = await userService.getUserAccount(userId);
+  if (!user) return null;
+  user.rpgInfo.pets = user.rpgInfo.pets.map(pet => {
+    if (petIds.includes(pet.petId)) {
+      pet.status = RPG_PET_ADV_STATUS.idle;
+      pet.readyAt = null;
+    }
+    return pet;
+  });
+  await saveUser(user);
+  return user.rpgInfo.pets;
 };
 
 export const userPetServices = {
@@ -308,6 +241,5 @@ export const userPetServices = {
   getAdventureEpicPets,
   claimAllPets,
   resetUserPetsAdvStatus,
-  clearUserPets,
   cancelAdventurePets,
 };

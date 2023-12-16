@@ -1,16 +1,16 @@
-import {redisUserReminder} from '@epic-helper/services/dist/redis/user-reminder.redis';
-import {userReminderServices} from '@epic-helper/services';
+import {userService} from '@epic-helper/services';
 import ms from 'ms';
+import redisUserAccount from '@epic-helper/services/dist/redis/user-account.redis';
 
 const MINIMUM_UPDATE_INTERVAL = ms('1m');
 
 const BATCH_SIZE = 100;
 
-export const _syncUserReminderToDb = async () => {
+export const _syncUserToDb = async () => {
   let updated = 0;
   const updatedUsersId = new Set<string>();
   while (1) {
-    const reminders = await redisUserReminder.getAllReminders(BATCH_SIZE, Array.from(updatedUsersId));
+    const reminders = await redisUserAccount.getAllUsers(BATCH_SIZE, Array.from(updatedUsersId));
     if (!reminders.length) break;
 
     const toUpdate = reminders.filter(reminder =>
@@ -20,8 +20,8 @@ export const _syncUserReminderToDb = async () => {
 
     if (!toUpdate.length) break;
 
-    await userReminderServices.saveRemindersToDb({
-      reminders: toUpdate,
+    await userService.saveUsersToDb({
+      users: toUpdate,
     });
 
     updated += toUpdate.length;

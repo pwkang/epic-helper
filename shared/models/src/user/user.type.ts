@@ -7,6 +7,13 @@ import type {
   RPG_ENCHANT_LEVEL,
 } from '@epic-helper/constants';
 import type {ValuesOf} from '@epic-helper/types';
+import type {
+  RPG_PET_ADV_STATUS,
+  RPG_PET_SKILL_ASCEND,
+  RPG_PET_SKILL_SPECIAL,
+  RPG_PET_TYPE,
+  TSkillTierNumber,
+} from '@epic-helper/constants';
 
 type ToggleDmOptions = keyof typeof RPG_COMMAND_TYPE | 'all';
 type ToggleReminderOptions = keyof typeof RPG_COMMAND_TYPE | 'all';
@@ -45,6 +52,22 @@ export interface IUserToggle
   };
 }
 
+export interface IUserPet {
+  userId: string;
+  petId: number;
+  name: ValuesOf<typeof RPG_PET_TYPE>;
+  tier: number;
+  readyAt: Date | null;
+  status: ValuesOf<typeof RPG_PET_ADV_STATUS>;
+  skills: Partial<
+    Record<
+      keyof typeof RPG_PET_SKILL_ASCEND | keyof typeof RPG_PET_SKILL_SPECIAL,
+      TSkillTierNumber
+    >
+  >;
+}
+
+
 export interface IUser {
   userId: string;
   username: string;
@@ -53,10 +76,10 @@ export interface IUser {
   channel: Record<ReminderChannelOptions, string>;
   config: {
     timezone: keyof typeof BOT_TIMEZONE_LIST;
-    heal: number;
-    enchant: keyof typeof RPG_ENCHANT_LEVEL;
+    heal?: number;
+    enchant?: keyof typeof RPG_ENCHANT_LEVEL;
     donor: ValuesOf<typeof RPG_DONOR_TIER>;
-    donorP: ValuesOf<typeof RPG_DONOR_TIER> | null;
+    donorP?: ValuesOf<typeof RPG_DONOR_TIER>;
     onOff: boolean;
     timeFormat: ValuesOf<typeof BOT_TIME_FORMAT>;
   };
@@ -69,6 +92,7 @@ export interface IUser {
         percent: number;
       }
     };
+    pets: IUserPet[];
   };
   items: {
     ruby: number;
@@ -87,4 +111,5 @@ export interface IUser {
       farm: number;
     };
   };
+  updatedAt: Date;
 }

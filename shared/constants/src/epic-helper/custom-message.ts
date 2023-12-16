@@ -5,6 +5,7 @@ export const BOT_REMINDER_DEFAULT_MESSAGES: Partial<
   Record<ValuesOf<typeof RPG_COMMAND_TYPE> | 'all', string>
 > = {
   all: '{user}, **__{cmd_upper}__** {emoji} is ready! {slash}\n{next_reminder}',
+  petSummary: '{user}, your pet(s) is ready to claim!\n{next_reminder}',
   pet: '{user}, your pet(s) is ready to claim! (`{pet_id}`)\n{next_reminder}',
 } as const;
 

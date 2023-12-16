@@ -17,6 +17,7 @@ export const RPG_COMMAND_TYPE = {
   dungeon: 'dungeon',
   epicItem: 'epicItem',
   pet: 'pet',
+  petSummary: 'petSummary',
   xmasChimney: 'xmasChimney',
 } as const;
 

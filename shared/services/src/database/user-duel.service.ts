@@ -1,9 +1,7 @@
 import type {IUserDuelUser} from '@epic-helper/models';
-import {userDuelSchema} from '@epic-helper/models';
 import {getGuildWeek} from '@epic-helper/utils';
-import {mongoClient} from '../clients/mongoose.service';
+import {dbUserDuel} from './models';
 
-const dbUserDuel = mongoClient.model('user-duel', userDuelSchema);
 
 interface IAddLog {
   user: IUserDuelUser;

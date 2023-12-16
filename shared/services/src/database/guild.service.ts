@@ -1,33 +1,11 @@
-import {guildSchema, type IGuild} from '@epic-helper/models';
+import {type IGuild} from '@epic-helper/models';
 import type {UpdateQuery} from 'mongoose';
-import {redisGuildReminder} from '../redis/guild-reminder.redis';
 import type {Client} from 'discord.js';
 import {toGuild, toGuilds} from '../transformer/guild.transformer';
 import {redisGuildMembers} from '../redis/guild-members.redis';
 import {redisGuild} from '../redis/guild.redis';
-import mongooseLeanDefaults from 'mongoose-lean-defaults';
-import {mongoClient} from '../clients/mongoose.service';
+import {dbGuild} from './models';
 
-guildSchema.post('findOneAndUpdate', async (doc: IGuild) => {
-  if (!doc) return;
-  await redisGuild.setGuild(doc.serverId, doc.roleId, doc);
-  if (doc.upgraid.readyAt && doc.upgraid.readyAt > new Date()) {
-    await redisGuildReminder.setReminderTime({
-      serverId: doc.serverId,
-      readyAt: doc.upgraid.readyAt,
-      guildRoleId: doc.roleId,
-    });
-  } else {
-    await redisGuildReminder.deleteReminderTime({
-      serverId: doc.serverId,
-      guildRoleId: doc.roleId,
-    });
-  }
-});
-
-guildSchema.plugin(mongooseLeanDefaults);
-
-const dbGuild = mongoClient.model('guilds', guildSchema);
 
 interface IRegisterGuild {
   serverId: string;
@@ -324,6 +302,7 @@ const registerUserToGuild = async ({
     userId,
   });
 };
+
 interface IRegisterUsersToGuild {
   serverId: string;
   roleId: string;

@@ -104,6 +104,11 @@ export interface IPetReminder extends BaseUserReminder {
   props?: never;
 }
 
+export interface IPetSummaryReminder extends BaseUserReminder {
+  type: typeof RPG_COMMAND_TYPE.petSummary;
+  props?: never;
+}
+
 export interface IXmasChimneyReminder extends BaseUserReminder {
   type: typeof RPG_COMMAND_TYPE.xmasChimney;
   props?: never;
@@ -132,4 +137,5 @@ export type IUserReminder =
   | IArenaReminder
   | IDungeonReminder
   | IPetReminder
+  | IPetSummaryReminder
   | IXmasChimneyReminder;

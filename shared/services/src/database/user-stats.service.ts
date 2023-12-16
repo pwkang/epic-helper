@@ -1,17 +1,9 @@
 import type {FilterQuery, QueryOptions} from 'mongoose';
 import {getStartOfLastWeek, getStartOfToday} from '@epic-helper/utils';
 import type {IUserStats, USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
-import {userStatsSchema} from '@epic-helper/models';
-import mongooseLeanDefaults from 'mongoose-lean-defaults';
-import {mongoClient} from '../clients/mongoose.service';
 import type {ValuesOf} from '@epic-helper/types';
+import {dbUserStats} from './models';
 
-userStatsSchema.plugin(mongooseLeanDefaults);
-
-const dbUserStats = mongoClient.model<IUserStats>(
-  'user-stats',
-  userStatsSchema,
-);
 
 interface ICountUserStats {
   userId: string;

@@ -90,14 +90,14 @@ const updatePetsFromEmbed = async ({
   updatedPets,
 }: IUpdatePetsFromEmbed) => {
   const pets = embedReaders.pets({embed, author});
-  const dbPetsList = await userPetServices.getUserPets({
+  let dbPetsList = await userPetServices.getUserPets({
     userId: author.id,
     petsId: pets.map((pet) => pet.petId),
   });
   for (const newPet of pets) {
     const oldPet = dbPetsList.find((dbPet) => dbPet.petId === newPet.petId);
     if (!oldPet) {
-      await userPetServices.createUserPet({
+      dbPetsList = await userPetServices.createUserPet({
         pet: newPet,
         userId: author.id,
       });
@@ -105,7 +105,7 @@ const updatePetsFromEmbed = async ({
       continue;
     }
     if (isPetUpdated({newPet, oldPet})) {
-      await userPetServices.updateUserPet({
+      dbPetsList = await userPetServices.updateUserPet({
         pet: newPet,
         userId: author.id,
       });
@@ -113,10 +113,12 @@ const updatePetsFromEmbed = async ({
     }
   }
   const maxPet = getMaxPetId({embed});
-  await userPetServices.deleteExtraPets({
-    userId: author.id,
-    maxPetId: maxPet,
-  });
+  if(dbPetsList.some(pet => pet.petId > maxPet)) {
+    await userPetServices.deleteExtraPets({
+      userId: author.id,
+      maxPetId: maxPet,
+    });
+  }
 };
 
 /**

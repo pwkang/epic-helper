@@ -1,13 +1,11 @@
-import {mongoClient} from '../clients/mongoose.service';
 import type {IDonor} from '@epic-helper/models';
-import {donorSchema} from '@epic-helper/models';
 import type {DONOR_TIER} from '@epic-helper/constants';
 import type {FilterQuery, Promise, QueryOptions} from 'mongoose';
 import {redisDonor} from '../redis/donor.redis';
 import {redisUserBoostedServers} from '../redis/user-boosted-servers.redis';
 import type {ValuesOf} from '@epic-helper/types';
+import {dbDonor} from './models';
 
-const dbDonor = mongoClient.model<IDonor>('donors', donorSchema);
 
 interface IRegisterDonor {
   patreon: {

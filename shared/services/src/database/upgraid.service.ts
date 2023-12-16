@@ -1,8 +1,6 @@
-import {upgraidSchema} from '@epic-helper/models';
 import {getGuildWeek} from '@epic-helper/utils';
-import {mongoClient} from '../clients/mongoose.service';
+import {dbUpgraid} from './models';
 
-const dbUpgraid = mongoClient.model('upgraids', upgraidSchema);
 
 interface IAddRecord {
   serverId: string;

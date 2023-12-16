@@ -1,6 +1,6 @@
 import type {IUser} from '@epic-helper/models';
 import {USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
-import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
+import {RPG_COMMAND_TYPE, RPG_PET_SKILL_ASCEND, RPG_PET_SKILL_SPECIAL} from '@epic-helper/constants';
 import {typedObjectEntries} from '@epic-helper/utils';
 
 export const toUser = (user: any): IUser => {
@@ -96,7 +96,26 @@ export const toUser = (user: any): IUser => {
           percent: user?.rpgInfo?.artifacts?.pocketWatch?.percent ?? 0,
         },
       },
+      pets: user.rpgInfo?.pets?.map((pet: any) => ({
+        userId: pet?.userId,
+        petId: pet?.petId,
+        name: pet?.name,
+        tier: pet?.tier,
+        readyAt: pet?.readyAt ? new Date(pet?.readyAt) : null,
+        status: pet?.status,
+        skills: {
+          ...typedObjectEntries(RPG_PET_SKILL_ASCEND).reduce((acc, [key]) => {
+            acc[key] = pet?.skills?.[key];
+            return acc;
+          }, {} as Record<keyof typeof RPG_PET_SKILL_ASCEND, number>),
+          ...typedObjectEntries(RPG_PET_SKILL_SPECIAL).reduce((acc, [key]) => {
+            acc[key] = pet?.skills?.[key];
+            return acc;
+          }, {} as Record<keyof typeof RPG_PET_SKILL_SPECIAL, number>),
+        },
+      })),
     },
+    updatedAt: user?.updatedAt ? new Date(user?.updatedAt) : new Date(),
   };
 };
 

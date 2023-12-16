@@ -21,9 +21,6 @@ export const _deleteAccount = ({author}: ISlashAccountDelete) => {
     if (customId === 'confirm') {
       await userService.userAccountDelete(author.id);
       await userReminderServices.clearUserCooldowns(author.id);
-      await userPetServices.clearUserPets({
-        userId: author.id,
-      });
       await userStatsService.clearUserStats({userId: author.id});
       return {
         components: [],
