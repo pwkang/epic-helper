@@ -1,5 +1,4 @@
 import type {Embed} from 'discord.js';
-import ms from 'ms';
 
 export interface IGuildUpgradeReader {
   embed: Embed;
