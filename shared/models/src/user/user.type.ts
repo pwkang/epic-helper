@@ -5,15 +5,13 @@ import type {
   RPG_COMMAND_TYPE,
   RPG_DONOR_TIER,
   RPG_ENCHANT_LEVEL,
-} from '@epic-helper/constants';
-import type {ValuesOf} from '@epic-helper/types';
-import type {
   RPG_PET_ADV_STATUS,
   RPG_PET_SKILL_ASCEND,
   RPG_PET_SKILL_SPECIAL,
   RPG_PET_TYPE,
   TSkillTierNumber,
 } from '@epic-helper/constants';
+import type {ValuesOf} from '@epic-helper/types';
 
 type ToggleDmOptions = keyof typeof RPG_COMMAND_TYPE | 'all';
 type ToggleReminderOptions = keyof typeof RPG_COMMAND_TYPE | 'all';
@@ -111,5 +109,9 @@ export interface IUser {
       farm: number;
     };
   };
+  groupCooldowns: {
+    userId: string;
+    types: (keyof typeof RPG_COMMAND_TYPE)[];
+  }[];
   updatedAt: Date;
 }

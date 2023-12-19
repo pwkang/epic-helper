@@ -8,7 +8,7 @@ export default <PrefixCommand>{
   commands: ['sync user'],
   preCheck: {},
   execute: async (client, message) => {
-    const synced = await commandHelper.utils.syncUserToDb();
+    const synced = await commandHelper.utils.syncUserToDb('10m');
     await djsMessageHelper.send({
       channelId: message.channel.id,
       client,

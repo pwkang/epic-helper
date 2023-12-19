@@ -33,7 +33,7 @@ const RPG_COMMAND_CATEGORY = {
   farm: ['farm'],
   horse: ['horse breeding', 'horse race'],
   arena: ['arena', 'big arena'],
-  dungeon: ['dungeon', 'minintboss'],
+  dungeon: ['dungeon', 'miniboss', 'minintboss'],
 };
 
 interface IRpgCooldown {
@@ -127,7 +127,7 @@ const rpgCooldownSuccess = async ({
         (cooldown) => cooldown.type === commandType,
       );
       if (
-        !currentCooldown ||
+        !currentCooldown?.readyAt ||
         (
           currentCooldown?.readyAt &&
           Math.abs(currentCooldown.readyAt.getTime() - readyAt.getTime()) > 1000

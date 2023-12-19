@@ -6,6 +6,6 @@ export default <CronJob>{
   clusterId: 0,
   cronOptions: {},
   execute: async () => {
-    await commandHelper.utils.syncUserToDb();
+    await commandHelper.utils.syncUserToDb('10m');
   },
 };
