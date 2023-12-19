@@ -27,7 +27,7 @@ const getAllReminders = async (size: number, excluded?: string[]) => {
   let keys = await redisService.keys(`${PREFIX}*`);
   keys = keys
     .filter(key => {
-      const userId = key.split(':')[1];
+      const userId = key.split(':')[2];
       return !excluded?.includes(userId);
     })
     .slice(0, size);

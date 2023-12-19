@@ -12,6 +12,7 @@ export const _syncUserReminderToDb = async () => {
   while (1) {
     const reminders = await redisUserReminder.getAllReminders(BATCH_SIZE, Array.from(updatedUsersId));
     if (!reminders.length) break;
+    reminders.forEach(reminder => updatedUsersId.add(reminder.userId));
 
     const toUpdate = reminders.filter(reminder =>
       reminder.updatedAt &&

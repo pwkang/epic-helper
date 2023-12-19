@@ -16,7 +16,6 @@ import {redisGuild} from '../redis/guild.redis';
 import {redisGuildReminder} from '../redis/guild-reminder.redis';
 import mongooseLeanDefaults from 'mongoose-lean-defaults';
 import {redisServerAccount} from '../redis/server-account.redis';
-import userAccountRedis from '../redis/user-account.redis';
 
 /*
  * Donor
@@ -81,10 +80,6 @@ export const dbUpgraid = mongoClient.model('upgraids', upgraidSchema);
 /**
  * Users
  */
-userSchema.post('findOneAndUpdate', async function(doc) {
-  if (!doc) return;
-  await userAccountRedis.setUser(doc.userId, doc);
-});
 
 userSchema.plugin(mongooseLeanDefaults);
 

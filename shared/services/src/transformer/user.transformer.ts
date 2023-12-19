@@ -115,6 +115,10 @@ export const toUser = (user: any): IUser => {
         },
       })),
     },
+    groupCooldowns: user?.groupCooldowns?.map((groupCooldown: any) => ({
+      userId: groupCooldown?.userId,
+      types: groupCooldown?.types ?? [],
+    })),
     updatedAt: user?.updatedAt ? new Date(user?.updatedAt) : new Date(),
   };
 };

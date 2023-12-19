@@ -228,5 +228,13 @@ export const userSchema = new Schema<IUser>({
     },
     pets: [userPetSchema],
   },
+  groupCooldowns: {
+    type: [
+      {
+        userId: {type: String},
+        types: [{type: String}],
+      },
+    ],
+  },
   updatedAt: {type: Date, default: Date.now},
 });
