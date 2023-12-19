@@ -41,14 +41,14 @@ export const _setGroupCooldowns = async ({author, message}: IVSetGroupCooldowns)
     };
   }
 
-  // for (const [userId, user] of users.entries()) {
-  //   const isRegistered = await userService.isUserAccountExist(userId);
-  //   if (!isRegistered) {
-  //     return {
-  //       content: `**${user.username}** is not registered yet`,
-  //     };
-  //   }
-  // }
+  for (const [userId, user] of users.entries()) {
+    const isRegistered = await userService.isUserAccountExist(userId);
+    if (!isRegistered) {
+      return {
+        content: `**${user.username}** is not registered yet`,
+      };
+    }
+  }
 
   await userService.saveUserGroupCooldowns({
     users: users.map(user => user.id),
