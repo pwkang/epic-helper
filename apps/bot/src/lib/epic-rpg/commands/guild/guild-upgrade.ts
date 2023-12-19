@@ -8,6 +8,7 @@ import {RPG_COOLDOWN_EMBED_TYPE} from '@epic-helper/constants';
 import {toggleGuildChecker} from '../../../epic-helper/toggle-checker/guild';
 import {djsMessageHelper} from '../../../discordjs/message';
 import commandHelper from '../../../epic-helper/command-helper';
+import embedReaders from '../../embed-readers';
 
 interface IRpgGuildUpgrade {
   client: Client;
@@ -101,6 +102,12 @@ const rpgGuildUpgradeSuccess = async ({
   guildServerId,
   message,
 }: IRpgGuildUpgradeSuccess): Promise<void> => {
+  const upgradeInfo = embedReaders.guildUpgrade({embed: message.embeds[0]});
+  await guildService.updateGuildInfo({
+    serverId: guildServerId,
+    roleId: guildRoleId,
+    stealth: upgradeInfo.newStealth,
+  });
   await guildService.registerReminder({
     readyIn: ms('2h'),
     roleId: guildRoleId,
