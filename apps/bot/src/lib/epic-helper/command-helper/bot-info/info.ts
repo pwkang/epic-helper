@@ -89,7 +89,7 @@ interface IShardInfoResult {
 }
 
 const getShardInfo = (client: Client, server: Guild): IShardInfoResult => {
-  if (client.shard) {
+  if (client.cluster) {
     const totalShard = client.cluster?.info.TOTAL_SHARDS ?? 1;
     const shardId = server.shard.id;
     return {

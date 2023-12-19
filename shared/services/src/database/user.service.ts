@@ -390,6 +390,7 @@ const updateUserToggle = async ({
       new: true,
     },
   );
+  await redisUserAccount.delUser(userId);
   return await getUserAccount(userId);
 };
 
