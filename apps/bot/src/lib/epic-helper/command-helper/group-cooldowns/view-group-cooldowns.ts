@@ -105,7 +105,7 @@ const generateEmbed = ({author, users, cooldownList}: IGenerateEmbed) => {
 };
 
 const getCommandState = (reminder?: IUserReminder) => {
-  if (!reminder) return BOT_EMOJI.utils.off;
+  if (!reminder) return BOT_EMOJI.utils.on;
   if (!reminder.readyAt) return BOT_EMOJI.utils.on;
   if (reminder.readyAt.getTime() > Date.now()) return `⏳ ${timestampHelper.relative({time: reminder.readyAt})}`;
   return BOT_EMOJI.utils.on;

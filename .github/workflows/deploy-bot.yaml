@@ -45,7 +45,7 @@ jobs:
           node-version: 18
 
       - name: Delete src files
-        uses: appleboy/ssh-action@v1.0.0
+        uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}

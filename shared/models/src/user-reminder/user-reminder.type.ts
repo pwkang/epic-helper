@@ -61,7 +61,7 @@ export interface IEpicItemReminder extends BaseUserReminder {
   type: typeof RPG_COMMAND_TYPE.epicItem;
   props: {
     epicItemType?: ValuesOf<typeof RPG_EPIC_ITEM_TYPES>;
-  }
+  };
 }
 
 export interface IDailyReminder extends BaseUserReminder {
@@ -104,7 +104,7 @@ export interface IPetReminder extends BaseUserReminder {
   props?: never;
 }
 
-export interface IPetSummaryReminder extends BaseUserReminder {
+export interface IPetSummary extends BaseUserReminder {
   type: typeof RPG_COMMAND_TYPE.petSummary;
   props?: never;
 }
@@ -137,5 +137,5 @@ export type IUserReminder =
   | IArenaReminder
   | IDungeonReminder
   | IPetReminder
-  | IPetSummaryReminder
-  | IXmasChimneyReminder;
+  | IXmasChimneyReminder
+  | IPetSummary;

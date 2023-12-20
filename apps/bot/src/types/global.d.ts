@@ -89,8 +89,8 @@ declare global {
     expression: string;
     disabled?: boolean;
     cronOptions: ScheduleOptions;
-    clusterId?: number;
     execute: (client: Client) => Promise<void>;
+    clusterId?: number;
   }
 }
 
