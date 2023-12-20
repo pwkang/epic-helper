@@ -1,8 +1,8 @@
 import commandHelper from '../lib/epic-helper/command-helper';
 
 export default <CronJob>{
-  name: 'save-reminder-info',
-  expression: '*/10 * * * *',
+  name: 'save-user-info',
+  expression: '0 0 * * *',
   clusterId: 0,
   cronOptions: {},
   execute: async () => {
