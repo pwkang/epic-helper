@@ -451,7 +451,6 @@ const updateUserCooldown = async ({
   readyAt,
   type,
 }: IUpdateUserCooldown) => {
-  console.log('updateUserCooldown', userId, type, readyAt);
   await dbUserReminder.findOneAndUpdate(
     {
       userId,
