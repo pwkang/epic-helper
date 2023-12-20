@@ -1,5 +1,5 @@
 import {mongoClient} from '../clients/mongoose.service';
-import type {IDonor, IGuild, IUser, IUserReminder, IUserStats} from '@epic-helper/models';
+import type {IDonor, IGuild, IUser, IUserStats} from '@epic-helper/models';
 import {
   donorSchema,
   freeDonorSchema,
@@ -8,7 +8,6 @@ import {
   serverSchema,
   upgraidSchema,
   userDuelSchema,
-  userReminderSchema,
   userSchema,
   userStatsSchema,
 } from '@epic-helper/models';
@@ -89,14 +88,6 @@ export const dbUser = mongoClient.model<IUser>('users', userSchema);
  * User Duel
  */
 export const dbUserDuel = mongoClient.model('user-duel', userDuelSchema);
-
-/**
- * User Reminder
- */
-export const dbUserReminder = mongoClient.model<IUserReminder>(
-  'user-reminders',
-  userReminderSchema,
-);
 
 /**
  * User Stats

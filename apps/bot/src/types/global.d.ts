@@ -90,6 +90,7 @@ declare global {
     disabled?: boolean;
     cronOptions: ScheduleOptions;
     execute: (client: Client) => Promise<void>;
+    clusterId?: number;
   }
 }
 

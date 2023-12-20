@@ -139,12 +139,6 @@ const rpgCooldownSuccess = async ({
           type: commandType,
           readyAt,
         });
-      } else {
-        await userReminderServices.updateUserCooldown({
-          userId: author.id,
-          type: commandType,
-          readyAt,
-        });
       }
     }
   }

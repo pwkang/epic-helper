@@ -36,13 +36,4 @@ export const userReminderSchema = new Schema<IUserReminder>(
       },
     },
   },
-  {
-    statics: {
-      findNextReadyAt(userId: string) {
-        return this.find({userId, readyAt: {$gt: new Date()}})
-          .sort({readyAt: 1})
-          .limit(1);
-      },
-    },
-  },
 );
