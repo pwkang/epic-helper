@@ -21,6 +21,7 @@ export default <PrefixCommand>{
       serverId: message.guild.id,
     });
     if (!userAccount || !toggleChecker) return;
+
     const embed = embedProvider.userCooldown({
       author: message.author,
       userReminder: await userReminderServices.getUserAllCooldowns(

@@ -120,7 +120,6 @@ interface IDeleteGuild {
 }
 
 const deleteGuild = async ({serverId, roleId}: IDeleteGuild) => {
-  await redisGuild.delGuild(serverId, roleId);
   return dbGuild.findOneAndDelete({serverId, roleId});
 };
 

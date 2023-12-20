@@ -31,9 +31,10 @@ export default <SlashCommand>{
       },
     });
     if (!event) return;
-    event.every((interaction) => {
+    event.every((interaction, customId) => {
       return guildSettings.replyInteraction({
         interaction,
+        customId,
       });
     });
   },

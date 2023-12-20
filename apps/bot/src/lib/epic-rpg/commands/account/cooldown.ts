@@ -3,7 +3,8 @@ import ms from 'ms';
 import {createRpgCommandListener} from '../../../../utils/rpg-command-listener';
 import {calcExtraHuntCdWithPartner} from '../../../epic-helper/reminders/commands-cooldown';
 import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
-import {userReminderServices, userService} from '@epic-helper/services';
+import {userReminderServices} from '@epic-helper/services';
+import {userService} from '@epic-helper/services';
 import toggleUserChecker from '../../../epic-helper/toggle-checker/user';
 
 const RPG_COMMAND_CATEGORY = {
@@ -133,6 +134,12 @@ const rpgCooldownSuccess = async ({
           Math.abs(currentCooldown.readyAt.getTime() - readyAt.getTime()) > 1000
         )
       ) {
+        await userReminderServices.updateUserCooldown({
+          userId: author.id,
+          type: commandType,
+          readyAt,
+        });
+      } else {
         await userReminderServices.updateUserCooldown({
           userId: author.id,
           type: commandType,

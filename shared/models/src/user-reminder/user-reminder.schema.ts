@@ -1,6 +1,10 @@
 import {Schema} from 'mongoose';
 import type {IUserReminder} from './user-reminder.type';
-import {RPG_EPIC_ITEM_TYPES, RPG_FARM_SEED, RPG_WORKING_TYPE} from '@epic-helper/constants';
+import {
+  RPG_EPIC_ITEM_TYPES,
+  RPG_FARM_SEED,
+  RPG_WORKING_TYPE,
+} from '@epic-helper/constants';
 
 export const userReminderSchema = new Schema<IUserReminder>(
   {
