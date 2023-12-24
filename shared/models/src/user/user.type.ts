@@ -5,11 +5,6 @@ import type {
   RPG_COMMAND_TYPE,
   RPG_DONOR_TIER,
   RPG_ENCHANT_LEVEL,
-  RPG_PET_ADV_STATUS,
-  RPG_PET_SKILL_ASCEND,
-  RPG_PET_SKILL_SPECIAL,
-  RPG_PET_TYPE,
-  TSkillTierNumber,
 } from '@epic-helper/constants';
 import type {ValuesOf} from '@epic-helper/types';
 
