@@ -179,4 +179,13 @@ export const userSchema = new Schema<IUser>({
       },
     },
   },
+  groupCooldowns: {
+    type: [
+      {
+        userId: {type: String},
+        types: [{type: String}],
+      },
+    ],
+  },
+  updatedAt: {type: Date, default: Date.now},
 });

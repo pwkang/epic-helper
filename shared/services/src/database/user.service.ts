@@ -1,6 +1,4 @@
-import type {UpdateQuery} from 'mongoose';
-import type {RPG_AREA, RPG_DONOR_TIER, RPG_ENCHANT_LEVEL} from '@epic-helper/constants';
-import userAccountRedis from '../redis/user-account.redis';
+import type {RPG_AREA, RPG_COMMAND_TYPE, RPG_DONOR_TIER, RPG_ENCHANT_LEVEL} from '@epic-helper/constants';
 import redisUserAccount from '../redis/user-account.redis';
 import type {IUser, IUserToggle, USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {userSchema} from '@epic-helper/models';
@@ -579,6 +577,69 @@ const updateUserPocketWatch = async ({userId, percent, owned}: IUpdateUserPocket
   );
 };
 
+interface ISaveUserGroupCooldowns {
+  userId: string;
+  users: string[];
+  types: (keyof typeof RPG_COMMAND_TYPE)[];
+}
+
+const saveUserGroupCooldowns = async ({userId, users, types}: ISaveUserGroupCooldowns) => {
+  const user = await getUserAccount(userId);
+  if (!user) return;
+  for(const targetUserId of users) {
+    const userCd = user.groupCooldowns.find((cd) => cd.userId === targetUserId);
+    if (userCd) {
+      userCd.types = types;
+    } else {
+      user.groupCooldowns.push({
+        userId: targetUserId,
+        types,
+      });
+    }
+  }
+  await saveUser(user);
+  return user;
+};
+
+interface IResetGroupCooldowns {
+  userId: string;
+}
+
+const resetGroupCooldowns = async ({userId}: IResetGroupCooldowns) => {
+  const user = await getUserAccount(userId);
+  if (!user) return;
+  user.groupCooldowns = [];
+  await saveUser(user);
+  return user;
+};
+
+interface IRemoveUsersFromGroupCooldowns {
+  userId: string;
+  users: string[];
+}
+
+const removeUsersFromGroupCooldowns = async ({userId, users}: IRemoveUsersFromGroupCooldowns) => {
+  const user = await getUserAccount(userId);
+  if (!user) return;
+  user.groupCooldowns = user.groupCooldowns.filter((cd) => !users.includes(cd.userId));
+  await saveUser(user);
+  return user;
+};
+
+interface IGetUsersAccount {
+  usersId: string[];
+}
+
+const getUsersAccount = async ({usersId}: IGetUsersAccount) => {
+  const users: IUser[] = [];
+  for (const userId of usersId) {
+    const user = await getUserAccount(userId);
+    if (user) users.push(user);
+  }
+  return users;
+
+};
+
 export const userService = {
   registerUserAccount,
   userAccountOn,
@@ -612,4 +673,10 @@ export const userService = {
   updateUserMaxArea,
   updateUserCurrentArea,
   updateUserPocketWatch,
+  saveUserPets,
+  saveUsersToDb,
+  saveUserGroupCooldowns,
+  getUsersAccount,
+  resetGroupCooldowns,
+  removeUsersFromGroupCooldowns,
 };
