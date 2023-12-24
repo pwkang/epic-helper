@@ -1,10 +1,12 @@
 import type {RPG_AREA, RPG_COMMAND_TYPE, RPG_DONOR_TIER, RPG_ENCHANT_LEVEL} from '@epic-helper/constants';
 import redisUserAccount from '../redis/user-account.redis';
+import userAccountRedis from '../redis/user-account.redis';
 import type {IUser, IUserToggle, USER_STATS_RPG_COMMAND_TYPE} from '@epic-helper/models';
 import {userSchema} from '@epic-helper/models';
 import mongooseLeanDefaults from 'mongoose-lean-defaults';
 import {mongoClient} from '../clients/mongoose.service';
 import type {ValuesOf} from '@epic-helper/types';
+import type {UpdateQuery} from 'mongoose';
 
 
 userSchema.post('findOneAndUpdate', async function(doc) {
@@ -586,7 +588,7 @@ interface ISaveUserGroupCooldowns {
 const saveUserGroupCooldowns = async ({userId, users, types}: ISaveUserGroupCooldowns) => {
   const user = await getUserAccount(userId);
   if (!user) return;
-  for(const targetUserId of users) {
+  for (const targetUserId of users) {
     const userCd = user.groupCooldowns.find((cd) => cd.userId === targetUserId);
     if (userCd) {
       userCd.types = types;
@@ -597,8 +599,17 @@ const saveUserGroupCooldowns = async ({userId, users, types}: ISaveUserGroupCool
       });
     }
   }
-  await saveUser(user);
-  return user;
+  await dbUser.findOneAndUpdate(
+    {userId},
+    {
+      $set: {
+        groupCooldowns: user.groupCooldowns,
+      },
+    },
+    {
+      new: true,
+    },
+  );
 };
 
 interface IResetGroupCooldowns {
@@ -606,11 +617,17 @@ interface IResetGroupCooldowns {
 }
 
 const resetGroupCooldowns = async ({userId}: IResetGroupCooldowns) => {
-  const user = await getUserAccount(userId);
-  if (!user) return;
-  user.groupCooldowns = [];
-  await saveUser(user);
-  return user;
+  await dbUser.findOneAndUpdate(
+    {userId},
+    {
+      $set: {
+        groupCooldowns: [],
+      },
+    },
+    {
+      new: true,
+    },
+  );
 };
 
 interface IRemoveUsersFromGroupCooldowns {
@@ -619,11 +636,21 @@ interface IRemoveUsersFromGroupCooldowns {
 }
 
 const removeUsersFromGroupCooldowns = async ({userId, users}: IRemoveUsersFromGroupCooldowns) => {
-  const user = await getUserAccount(userId);
-  if (!user) return;
-  user.groupCooldowns = user.groupCooldowns.filter((cd) => !users.includes(cd.userId));
-  await saveUser(user);
-  return user;
+  await dbUser.findOneAndUpdate(
+    {userId},
+    {
+      $pull: {
+        groupCooldowns: {
+          userId: {
+            $in: users,
+          },
+        },
+      },
+    },
+    {
+      new: true,
+    },
+  );
 };
 
 interface IGetUsersAccount {
@@ -673,8 +700,6 @@ export const userService = {
   updateUserMaxArea,
   updateUserCurrentArea,
   updateUserPocketWatch,
-  saveUserPets,
-  saveUsersToDb,
   saveUserGroupCooldowns,
   getUsersAccount,
   resetGroupCooldowns,
