@@ -122,6 +122,11 @@ const toggleUserChecker = async ({
         isDonor,
         type: RPG_COMMAND_TYPE.pet,
       }),
+      petSummary: _toggleDmReminder({
+        toggle: userToggle,
+        isDonor,
+        type: RPG_COMMAND_TYPE.pet,
+      }),
       xmasChimney: _toggleDmReminder({
         toggle: userToggle,
         isDonor,
@@ -207,6 +212,11 @@ const toggleUserChecker = async ({
       pet: _togglePetReminder({
         toggle: userToggle,
         isDonor,
+      }),
+      petSummary: _toggleReminder({
+        toggle: userToggle,
+        isDonor,
+        type: RPG_COMMAND_TYPE.pet,
       }),
       xmasChimney: _toggleReminder({
         toggle: userToggle,
@@ -309,6 +319,11 @@ const toggleUserChecker = async ({
         toggle: userToggle,
         isDonor,
         type: RPG_COMMAND_TYPE.xmasChimney,
+      }),
+      petSummary: _toggleMentions({
+        toggle: userToggle,
+        isDonor,
+        type: RPG_COMMAND_TYPE.pet,
       }),
     },
 

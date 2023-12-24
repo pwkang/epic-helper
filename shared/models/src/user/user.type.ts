@@ -87,4 +87,9 @@ export interface IUser {
       farm: number;
     };
   };
+  groupCooldowns: {
+    userId: string;
+    types: (keyof typeof RPG_COMMAND_TYPE)[];
+  }[];
+  updatedAt: Date;
 }

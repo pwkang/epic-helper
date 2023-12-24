@@ -34,6 +34,7 @@ const canReducedByDonor: Record<ValuesOf<typeof RPG_COMMAND_TYPE>, boolean> = {
   dungeon: true,
   epicItem: false,
   pet: false,
+  petSummary: false,
   xmasChimney: false,
 };
 
@@ -54,6 +55,7 @@ const isReducedInArea0: Record<ValuesOf<typeof RPG_COMMAND_TYPE>, boolean> = {
   dungeon: true,
   epicItem: false,
   pet: false,
+  petSummary: false,
   xmasChimney: true,
 };
 
@@ -77,6 +79,7 @@ const isReducedByPocketWatch: Record<ValuesOf<typeof RPG_COMMAND_TYPE>, boolean>
   dungeon: true,
   epicItem: false,
   pet: false,
+  petSummary: false,
   xmasChimney: false,
 };
 

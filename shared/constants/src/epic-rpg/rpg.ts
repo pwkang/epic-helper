@@ -17,7 +17,29 @@ export const RPG_COMMAND_TYPE = {
   dungeon: 'dungeon',
   epicItem: 'epicItem',
   pet: 'pet',
+  petSummary: 'petSummary',
   xmasChimney: 'xmasChimney',
+} as const;
+
+export const RPG_COMMAND_LABEL = {
+  daily: 'Daily',
+  weekly: 'Weekly',
+  lootbox: 'Lootbox',
+  vote: 'Vote',
+  hunt: 'Hunt',
+  adventure: 'Adventure',
+  training: 'Training',
+  duel: 'Duel',
+  quest: 'Quest',
+  working: 'Working',
+  farm: 'Farm',
+  horse: 'Horse',
+  arena: 'Arena',
+  dungeon: 'Dungeon',
+  epicItem: 'Epic Item',
+  pet: 'Pet',
+  petSummary: 'Pet Summary',
+  xmasChimney: 'Xmas Chimney',
 } as const;
 
 export const RPG_WORKING_TYPE = {
