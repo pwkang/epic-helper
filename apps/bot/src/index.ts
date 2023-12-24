@@ -19,7 +19,7 @@ const manager = new ClusterManager(`${__dirname}/bot.js`, {
 
 manager.on('clusterCreate', (cluster) => {
   logger({
-    message: `Launched Cluster ${cluster.id}`,
+    message: `Launched Cluster ${cluster.id} of ${manager.totalClusters - 1}`,
   });
 
   cluster.on('message', (message) => {
@@ -52,7 +52,9 @@ manager.on('clusterCreate', (cluster) => {
 
   });
 });
-manager.spawn({timeout: -1}).catch((error) => {
+manager.spawn({
+  timeout: -1,
+}).catch((error) => {
   logger({
     message: error.message,
   });
