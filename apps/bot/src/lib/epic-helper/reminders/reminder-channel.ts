@@ -2,7 +2,8 @@ import type {Channel, Client} from 'discord.js';
 import type {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import djsChannelHelper from '../../discordjs/channel';
 import {userChecker} from '../user-checker';
-import {redisUserActiveCluster, userService} from '@epic-helper/services';
+import {userService} from '@epic-helper/services';
+import {broadcastEval} from '../../../utils/broadcast-eval';
 
 interface IUpdateReminderChannel {
   client: Client;
@@ -15,12 +16,26 @@ export const updateReminderChannel = async ({
   channelId,
   userId,
 }: IUpdateReminderChannel) => {
+  const user = await userService.getUserAccount(userId);
+  if (!user || user.channel.all === channelId) return;
   await userService.setUserReminderChannel({
     userId,
     channelId,
     commandType: ['all'],
   });
-  await redisUserActiveCluster.set(userId, client.cluster?.id);
+  if (!client.mainUsers.has(userId)) {
+    client.mainUsers.add(userId);
+    await broadcastEval({
+      client,
+      target: 'rest',
+      context: {
+        userId,
+      },
+      fn: async (client, {userId}) => {
+        client.mainUsers.delete(userId);
+      },
+    });
+  }
 };
 
 interface IGetReminderChannel {
