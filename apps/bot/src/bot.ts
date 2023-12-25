@@ -28,6 +28,7 @@ client.slashCommands = new Collection();
 client.slashMessages = new Collection();
 client.botMessages = new Collection();
 client.fetchedMemberGuilds = new Collection();
+client.mainUsers = new Set();
 
 if (environment === 'production') {
   client.cluster = new ClusterClient(client); // initialize the Client, so we access the .broadcastEval()

@@ -10,8 +10,7 @@ export default <CronJob>{
 
     const isClusterActive = await commandHelper.cluster.isClusterActive(client);
     if (!isClusterActive) return;
-
-    const usersId = await redisUserReminder.getReminderTime(client.cluster?.id);
+    const usersId = await redisUserReminder.getReminderTime(client.mainUsers);
     if (!usersId.length) return;
     usersId.forEach((userId) => {
       userReminderTimesUp(client, userId);
