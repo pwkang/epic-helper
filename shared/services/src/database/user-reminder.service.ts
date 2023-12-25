@@ -11,6 +11,9 @@ import {redisUserReminder} from '../redis/user-reminder.redis';
 import type {Model} from 'mongoose';
 import {mongoClient} from '../clients/mongoose.service';
 import type {ValuesOf} from '@epic-helper/types';
+import redisUserAccount from '../redis/user-account.redis';
+import userAccountRedis from '../redis/user-account.redis';
+import {userService} from './user.service';
 
 userReminderSchema.post('findOneAndUpdate', async function () {
   const updatedUserId = this.getQuery().userId;

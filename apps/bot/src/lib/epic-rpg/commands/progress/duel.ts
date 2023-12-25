@@ -108,6 +108,7 @@ const rpgDuelSuccess = async ({author, message, client}: IRpgDuelSuccess) => {
   }
 
   await updateReminderChannel({
+    client,
     userId: author.id,
     channelId: message.channel.id,
   });

@@ -92,6 +92,7 @@ const rpgWeeklySuccess = async ({
   }
 
   await updateReminderChannel({
+    client,
     userId: author.id,
     channelId: message.channelId,
   });

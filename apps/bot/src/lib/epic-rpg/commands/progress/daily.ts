@@ -34,6 +34,7 @@ export function rpgDaily({client, message, author, isSlashCommand}: IRpgDaily) {
         message,
       });
       await updateReminderChannel({
+        client,
         userId: author.id,
         channelId: message.channel.id,
       });
@@ -87,6 +88,7 @@ const rpgDailySuccess = async ({author, client, message}: IRpgDailySuccess) => {
   }
 
   await updateReminderChannel({
+    client,
     userId: author.id,
     channelId: message.channel.id,
   });

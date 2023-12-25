@@ -3,6 +3,7 @@ import {Events} from 'discord.js';
 import {emitMessageEdited} from '../../utils/message-edited-listener';
 import {preCheckCommand} from '../../utils/command-precheck';
 import commandHelper from '../../lib/epic-helper/command-helper';
+import {EPIC_RPG_ID} from '@epic-helper/constants';
 
 export default <BotEvent>{
   eventName: Events.MessageUpdate,
@@ -38,7 +39,7 @@ export default <BotEvent>{
 };
 
 const isBotSlashCommand = (message: Message) =>
-  message.interaction && message.author.bot;
+  message.interaction && message.author.bot && message.author.id === EPIC_RPG_ID;
 
 const isFirstUpdateAfterDeferred = (oldMessage: Message) =>
   oldMessage.content === '' && oldMessage.embeds.length === 0;

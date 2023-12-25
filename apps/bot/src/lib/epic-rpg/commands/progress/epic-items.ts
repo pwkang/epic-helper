@@ -108,6 +108,7 @@ const rpgUseEpicItemSuccess = async ({
   }
 
   await updateReminderChannel({
+    client,
     userId: author.id,
     channelId: message.channel.id,
   });

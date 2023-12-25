@@ -1,4 +1,4 @@
-import {ClusterManager, HeartbeatManager, ReClusterManager} from 'discord-hybrid-sharding';
+import {ClusterManager, ReClusterManager} from 'discord-hybrid-sharding';
 import * as dotenv from 'dotenv';
 import {logger} from '@epic-helper/utils';
 
@@ -59,7 +59,5 @@ manager.spawn({
     message: error.message,
   });
 });
-
-manager.extend(new HeartbeatManager());
 
 manager.extend(new ReClusterManager());

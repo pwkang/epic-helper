@@ -18,6 +18,7 @@ export default <PrefixCommand>{
       client,
     });
     await updateReminderChannel({
+      client,
       userId: message.author.id,
       channelId: message.channelId,
     });

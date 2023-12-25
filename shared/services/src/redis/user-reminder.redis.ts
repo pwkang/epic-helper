@@ -1,4 +1,5 @@
 import {redisService} from './redis.service';
+import {redisUserActiveCluster} from './user-active-cluster.redis';
 
 const prefix = 'epic-helper:user-reminder:';
 
@@ -7,10 +8,7 @@ interface IRedisUserReminder {
   readyAt: Date;
 }
 
-const setReminderTime: (
-  userId: string,
-  readyAt: Date
-) => Promise<void> = async (userId, readyAt) => {
+const setReminderTime = async (userId: string, readyAt: Date) => {
   const data: IRedisUserReminder = {
     readyAt,
     userId,
@@ -18,8 +16,10 @@ const setReminderTime: (
   await redisService.set(`${prefix}${userId}`, JSON.stringify(data));
 };
 
-const getReminderTime: () => Promise<string[]> = async () => {
-  const keys = await redisService.keys(`${prefix}*`);
+const getReminderTime = async (clusterId?: number) => {
+  let keys = await redisService.keys(`${prefix}*`);
+  const clusterUsersId = await redisUserActiveCluster.getUsersId(clusterId);
+  keys = keys.filter((key) => clusterUsersId.includes(key.replace(prefix, '')));
   const usersId = await Promise.all(
     keys.map(async (key) => {
       const data = await redisService.get(key);
