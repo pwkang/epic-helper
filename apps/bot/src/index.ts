@@ -30,7 +30,7 @@ manager.on('clusterCreate', (cluster) => {
     switch (data.action) {
       case 'restartAll':
         manager.recluster?.start({
-          restartMode: 'gracefulSwitch',
+          restartMode: 'rolling',
           totalShards,
           totalClusters,
         });
