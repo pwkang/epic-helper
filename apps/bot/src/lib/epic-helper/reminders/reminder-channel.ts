@@ -17,12 +17,13 @@ export const updateReminderChannel = async ({
   userId,
 }: IUpdateReminderChannel) => {
   const user = await userService.getUserAccount(userId);
-  if (!user || user.channel.all === channelId) return;
-  await userService.setUserReminderChannel({
-    userId,
-    channelId,
-    commandType: ['all'],
-  });
+  if (user && user.channel.all !== channelId) {
+    await userService.setUserReminderChannel({
+      userId,
+      channelId,
+      commandType: ['all'],
+    });
+  }
   if (!client.mainUsers.has(userId)) {
     client.mainUsers.add(userId);
     await broadcastEval({
