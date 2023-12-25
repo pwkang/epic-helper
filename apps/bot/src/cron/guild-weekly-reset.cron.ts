@@ -11,7 +11,7 @@ export default <CronJob>{
     const isClusterActive = await commandHelper.cluster.isClusterActive(client);
     if (!isClusterActive) return;
 
-    const guildReminders = await redisGuildReminder.getAllGuildReminder();
+    const guildReminders = await redisGuildReminder.getAllGuildReminder(client);
     if (!guildReminders.length) return;
     await guildService.weeklyReset({client});
     guildReminders.forEach(({guildRoleId, serverId}) => {

@@ -18,6 +18,7 @@ export default <SlashMessage>{
       isSlashCommand: true,
     });
     await updateReminderChannel({
+      client,
       userId: author.id,
       channelId: message.channelId,
     });

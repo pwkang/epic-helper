@@ -2,14 +2,16 @@ import type {Channel, Client} from 'discord.js';
 import type {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import djsChannelHelper from '../../discordjs/channel';
 import {userChecker} from '../user-checker';
-import {userService} from '@epic-helper/services';
+import {redisUserActiveCluster, userService} from '@epic-helper/services';
 
 interface IUpdateReminderChannel {
+  client: Client;
   userId: string;
   channelId: Channel['id'];
 }
 
 export const updateReminderChannel = async ({
+  client,
   channelId,
   userId,
 }: IUpdateReminderChannel) => {
@@ -18,6 +20,7 @@ export const updateReminderChannel = async ({
     channelId,
     commandType: ['all'],
   });
+  await redisUserActiveCluster.set(userId, client.cluster?.id);
 };
 
 interface IGetReminderChannel {

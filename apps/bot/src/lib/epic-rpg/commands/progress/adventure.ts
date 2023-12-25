@@ -108,7 +108,8 @@ const rpgAdventureSuccess = async ({
     });
   }
 
-  updateReminderChannel({
+  await updateReminderChannel({
+    client,
     userId: author.id,
     channelId: message.channel.id,
   });

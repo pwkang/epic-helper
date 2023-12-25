@@ -1,4 +1,5 @@
 import {redisService} from './redis.service';
+import type {Client} from 'discord.js';
 
 const prefix = 'epic-helper:guild-reminder:';
 
@@ -30,10 +31,11 @@ const setReminderTime = async ({
   );
 };
 
-const getReadyGuild = async (): Promise<
+const getReadyGuild = async (client: Client): Promise<
   Pick<ISetReminderTime, 'serverId' | 'guildRoleId'>[]
 > => {
-  const keys = await redisService.keys(`${prefix}*`);
+  let keys = await redisService.keys(`${prefix}*`);
+  keys = keys.filter(key => client.guilds.cache.has(key.split(':')[2]));
   const reminderList = await Promise.all(
     keys.map(async (key) => {
       const data = await redisService.get(key);
@@ -67,8 +69,9 @@ const deleteReminderTime = async ({
   await redisService.del(`${prefix}${serverId}:${guildRoleId}`);
 };
 
-const getAllGuildReminder = async () => {
-  const keys = await redisService.keys(`${prefix}*`);
+const getAllGuildReminder = async (client: Client) => {
+  let keys = await redisService.keys(`${prefix}*`);
+  keys = keys.filter(key => client.guilds.cache.has(key.split(':')[2]));
   const reminderList = await Promise.all(
     keys.map(async (key) => {
       const data = await redisService.get(key);

@@ -161,7 +161,7 @@ const isBotSlashCommand = (message: Message) =>
   message.interaction && message.author.bot;
 const isSentByUser = (message: Message) => !message.author.bot;
 
-const isSentByBot = (message: Message) => message.author.bot;
+const isSentByBot = (message: Message) => message.author.bot && message.author.id == EPIC_RPG_ID;
 
 const isNotDeferred = (message: Message) =>
   !(message.content === '' && !message.embeds.length);
