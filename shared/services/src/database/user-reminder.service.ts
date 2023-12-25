@@ -1,9 +1,4 @@
-import type {
-  RPG_EPIC_ITEM_TYPES,
-  RPG_FARM_SEED,
-  RPG_LOOTBOX_TYPE,
-  RPG_WORKING_TYPE,
-} from '@epic-helper/constants';
+import type {RPG_EPIC_ITEM_TYPES, RPG_FARM_SEED, RPG_LOOTBOX_TYPE, RPG_WORKING_TYPE} from '@epic-helper/constants';
 import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import type {IUserPet, IUserReminder} from '@epic-helper/models';
 import {userReminderSchema} from '@epic-helper/models';
@@ -11,21 +6,18 @@ import {redisUserReminder} from '../redis/user-reminder.redis';
 import type {Model} from 'mongoose';
 import {mongoClient} from '../clients/mongoose.service';
 import type {ValuesOf} from '@epic-helper/types';
-import redisUserAccount from '../redis/user-account.redis';
-import userAccountRedis from '../redis/user-account.redis';
-import {userService} from './user.service';
 
-userReminderSchema.post('findOneAndUpdate', async function () {
+userReminderSchema.post('findOneAndUpdate', async function() {
   const updatedUserId = this.getQuery().userId;
   await updateNextReminderTime(updatedUserId, this.model);
 });
 
-userReminderSchema.post('deleteMany', async function () {
+userReminderSchema.post('deleteMany', async function() {
   const deletedUserId = this.getQuery().userId;
   await updateNextReminderTime(deletedUserId, this.model);
 });
 
-userReminderSchema.post('updateMany', async function () {
+userReminderSchema.post('updateMany', async function() {
   const updatedUserId = this.getQuery().userId;
   await updateNextReminderTime(updatedUserId, this.model);
 });
