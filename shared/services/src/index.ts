@@ -29,6 +29,7 @@ export * from './redis/user-account.redis';
 export * from './redis/user-boosted-servers.redis';
 export * from './redis/user-reminder.redis';
 export * from './redis/redis.service';
+export * from './redis/main-users.redis';
 
 export * from './database/donor.service';
 export * from './database/free-donor.service';

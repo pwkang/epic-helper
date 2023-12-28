@@ -2,6 +2,7 @@ import type {Collection} from 'discord.js';
 import type {ClusterClient} from 'discord-hybrid-sharding';
 import type {getUptime} from '../utils/uptime';
 import type {djsMessageHelper} from '../lib/discordjs/message';
+import type {redisMainUsers} from '@epic-helper/services';
 
 declare module 'discord.js' {
   export interface Client {
@@ -16,6 +17,9 @@ declare module 'discord.js' {
     utils: {
       getUptime: typeof getUptime;
       djsMessageHelper: typeof djsMessageHelper;
+      redis: {
+        redisMainUsers: typeof redisMainUsers;
+      }
     };
   }
 }
