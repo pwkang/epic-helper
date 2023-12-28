@@ -4,7 +4,7 @@ import {userPetReminderTimesUp} from './user-pet.reminder-ready';
 import {getReminderChannel} from '../reminder-channel';
 import {djsMessageHelper} from '../../../discordjs/message';
 import {RPG_COMMAND_TYPE} from '@epic-helper/constants';
-import {userReminderServices, userService} from '@epic-helper/services';
+import {redisMainUsers, userReminderServices, userService} from '@epic-helper/services';
 import {generateUserReminderMessage} from '../message-generator/custom-message-generator';
 import {djsUserHelper} from '../../../discordjs/user';
 import toggleUserChecker from '../../toggle-checker/user';
@@ -14,7 +14,13 @@ export const userReminderTimesUp = async (client: Client, userId: string) => {
   const userAccount = await userService.getUserAccount(userId);
   if (!userAccount?.config?.onOff) return;
   const defaultChannel = userAccount.channel.all;
-  if (!client.channels.cache.has(defaultChannel)) return;
+  if (!client.channels.cache.has(defaultChannel)) {
+    if (client.mainUsers.has(userId)) {
+      client.mainUsers.delete(userId);
+      await redisMainUsers.set(client.cluster?.id, Array.from(client.mainUsers));
+    }
+    return;
+  }
 
   const readyCommands = await userReminderServices.findUserReadyCommands(
     userId,

@@ -2,7 +2,7 @@ import type {Channel, Client} from 'discord.js';
 import type {RPG_COMMAND_TYPE} from '@epic-helper/constants';
 import djsChannelHelper from '../../discordjs/channel';
 import {userChecker} from '../user-checker';
-import {userService} from '@epic-helper/services';
+import {redisMainUsers, userService} from '@epic-helper/services';
 import {broadcastEval} from '../../../utils/broadcast-eval';
 
 interface IUpdateReminderChannel {
@@ -26,6 +26,7 @@ export const updateReminderChannel = async ({
   }
   if (!client.mainUsers.has(userId)) {
     client.mainUsers.add(userId);
+    await redisMainUsers.set(client.cluster?.id, Array.from(client.mainUsers));
     await broadcastEval({
       client,
       target: 'rest',
@@ -33,7 +34,9 @@ export const updateReminderChannel = async ({
         userId,
       },
       fn: async (client, {userId}) => {
+        if (!client.mainUsers.has(userId)) return;
         client.mainUsers.delete(userId);
+        await client.utils.redis.redisMainUsers.set(client.cluster?.id, Array.from(client.mainUsers));
       },
     });
   }

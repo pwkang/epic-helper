@@ -2,6 +2,7 @@ import {Events} from 'discord.js';
 import loadServerOnReady from '../../handler/on-ready/server-startup.handler';
 import {logger} from '@epic-helper/utils';
 import commandHelper from '../../lib/epic-helper/command-helper';
+import loadMainUserOnReady from '../../handler/on-ready/reminder-startup.handler';
 
 export default <BotEvent>{
   eventName: Events.ClientReady,
@@ -15,5 +16,6 @@ export default <BotEvent>{
     await commandHelper.cluster.setClusterInfo(client);
 
     loadServerOnReady(client);
+    loadMainUserOnReady(client);
   },
 };
