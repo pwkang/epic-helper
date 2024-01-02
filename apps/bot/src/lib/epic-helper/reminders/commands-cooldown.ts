@@ -83,6 +83,29 @@ const isReducedByPocketWatch: Record<ValuesOf<typeof RPG_COMMAND_TYPE>, boolean>
   xmasChimney: false,
 };
 
+const NEW_YEAR_CD_REDUCTION = 0.75;
+
+const isReducedByNewYear: Record<ValuesOf<typeof RPG_COMMAND_TYPE>, boolean> = {
+  daily: false,
+  weekly: false,
+  lootbox: true,
+  vote: false,
+  hunt: true,
+  adventure: true,
+  training: true,
+  duel: true,
+  quest: true,
+  working: true,
+  farm: true,
+  horse: true,
+  arena: true,
+  dungeon: true,
+  epicItem: false,
+  pet: false,
+  petSummary: false,
+  xmasChimney: false,
+};
+
 export const calcCdReduction = async ({
   commandType,
   userId,
@@ -107,6 +130,9 @@ export const calcCdReduction = async ({
 
   if (userAccount.rpgInfo.artifacts.pocketWatch.owned && isReducedByPocketWatch[commandType])
     cooldown *= (100 - userAccount.rpgInfo.artifacts.pocketWatch.percent) / 100;
+
+  if(isReducedByNewYear[commandType])
+    cooldown *= NEW_YEAR_CD_REDUCTION;
 
   return cooldown;
 };
