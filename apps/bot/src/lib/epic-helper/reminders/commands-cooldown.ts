@@ -38,7 +38,7 @@ const canReducedByDonor: Record<ValuesOf<typeof RPG_COMMAND_TYPE>, boolean> = {
   xmasChimney: false,
 };
 
-const isReducedInArea0: Record<ValuesOf<typeof RPG_COMMAND_TYPE>, boolean> = {
+/*const isReducedInArea0: Record<ValuesOf<typeof RPG_COMMAND_TYPE>, boolean> = {
   daily: false,
   weekly: false,
   lootbox: true,
@@ -59,7 +59,7 @@ const isReducedInArea0: Record<ValuesOf<typeof RPG_COMMAND_TYPE>, boolean> = {
   xmasChimney: true,
 };
 
-const AREA_0_CD_REDUCTION = 0.9;
+const AREA_0_CD_REDUCTION = 0.9;*/
 
 
 const isReducedByPocketWatch: Record<ValuesOf<typeof RPG_COMMAND_TYPE>, boolean> = {
@@ -125,8 +125,8 @@ export const calcCdReduction = async ({
       break;
   }
 
-  if (userAccount.rpgInfo.currentArea === 'a0' && isReducedInArea0[commandType])
-    cooldown *= AREA_0_CD_REDUCTION;
+  // if (userAccount.rpgInfo.currentArea === 'a0' && isReducedInArea0[commandType])
+  //   cooldown *= AREA_0_CD_REDUCTION;
 
   if (userAccount.rpgInfo.artifacts.pocketWatch.owned && isReducedByPocketWatch[commandType])
     cooldown *= (100 - userAccount.rpgInfo.artifacts.pocketWatch.percent) / 100;
