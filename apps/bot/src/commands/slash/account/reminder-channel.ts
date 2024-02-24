@@ -2,7 +2,7 @@ import djsInteractionHelper from '../../../lib/discordjs/interaction';
 import {
   PREFIX,
   RPG_COMMAND_TYPE,
-  RPG_WORKING_TYPE,
+  RPG_COMMANDS_KEYWORDS,
   USER_ACC_OFF_ACTIONS,
   USER_NOT_REGISTERED_ACTIONS,
 } from '@epic-helper/constants';
@@ -102,37 +102,14 @@ export default <SlashCommand>{
   },
 };
 
-type IKeyword = Record<keyof typeof RPG_COMMAND_TYPE, string[]>;
-
-const keyWords: IKeyword = {
-  adventure: ['adventure', 'adv'],
-  hunt: ['hunt'],
-  arena: ['arena'],
-  daily: ['daily'],
-  duel: ['duel'],
-  dungeon: ['dungeon', 'miniboss'],
-  farm: ['farm'],
-  horse: ['horse', 'horse breed', 'horse race'],
-  lootbox: ['lootbox', 'buy'],
-  pet: ['pet', 'pets'],
-  petSummary: [],
-  quest: ['quest', 'epic quest'],
-  epicItem: ['use', 'epic items', 'epic item', 'epicItems', 'epicItem'],
-  training: ['training', 'tr'],
-  vote: ['vote'],
-  weekly: ['weekly'],
-  working: ['working', ...Object.keys(RPG_WORKING_TYPE)],
-  xmasChimney: ['xmasChimney', 'xmas chimney', 'chimney'],
-};
-
 const matchReminderType = (reminderType: string) => {
   const reminderTypeLower = reminderType.toLowerCase();
 
-  const matched: (keyof IKeyword)[] = [];
-  for (const key in keyWords) {
-    const _key = key as keyof typeof keyWords;
+  const matched: (keyof typeof RPG_COMMAND_TYPE)[] = [];
+  for (const key in RPG_COMMANDS_KEYWORDS) {
+    const _key = key as keyof typeof RPG_COMMANDS_KEYWORDS;
     if (
-      keyWords[_key].some((keyword) =>
+      RPG_COMMANDS_KEYWORDS[_key].some((keyword) =>
         reminderTypeLower.includes(keyword.toLowerCase()),
       )
     ) {

@@ -191,6 +191,7 @@ const commandKeyword: Record<
   daily: 'You have claimed your daily rewards already',
   weekly: 'You have claimed your weekly rewards already',
   lootbox: 'You have already bought a lootbox',
+  cardHand: 'You have played your cards recently',
   hunt: 'You have already looked around',
   adventure: 'You have already been in an adventure',
   training: 'You have trained already',

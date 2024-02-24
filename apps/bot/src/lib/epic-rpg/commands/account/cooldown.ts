@@ -11,6 +11,7 @@ const RPG_COMMAND_CATEGORY = {
   daily: ['daily'],
   weekly: ['weekly'],
   lootbox: ['lootbox'],
+  cardHand: ['card hand'],
   vote: ['vote'],
   hunt: ['hunt'],
   adventure: ['adventure'],

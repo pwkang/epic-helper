@@ -102,6 +102,11 @@ export const donor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
           label: 'Lootbox',
         },
         {
+          value: userToggle.reminder.cardHand,
+          path: 'toggle.reminder.cardHand',
+          label: 'Card Hand',
+        },
+        {
           value: userToggle.reminder.vote,
           path: 'toggle.reminder.vote',
           label: 'Vote',
@@ -196,6 +201,11 @@ export const donor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
           label: 'Lootbox',
         },
         {
+          value: userToggle.dm.cardHand,
+          path: 'toggle.dm.cardHand',
+          label: 'Card Hand',
+        },
+        {
           value: userToggle.dm.vote,
           path: 'toggle.dm.vote',
           label: 'Vote',
@@ -288,6 +298,11 @@ export const donor = (userToggle: IUserToggle): IToggleEmbedsInfo[] => {
           value: userToggle.mentions.lootbox,
           path: 'toggle.mentions.lootbox',
           label: 'Lootbox',
+        },
+        {
+          value: userToggle.mentions.cardHand,
+          path: 'toggle.mentions.cardHand',
+          label: 'Card Hand',
         },
         {
           value: userToggle.mentions.vote,

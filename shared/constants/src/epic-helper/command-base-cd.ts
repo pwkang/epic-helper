@@ -4,6 +4,7 @@ export const BOT_REMINDER_BASE_COOLDOWN = {
   daily: ms('1d') - ms('10m'),
   weekly: ms('1w') - ms('10m'),
   lootbox: ms('3h'),
+  cardHand: ms('1d'),
   hunt: ms('1m'),
   adventure: ms('1h'),
   training: ms('15m'),

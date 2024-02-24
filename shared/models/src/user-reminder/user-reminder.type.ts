@@ -74,6 +74,11 @@ export interface IWeeklyReminder extends BaseUserReminder {
   props?: never;
 }
 
+export interface ICardHandReminder extends BaseUserReminder {
+  type: typeof RPG_COMMAND_TYPE.cardHand;
+  props?: never;
+}
+
 export interface IVoteReminder extends BaseUserReminder {
   type: typeof RPG_COMMAND_TYPE.vote;
   props?: never;
@@ -129,6 +134,7 @@ export type IUserReminder =
   | IFarmReminder
   | ILootboxReminder
   | IEpicItemReminder
+  | ICardHandReminder
   | IDailyReminder
   | IWeeklyReminder
   | IVoteReminder
