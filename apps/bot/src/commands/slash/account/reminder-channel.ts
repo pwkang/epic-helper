@@ -1,8 +1,8 @@
 import djsInteractionHelper from '../../../lib/discordjs/interaction';
 import {
   PREFIX,
-  RPG_COMMAND_TYPE, RPG_COMMANDS_KEYWORDS,
-  RPG_WORKING_TYPE,
+  RPG_COMMAND_TYPE,
+  RPG_COMMANDS_KEYWORDS,
   USER_ACC_OFF_ACTIONS,
   USER_NOT_REGISTERED_ACTIONS,
 } from '@epic-helper/constants';
