@@ -668,6 +668,24 @@ const getUsersAccount = async ({usersId}: IGetUsersAccount) => {
 
 };
 
+interface IGetUserByChannelIds {
+  channelIds: string[];
+}
+
+const getUserByChannelIds = async ({channelIds}: IGetUserByChannelIds) => {
+  const users = await dbUser.find({
+    'channel.all': {
+      $in: channelIds,
+    },
+  })
+    .select({
+      userId: 1,
+    })
+    .lean({defaults: true});
+
+  return users.map((user) => user.userId);
+};
+
 export const userService = {
   registerUserAccount,
   userAccountOn,
@@ -705,4 +723,5 @@ export const userService = {
   getUsersAccount,
   resetGroupCooldowns,
   removeUsersFromGroupCooldowns,
+  getUserByChannelIds,
 };
