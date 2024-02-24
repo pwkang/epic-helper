@@ -11,6 +11,7 @@ const RPG_COMMAND_CATEGORY = {
   daily: ['daily'],
   weekly: ['weekly'],
   lootbox: ['lootbox'],
+  cardHand: ['card hand'],
   vote: ['vote'],
   hunt: ['hunt'],
   adventure: ['adventure'],
@@ -122,6 +123,10 @@ const rpgCooldownSuccess = async ({
         readyIn += extraDuration;
       }
       if (!toggleChecker.reminder[commandType]) readyIn = 0;
+
+      if(commandType === 'cardHand') {
+        readyIn = 3000;
+      }
 
       const readyAt = new Date(Date.now() + readyIn);
       const currentCooldown = currentCooldowns.find(

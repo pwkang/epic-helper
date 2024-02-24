@@ -108,6 +108,10 @@ const getPetCommandStr = () => {
   return 'RPG PET CLAIM';
 };
 
+const getCardHandCommandStr = () => {
+  return 'RPG CARD HAND';
+};
+
 const getXmasChimneyCommandStr = () => {
   return 'RPG XMAS CHIMNEY';
 };
@@ -130,6 +134,8 @@ export const _parseCommandString = ({
       return GetLootboxCommandStr({
         lootboxType: props?.lootboxType,
       });
+    case RPG_COMMAND_TYPE.cardHand:
+      return getCardHandCommandStr();
     case RPG_COMMAND_TYPE.vote:
       return GetVoteCommandStr();
     case RPG_COMMAND_TYPE.hunt:

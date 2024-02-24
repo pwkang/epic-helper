@@ -5,6 +5,7 @@ type IKeyword = Record<keyof typeof RPG_COMMAND_TYPE, string[]>;
 
 export const RPG_COMMANDS_KEYWORDS: IKeyword = {
   adventure: ['adventure', 'adv'],
+  cardHand: ['cardHand', 'card hand', 'card'],
   hunt: ['hunt'],
   arena: ['arena'],
   daily: ['daily'],

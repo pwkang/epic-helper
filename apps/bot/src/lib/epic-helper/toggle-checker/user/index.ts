@@ -57,6 +57,11 @@ const toggleUserChecker = async ({
         isDonor,
         type: RPG_COMMAND_TYPE.lootbox,
       }),
+      cardHand: _toggleDmReminder({
+        toggle: userToggle,
+        isDonor,
+        type: RPG_COMMAND_TYPE.cardHand,
+      }),
       vote: _toggleDmReminder({
         toggle: userToggle,
         isDonor,
@@ -149,6 +154,11 @@ const toggleUserChecker = async ({
         isDonor,
         type: RPG_COMMAND_TYPE.lootbox,
       }),
+      cardHand: _toggleReminder({
+        toggle: userToggle,
+        isDonor,
+        type: RPG_COMMAND_TYPE.cardHand,
+      }),
       vote: _toggleReminder({
         toggle: userToggle,
         isDonor,
@@ -239,6 +249,11 @@ const toggleUserChecker = async ({
         toggle: userToggle,
         isDonor,
         type: RPG_COMMAND_TYPE.lootbox,
+      }),
+      cardHand: _toggleMentions({
+        toggle: userToggle,
+        isDonor,
+        type: RPG_COMMAND_TYPE.cardHand,
       }),
       vote: _toggleMentions({
         toggle: userToggle,

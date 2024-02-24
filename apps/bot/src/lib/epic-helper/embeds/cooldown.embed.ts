@@ -36,6 +36,10 @@ const cmd: ICooldown[] = [
         name: 'Lootbox',
       },
       {
+        type: RPG_COMMAND_TYPE.cardHand,
+        name: 'Card Hand',
+      },
+      {
         type: RPG_COMMAND_TYPE.vote,
         name: 'Vote',
       },
