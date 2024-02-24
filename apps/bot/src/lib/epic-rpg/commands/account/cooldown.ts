@@ -124,10 +124,6 @@ const rpgCooldownSuccess = async ({
       }
       if (!toggleChecker.reminder[commandType]) readyIn = 0;
 
-      if(commandType === 'cardHand') {
-        readyIn = 3000;
-      }
-
       const readyAt = new Date(Date.now() + readyIn);
       const currentCooldown = currentCooldowns.find(
         (cooldown) => cooldown.type === commandType,
