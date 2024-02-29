@@ -85,6 +85,30 @@ const isReducedByPocketWatch: Record<ValuesOf<typeof RPG_COMMAND_TYPE>, boolean>
   xmasChimney: false,
 };
 
+const isReducedBySpecialEvent: Record<ValuesOf<typeof RPG_COMMAND_TYPE>, boolean> = {
+  daily: false,
+  weekly: false,
+  lootbox: true,
+  cardHand: true,
+  vote: false,
+  hunt: true,
+  adventure: true,
+  training: true,
+  duel: true,
+  quest: true,
+  working: true,
+  farm: true,
+  horse: true,
+  arena: true,
+  dungeon: true,
+  epicItem: false,
+  pet: false,
+  petSummary: false,
+  xmasChimney: false,
+};
+
+const SPECIAL_EVENT_CD_REDUCTION = 0.5;
+
 export const calcCdReduction = async ({
   commandType,
   userId,
@@ -109,6 +133,10 @@ export const calcCdReduction = async ({
 
   if (userAccount.rpgInfo.artifacts.pocketWatch.owned && isReducedByPocketWatch[commandType])
     cooldown *= (100 - userAccount.rpgInfo.artifacts.pocketWatch.percent) / 100;
+
+  // for clarification: event will end on time, on the 29th at 23:55
+  if (new Date() <= new Date('2024-02-29T23:55:00.000Z') && isReducedBySpecialEvent[commandType])
+    cooldown *= SPECIAL_EVENT_CD_REDUCTION;
 
   return cooldown;
 };
