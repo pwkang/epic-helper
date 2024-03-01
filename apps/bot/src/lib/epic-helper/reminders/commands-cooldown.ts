@@ -135,7 +135,7 @@ export const calcCdReduction = async ({
     cooldown *= (100 - userAccount.rpgInfo.artifacts.pocketWatch.percent) / 100;
 
   // for clarification: event will end on time, on the 29th at 23:55
-  if (new Date() <= new Date('2024-02-29T23:55:00.000Z') && isReducedBySpecialEvent[commandType])
+  if (new Date() <= new Date('2024-03-1T23:55:00.000Z') && isReducedBySpecialEvent[commandType])
     cooldown *= SPECIAL_EVENT_CD_REDUCTION;
 
   return cooldown;
