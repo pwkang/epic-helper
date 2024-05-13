@@ -8,6 +8,11 @@
     "apps/*",
     "shared/*"
   ],
+  "engines": {
+    "node": ">=18.15 <=19",
+    "pnpm": ">=8"
+  },
+  "packageManager": "pnpm@8.6.2",
   "scripts": {
     "dev:bot": "nodemon --exec ts-node --files apps/bot/src/bot.ts --watch apps/bot",
     "dev:api": "nodemon --exec ts-node --files apps/api/src/index.ts --watch apps/api",
@@ -37,7 +42,7 @@
   },
   "homepage": "https://github.com/pwkang/epic-helper#readme",
   "dependencies": {
-    "axios": "^1.4.0",
+    "axios": "^1.6.8",
     "contentful": "^10.6.4",
     "dayjs": "^1.11.8",
     "discord-hybrid-sharding": "^2.1.3",
