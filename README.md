@@ -28,7 +28,7 @@ Discord bot. A reminder & utilities bot for [EPIC RPG](https://top.gg/bot/555955
 4. Copy `.env.example` to `.env` and fill in the required fields
 
     ```dotenv
-    BOT_TOKEN # Your bot token
+    BOT_TOKEN= # Your bot token
     NODE_ENV= # development or production
     BOT_PREFIX= # Bot prefix
     MONGO_URI= # MongoDB URI e.g. mongodb://localhost:27017/
@@ -43,9 +43,9 @@ Discord bot. A reminder & utilities bot for [EPIC RPG](https://top.gg/bot/555955
     PATREON_ACCESS_TOKEN= # (Optional) Patreon access token
     PATREON_WEBHOOK_TOKEN= # (Optional) Patreon webhook token
     API_PORT= # (Optional) API port, for receiving webhooks from Patreon
-    CONTENTFUL_SPACE_ID # (Optional) Contentful space ID, sources of commands in bot help
-    CONTENTFUL_ACCESS_TOKEN # (Optional) Contentful access token
-    STATS_LEADERBOARD_CHANNEL # (Optional) Channel ID for the leaderboard
+    CONTENTFUL_SPACE_ID= # (Optional) Contentful space ID, sources of commands in bot help
+    CONTENTFUL_ACCESS_TOKEN= # (Optional) Contentful access token
+    STATS_LEADERBOARD_CHANNEL= # (Optional) Channel ID for the leaderboard
     ```
 5. Setup MongoDB and Redis
 6. Start bot for development
