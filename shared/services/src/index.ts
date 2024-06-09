@@ -2,7 +2,6 @@ export * from './clients/patreon.service';
 export * from './clients/discordjs.service';
 export * from './clients/mongoose.service';
 export * from './clients/redis.service';
-export * from './clients/contentful.service';
 
 export * from './transformer/donor.transformer';
 export * from './transformer/free-donor.transformer';
