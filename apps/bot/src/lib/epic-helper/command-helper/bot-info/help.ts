@@ -3,14 +3,15 @@ import {ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder} from 'discor
 import {
   BOT_COLOR,
   BOT_INVITE_LINK,
+  HELP_COMMANDS,
+  HELP_COMMANDS_GROUPS,
   PATREON_LINK,
   PREFIX,
   SUPPORT_SERVER_INVITE_LINK,
   TOPGG_LINK,
 } from '@epic-helper/constants';
 import Fuse from 'fuse.js';
-import type {IHelpCommand, IHelpCommandsGroup} from '@epic-helper/services';
-import {getAllCommands, getAllCommandsGroup} from '@epic-helper/services';
+import type {IHelpCommand, IHelpCommandsGroup} from '@epic-helper/types';
 
 interface IHelp {
   client: Client<true>;
@@ -21,12 +22,10 @@ export const _help = async ({
   client,
   search,
 }: IHelp): Promise<BaseMessageOptions> => {
-  const commands = await getAllCommands();
-  const groups = await getAllCommandsGroup();
 
   if (!search) {
     const embed = generateEmbedHome({
-      groups,
+      groups: HELP_COMMANDS_GROUPS,
       client,
     });
     return {
@@ -35,7 +34,7 @@ export const _help = async ({
     };
   }
 
-  const searchResult = searchCommand({search, commands});
+  const searchResult = searchCommand({search, commands: HELP_COMMANDS});
 
   if (searchResult.length) {
     const embed = generateEmbedCommand(searchResult[0].item);

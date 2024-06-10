@@ -9,6 +9,7 @@ export * from './epic-helper/donor';
 export * from './epic-helper/clickable-slash';
 export * from './epic-helper/bot-help';
 export * from './epic-helper/keywords';
+export * from './epic-helper/help';
 
 export * from './epic-rpg/clickable-slash';
 export * from './epic-rpg/enchant';
